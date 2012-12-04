@@ -55,6 +55,6 @@ Weapon.getDefaultWeapons = function() {
 							4000)
 				);
 	return weapons;
-}
+};
 
 module.exports = Weapon;
