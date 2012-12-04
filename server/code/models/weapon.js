@@ -24,42 +24,37 @@ var Weapon = function(codename,
 	this.price = price; //Let's say dollars OK ?
 };
 
-Weapon.prototype = {
+Weapon.getDefaultWeapons = function() {
+	var weapons = [];
+	weapons.push(new Weapon("fork",
+							"Fork",
+							1,
+							60,
+							1,
+							0)
+				);
+	weapons.push(new Weapon("bat",
+							"Baseball Bat",
+							4,
+							70,
+							2,
+							250)
+				);
+	weapons.push(new Weapon("chainsaw",
+							"Chainsaw",
+							20,
+							80,
+							1,
+							2500)
+				);
+	weapons.push(new Weapon("ak",
+							"AK-47",
+							250,
+							80,
+							5,
+							4000)
+				);
+	return weapons;
+}
 
-	getDefaultWeapons : function() {
-		var weapons = [];
-		weapons.push(new Weapon("fork",
-								"Fork",
-								1,
-								60,
-								1,
-								0)
-					);
-		weapons.push(new Weapon("bat",
-								"Baseball Bat",
-								4,
-								70,
-								2,
-								250)
-					);
-		weapons.push(new Weapon("chainsaw",
-								"Chainsaw",
-								20,
-								80,
-								1,
-								2500)
-					);
-		weapons.push(new Weapon("ak",
-								"AK-47",
-								250,
-								80,
-								5,
-								4000)
-					);
-		return weapons;
-	}
-
-	//TODO : maybe add an unicorn as a easter egg
-};
-
-exports = Weapon;
+module.exports = Weapon;

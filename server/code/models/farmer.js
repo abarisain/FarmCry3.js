@@ -1,5 +1,6 @@
 Point2D = require('./point2d');
 Weapon = require('./weapon');
+GameState = require('./gamestate');
 
 //TODO: Well fuck, there is so much to do
 var Farmer = function(nickname, email, password) {
@@ -9,8 +10,8 @@ var Farmer = function(nickname, email, password) {
 	this.last_pos = new Point2D(0,0);
 	this.money = 0;
 	this.allied_farmers = [];
-	this.weapons = [ Weapon.getFork() ];
+	this.weapons = [ GameState.weapons[0] ];
 	this.logged_in = false;
 };
 
-exports = Farmer;
+module.exports = Farmer;
