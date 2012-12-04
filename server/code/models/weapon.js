@@ -6,7 +6,7 @@ var Weapon = function() {
 	this.hit_ratio = 100; //Chances to strike in %
 	this.hps = 2; //Hits per second
 	this.price = 9001; //Let's say dollars OK ?
-}
+};
 
 Weapon.prototype = {
 	getFork : function() {
@@ -51,7 +51,7 @@ Weapon.prototype = {
 		ak.hps = 5;
 		ak.price = 4000;
 		return ak;
-	}
+	},
 
 	getAllWeapons : function() {
 		return [this.getFork(), this.getBaseballBat(), this.getChainsaw(), this.getAK47()];

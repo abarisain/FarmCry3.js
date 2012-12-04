@@ -1,5 +1,5 @@
-Point2D = require('./point2d.js');
-Weapon = require('./weapon.js')
+Point2D = require('./point2d');
+Weapon = require('./weapon')
 
 //TODO: Well fuck, there is so much to do
 var Farmer = function(nickname, email, password) {
