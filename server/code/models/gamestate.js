@@ -1,4 +1,5 @@
 Weapon = require('./weapon');
+Crop = require('./crop');
 
 var Settings = function() {
 	this.tickRate = 1000; //Time between ticks in mS
@@ -13,6 +14,7 @@ var Board = function() {
 
 var GameState = function() {
 	this.weapons = Weapon.getDefaultWeapons();
+	this.crops = Crop.getDefaultCrops();
 	this.farmers = [];
 	this.paused = false;
 	this.Settings = new Settings();

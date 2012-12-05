@@ -6,6 +6,8 @@ var Tile = function() {
 	this.fertility = 1;
 	this.max_fertility = 1;
 	this.crop = null;
+	this.maturity = 0;
+	//Health being a dynamic value, it's not implemented as a variable
 };
 
 Tile.prototype = {
@@ -15,6 +17,12 @@ Tile.prototype = {
 
 	isOwnedBy: function(targetFarmer) {
 		return (this.owner == targetFarmer);
+	},
+
+	getHealth: function() {
+		//Return a 0 to 1 value function of fertility, humidity
+
+		return 1;
 	}
 }
 
