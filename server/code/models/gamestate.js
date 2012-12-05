@@ -1,9 +1,16 @@
 Weapon = require('./weapon');
 Crop = require('./crop');
+Storage = require('./storage');
 
 var Settings = function() {
 	this.tickRate = 1000; //Time between ticks in mS
 	this.startMoney = 1000; //Still dollars
+	//Here are the reference instances of the objects
+	//If they are modified, everything using them will reflect the change
+	//If they break, THINGS WILL GO TO HELL SO BE CAREFUL FUTURE-ME !
+	this.weapons = Weapon.getDefaultWeapons();
+	this.crops = Crop.getDefaultCrops();
+	this.storages = Storage.getDefaultStorages();
 };
 
 var Board = function() {
@@ -13,8 +20,7 @@ var Board = function() {
 };
 
 var GameState = function() {
-	this.weapons = Weapon.getDefaultWeapons();
-	this.crops = Crop.getDefaultCrops();
+
 	this.farmers = [];
 	this.paused = false;
 	this.Settings = new Settings();
