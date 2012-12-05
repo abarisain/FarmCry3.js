@@ -5,7 +5,7 @@ var Point2D = function(x, y) {
 
 Point2D.prototype = {
 	toString: function() {
-		return x + ',' + y;
+		return this.x + ',' + this.y;
 	}	
 };
 
