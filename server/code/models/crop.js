@@ -1,9 +1,9 @@
-var Crop = function(codename,
-					name,
-					maturation_time,
-					productivity,
-					storability,
-					seed_price) {
+function Crop(codename,
+				name,
+				maturation_time,
+				productivity,
+				storability,
+				seed_price) {
 	if(typeof(codename) === 'undefined') {
 		//Same philosophy as weapon's constructor
 		this.codename = "dummy";
@@ -20,7 +20,7 @@ var Crop = function(codename,
 	this.productivity = productivity; //Harvest per tile at 100% health
 	this.storability = storability; //Amount of ticks that the crop can be stored without withering
 	this.seed_price = seed_price; //Seed price for one tile
-};
+}
 
 Crop.getDefaultCrops = function() {
 	var crops = [];
@@ -53,6 +53,6 @@ Crop.getDefaultCrops = function() {
 						800)
 				);
 	return crops;
-}
+};
 
 module.exports = Crop;

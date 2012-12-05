@@ -1,9 +1,9 @@
-var Storage = function(codename,
-					   name,
-					   size,
-					   capacity,
-					   price,
-					   price_tick) {
+function Storage(codename,
+				name,
+				size,
+				capacity,
+				price,
+				price_tick) {
 	if(typeof(codename) === 'undefined') {
 		//Same philosophy as weapon's constructor
 		this.codename = "dummy";
@@ -20,7 +20,7 @@ var Storage = function(codename,
 	this.capacity = 100; //Storage capacity
 	this.price = 100; //Build price
 	this.price_tick = 1; //Maintenance per tick if not empty
-};
+}
 
 Storage.getDefaultStorages = function() {
 	var storages = [];
@@ -46,6 +46,6 @@ Storage.getDefaultStorages = function() {
 		3)
 	);
 	return storages;
-}
+};
 
 module.exports = Storage;

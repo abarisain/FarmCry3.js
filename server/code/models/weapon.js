@@ -1,9 +1,9 @@
-var Weapon = function(codename,
-						name,
-						power,
-						hit_ratio,
-						hps,
-						price) {
+function Weapon(codename,
+				name,
+				power,
+				hit_ratio,
+				hps,
+				price) {
 	if(typeof(codename) === 'undefined') {
 		//Si le premier paramètre est undefined, alors on part du principe qu'on veut le const. par defaut
 		//On devrait jamais instancier ca
@@ -22,7 +22,7 @@ var Weapon = function(codename,
 	this.hit_ratio = hit_ratio; //Chances to strike in %
 	this.hps = hps; //Hits per second
 	this.price = price; //Let's say dollars OK ?
-};
+}
 
 Weapon.getDefaultWeapons = function() {
 	var weapons = [];

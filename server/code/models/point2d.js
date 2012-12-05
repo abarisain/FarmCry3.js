@@ -1,7 +1,7 @@
-var Point2D = function(x, y) {
+function Point2D(x, y) {
 	this.x = x;
 	this.y = y;
-};
+}
 
 Point2D.prototype = {
 	toString: function() {
