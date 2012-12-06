@@ -19,12 +19,17 @@ var GameState = {
 		storages : Storage.getDefaultStorages()
 	},
 	board : {
-		size_x : 4,
-		size_y : 4,
+		size_x : 0,
+		size_y : 0,
 		tiles : [], //Please only add instances of Tile here. [x,y]
 
-		//Inits a 4x4 grid
+		//Inits a 8x8 grid
 		init : function() {
+			//We tell the board that it is already 8 tiles long
+			//But it's not, since it's size_y is 0
+			//Grow Y will take care of filling everything without any hack this way
+			this.size_x = 8;
+			GameState.board.growY(8);
 		},
 		grow : function (x, y) {
 			this.growX(x);
@@ -122,7 +127,6 @@ var GameState = {
 	}
 };
 
-GameState.board.grow(20,20);
-GameState.board.grow(4,4);
+GameState.board.init();
 GameState.board.print();
 module.exports = GameState;
