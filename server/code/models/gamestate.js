@@ -97,10 +97,26 @@ var GameState = {
 				lines.push(line);
 			}
 			return lines;
+		},
+		print : function() {
+			console.log("Current GameState board tiles :");
+			var line;
+			for(var i = 0; i < this.size_y; i++) {
+				line = "";
+				for(var j = 0; j < this.size_x; j++) {
+					if(typeof this.tiles[j][i] != 'undefined') {
+						line += (this.tiles[j][i].max_fertility < 0.4 ? "." : "w");
+						//line+= this.tiles[j][i].x+","+this.tiles[j][i].y+"|";
+					} else {
+						line += 'u';
+					}
+				}
+				console.log(line);
+			}
 		}
 	}
 };
 
 GameState.board.grow(20,20);
-
+GameState.board.print();
 module.exports = GameState;
