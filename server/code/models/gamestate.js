@@ -128,5 +128,6 @@ var GameState = {
 };
 
 GameState.board.init();
+GameState.board.grow(8,8);
 GameState.board.print();
 module.exports = GameState;
