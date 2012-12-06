@@ -17,8 +17,10 @@ var GameState = {
 		storages : Storage.getDefaultStorages()
 	},
 	board : {
-		size_x : 0,
-		size_y : 0,
+		size : {
+			x : 0,
+			y : 0
+		},
 		tiles : [], //Please only add instances of Tile here. [x,y]
 
 		//Inits a 8x8 grid
@@ -26,7 +28,7 @@ var GameState = {
 			//We tell the board that it is already 8 tiles long
 			//But it's not, since it's size_y is 0
 			//Grow Y will take care of filling everything without any hack this way
-			this.size_x = 8;
+			this.size.x = 8;
 			GameState.board.growY(8);
 		},
 		grow : function (x, y) {
@@ -43,9 +45,9 @@ var GameState = {
 			}
 			//Generate 4xGrowth_size sized blocks.
 			//The width of the board will tell how muck blocks need to be created.
-			var old_size_x = this.size_x;
-			this.size_x += size;
-			this.writeTileLines(old_size_x, 0, this.generateTileLines(4, this.size_y, size/4));
+			var old_size_x = this.size.x;
+			this.size.x += size;
+			this.writeTileLines(old_size_x, 0, this.generateTileLines(4, this.size.y, size/4));
 		},
 		growY : function(size) {
 			if(size <= 0) {
@@ -55,30 +57,30 @@ var GameState = {
 				throw "Growth size must be a multiple of 4";
 			}
 			//Same as growX above, but with 4 x Growth_size sized blocks
-			var old_size_y = this.size_y;
-			GameState.board.size_y += size;
-			this.writeTileLines(0, old_size_y, this.generateTileLines(4, size, this.size_x/4));
+			var old_size_y = this.size.y;
+			GameState.board.size.y += size;
+			this.writeTileLines(0, old_size_y, this.generateTileLines(4, size, this.size.x/4));
 		},
 		writeTileLines : function(base_x, base_y, tile_lines) {
 			var x = base_x;
 			var y = base_y;
 			tile_lines.forEach(function(tile_line) {
-				if(x >= GameState.board.size_x) {
+				if(x >= GameState.board.size.x) {
 					//If x is out of bounds, lets write the next line
 					x = base_x;
 					y++;
-					if(y >= GameState.board.size_y) {
+					if(y >= GameState.board.size.y) {
 						//This should never happen.
 						//TODO : Remove after debug
-						throw "y ("+y+") exceeds size_y ("+GameState.board.size_y+") in growY";
+						throw "y ("+y+") exceeds size_y ("+GameState.board.size.y+") in growY";
 					}
 				}
 				if(typeof GameState.board.tiles[y] == 'undefined') {
 					GameState.board.tiles[y] = [];
 				}
 				tile_line.forEach(function(tile) {
-					tile.x = x;
-					tile.y = y;
+					tile.position.x = x;
+					tile.position.y = y;
 					GameState.board.tiles[y][x] = tile;
 					x++;
 				});
@@ -109,9 +111,9 @@ var GameState = {
 		print : function() {
 			console.log("Current GameState board tiles :");
 			var line;
-			for(var i = 0; i < this.size_y; i++) {
+			for(var i = 0; i < this.size.y; i++) {
 				line = "";
-				for(var j = 0; j < this.size_x; j++) {
+				for(var j = 0; j < this.size.x; j++) {
 					if(typeof this.tiles[i][j] != 'undefined') {
 						if(this.tiles[i][j].max_fertility >= .75) line+= '█';
 						else if(this.tiles[i][j].max_fertility >= .50) line+= '▓';

@@ -1,6 +1,8 @@
 function Tile() {
-	this.x = 0;
-	this.y = 0;
+	this.position = {
+		x: 0,
+		y: 0
+	};
 	this.owner = null;
 	this.humidity = 1; // 0 to 1
 	this.fertility = 1;
