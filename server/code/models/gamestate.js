@@ -3,6 +3,8 @@ Crop = require('./crop');
 Storage = require('./storage');
 Tile = require('./tile');
 
+Storage = require('./storage');
+
 var GameState = {
 	farmers : [],
 	paused : false,
@@ -108,10 +110,9 @@ var GameState = {
 				line = "";
 				for(var j = 0; j < this.size_x; j++) {
 					if(typeof this.tiles[i][j] != 'undefined') {
-						line += (this.tiles[i][j].max_fertility < 0.4 ? "." : "w");
-						//line+= this.tiles[i][j].x+","+this.tiles[i][j].y+"|";
+						//line += Math.ceil(this.tiles[j][i].max_fertility * 10);
+						line += (this.tiles[i][j].max_fertility < 0.4 ? "░" : "█");
 					} else {
-						//console.log("x "+j, "y "+i);
 						line += 'u';
 					}
 				}
