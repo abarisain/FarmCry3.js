@@ -3,8 +3,6 @@ Crop = require('./crop');
 Storage = require('./storage');
 Tile = require('./tile');
 
-Storage = require('./storage');
-
 var GameState = {
 	farmers : [],
 	paused : false,
