@@ -115,8 +115,10 @@ var GameState = {
 				line = "";
 				for(var j = 0; j < this.size_x; j++) {
 					if(typeof this.tiles[i][j] != 'undefined') {
-						//line += Math.ceil(this.tiles[j][i].max_fertility * 10);
-						line += (this.tiles[i][j].max_fertility < 0.4 ? "░" : "█");
+						if(this.tiles[i][j].max_fertility >= .75) line+= '█';
+						else if(this.tiles[i][j].max_fertility >= .50) line+= '▓';
+						else if(this.tiles[i][j].max_fertility >= .25) line+= '▒';
+						else line+= '░';
 					} else {
 						line += 'u';
 					}
