@@ -1,10 +1,5 @@
-function Crop(codename,
-				name,
-				maturation_time,
-				productivity,
-				storability,
-				seed_price) {
-	if(typeof(codename) === 'undefined') {
+function Crop(codename, name, maturation_time, productivity, storability, seed_price) {
+	if (typeof(codename) === 'undefined') {
 		//Same philosophy as weapon's constructor
 		this.codename = "dummy";
 		this.name = "Dummy crop";
@@ -22,36 +17,36 @@ function Crop(codename,
 	this.seed_price = seed_price; //Seed price for one tile
 }
 
-Crop.getDefaultCrops = function() {
+Crop.getDefaultCrops = function () {
 	var crops = [];
 	crops.push(new Crop("tomatoes",
-						"Tomatoes",
-						1000,
-						30,
-						2000,
-						100)
-				);
+		"Tomatoes",
+		1000,
+		30,
+		2000,
+		100)
+	);
 	crops.push(new Crop("corn",
-						"Corn",
-						1800,
-						40,
-						3540,
-						200)
-				);
+		"Corn",
+		1800,
+		40,
+		3540,
+		200)
+	);
 	crops.push(new Crop("wheat",
-						"Wheat",
-						1300,
-						30,
-						5800,
-						50)
-				);
+		"Wheat",
+		1300,
+		30,
+		5800,
+		50)
+	);
 	crops.push(new Crop("weed",
-						"Weed",
-						900,
-						200,
-						4800,
-						800)
-				);
+		"Weed",
+		900,
+		200,
+		4800,
+		800)
+	);
 	return crops;
 };
 

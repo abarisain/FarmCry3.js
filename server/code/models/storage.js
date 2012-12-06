@@ -1,10 +1,5 @@
-function Storage(codename,
-				name,
-				size,
-				capacity,
-				price,
-				price_tick) {
-	if(typeof(codename) === 'undefined') {
+function Storage(codename, name, size, capacity, price, price_tick) {
+	if (typeof(codename) === 'undefined') {
 		//Same philosophy as weapon's constructor
 		this.codename = "dummy";
 		this.name = "Dummy storage";
@@ -22,7 +17,7 @@ function Storage(codename,
 	this.price_tick = 1; //Maintenance per tick if not empty
 }
 
-Storage.getDefaultStorages = function() {
+Storage.getDefaultStorages = function () {
 	var storages = [];
 	storages.push(new Storage("silo",
 		"Silo",
