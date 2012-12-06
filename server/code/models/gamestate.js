@@ -88,6 +88,7 @@ var GameState = {
 		},
 		generateTileLines : function(size_x, size_y, count) {
 			var lowFertility;
+			var highHumidity;
 			var tile;
 			var lines = [];
 			var line;
@@ -95,13 +96,17 @@ var GameState = {
 				line = [];
 				//80% of chances to be a fertile ground
 				//Calculate fertility by 4x1 bands
+				//90% of chances to have a medium humidity ground
 				lowFertility = (Math.random() <= 0.2);
+				highHumidity = (Math.random() <= 0.1);
 				for(var j = 0; j < size_x; j++) {
 					tile = new Tile();
 					//Fertile ground output a max fertility of 70-100%
 					//Non fertile is 2-32%
 					tile.max_fertility = (lowFertility ? 0.02 : 0.70) + Math.random()*0.3;
 					tile.fertility = tile.max_fertility;
+					tile.humidity = (highHumidity ? (0.70+Math.random()*0.3) :
+													(0.30+Math.random()*0.4));
 					line.push(tile);
 				}
 				lines.push(line);
