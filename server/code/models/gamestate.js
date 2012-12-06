@@ -20,6 +20,10 @@ var GameState = {
 		size_x : 4,
 		size_y : 4,
 		tiles : [], //Please only add instances of Tile here. [x,y]
+
+		//Inits a 4x4 grid
+		init : function() {
+		},
 		grow : function (x, y) {
 			this.growX(x);
 			this.growY(y);
@@ -67,7 +71,6 @@ var GameState = {
 				if(typeof GameState.board.tiles[y] == 'undefined') {
 					GameState.board.tiles[y] = [];
 				}
-				GameState.board.tiles[0] = [];
 				tile_line.forEach(function(tile) {
 					tile.x = x;
 					tile.y = y;
@@ -83,9 +86,9 @@ var GameState = {
 			var line;
 			for(var i = 0; i < count * size_y; i++) {
 				line = [];
-				//75% of chances to be a fertile ground
+				//80% of chances to be a fertile ground
 				//Calculate fertility by 4x1 bands
-				lowFertility = (Math.random() <= 0.25);
+				lowFertility = (Math.random() <= 0.2);
 				for(var j = 0; j < size_x; j++) {
 					tile = new Tile();
 					//Fertile ground output a max fertility of 70-100%
@@ -104,10 +107,11 @@ var GameState = {
 			for(var i = 0; i < this.size_y; i++) {
 				line = "";
 				for(var j = 0; j < this.size_x; j++) {
-					if(typeof this.tiles[j][i] != 'undefined') {
-						line += (this.tiles[j][i].max_fertility < 0.4 ? "." : "w");
-						//line+= this.tiles[j][i].x+","+this.tiles[j][i].y+"|";
+					if(typeof this.tiles[i][j] != 'undefined') {
+						line += (this.tiles[i][j].max_fertility < 0.4 ? "." : "w");
+						//line+= this.tiles[i][j].x+","+this.tiles[i][j].y+"|";
 					} else {
+						//console.log("x "+j, "y "+i);
 						line += 'u';
 					}
 				}
@@ -118,5 +122,6 @@ var GameState = {
 };
 
 GameState.board.grow(20,20);
+GameState.board.grow(4,4);
 GameState.board.print();
 module.exports = GameState;
