@@ -13,15 +13,15 @@ function Tile() {
 }
 
 Tile.prototype = {
-	isNeutral: function() {
+	isNeutral: function () {
 		return (this.owner == null);
 	},
 
-	isOwnedBy: function(targetFarmer) {
+	isOwnedBy: function (targetFarmer) {
 		return (this.owner == targetFarmer);
 	},
 
-	getHealth: function() {
+	getHealth: function () {
 		//Return a 0 to 1 value function of fertility, humidity
 
 		return 1; //Guaranteed random since 1801 !

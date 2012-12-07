@@ -1,10 +1,5 @@
-function Weapon(codename,
-				name,
-				power,
-				hit_ratio,
-				hps,
-				price) {
-	if(typeof(codename) === 'undefined') {
+function Weapon(codename, name, power, hit_ratio, hps, price) {
+	if (typeof(codename) === 'undefined') {
 		//Si le premier paramètre est undefined, alors on part du principe qu'on veut le const. par defaut
 		//On devrait jamais instancier ca
 		this.codename = "dummy";
@@ -24,36 +19,36 @@ function Weapon(codename,
 	this.price = price; //Let's say dollars OK ?
 }
 
-Weapon.getDefaultWeapons = function() {
+Weapon.getDefaultWeapons = function () {
 	var weapons = [];
 	weapons.push(new Weapon("fork",
-							"Fork",
-							1,
-							60,
-							1,
-							0)
-				);
+		"Fork",
+		1,
+		60,
+		1,
+		0)
+	);
 	weapons.push(new Weapon("bat",
-							"Baseball Bat",
-							4,
-							70,
-							2,
-							250)
-				);
+		"Baseball Bat",
+		4,
+		70,
+		2,
+		250)
+	);
 	weapons.push(new Weapon("chainsaw",
-							"Chainsaw",
-							20,
-							80,
-							1,
-							2500)
-				);
+		"Chainsaw",
+		20,
+		80,
+		1,
+		2500)
+	);
 	weapons.push(new Weapon("ak",
-							"AK-47",
-							250,
-							80,
-							5,
-							4000)
-				);
+		"AK-47",
+		250,
+		80,
+		5,
+		4000)
+	);
 	return weapons;
 };
 
