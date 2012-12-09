@@ -1,23 +1,9 @@
 /**
- * Created with IntelliJ IDEA.
  * User: Guigui
  * Date: 08/12/12
  * Time: 17:51
  * To change this template use File | Settings | File Templates.
  */
-
-/*initialisation* du moteur*/
-var canvas  = [];
-var context = [];
-
-var canvasWidth = window.innerWidth;
-var canvasHeight = window.innerHeight;
-
-var tileWidth = 122;
-var tileHeight = 86;
-
-var lineSize = Math.round(canvasHeight / tileHeight + 1);
-var colSize = Math.round(canvasWidth / tileWidth + 1);
 
 var moveMap = false;
 var cameraPosition = {
@@ -30,6 +16,7 @@ var mousePosition = {
 };
 var animationDuration = 30;
 
+//gestion des textures
 var texTileList = ['grass_1', 'grass_2', 'leave', 'mountain', 'rock', 'soil', 'water'];//je précise qu'ici il faudra que je fasse commencer grass à 0
 var texTiles = [];
 
@@ -43,28 +30,24 @@ var buildings = [];
 
 var texParticleList = ['smoke'];
 var texParticles = [];
-var particleEmitters = [];
 
-var totalLoadingCount = 0, currentLoadingCount = 0;
-var loadingComplete = false;
-
-window.requestAnimFrame = (function(){
-	return window.requestAnimationFrame       || // La forme standardisée
+window.requestAnimFrame = (function () {
+	return window.requestAnimationFrame || // La forme standardisée
 		window.webkitRequestAnimationFrame || // Pour Chrome et Safari
-		window.mozRequestAnimationFrame    || // Pour Firefox
-		window.oRequestAnimationFrame      || // Pour Opera
-		window.msRequestAnimationFrame     || // Pour Internet Explorer
-		function(callback){                   // Pour les élèves du dernier rang
+		window.mozRequestAnimationFrame || // Pour Firefox
+		window.oRequestAnimationFrame || // Pour Opera
+		window.msRequestAnimationFrame || // Pour Internet Explorer
+		function (callback) {                   // Pour les élèves du dernier rang
 			window.setTimeout(callback, 1000 / 60);
 		};
 })();
 
-window.onload = function() {
-	canvas  = document.querySelector('#canvas');
+window.onload = function () {
+	canvas = document.querySelector('#canvas');
 	context = canvas.getContext('2d');
 
 	/*initialisation du canvas
-	* indispensable sinon le canvas fait 150px de large*/
+	 * indispensable sinon le canvas fait 150px de large*/
 	canvas.width = canvasWidth;
 	canvas.height = canvasHeight;
 
@@ -77,7 +60,7 @@ window.onload = function() {
 	function DrawLoading() {
 		context.save();
 		context.clearRect(0, 0, canvasWidth, canvasHeight);
-		if(texTiles.length != texTileList.length) {
+		if (texTiles.length != texTileList.length) {
 			context.fillStyle = "#fff";
 			context.fillText("Loading...", canvasWidth / 2 - 30, 260);
 
@@ -88,19 +71,21 @@ window.onload = function() {
 			context.fillStyle = "rgba(120, 120, 120, 1)";
 			context.fillRect(canvasWidth / 2 - 200, 302, 200 * (currentLoadingCount / totalLoadingCount), 16);
 			context.restore();
-			window.requestAnimFrame(function() { DrawLoading() });
+			window.requestAnimFrame(function () {
+				DrawLoading()
+			});
 		}
-		else
-		{
+		else {
 			CreateMap();
-			window.requestAnimFrame(function() { DrawMapCreation(1, 1) });
+			window.requestAnimFrame(function () {
+				DrawMapCreation(1, 1)
+			});
 		}
 	}
 
 	//pour faire apparaître la map de façon un peu "Qui pête"
 	function DrawMapCreation(progress, speed) {
-		if(texTiles.length == texTileList.length)
-		{
+		if (texTiles.length == texTileList.length) {
 			context.save();
 			context.clearRect(0, 0, canvasWidth, canvasHeight);
 
@@ -108,32 +93,33 @@ window.onload = function() {
 			context.fillText("Loading...", 20, 20);
 
 			//dessin du terrain
-			for (var line = 0; line < lineSize * (progress/(animationDuration)); line++) {
-				for (var col = 0; col < colSize * (progress/(animationDuration)); col++){
-					context.drawImage(texTiles[Math.round((line+col)/2)%texTiles.length], cameraPosition.x + col*tileWidth - (tileWidth) * line,  (cameraPosition.y + (line - lineSize) * tileHeight + (tileHeight) * col) * (progress/animationDuration));
+			for (var line = 0; line < lineSize * (progress / (animationDuration)); line++) {
+				for (var col = 0; col < colSize * (progress / (animationDuration)); col++) {
+					context.drawImage(texTiles[Math.round((line + col) / 2) % texTiles.length], cameraPosition.x + col *
+						tileWidth - (tileWidth) * line, (cameraPosition.y + (line - lineSize) * tileHeight +
+						(tileHeight) * col) * (progress / animationDuration));
 				}
 			}
 			context.restore();
-			if (progress == animationDuration && currentLoadingCount == totalLoadingCount)
-			{
-					loadingComplete = true;
-					window.requestAnimFrame(function() { Draw() });
+			if (progress == animationDuration && currentLoadingCount == totalLoadingCount) {
+				loadingComplete = true;
+				window.requestAnimFrame(function () {
+					Draw()
+				});
 			}
-			else
-			{
-				if (progress >= animationDuration * 2 || progress <= 0)
-				{
-					speed*=-1;
+			else {
+				if (progress >= animationDuration * 2 || progress <= 0) {
+					speed *= -1;
 				}
-				window.requestAnimFrame(function() { DrawMapCreation(progress+speed, speed) });
+				window.requestAnimFrame(function () {
+					DrawMapCreation(progress + speed, speed)
+				});
 			}
-
 		}
 	}
 
 	function Draw() {
-		if(loadingComplete)
-		{
+		if (loadingComplete) {
 			context.clearRect(0, 0, canvasWidth, canvasHeight);
 			context.save();
 			context.fillStyle = "#fff";
@@ -141,8 +127,7 @@ window.onload = function() {
 			context.translate(cameraPosition.x, cameraPosition.y);
 
 			//dessin des reflets
-			for (i = 0; i < buildings.length; i++)
-			{
+			for (i = 0; i < buildings.length; i++) {
 				if (buildings[i].texReflect != -1) {
 					context.drawImage(texBuildings[buildings[i].texReflect], buildings[i].x, buildings[i].y);
 				}
@@ -150,70 +135,49 @@ window.onload = function() {
 
 			//dessin du terrain
 			for (var line = 0; line < lineSize; line++) {
-				for (var col = 0; col < colSize; col++){
-					context.drawImage(texTiles[Math.round((line+col)/2)%texTiles.length], col*tileWidth - (tileWidth) * line, (line - lineSize) * tileHeight + (tileHeight) * col);
+				for (var col = 0; col < colSize; col++) {
+					context.drawImage(texTiles[Math.round((line + col) / 2) % texTiles.length], col * tileWidth - (tileWidth) * line, (line - lineSize) * tileHeight + (tileHeight) * col);
 
 					//affichage de la bordure
-					if (col == colSize -1)
-					{
-						context.drawImage(texBorders[1], (col)*tileWidth - (tileWidth) * line, (line - lineSize + 1) * tileHeight + (tileHeight) * col + 1);
+					if (col == colSize - 1) {
+						context.drawImage(texBorders[1], (col) * tileWidth - (tileWidth) * line, (line - lineSize + 1) * tileHeight + (tileHeight) * col + 1);
 					}
 					if (line == 0) {
-						context.fillText('col : ' + col, col*tileWidth - (tileWidth) * (line-1), (line - lineSize + 1) * tileHeight + (tileHeight) * col);
+						context.fillText('col : ' + col, col * tileWidth - (tileWidth) * (line - 1), (line - lineSize + 1) * tileHeight + (tileHeight) * col);
 					}
-					else if (line == lineSize - 1)
-					{
-						context.drawImage(texBorders[0], col*tileWidth - (tileWidth) * (line), (line - lineSize + 1) * tileHeight + (tileHeight) * (col) + 1);
+					else if (line == lineSize - 1) {
+						context.drawImage(texBorders[0], col * tileWidth - (tileWidth) * (line), (line - lineSize + 1) * tileHeight + (tileHeight) * (col) + 1);
 					}
 				}
 				context.fillText('line : ' + line, (tileWidth) * (line - 0.5), (line - lineSize + 1) * tileHeight + 1);
 			}
 
 			//dessin des bâtiments
-			for (var i = 0; i < buildings.length; i++)
-			{
+			for (var i = 0; i < buildings.length; i++) {
 				context.fillRect(buildings[i].x, buildings[i].y, 3, 3);
 				context.drawImage(texBuildings[buildings[i].texBuilding], buildings[i].x, buildings[i].y);
 			}
 
 			//affichage des particules
-			for (i = 0; i < particleEmitters.length; i++)
-			{
-				particleEmitters[i].lifetime--;
-				if (particleEmitters[i].lifetime <= 0) {
-					particleEmitters.splice(i);
-					i--;
-				}
-				else
-				{
-					context.translate(particleEmitters[i].x, particleEmitters[i].y);
-					context.globalAlpha = particleEmitters[i].lifetime / 100;
-					for (var j = 0; j < particleEmitters[i].particles.length; j++)
-					{
-						particleEmitters[i].particles[j].x += particleEmitters[i].particles[j].speedX;
-						particleEmitters[i].particles[j].y += particleEmitters[i].particles[j].speedY;
-						//particleEmitters[i].particles[j].rotation += particleEmitters[i].particles[j].speedRotation;
-						//context.rotate(particleEmitters[i].particles[j].rotation * Math.PI/180);//la gestion de la rotation en canvas est absolument a chier
-						context.drawImage(texParticles[particleEmitters[i].type], particleEmitters[i].particles[j].x, particleEmitters[i].particles[j].y)
-					}
-					context.translate(-particleEmitters[i].x, -particleEmitters[i].y);
-				}
-			}
-
+			/*particleEmitters.update();//temporaire
+			particleEmitters.draw(context);
+			*/
 			context.restore();
 
 			context.fillStyle = "#fff";
 			context.fillText("x : " + cameraPosition.x + ", y : " + cameraPosition.y, 20, 20);
 
-			if (particleEmitters.length > 0)//temporaire, mais nécessaire a cause des particule
+			/*if (particleEmitters.isAlive())//temporaire, mais nécessaire a cause des particule
 			{
-				window.requestAnimFrame(function() { Draw() });
-			}
+				window.requestAnimFrame(function () {
+					Draw()
+				});
+			}*/
 		}
 	}
 
 	canvas.onmousedown = function (event) {
-		if(loadingComplete) {
+		if (loadingComplete) {
 			//positionnement de la souris
 			mousePosition.x = event.pageX - this.offsetLeft;
 			mousePosition.y = event.pageY - this.offsetTop;
@@ -227,8 +191,7 @@ window.onload = function() {
 	};
 
 	canvas.onmousemove = function (event) {
-		if (moveMap)
-		{
+		if (moveMap) {
 			event = event || window.event;
 
 			//deplacement de la caméra en fonction de la dernière position de la souris
@@ -239,7 +202,9 @@ window.onload = function() {
 			mousePosition.x = event.pageX - this.offsetLeft;
 			mousePosition.y = event.pageY - this.offsetTop;
 
-			window.requestAnimFrame(function() { Draw() });
+			window.requestAnimFrame(function () {
+				Draw()
+			});
 		}
 	};
 };
@@ -253,21 +218,11 @@ function CreateMap() {
 function CreateBuilding(type, col, line) {
 	var building = { texBuilding: type, texReflect: type + 3, col: col, line: line, x: col * tileWidth - (tileWidth) * line - tileWidth, y: (line - lineSize) * tileHeight + (tileHeight) * col - 62};
 	buildings.push(building);
-	for (i = 0; i <= type; i++) {
+	var emitter = new ParticlesEmitter(0, building.x, building.y);
+	particleEmitters.emitters.push(emitter);
+	/*for (var i = 0; i <= type; i++) {
 		CreateTileParticle(building.x + tileWidth * i, building.y + tileHeight * i);
-	}
-}
-
-function CreateTileParticle(x, y)
-{
-	var emitter = {type: 0, x: x + tileWidth, y: y+tileHeight, amount: 10, lifetime: 50, speed: 1, particles: []};
-	for (var i = 0; i < emitter.amount; i++) {
-		var particle = { x: -tileWidth/2 + tileHeight * (i / emitter.amount), y: -Math.abs(tileHeight/2 - tileHeight *(i / emitter.amount)), rotation: 0, speedX: 0, speedY: -3, speedRotation: 0 };
-		emitter.particles.push(particle);
-		particle = { x: -tileWidth/2 + tileHeight * (i / emitter.amount), y: Math.abs(tileHeight/2 - tileHeight * (i / emitter.amount)), rotation: 0, speedX: 0, speedY: -3, speedRotation: 0 };
-		emitter.particles.push(particle);
-	}
-	particleEmitters.push(emitter);
+	}*/
 }
 
 function InitLoading() {
@@ -282,8 +237,7 @@ function InitLoading() {
 }
 
 function LoadTexTiles() {
-	for (var i = 0; i < texTileList.length; i++)
-	{
+	for (var i = 0; i < texTileList.length; i++) {
 		var tile = new Image();
 		tile.src = 'src/tiles/' + texTileList[i] + '.png';
 		tile.onload = function () {
@@ -294,8 +248,7 @@ function LoadTexTiles() {
 }
 
 function LoadTexBorders() {
-	for (var i = 0; i < texBorderList.length; i++)
-	{
+	for (var i = 0; i < texBorderList.length; i++) {
 		var tile = new Image();
 		tile.src = 'src/borders/' + texBorderList[i] + '.png';
 		tile.onload = function () {
@@ -306,8 +259,7 @@ function LoadTexBorders() {
 }
 
 function LoadTexBuildings() {
-	for (var i = 0; i < texBuildingList.length; i++)
-	{
+	for (var i = 0; i < texBuildingList.length; i++) {
 		var building = new Image();
 		building.src = 'src/buildings/' + texBuildingList[i] + '.png';
 		building.onload = function () {
@@ -318,8 +270,7 @@ function LoadTexBuildings() {
 }
 
 function LoadTexParticles() {
-	for (var i = 0; i < texParticleList.length; i++)
-	{
+	for (var i = 0; i < texParticleList.length; i++) {
 		var particle = new Image();
 		particle.src = 'src/effects/' + texParticleList[i] + '.png';
 		particle.onload = function () {
