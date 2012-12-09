@@ -126,10 +126,8 @@ window.onload = function () {
 			context.translate(cameraPosition.x, cameraPosition.y);
 
 			//dessin des reflets
-			if (reflectActivated)
-			{
-				if (reflectBuilding)
-				{
+			if (reflectActivated) {
+				if (reflectBuilding) {
 					for (i = 0; i < buildings.length; i++) {
 						buildings[i].drawReflection();
 					}
@@ -163,11 +161,11 @@ window.onload = function () {
 
 			//affichage du hudLife
 			context.drawImage(hudLife, 0, 0);
-			context.drawImage(hudTime, canvasWidth-160, 0);
+			context.drawImage(hudTime, canvasWidth - 160, 0);
 			context.fillStyle = "#6f440d";
 			context.fillText("x : " + cameraPosition.x + ", y : " + cameraPosition.y, 120, 34);
 			var currentTime = new Date();
-			context.fillText(currentTime.getHours() + ':' + currentTime.getMinutes(), canvasWidth-72, 34);
+			context.fillText(currentTime.getHours() + ':' + currentTime.getMinutes(), canvasWidth - 72, 34);
 		}
 	}
 
@@ -220,7 +218,7 @@ function InitLoading() {
 	LoadTileItems();
 }
 
-function LoadTiles () {
+function LoadTiles() {
 	totalLoadingCount += texTileList.length;
 	LoadTexTiles();
 }
@@ -238,13 +236,13 @@ function LoadTexTiles() {
 
 /* Pour le moment on s'en pête des particules (et oui c'est moi qui dit ça)
 
-function LoadTexParticles() {
-	for (var i = 0; i < texParticleList.length; i++) {
-		var particle = new Image();
-		particle.src = 'src/effects/' + texParticleList[i] + '.png';
-		particle.onload = function () {
-			texParticles.push(this);
-			currentLoadingCount++;
-		};
-	}
-}*/
+ function LoadTexParticles() {
+ for (var i = 0; i < texParticleList.length; i++) {
+ var particle = new Image();
+ particle.src = 'src/effects/' + texParticleList[i] + '.png';
+ particle.onload = function () {
+ texParticles.push(this);
+ currentLoadingCount++;
+ };
+ }
+ }*/

@@ -7,7 +7,7 @@ var borders = [];
 
 function TileItem(image, x, y, centerX, centerY, reflected) {
 	this.image = image;
-	this.reflected = reflected ;//pour savoir si les reflets sont supportés par cet item, en théorie c'est pour du debug
+	this.reflected = reflected;//pour savoir si les reflets sont supportés par cet item, en théorie c'est pour du debug
 	this.x = x;
 	this.y = y;
 	this.centerX = centerX;//attention ceci est la distance top-left au centre de la tile, réferentiel indispensable
@@ -18,20 +18,18 @@ function TileItem(image, x, y, centerX, centerY, reflected) {
 }
 
 TileItem.prototype = {
-	updateImageCoord: function() {
+	updateImageCoord: function () {
 		this.imageLeft = this.x - this.centerX;
 		this.imageTop = this.y - this.centerY;
 	},
 	//attention a bien se préoccuper du context avant, ici je m'en occupe pas
-	drawReflection: function(imageReflectionList) {
-		if (this.reflected)
-		{
+	drawReflection: function (imageReflectionList) {
+		if (this.reflected) {
 			context.drawImage(imageReflectionList[this.image], this.imageLeft, this.imageTop);
 		}
 	},
-	drawItem: function(imageList) {
-		if (this.reflected)
-		{
+	drawItem: function (imageList) {
+		if (this.reflected) {
 			context.fillRect(this.imageLeft, this.imageTop.y, 3, 3);
 			context.drawImage(imageList[this.image], this.imageLeft, this.imageTop);
 		}

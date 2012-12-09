@@ -19,10 +19,10 @@ function Building(type, col, line) {
 }
 
 Building.prototype = {
-	drawReflection: function() {
+	drawReflection: function () {
 		this.tileItem.drawReflection(texBuildingReflections);
 	},
-	drawItem: function() {
+	drawItem: function () {
 		this.tileItem.drawItem(texBuildings);
 	}
 };
@@ -36,8 +36,7 @@ function LoadTexBuildings() {
 			texBuildings.push(this);
 			currentLoadingCount++;
 		};
-		if (texBuildingList[i].reflected)
-		{
+		if (texBuildingList[i].reflected) {
 			var buildingReflection = new Image();
 			buildingReflection.src = 'src/buildings/' + texBuildingList[i].image + '_reflect.png';
 			buildingReflection.onload = function () {

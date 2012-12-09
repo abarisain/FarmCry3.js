@@ -16,10 +16,10 @@ function Crop(type, col, line) {
 }
 
 Crop.prototype = {
-	drawReflection: function() {
+	drawReflection: function () {
 		this.tileItem.drawReflection(texCropsReflections);
 	},
-	drawItem: function() {
+	drawItem: function () {
 		this.tileItem.drawItem(texCrops);
 	}
 };
@@ -33,8 +33,7 @@ function LoadTexCrops() {
 			texCrops.push(this);
 			currentLoadingCount++;
 		};
-		if (texCropList[i].reflected)
-		{
+		if (texCropList[i].reflected) {
 			var imageReflection = new Image();
 			imageReflection.src = 'src/crops/' + texCropList[i].image + '_reflect.png';
 			imageReflection.onload = function () {

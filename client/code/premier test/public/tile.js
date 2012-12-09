@@ -1,4 +1,4 @@
-function LoadTiles () {
+function LoadTiles() {
 	totalLoadingCount += texTileList.length;
 	LoadTexTiles();
 }

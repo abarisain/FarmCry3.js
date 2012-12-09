@@ -8,26 +8,26 @@ var networkEngine = {
 	init: function (serverUrl, email, password) {
 		console.log("Network connecting to " + serverUrl);
 		this.socket = io.connect(serverUrl);
-		if (!io.isOpen()) {
-			console.log("Network engine failed to connect !");
-		}
-		//Iterate over the subsystems and their functions to bind them to events (module.function)
-		Object.keys(this.subsystems).forEach(function (subsystem) {
-			Object.keys(subsystem).forEach(function (_function) {
-				networkEngine.socket.on(subsystem.name + '.' + _function, function (data) {
-					networkEngine.subsystems[subsystem][_function](data);
+		//TODO : Add a connection timeout
+		this.socket.on('connect', function () {
+			//Iterate over the subsystems and their functions to bind them to events (module.function)
+			Object.keys(this.subsystems).forEach(function (subsystem) {
+				Object.keys(subsystem).forEach(function (_function) {
+					networkEngine.socket.on(subsystem.name + '.' + _function, function (data) {
+						networkEngine.subsystems[subsystem][_function](data);
+					});
 				});
 			});
-		});
 
-		socket.emit("auth.login", {email: email, password: password}, function (data) {
-			if (typeof data.error != 'undefined') {
-				console.log("Error while logging in : " + data.error.message);
-				socket.disconnect();
-			} else {
-				console.log("Network engine ready ! Requesting initial data.");
-				socket.emit("game.getInitialData");
-			}
+			networkEngine.socket.emit("auth.login", {email: email, password: password}, function (data) {
+				if (typeof data.error != 'undefined') {
+					console.log("Error while logging in : " + data.error.message);
+					networkEngine.socket.disconnect();
+				} else {
+					console.log("Network engine ready ! Requesting initial data.");
+					networkEngine.socket.emit("game.getInitialData");
+				}
+			});
 		});
 	},
 	call: function (subsystem, method, data, callback) {
@@ -42,4 +42,4 @@ var networkEngine = {
 	}
 };
 
-networkEngine.init();
+networkEngine.init('http://localhost:8080');

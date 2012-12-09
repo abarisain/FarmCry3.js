@@ -1,6 +1,6 @@
 var particleEmitters = {
 	emitters: [],
-	update: function() {
+	update: function () {
 		for (var i = 0; i < this.emitters.length; i++) {
 			if (!this.emitters[i].update())//if emitter is dead
 			{
@@ -35,8 +35,7 @@ function ParticlesEmitter(type, x, y) {
 
 ParticlesEmitter.prototype = {
 	update: function () {
-		if (this.amount < this.amountMax)
-		{
+		if (this.amount < this.amountMax) {
 			var newParticleCount = Math.min(this.amountMax - this.amount, this.growth);
 			for (var i = 0; i < newParticleCount; i++) {
 				var particle = new Particle(0, 0, 0, -3, this.lifetime);
@@ -44,8 +43,7 @@ ParticlesEmitter.prototype = {
 				this.amount++;
 			}
 		}
-		if (this.particles.length == 0 && this.amount == this.amountMax)
-		{
+		if (this.particles.length == 0 && this.amount == this.amountMax) {
 			return false;
 		}
 		for (i = 0; i < this.amountMax; i++) {
@@ -56,10 +54,9 @@ ParticlesEmitter.prototype = {
 		}
 		return true;
 	},
-	draw: function() {
+	draw: function () {
 		context.translate(this.x, this.y);
-		for (var i = 0; i < this.particles.length; i++)
-		{
+		for (var i = 0; i < this.particles.length; i++) {
 			this.particles[i].draw(this.type);
 		}
 		context.translate(-this.x, -this.y);
@@ -80,8 +77,7 @@ Particle.prototype = {
 		this.lifetime--;
 		this.x += this.speedX;
 		this.y += this.speedY;
-		if (this.lifetime < 10)
-		{
+		if (this.lifetime < 10) {
 			this.alpha = this.lifetime / 10;
 		}
 		if (this.lifetime <= 0) {
