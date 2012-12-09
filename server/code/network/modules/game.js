@@ -2,10 +2,9 @@ Error = require('../error.js');
 GameState = require('../../models/gamestate');
 
 var NetworkModule = {
-	name: "map",
+	name: "game",
 	functions: {
-		getAllTiles: function (connection, data, callback) {
-			//WARNING : This is a debug function and should never be used in production code
+		getInitialData: function (connection, data, callback) {
 			var tmpTiles = [];
 			for (var y = 0; y < GameState.board.size.y; y++) {
 				if (typeof tmpTiles[y] == 'undefined') {
@@ -15,7 +14,13 @@ var NetworkModule = {
 					tmpTiles[y][x] = GameState.board.tiles[y][x].getSmallTile();
 				}
 			}
-			return {tiles: tmpTiles};
+
+			connection.send(NetworkModule, "initialData", {
+				tiles: tmpTiles,
+				weapons: GameState.settings.weapons,
+				crops: GameState.settings.crops,
+				storages: GameState.settings.storages
+			});
 		}
 	}
 };
