@@ -34,8 +34,8 @@ Tile.prototype = {
 		//Returns a small version of this tile (for network usage)
 		var tmpTile = new Tile();
 		//Copy basic values
-		tmpTile.position.x = this.position.x;
-		tmpTile.position.y = this.position.y;
+		tmpTile.position.col = this.position.x;
+		tmpTile.position.line = this.position.y;
 		tmpTile.humidity = this.humidity;
 		tmpTile.fertility = this.fertility;
 		tmpTile.max_fertility = this.max_fertility;
