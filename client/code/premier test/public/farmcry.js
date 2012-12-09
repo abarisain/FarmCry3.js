@@ -32,10 +32,11 @@ window.onload = function() {
 	var colSize = Math.round(canvasWidth / tileWidth + 1);
 
 	var moveMap = false;
-	var camera = {
+	var cameraPosition = {
 		x: 0,
 		y: 0
 	};
+	var mousePosition = { x: 0, y: 0 };
 
 	/*initialisation du canvas
 	* indispensable sinon le canvas fait 150px de large*/
@@ -60,18 +61,22 @@ window.onload = function() {
 
 		for (var line = 0; line < lineSize; line++) {
 			for (var col = 0; col < colSize; col++){
-				context.drawImage(grass, camera.x + col*tileWidth - (tileWidth) * line, camera.y + (line - lineSize) * tileHeight + (tileHeight) * col);
+				context.drawImage(grass, cameraPosition.x + col*tileWidth - (tileWidth) * line, cameraPosition.y + (line - lineSize) * tileHeight + (tileHeight) * col);
 			}
 		}
 
-		context.fillText("x : " + camera.x + ", y : " + camera.y, 78, 92);
+		context.fillText("x : " + cameraPosition.x + ", y : " + cameraPosition.y, 78, 92);
 
-		//context.restore();
+		context.restore();
 
 		//window.requestAnimFrame(function() { Draw((debut+1)%600) });
 	}
 
-	canvas.onmousedown = function () {
+	canvas.onmousedown = function (event) {
+		//positionnement de la souris
+		mousePosition.x = event.pageX - this.offsetLeft;
+		mousePosition.y = event.pageY - this.offsetTop;
+		//activation du deplacement de la map
 		moveMap = true;
 	};
 
@@ -84,8 +89,13 @@ window.onload = function() {
 		{
 			event = event || window.event;
 
-			camera.x = event.pageX - camera.x;
-			camera.y = event.pageY - camera.y;
+			//deplacement de la caméra en fonction de la dernière position de la souris
+			cameraPosition.x += (event.pageX - this.offsetLeft - mousePosition.x);
+			cameraPosition.y += (event.pageY - this.offsetTop - mousePosition.y);
+
+			//pour se souvenir de la dernière position de la souris
+			mousePosition.x = event.pageX - this.offsetLeft;
+			mousePosition.y = event.pageY - this.offsetTop;
 
 			window.requestAnimFrame(function() { Draw() });
 		}
