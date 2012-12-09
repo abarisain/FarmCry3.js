@@ -1,20 +1,23 @@
+Crop = require('./crop');
+Farmer = require('./farmer');
+
 function Tile() {
 	this.position = {
 		x: 0,
 		y: 0
 	};
-	this.owner = null;
+	this.owner = new Farmer();
 	this.humidity = 1; // 0 to 1
 	this.fertility = 1;
 	this.max_fertility = 1;
-	this.crop = null;
+	this.crop = new Crop();
 	this.maturity = 0;
 	//Health being a dynamic value, it's not implemented as a variable
 }
 
 Tile.prototype = {
 	isNeutral: function () {
-		return (this.owner == null);
+		return (this.owner.name == "dummy");
 	},
 
 	isOwnedBy: function (targetFarmer) {

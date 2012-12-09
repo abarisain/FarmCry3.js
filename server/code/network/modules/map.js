@@ -8,7 +8,7 @@ var NetworkModule = {
 			//WARNING : This is a debug function and should never be used in production code
 			var tmpTiles = [];
 			for (var y = 0; y < GameState.board.size.y; y++) {
-				if (typeof tmpTiles[j] == 'undefined') {
+				if (typeof tmpTiles[y] == 'undefined') {
 					tmpTiles[y] = [];
 				}
 				for (var x = 0; x < GameState.board.size.x; x++) {
