@@ -33,13 +33,10 @@ NetworkConnection.prototype = {
 			require_auth = true;
 		}
 		if (require_auth && !this.authenticated) {
-			this.sendAuthError();
+			this.sendError(Error.Codes.NOT_AUTHENTICATED);
 			return;
 		}
 		this.socket.emit(event, data);
-	},
-	sendAuthError: function () {
-		this.send('error', Error.getAuthError(), false);
 	},
 	sendError: function (code, description) {
 		this.send('error', new Error(code, description), false);

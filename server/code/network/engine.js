@@ -25,7 +25,7 @@ var NetworkEngine = {
 							//Note : I'm not sure that no callback sets callback to undefined
 							//So this needs testing.
 							if (callback != null) {
-								callback(Error.getAuthError());
+								callback(new Error(Error.Codes.NOT_AUTHENTICATED));
 							} else {
 								connection.sendAuthError();
 							}
