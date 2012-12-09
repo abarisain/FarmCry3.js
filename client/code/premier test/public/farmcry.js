@@ -6,6 +6,11 @@
  * To change this template use File | Settings | File Templates.
  */
 
+var tileList = ['grass_1', 'grass_2', 'leave', 'mountain', 'rock', 'soil', 'water'];
+var tiles = [];
+var totalLoadingCount = 0, currentLoadingCount = 0;
+var loadingComplete = false;
+
 window.requestAnimFrame = (function(){
 	return window.requestAnimationFrame       || // La forme standardisée
 		window.webkitRequestAnimationFrame || // Pour Chrome et Safari
@@ -36,55 +41,64 @@ window.onload = function() {
 		x: 0,
 		y: 0
 	};
-	var mousePosition = { x: 0, y: 0 };
+	var mousePosition = {
+		x: 0,
+		y: 0
+	};
 
 	/*initialisation du canvas
 	* indispensable sinon le canvas fait 150px de large*/
 	canvas.width = canvasWidth;
 	canvas.height = canvasHeight;
 
-
-	context.font = "bold 22pt Calibri,Geneva,Arial";
-	context.fillStyle = "#fff";
+	context.font = "bold 16pt Calibri,Geneva,Arial";
 
 	/*chargement des ressources*/
-	var tileList = ['grass_1', 'grass_2', 'leave', 'mountain', 'rock', 'soil', 'water'];
+	InitLoading();
+	LoadTiles();
+	DrawLoading();
 
-	var tileLoadCount = 0;
-	var tiles = [];
-	for (var i = 0; i < tileList.length; i++)
-	{
-		var tile = new Image();
-		tile.src = 'src/tiles/' + tileList[i] + '.png';
 
-		tile.onload = function () {
-			tiles.push(this);
-			tileLoadCount++;
-			if (tileLoadCount == tileList.length)//pour être sur d'avoir tout chargé
-			{
-				Draw();
-			}
-		};
+	function DrawLoading() {
+		context.save();
+		context.clearRect(0, 0, canvasWidth, canvasHeight);
+		if(currentLoadingCount != totalLoadingCount) {
+			context.fillStyle = "#fff";
+			context.fillText("Loading...", canvasWidth / 2 - 30, 260);
+
+			//affichage de la barre de progression
+			context.fillRect(canvasWidth / 2 - 100, 300, 200, 20);
+
+			context.fillStyle = "rgba(220, 220, 220, 1)";
+			context.fillRect(canvasWidth / 2 - 100, 302, 200 * (currentLoadingCount / totalLoadingCount), 16);
+			context.restore();
+			window.requestAnimFrame(function() { DrawLoading() });
+		}
+		else
+		{
+			loadingComplete = true;
+			window.requestAnimFrame(function() { Draw() });
+		}
 
 	}
 
+
+
 	function Draw() {
-		context.save();
-		context.clearRect(0, 0, document.width, document.height);
+		if(loadingComplete)
+		{
+			context.save();
+			context.clearRect(0, 0, canvasWidth, canvasHeight);
 
-
-
-		for (var line = 0; line < lineSize; line++) {
-			for (var col = 0; col < colSize; col++){
-				context.drawImage(tiles[(line+col)%tiles.length], cameraPosition.x + col*tileWidth - (tileWidth) * line, cameraPosition.y + (line - lineSize) * tileHeight + (tileHeight) * col);
+			for (var line = 0; line < lineSize; line++) {
+				for (var col = 0; col < colSize; col++){
+					context.drawImage(tiles[Math.round((line+col)/2)%tiles.length], cameraPosition.x + col*tileWidth - (tileWidth) * line, cameraPosition.y + (line - lineSize) * tileHeight + (tileHeight) * col);
+				}
 			}
-		}
-
-		context.fillText("x : " + cameraPosition.x + ", y : " + cameraPosition.y, 78, 92);
-
-		context.restore();
-
-		//window.requestAnimFrame(function() { Draw((debut+1)%600) });
+		context.fillStyle = "#fff";
+		context.fillText("x : " + cameraPosition.x + ", y : " + cameraPosition.y, 20, 20);
+		context.restore()
+		;}
 	}
 
 	canvas.onmousedown = function (event) {
@@ -117,3 +131,19 @@ window.onload = function() {
 	};
 };
 
+function InitLoading() {
+	totalLoadingCount += tileList.length;
+	//totalLoadingCount += tileList.length;
+}
+
+function LoadTiles() {
+	for (var i = 0; i < tileList.length; i++)
+	{
+		var tile = new Image();
+		tile.src = 'src/tiles/' + tileList[i] + '.png';
+		tile.onload = function () {
+			tiles.push(this);
+			currentLoadingCount++;
+		};
+	}
+}
