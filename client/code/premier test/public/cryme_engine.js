@@ -20,16 +20,14 @@ var animationDuration = 30;
 var texTileList = ['grass_1', 'grass_2', 'leave', 'mountain', 'rock', 'soil', 'water'];//je précise qu'ici il faudra que je fasse commencer grass à 0
 var texTiles = [];
 
-var texBorderList = ['border_0', 'border_1', 'barrier_0', 'barrier_1', 'barrier_2', 'barrier_3'];
-var texBorders = [];
-var borders = [];
-
-var texBuildingList = ['silo', 'barn', 'cold_storage', 'silo_reflect', 'barn_reflect', 'cold_storage_reflect'];
-var texBuildings = [];
 var buildings = [];
+var crops = [];
 
-var texParticleList = ['smoke'];
-var texParticles = [];
+//temporaire mais ça fait joli
+var hudLife = new Image();
+hudLife.src = "src/hud/life.png";
+var hudTime = new Image();
+hudTime.src = "src/hud/time.png";
 
 window.requestAnimFrame = (function () {
 	return window.requestAnimationFrame || // La forme standardisée
@@ -100,6 +98,7 @@ window.onload = function () {
 						(tileHeight) * col) * (progress / animationDuration));
 				}
 			}
+			//il vaux mieux restaurer le contexte avant de commencer à dessiner, pour être tranquille
 			context.restore();
 			if (progress == animationDuration && currentLoadingCount == totalLoadingCount) {
 				loadingComplete = true;
@@ -122,17 +121,21 @@ window.onload = function () {
 		if (loadingComplete) {
 			context.clearRect(0, 0, canvasWidth, canvasHeight);
 			context.save();
-			context.fillStyle = "#fff";
 
+			//gestion du positionnement de la caméra
 			context.translate(cameraPosition.x, cameraPosition.y);
 
 			//dessin des reflets
-			for (i = 0; i < buildings.length; i++) {
-				if (buildings[i].texReflect != -1) {
-					context.drawImage(texBuildings[buildings[i].texReflect], buildings[i].x, buildings[i].y);
+			if (reflectActivated)
+			{
+				if (reflectBuilding)
+				{
+					for (i = 0; i < buildings.length; i++) {
+						buildings[i].drawReflection();
+					}
 				}
 			}
-
+			context.fillStyle = "#fff";
 			//dessin du terrain
 			for (var line = 0; line < lineSize; line++) {
 				for (var col = 0; col < colSize; col++) {
@@ -149,30 +152,22 @@ window.onload = function () {
 						context.drawImage(texBorders[0], col * tileWidth - (tileWidth) * (line), (line - lineSize + 1) * tileHeight + (tileHeight) * (col) + 1);
 					}
 				}
-				context.fillText('line : ' + line, (tileWidth) * (line - 0.5), (line - lineSize + 1) * tileHeight + 1);
 			}
 
 			//dessin des bâtiments
 			for (var i = 0; i < buildings.length; i++) {
-				context.fillRect(buildings[i].x, buildings[i].y, 3, 3);
-				context.drawImage(texBuildings[buildings[i].texBuilding], buildings[i].x, buildings[i].y);
+				buildings[i].drawItem();
 			}
-
-			//affichage des particules
-			/*particleEmitters.update();//temporaire
-			particleEmitters.draw(context);
-			*/
 			context.restore();
 
-			context.fillStyle = "#fff";
-			context.fillText("x : " + cameraPosition.x + ", y : " + cameraPosition.y, 20, 20);
 
-			/*if (particleEmitters.isAlive())//temporaire, mais nécessaire a cause des particule
-			{
-				window.requestAnimFrame(function () {
-					Draw()
-				});
-			}*/
+			//affichage du hudLife
+			context.drawImage(hudLife, 0, 0);
+			context.drawImage(hudTime, canvasWidth-160, 0);
+			context.fillStyle = "#6f440d";
+			context.fillText("x : " + cameraPosition.x + ", y : " + cameraPosition.y, 120, 34);
+			var currentTime = new Date();
+			context.fillText(currentTime.getHours() + ':' + currentTime.getMinutes(), canvasWidth-72, 34);
 		}
 	}
 
@@ -209,31 +204,25 @@ window.onload = function () {
 	};
 };
 
+//fonction pour placer des trucs sur la map pour test le rendu
 function CreateMap() {
-	CreateBuilding(0, 2, 8);
-	CreateBuilding(1, 4, 5);
-	CreateBuilding(2, 7, 1);
-}
-
-function CreateBuilding(type, col, line) {
-	var building = { texBuilding: type, texReflect: type + 3, col: col, line: line, x: col * tileWidth - (tileWidth) * line - tileWidth, y: (line - lineSize) * tileHeight + (tileHeight) * col - 62};
+	var building = new Building(0, 2, 8);
 	buildings.push(building);
-	var emitter = new ParticlesEmitter(0, building.x, building.y);
-	particleEmitters.emitters.push(emitter);
-	/*for (var i = 0; i <= type; i++) {
-		CreateTileParticle(building.x + tileWidth * i, building.y + tileHeight * i);
-	}*/
+	building = new Building(1, 4, 5);
+	buildings.push(building);
+	building = new Building(2, 7, 1);
+	buildings.push(building);
 }
 
 function InitLoading() {
+
+	LoadTiles();
+	LoadTileItems();
+}
+
+function LoadTiles () {
 	totalLoadingCount += texTileList.length;
-	totalLoadingCount += texBuildingList.length;
-	totalLoadingCount += texBorderList.length;
-	totalLoadingCount += texParticleList.length;
 	LoadTexTiles();
-	LoadTexBorders();
-	LoadTexBuildings();
-	LoadTexParticles();
 }
 
 function LoadTexTiles() {
@@ -247,27 +236,7 @@ function LoadTexTiles() {
 	}
 }
 
-function LoadTexBorders() {
-	for (var i = 0; i < texBorderList.length; i++) {
-		var tile = new Image();
-		tile.src = 'src/borders/' + texBorderList[i] + '.png';
-		tile.onload = function () {
-			texBorders.push(this);
-			currentLoadingCount++;
-		};
-	}
-}
-
-function LoadTexBuildings() {
-	for (var i = 0; i < texBuildingList.length; i++) {
-		var building = new Image();
-		building.src = 'src/buildings/' + texBuildingList[i] + '.png';
-		building.onload = function () {
-			texBuildings.push(this);
-			currentLoadingCount++;
-		};
-	}
-}
+/* Pour le moment on s'en pête des particules (et oui c'est moi qui dit ça)
 
 function LoadTexParticles() {
 	for (var i = 0; i < texParticleList.length; i++) {
@@ -278,4 +247,4 @@ function LoadTexParticles() {
 			currentLoadingCount++;
 		};
 	}
-}
+}*/
