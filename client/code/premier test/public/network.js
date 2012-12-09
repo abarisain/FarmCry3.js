@@ -11,8 +11,8 @@ var networkEngine = {
 		//TODO : Add a connection timeout
 		this.socket.on('connect', function () {
 			//Iterate over the subsystems and their functions to bind them to events (module.function)
-			Object.keys(this.subsystems).forEach(function (subsystem) {
-				Object.keys(subsystem).forEach(function (_function) {
+			Object.keys(networkEngine.subsystems).forEach(function (subsystem) {
+				Object.keys(networkEngine.subsystems[subsystem]).forEach(function (_function) {
 					networkEngine.socket.on(subsystem.name + '.' + _function, function (data) {
 						networkEngine.subsystems[subsystem][_function](data);
 					});
@@ -31,7 +31,7 @@ var networkEngine = {
 		});
 	},
 	call: function (subsystem, method, data, callback) {
-		socket.emit(subsystem + "." + method, data, callback);
+		networkEngine.socket.emit(subsystem + "." + method, data, callback);
 	},
 	subsystems: {
 		game: {
