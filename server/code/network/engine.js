@@ -17,7 +17,7 @@ var NetworkEngine = {
 				});
 			});
 			//Add the socket to the list
-			NetworkEngine.clients.list.push(socket);
+			this.list.push(socket);
 		}
 	},
 	modules: [
