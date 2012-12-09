@@ -9,11 +9,11 @@ var particleEmitters = {
 			}
 		}
 	},
-	draw: function (context) {
+	draw: function () {
 		context.restore();
 		context.fillText("particules en cours...", 20, 40);
 		for (var i = 0; i < this.emitters[i].length; i++) {
-			this.emitters[i].draw(context);
+			this.emitters[i].draw();
 		}
 	},
 	isAlive: function () {
@@ -56,11 +56,11 @@ ParticlesEmitter.prototype = {
 		}
 		return true;
 	},
-	draw: function(context) {
+	draw: function() {
 		context.translate(this.x, this.y);
 		for (var i = 0; i < this.particles.length; i++)
 		{
-			this.particles[i].draw(context, this.type);
+			this.particles[i].draw(this.type);
 		}
 		context.translate(-this.x, -this.y);
 	}
@@ -89,7 +89,7 @@ Particle.prototype = {
 		}
 		return true;
 	},
-	draw: function (context, type) {
+	draw: function (type) {
 		context.globalAlpha = this.particles[i].alpha;
 		context.drawImage(texParticles[type], this.x, this.y);
 	}

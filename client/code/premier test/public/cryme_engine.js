@@ -24,8 +24,16 @@ var texBorderList = ['border_0', 'border_1', 'barrier_0', 'barrier_1', 'barrier_
 var texBorders = [];
 var borders = [];
 
-var texBuildingList = ['silo', 'barn', 'cold_storage', 'silo_reflect', 'barn_reflect', 'cold_storage_reflect'];
+var texBuildingList = [
+	{image: 'silo', reflected: true},
+	{image: 'barn', reflected: true},
+	{image: 'cold_storage', reflected: true},
+	{image: 'wheat', reflected: false},
+	{image: 'tomato', reflected: false},
+	{image: 'corn', reflected: false}
+];
 var texBuildings = [];
+var texBuildingReflects = [];
 var buildings = [];
 
 var texParticleList = ['smoke'];
@@ -127,9 +135,15 @@ window.onload = function () {
 			context.translate(cameraPosition.x, cameraPosition.y);
 
 			//dessin des reflets
-			for (i = 0; i < buildings.length; i++) {
-				if (buildings[i].texReflect != -1) {
-					context.drawImage(texBuildings[buildings[i].texReflect], buildings[i].x, buildings[i].y);
+			if (reflectActivated)
+			{
+				if (reflectBuilding)
+				{
+					for (i = 0; i < buildings.length; i++) {
+						if (buildings[i].tileItem.reflected == true) {
+							context.drawImage(texBuildingReflects[buildings[i].tileItem.image], buildings[i].x, buildings[i].y);
+						}
+					}
 				}
 			}
 
@@ -155,7 +169,7 @@ window.onload = function () {
 			//dessin des bâtiments
 			for (var i = 0; i < buildings.length; i++) {
 				context.fillRect(buildings[i].x, buildings[i].y, 3, 3);
-				context.drawImage(texBuildings[buildings[i].texBuilding], buildings[i].x, buildings[i].y);
+				context.drawImage(texBuildings[buildings[i].tileItem.image], buildings[i].x, buildings[i].y);
 			}
 
 			//affichage des particules
@@ -210,24 +224,23 @@ window.onload = function () {
 };
 
 function CreateMap() {
-	CreateBuilding(0, 2, 8);
-	CreateBuilding(1, 4, 5);
-	CreateBuilding(2, 7, 1);
-}
-
-function CreateBuilding(type, col, line) {
-	var building = { texBuilding: type, texReflect: type + 3, col: col, line: line, x: col * tileWidth - (tileWidth) * line - tileWidth, y: (line - lineSize) * tileHeight + (tileHeight) * col - 62};
+	var building = new Building(0, 2, 8);
 	buildings.push(building);
-	var emitter = new ParticlesEmitter(0, building.x, building.y);
-	particleEmitters.emitters.push(emitter);
-	/*for (var i = 0; i <= type; i++) {
-		CreateTileParticle(building.x + tileWidth * i, building.y + tileHeight * i);
-	}*/
+	building = new Building(1, 4, 5);
+	buildings.push(building);
+	building = new Building(2, 7, 1);
+	buildings.push(building);
+		/*building = new Building(3, 1, 0);
+		buildings.push(building);
+		building = new Building(4, 1, 1);
+		buildings.push(building);
+		building = new Building(5, 2, 2);
+		buildings.push(building);*/
 }
 
 function InitLoading() {
 	totalLoadingCount += texTileList.length;
-	totalLoadingCount += texBuildingList.length;
+	totalLoadingCount += 1.5 * texBuildingList.length;//2 pour les reflets
 	totalLoadingCount += texBorderList.length;
 	totalLoadingCount += texParticleList.length;
 	LoadTexTiles();
@@ -261,11 +274,20 @@ function LoadTexBorders() {
 function LoadTexBuildings() {
 	for (var i = 0; i < texBuildingList.length; i++) {
 		var building = new Image();
-		building.src = 'src/buildings/' + texBuildingList[i] + '.png';
+		building.src = 'src/buildings/' + texBuildingList[i].image + '.png';
 		building.onload = function () {
 			texBuildings.push(this);
 			currentLoadingCount++;
 		};
+		if (texBuildingList[i].reflected)
+		{
+			var buildingReflect = new Image();
+			buildingReflect.src = 'src/buildings/' + texBuildingList[i].image + '_reflect.png';
+			buildingReflect.onload = function () {
+				texBuildingReflects.push(this);
+				currentLoadingCount++;
+			};
+		}
 	}
 }
 
