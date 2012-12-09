@@ -10,4 +10,8 @@ Error.Codes = {
 	NOT_AUTHENTICATED: 1
 };
 
+Error.getAuthError = function () {
+	return new Error(Error.Codes.NOT_AUTHENTICATED, "Access denied : Not authenticated. Please login first.");
+};
+
 module.exports = Error;

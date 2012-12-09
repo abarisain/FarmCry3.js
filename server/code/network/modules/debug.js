@@ -21,6 +21,8 @@
  *
  * Concerning errors, this might change, but for the time being, return a new Error(code, description).
  *
+ * NEVER forget the connection argument, it will always be passed.
+ * It's the NetworkConnection instance that is associated to the event.
  * Data SHOULD ALWAYS BE A LITERAL. It's fine not to except any data, but still set it as a function parameter
  * Protocol should also be documented or else I'll kill your family.
  *
@@ -42,16 +44,16 @@ var NetworkModule = {
 		 * Search the socket.io doc for "Sending and getting data (acknowledgements)."
 		 * Client implementation is detailed there
 		 */
-		hello: function (data, callback) {
+		hello: function (connection, data, callback) {
 			//Hello does not except any data. It sends back "world".
 			//Callback always excepts one argument, which is a literal
 			callback({result: "world"});
 		},
-		error: function (data, callback) {
+		error: function (connection, data, callback) {
 			//This function always sends an error, echoing the "message" variable sent by the client
 			callback(new Error(Error.Codes.DEBUG_TEST_ERROR, "Debug test error, message : " + data.message));
 		}
 	}
-}
+};
 
 module.exports = NetworkModule;

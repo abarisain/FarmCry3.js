@@ -33,10 +33,13 @@ NetworkConnection.prototype = {
 			require_auth = true;
 		}
 		if (require_auth && !this.authenticated) {
-			this.sendError(Error.Codes.NOT_AUTHENTICATED, "Access denied : Not authenticated. Please login first.");
+			this.sendAuthError();
 			return;
 		}
 		this.socket.emit(event, data);
+	},
+	sendAuthError: function () {
+		this.send('error', Error.getAuthError(), false);
 	},
 	sendError: function (code, description) {
 		this.send('error', new Error(code, description), false);
