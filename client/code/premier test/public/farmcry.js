@@ -18,35 +18,77 @@ window.requestAnimFrame = (function(){
 })();
 
 window.onload = function() {
+	/*initialisation* du moteur*/
 	var canvas  = document.querySelector('#canvas');
 	var context = canvas.getContext('2d');
 
-	canvas.width = document.width;
-	canvas.height = document.height;
+	var canvasWidth = window.innerWidth;
+	var canvasHeight = window.innerHeight;
+
+	var tileWidth = 122;
+	var tileHeight = 86;
+
+	var lineSize = Math.round(canvasHeight / tileHeight + 1);
+	var colSize = Math.round(canvasWidth / tileWidth + 1);
+
+	var moveMap = false;
+	var camera = {
+		x: 0,
+		y: 0
+	};
+
+	/*initialisation du canvas
+	* indispensable sinon le canvas fait 150px de large*/
+	canvas.width = canvasWidth;
+	canvas.height = canvasHeight;
+
 
 	context.font = "bold 22pt Calibri,Geneva,Arial";
 	context.fillStyle = "#fff";
 
+	/*chargement des ressources*/
+	var grass = new Image();
+	grass.src = 'src/tiles/grass_1.png';
 
-	var house = new Image();
-	house.src = 'src/buildings/barn_reflect.png';
+	grass.onload = Draw();//très très temporaire parce que c'est ultra moche
 
-	house.onload = Draw(0);
-
-	function Draw(debut) {
+	function Draw() {
 		context.save();
 		context.clearRect(0, 0, document.width, document.height);
 
 
 
-		context.fillText(Math.round(debut / 60) + ' sec', 20, 20);
-
-		for (var i = 0; i < 200; i++){
-			context.drawImage(house, i*3 + debut, i*2);
+		for (var line = 0; line < lineSize; line++) {
+			for (var col = 0; col < colSize; col++){
+				context.drawImage(grass, camera.x + col*tileWidth - (tileWidth) * line, camera.y + (line - lineSize) * tileHeight + (tileHeight) * col);
+			}
 		}
 
-		context.restore();
+		context.fillText("x : " + camera.x + ", y : " + camera.y, 78, 92);
 
-		window.requestAnimFrame(function() { Draw((debut+1)%600) });
+		//context.restore();
+
+		//window.requestAnimFrame(function() { Draw((debut+1)%600) });
 	}
+
+	canvas.onmousedown = function () {
+		moveMap = true;
+	};
+
+	canvas.onmouseup = function () {
+		moveMap = false;
+	};
+
+	canvas.onmousemove = function (event) {
+		if (moveMap)
+		{
+			event = event || window.event;
+
+			camera.x = event.pageX - camera.x;
+			camera.y = event.pageY - camera.y;
+
+			window.requestAnimFrame(function() { Draw() });
+		}
+	};
 };
+
