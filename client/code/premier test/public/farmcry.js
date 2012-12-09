@@ -6,6 +6,30 @@
  * To change this template use File | Settings | File Templates.
  */
 
+/*initialisation* du moteur*/
+var canvas  = [];
+var context = [];
+
+var canvasWidth = window.innerWidth;
+var canvasHeight = window.innerHeight;
+
+var tileWidth = 122;
+var tileHeight = 86;
+
+var lineSize = Math.round(canvasHeight / tileHeight + 1);
+var colSize = Math.round(canvasWidth / tileWidth + 1);
+
+var moveMap = false;
+var cameraPosition = {
+	x: 1000,
+	y: 800
+};
+var mousePosition = {
+	x: 0,
+	y: 0
+};
+var animationDuration = 30;
+
 var texTileList = ['grass_1', 'grass_2', 'leave', 'mountain', 'rock', 'soil', 'water'];//je précise qu'ici il faudra que je fasse commencer grass à 0
 var texTiles = [];
 
@@ -16,6 +40,10 @@ var borders = [];
 var texBuildingList = ['silo', 'barn', 'cold_storage', 'silo_reflect', 'barn_reflect', 'cold_storage_reflect'];
 var texBuildings = [];
 var buildings = [];
+
+var texParticleList = ['smoke'];
+var texParticles = [];
+var particleEmitters = [];
 
 var totalLoadingCount = 0, currentLoadingCount = 0;
 var loadingComplete = false;
@@ -32,28 +60,8 @@ window.requestAnimFrame = (function(){
 })();
 
 window.onload = function() {
-	/*initialisation* du moteur*/
-	var canvas  = document.querySelector('#canvas');
-	var context = canvas.getContext('2d');
-
-	var canvasWidth = window.innerWidth;
-	var canvasHeight = window.innerHeight;
-
-	var tileWidth = 122;
-	var tileHeight = 86;
-
-	var lineSize = Math.round(canvasHeight / tileHeight + 1);
-	var colSize = Math.round(canvasWidth / tileWidth + 1);
-
-	var moveMap = false;
-	var cameraPosition = {
-		x: 0,
-		y: 0
-	};
-	var mousePosition = {
-		x: 0,
-		y: 0
-	};
+	canvas  = document.querySelector('#canvas');
+	context = canvas.getContext('2d');
 
 	/*initialisation du canvas
 	* indispensable sinon le canvas fait 150px de large*/
@@ -69,7 +77,7 @@ window.onload = function() {
 	function DrawLoading() {
 		context.save();
 		context.clearRect(0, 0, canvasWidth, canvasHeight);
-		if(currentLoadingCount != totalLoadingCount) {
+		if(texTiles.length != texTileList.length) {
 			context.fillStyle = "#fff";
 			context.fillText("Loading...", canvasWidth / 2 - 30, 260);
 
@@ -84,64 +92,134 @@ window.onload = function() {
 		}
 		else
 		{
-			loadingComplete = true;
 			CreateMap();
-			window.requestAnimFrame(function() { Draw() });
+			window.requestAnimFrame(function() { DrawMapCreation(1, 1) });
+		}
+	}
+
+	//pour faire apparaître la map de façon un peu "Qui pête"
+	function DrawMapCreation(progress, speed) {
+		if(texTiles.length == texTileList.length)
+		{
+			context.save();
+			context.clearRect(0, 0, canvasWidth, canvasHeight);
+
+			context.fillStyle = "#fff";
+			context.fillText("Loading...", 20, 20);
+
+			//dessin du terrain
+			for (var line = 0; line < lineSize * (progress/(animationDuration)); line++) {
+				for (var col = 0; col < colSize * (progress/(animationDuration)); col++){
+					context.drawImage(texTiles[Math.round((line+col)/2)%texTiles.length], cameraPosition.x + col*tileWidth - (tileWidth) * line,  (cameraPosition.y + (line - lineSize) * tileHeight + (tileHeight) * col) * (progress/animationDuration));
+				}
+			}
+			context.restore();
+			if (progress == animationDuration && currentLoadingCount == totalLoadingCount)
+			{
+					loadingComplete = true;
+					window.requestAnimFrame(function() { Draw() });
+			}
+			else
+			{
+				if (progress >= animationDuration * 2 || progress <= 0)
+				{
+					speed*=-1;
+				}
+				window.requestAnimFrame(function() { DrawMapCreation(progress+speed, speed) });
+			}
+
 		}
 	}
 
 	function Draw() {
 		if(loadingComplete)
 		{
-			context.save();
 			context.clearRect(0, 0, canvasWidth, canvasHeight);
+			context.save();
 			context.fillStyle = "#fff";
+
+			context.translate(cameraPosition.x, cameraPosition.y);
 
 			//dessin des reflets
 			for (i = 0; i < buildings.length; i++)
 			{
 				if (buildings[i].texReflect != -1) {
-					context.drawImage(texBuildings[buildings[i].texReflect], cameraPosition.x + buildings[i].col * tileWidth - (tileWidth) * buildings[i].line - tileWidth, cameraPosition.y + (buildings[i].line - lineSize) * tileHeight + (tileHeight) * buildings[i].col - 62);
+					context.drawImage(texBuildings[buildings[i].texReflect], buildings[i].x, buildings[i].y);
 				}
 			}
 
 			//dessin du terrain
 			for (var line = 0; line < lineSize; line++) {
 				for (var col = 0; col < colSize; col++){
-					context.drawImage(texTiles[Math.round((line+col)/2)%texTiles.length], cameraPosition.x + col*tileWidth - (tileWidth) * line, cameraPosition.y + (line - lineSize) * tileHeight + (tileHeight) * col);
+					context.drawImage(texTiles[Math.round((line+col)/2)%texTiles.length], col*tileWidth - (tileWidth) * line, (line - lineSize) * tileHeight + (tileHeight) * col);
 
 					//affichage de la bordure
 					if (col == colSize -1)
 					{
-						context.drawImage(texBorders[1], cameraPosition.x + (col)*tileWidth - (tileWidth) * line, cameraPosition.y + (line - lineSize + 1) * tileHeight + (tileHeight) * col + 1);
+						context.drawImage(texBorders[1], (col)*tileWidth - (tileWidth) * line, (line - lineSize + 1) * tileHeight + (tileHeight) * col + 1);
 					}
 					if (line == 0) {
-						context.fillText('col : ' + col, cameraPosition.x + col*tileWidth - (tileWidth) * (line-1), cameraPosition.y + (line - lineSize + 1) * tileHeight + (tileHeight) * col);
+						context.fillText('col : ' + col, col*tileWidth - (tileWidth) * (line-1), (line - lineSize + 1) * tileHeight + (tileHeight) * col);
 					}
 					else if (line == lineSize - 1)
 					{
-						context.drawImage(texBorders[0], cameraPosition.x + col*tileWidth - (tileWidth) * (line), cameraPosition.y + (line - lineSize + 1) * tileHeight + (tileHeight) * (col) + 1);
+						context.drawImage(texBorders[0], col*tileWidth - (tileWidth) * (line), (line - lineSize + 1) * tileHeight + (tileHeight) * (col) + 1);
 					}
 				}
-				context.fillText('line : ' + line, cameraPosition.x - (tileWidth) * (line - 0.5), cameraPosition.y + (line - lineSize + 1) * tileHeight + 1);
+				context.fillText('line : ' + line, (tileWidth) * (line - 0.5), (line - lineSize + 1) * tileHeight + 1);
 			}
 
+			//dessin des bâtiments
 			for (var i = 0; i < buildings.length; i++)
 			{
-				context.drawImage(texBuildings[buildings[i].texBuilding], cameraPosition.x + buildings[i].col * tileWidth - (tileWidth) * buildings[i].line - tileWidth, cameraPosition.y + (buildings[i].line - lineSize) * tileHeight + (tileHeight) * buildings[i].col - 62);
+				context.fillRect(buildings[i].x, buildings[i].y, 3, 3);
+				context.drawImage(texBuildings[buildings[i].texBuilding], buildings[i].x, buildings[i].y);
 			}
+
+			//affichage des particules
+			for (i = 0; i < particleEmitters.length; i++)
+			{
+				particleEmitters[i].lifetime--;
+				if (particleEmitters[i].lifetime <= 0) {
+					particleEmitters.splice(i);
+					i--;
+				}
+				else
+				{
+					context.translate(particleEmitters[i].x, particleEmitters[i].y);
+					context.globalAlpha = particleEmitters[i].lifetime / 100;
+					for (var j = 0; j < particleEmitters[i].particles.length; j++)
+					{
+						particleEmitters[i].particles[j].x += particleEmitters[i].particles[j].speedX;
+						particleEmitters[i].particles[j].y += particleEmitters[i].particles[j].speedY;
+						//particleEmitters[i].particles[j].rotation += particleEmitters[i].particles[j].speedRotation;
+						//context.rotate(particleEmitters[i].particles[j].rotation * Math.PI/180);//la gestion de la rotation en canvas est absolument a chier
+						context.drawImage(texParticles[particleEmitters[i].type], particleEmitters[i].particles[j].x, particleEmitters[i].particles[j].y)
+					}
+					context.translate(-particleEmitters[i].x, -particleEmitters[i].y);
+				}
+			}
+
+			context.restore();
+
 			context.fillStyle = "#fff";
 			context.fillText("x : " + cameraPosition.x + ", y : " + cameraPosition.y, 20, 20);
-			context.restore();
+
+			if (particleEmitters.length > 0)//temporaire, mais nécessaire a cause des particule
+			{
+				window.requestAnimFrame(function() { Draw() });
+			}
 		}
 	}
 
 	canvas.onmousedown = function (event) {
-		//positionnement de la souris
-		mousePosition.x = event.pageX - this.offsetLeft;
-		mousePosition.y = event.pageY - this.offsetTop;
-		//activation du deplacement de la map
-		moveMap = true;
+		if(loadingComplete) {
+			//positionnement de la souris
+			mousePosition.x = event.pageX - this.offsetLeft;
+			mousePosition.y = event.pageY - this.offsetTop;
+			//activation du deplacement de la map
+			moveMap = true;
+		}
 	};
 
 	canvas.onmouseup = function () {
@@ -167,19 +245,40 @@ window.onload = function() {
 };
 
 function CreateMap() {
-	var building = { texBuilding: 0, texReflect: 3, col: 2, line: 8};
-	buildings.push(building);
-	building = { texBuilding: 1, texReflect: 4, col: 4, line: 5};
-	buildings.push(building);
-	building = { texBuilding: 2, texReflect: 5, col: 8, line: 1};
-	buildings.push(building);
+	CreateBuilding(0, 2, 8);
+	CreateBuilding(1, 4, 5);
+	CreateBuilding(2, 7, 1);
+}
 
+function CreateBuilding(type, col, line) {
+	var building = { texBuilding: type, texReflect: type + 3, col: col, line: line, x: col * tileWidth - (tileWidth) * line - tileWidth, y: (line - lineSize) * tileHeight + (tileHeight) * col - 62};
+	buildings.push(building);
+	for (i = 0; i <= type; i++) {
+		CreateTileParticle(building.x + tileWidth * i, building.y + tileHeight * i);
+	}
+}
+
+function CreateTileParticle(x, y)
+{
+	var emitter = {type: 0, x: x + tileWidth, y: y+tileHeight, amount: 10, lifetime: 50, speed: 1, particles: []};
+	for (var i = 0; i < emitter.amount; i++) {
+		var particle = { x: -tileWidth/2 + tileHeight * (i / emitter.amount), y: -Math.abs(tileHeight/2 - tileHeight *(i / emitter.amount)), rotation: 0, speedX: 0, speedY: -3, speedRotation: 0 };
+		emitter.particles.push(particle);
+		particle = { x: -tileWidth/2 + tileHeight * (i / emitter.amount), y: Math.abs(tileHeight/2 - tileHeight * (i / emitter.amount)), rotation: 0, speedX: 0, speedY: -3, speedRotation: 0 };
+		emitter.particles.push(particle);
+	}
+	particleEmitters.push(emitter);
 }
 
 function InitLoading() {
+	totalLoadingCount += texTileList.length;
+	totalLoadingCount += texBuildingList.length;
+	totalLoadingCount += texBorderList.length;
+	totalLoadingCount += texParticleList.length;
 	LoadTexTiles();
 	LoadTexBorders();
 	LoadTexBuildings();
+	LoadTexParticles();
 }
 
 function LoadTexTiles() {
@@ -213,6 +312,18 @@ function LoadTexBuildings() {
 		building.src = 'src/buildings/' + texBuildingList[i] + '.png';
 		building.onload = function () {
 			texBuildings.push(this);
+			currentLoadingCount++;
+		};
+	}
+}
+
+function LoadTexParticles() {
+	for (var i = 0; i < texParticleList.length; i++)
+	{
+		var particle = new Image();
+		particle.src = 'src/effects/' + texParticleList[i] + '.png';
+		particle.onload = function () {
+			texParticles.push(this);
 			currentLoadingCount++;
 		};
 	}
