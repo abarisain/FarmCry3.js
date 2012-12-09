@@ -41,6 +41,7 @@ Tile.prototype = {
 		tmpTile.max_fertility = this.max_fertility;
 		tmpTile.crop = this.crop.codename;
 		tmpTile.owner = this.owner.nickname;
+		tmpTile.health = this.getHealth();
 		return tmpTile;
 	}
 };
