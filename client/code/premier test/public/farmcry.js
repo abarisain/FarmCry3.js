@@ -48,10 +48,25 @@ window.onload = function() {
 	context.fillStyle = "#fff";
 
 	/*chargement des ressources*/
-	var grass = new Image();
-	grass.src = 'src/tiles/grass_1.png';
+	var tileList = ['grass_1', 'grass_2', 'leave', 'mountain', 'rock', 'soil', 'water'];
 
-	grass.onload = Draw();//très très temporaire parce que c'est ultra moche
+	var tileLoadCount = 0;
+	var tiles = [];
+	for (var i = 0; i < tileList.length; i++)
+	{
+		var tile = new Image();
+		tile.src = 'src/tiles/' + tileList[i] + '.png';
+
+		tile.onload = function () {
+			tiles.push(this);
+			tileLoadCount++;
+			if (tileLoadCount == tileList.length)//pour être sur d'avoir tout chargé
+			{
+				Draw();
+			}
+		};
+
+	}
 
 	function Draw() {
 		context.save();
@@ -61,7 +76,7 @@ window.onload = function() {
 
 		for (var line = 0; line < lineSize; line++) {
 			for (var col = 0; col < colSize; col++){
-				context.drawImage(grass, cameraPosition.x + col*tileWidth - (tileWidth) * line, cameraPosition.y + (line - lineSize) * tileHeight + (tileHeight) * col);
+				context.drawImage(tiles[(line+col)%tiles.length], cameraPosition.x + col*tileWidth - (tileWidth) * line, cameraPosition.y + (line - lineSize) * tileHeight + (tileHeight) * col);
 			}
 		}
 
