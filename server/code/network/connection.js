@@ -38,8 +38,8 @@ NetworkConnection.prototype = {
 		}
 		this.socket.emit(event, data);
 	},
-	sendError: function (code, description) {
-		this.send('error', new Error(code, description), false);
+	sendError: function (error) {
+		this.send('error', error, false);
 	}
 };
 

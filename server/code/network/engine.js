@@ -27,7 +27,7 @@ var NetworkEngine = {
 							if (callback != null) {
 								callback(new Error(Error.Codes.NOT_AUTHENTICATED));
 							} else {
-								connection.sendAuthError();
+								connection.sendError(new Error(Error.Codes.NOT_AUTHENTICATED));
 							}
 						}
 					});
