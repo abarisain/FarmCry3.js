@@ -10,7 +10,14 @@ var NetworkEngine = {
 		add: function (socket) {
 			//We wrap this so we can do stuff when we add a connection
 			//TODO : Implement a remove thingy
-			list.push(socket);
+			//Register the NetworkModules to socket.io
+			NetworkEngine.modules.forEach(function (_module) {
+				Object.keys(_module.functions).forEach(function (_function) {
+					socket.on(_module.name + '.' + _function, _module.functions[_function]);
+				});
+			});
+			//Add the socket to the list
+			NetworkEngine.clients.list.push(socket);
 		}
 	},
 	modules: [
