@@ -1,6 +1,7 @@
 NetworkConnection = require('./connection');
 DebugModule = require('./modules/debug');
 AuthModule = require('./modules/auth');
+MapModule = require('./modules/map');
 
 // Check modules/debug.js for an explanation of how modules work and should be written
 
@@ -39,7 +40,8 @@ var NetworkEngine = {
 	},
 	modules: [
 		DebugModule,
-		AuthModule
+		AuthModule,
+		MapModule
 	]
 };
 

@@ -25,6 +25,20 @@ Tile.prototype = {
 		//Return a 0 to 1 value function of fertility, humidity
 
 		return 1; //Guaranteed random since 1801 !
+	},
+
+	getSmallTile: function () {
+		//Returns a small version of this tile (for network usage)
+		var tmpTile = new Tile();
+		//Copy basic values
+		tmpTile.position.x = this.position.x;
+		tmpTile.position.y = this.position.y;
+		tmpTile.humidity = this.humidity;
+		tmpTile.fertility = this.fertility;
+		tmpTile.max_fertility = this.max_fertility;
+		tmpTile.crop = this.crop.codename;
+		tmpTile.owner = this.owner.nickname;
+		return tmpTile;
 	}
 };
 
