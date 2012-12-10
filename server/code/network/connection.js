@@ -28,7 +28,7 @@ function NetworkConnection(socket) {
 }
 
 NetworkConnection.prototype = {
-	send: function (event, data, require_auth) {
+	send: function (module, event, data, require_auth) {
 		if (typeof require_auth == 'undefined') {
 			require_auth = true;
 		}
@@ -36,7 +36,7 @@ NetworkConnection.prototype = {
 			this.sendError(Error.Codes.NOT_AUTHENTICATED);
 			return;
 		}
-		this.socket.emit(event, data);
+		this.socket.emit(module.name + "." + event, data);
 	},
 	sendError: function (error) {
 		this.send('error', error, false);

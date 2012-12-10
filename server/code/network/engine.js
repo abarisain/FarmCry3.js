@@ -2,6 +2,7 @@ NetworkConnection = require('./connection');
 DebugModule = require('./modules/debug');
 AuthModule = require('./modules/auth');
 MapModule = require('./modules/map');
+GameModule = require('./modules/game');
 
 // Check modules/debug.js for an explanation of how modules work and should be written
 
@@ -14,6 +15,7 @@ var NetworkEngine = {
 			//TODO : Implement a remove thingy
 			//Register the NetworkModules to socket.io
 			var connection = new NetworkConnection(socket);
+			//Iterate over the modules and their functions to bind them to events (module.function)
 			NetworkEngine.modules.forEach(function (_module) {
 				Object.keys(_module.functions).forEach(function (_function) {
 					socket.on(_module.name + '.' + _function, function (data, callback) {
@@ -41,7 +43,8 @@ var NetworkEngine = {
 	modules: [
 		DebugModule,
 		AuthModule,
-		MapModule
+		MapModule,
+		GameModule
 	]
 };
 

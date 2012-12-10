@@ -17,3 +17,6 @@ var particleEmitters;
 //gestion du chargement
 var totalLoadingCount = 0, currentLoadingCount = 0;
 var loadingComplete = false;
+
+//Moteur réseau
+var networkEngine;
