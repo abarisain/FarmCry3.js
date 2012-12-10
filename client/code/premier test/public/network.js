@@ -21,7 +21,7 @@ var networkEngine = {
 
 			networkEngine.socket.emit("auth.login", {email: email, password: password}, function (data) {
 				if (typeof data.error != 'undefined') {
-					console.log("Error while logging in : " + data.error.message);
+					console.log("Error while logging in : " + data.error.description);
 					networkEngine.socket.disconnect();
 				} else {
 					console.log("Network engine ready ! Requesting initial data.");
