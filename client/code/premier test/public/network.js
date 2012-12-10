@@ -13,7 +13,7 @@ var networkEngine = {
 			//Iterate over the subsystems and their functions to bind them to events (module.function)
 			Object.keys(networkEngine.subsystems).forEach(function (subsystem) {
 				Object.keys(networkEngine.subsystems[subsystem]).forEach(function (_function) {
-					networkEngine.socket.on(subsystem.name + '.' + _function, function (data) {
+					networkEngine.socket.on(subsystem + '.' + _function, function (data) {
 						networkEngine.subsystems[subsystem][_function](data);
 					});
 				});
@@ -37,6 +37,7 @@ var networkEngine = {
 		game: {
 			initialData: function (data) {
 				//Initial data is received here
+				console.log("Initial data ok");
 			}
 		}
 	}
