@@ -28,7 +28,7 @@ TileItem.prototype = {
 			context.drawImage(imageReflectionList[this.image], this.imageLeft, this.imageTop);
 		}
 	},
-	drawItem: function(imageList) {
+	drawItem: function (imageList) {
 		context.drawImage(imageList[this.image], this.imageLeft, this.imageTop);
 		context.fillStyle = "#fff";
 		context.fillRect(this.imageLeft, this.imageTop.y, 10, 10);

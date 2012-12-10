@@ -132,8 +132,7 @@ window.onload = function () {
 						buildings[i].drawReflection();
 					}
 				}
-				if (reflectCrop)
-				{
+				if (reflectCrop) {
 					for (i = 0; i < crops.length; i++) {
 						crops[i].drawReflection();
 					}
