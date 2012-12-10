@@ -15,7 +15,7 @@ var NetworkModule = {
 				}
 			}
 
-			connection.send(NetworkModule, "initialData", {
+			connection.send(NetworkModule, "game.initialData", {
 				tiles: tmpTiles,
 				weapons: GameState.settings.weapons,
 				crops: GameState.settings.crops,
