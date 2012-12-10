@@ -37,6 +37,8 @@ var networkEngine = {
 		game: {
 			initialData: function (data) {
 				//Initial data is received here
+				initialDataLoaded = true;
+				currentLoadingCount++;
 				console.log("Initial data ok");
 			}
 		}

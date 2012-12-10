@@ -25,7 +25,7 @@ Crop.prototype = {
 };
 
 function LoadTexCrops() {
-	totalLoadingCount += texCropList.length + 1;
+	totalLoadingCount += texCropList.length + 1;//+1 pour le reflet
 	for (var i = 0; i < texCropList.length; i++) {
 		var image = new Image();
 		image.src = 'src/crops/' + texCropList[i].image + '.png';

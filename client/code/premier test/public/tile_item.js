@@ -3,7 +3,7 @@
 //declaration des images a charger
 var texBorderList = ['border_0', 'border_1', 'barrier_0', 'barrier_1', 'barrier_2', 'barrier_3'];
 var texBorders = [];
-var borders = [];
+//var borders = [];
 
 function TileItem(image, x, y, centerX, centerY, reflected) {
 	this.image = image;

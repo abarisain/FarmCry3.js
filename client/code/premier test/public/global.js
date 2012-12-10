@@ -15,7 +15,9 @@ var colSize = Math.round(canvasWidth / tileWidth + 1);
 var particleEmitters;
 
 //gestion du chargement
-var totalLoadingCount = 0, currentLoadingCount = 0;
+var initialDataLoaded = false;//initialise la connexion avec le serveur et telecharge les donnees initiales
+var totalLoadingCount = 1;//1 car je compte la connexion au réseau
+var currentLoadingCount = 0;
 var loadingComplete = false;
 
 //Moteur réseau
