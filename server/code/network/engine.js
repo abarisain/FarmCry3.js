@@ -20,7 +20,7 @@ var NetworkEngine = {
 				Object.keys(_module.functions).forEach(function (_function) {
 					socket.on(_module.name + '.' + _function, function (data, callback) {
 						//Whitelist the auth module for authless events
-						if (connection.authenticated && _module != AuthModule) {
+						if (connection.authenticated || _module == AuthModule) {
 							_module.functions[_function](connection, data, callback);
 						} else {
 							//If the function uses a callback, send the error this way, otherwise
