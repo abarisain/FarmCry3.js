@@ -88,7 +88,7 @@ window.onload = function () {
 			context.clearRect(0, 0, canvasWidth, canvasHeight);
 
 			context.fillStyle = "#fff";
-			context.fillText("Loading...", 20, 20);
+			context.fillText("Loading...  " + currentLoadingCount + '/' + totalLoadingCount, 20, 20);
 
 			//dessin du terrain
 			for (var line = 0; line < lineSize * (progress / (animationDuration)); line++) {
@@ -134,6 +134,12 @@ window.onload = function () {
 						buildings[i].drawReflection();
 					}
 				}
+				if (reflectCrop)
+				{
+					for (i = 0; i < crops.length; i++) {
+						crops[i].drawReflection();
+					}
+				}
 			}
 			context.fillStyle = "#fff";
 			//dessin du terrain
@@ -157,6 +163,9 @@ window.onload = function () {
 			//dessin des bâtiments
 			for (var i = 0; i < buildings.length; i++) {
 				buildings[i].drawItem();
+			}
+			for (i = 0; i < crops.length; i++) {
+				crops[i].drawItem();
 			}
 			context.restore();
 
@@ -212,6 +221,12 @@ function CreateMap() {
 	buildings.push(building);
 	building = new Building(2, 7, 1);
 	buildings.push(building);
+	var crop = new Crop(0, 0, 1);
+	crops.push(crop);
+	crop = new Crop(1, 1, 1);
+	crops.push(crop);
+	crop = new Crop(2, 2, 1);
+	crops.push(crop);
 }
 
 function InitLoading() {

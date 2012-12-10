@@ -1,10 +1,7 @@
 var texBuildingList = [
 	{image: 'silo', reflected: true},
 	{image: 'barn', reflected: true},
-	{image: 'cold_storage', reflected: true},
-	{image: 'wheat', reflected: false},
-	{image: 'tomato', reflected: false},
-	{image: 'corn', reflected: false}
+	{image: 'cold_storage', reflected: true}
 ];
 var texBuildings = [];
 var texBuildingReflections = [];
@@ -28,7 +25,7 @@ Building.prototype = {
 };
 
 function LoadTexBuildings() {
-	totalLoadingCount += 1.5 * texBuildingList.length;//2 pour les reflets
+	totalLoadingCount += 2 * texBuildingList.length;//2 pour les reflets
 	for (var i = 0; i < texBuildingList.length; i++) {
 		var building = new Image();
 		building.src = 'src/buildings/' + texBuildingList[i].image + '.png';

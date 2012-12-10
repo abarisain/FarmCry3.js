@@ -9,10 +9,10 @@ var texCropsReflections = [];
 function Crop(type, col, line) {
 	this.col = col;
 	this.line = line;
-	this.x = col * tileWidth - (tileWidth) * line - tileWidth;
-	this.y = (line - lineSize) * tileHeight + (tileHeight) * col - 62;
+	this.x = col * tileWidth - (tileWidth) * (line);
+	this.y = (line - lineSize) * tileHeight + (tileHeight) * (col - 0.5) + 12;
 	//gère l'image avec la réflection
-	this.tileItem = new TileItem(type, this.x, this.y, 0, 0, type < 3);
+	this.tileItem = new TileItem(type, this.x, this.y, 0, 0, false);
 }
 
 Crop.prototype = {
