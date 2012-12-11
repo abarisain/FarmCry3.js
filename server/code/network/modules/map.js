@@ -4,7 +4,7 @@ GameState = require('../../models/gamestate');
 var NetworkModule = {
 	name: "map",
 	functions: {
-		getAllTiles: function (connection, data, callback) {
+		dump: function (connection, data, callback) {
 			//WARNING : This is a debug function and should never be used in production code
 			var tmpTiles = [];
 			for (var y = 0; y < GameState.board.size.y; y++) {
@@ -15,7 +15,9 @@ var NetworkModule = {
 					tmpTiles[y][x] = GameState.board.tiles[y][x].getSmallTile();
 				}
 			}
-			return {tiles: tmpTiles};
+			connection.send("map.dump", {
+				tiles: tmpTiles
+			});
 		}
 	}
 };
