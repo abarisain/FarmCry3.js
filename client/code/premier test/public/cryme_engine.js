@@ -53,11 +53,14 @@ window.onload = function () {
 
 	canvas.onmousedown = function (event) {
 		if (loadingComplete) {
-			//positionnement de la souris
-			mousePosition.x = event.pageX - this.offsetLeft;
-			mousePosition.y = event.pageY - this.offsetTop;
-			//activation du deplacement de la map
-			moveMap = true;
+			if (event.button == 2)//le clic droit sers a bouger la map, et le gauche a agir
+			{
+				//positionnement de la souris
+				mousePosition.x = event.pageX - this.offsetLeft;
+				mousePosition.y = event.pageY - this.offsetTop;
+				//activation du deplacement de la map
+				moveMap = true;
+			}
 		}
 	};
 
