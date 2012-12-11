@@ -2,11 +2,15 @@
 var texTileList = ['grass_1', 'grass_2', 'leave', 'mountain', 'rock', 'soil', 'water'];//je précise qu'ici il faudra que je fasse commencer grass à 0
 var texTiles = [];
 
-function TileItem(image, x, y, centerX, centerY, reflected) {
+function TileItem(col, line, humidity, fertility, centerX, centerY, reflected) {
+	this.humidity = humidity;
+	this.fertility = fertility;
 	this.image = image;
 	this.reflected = reflected;//pour savoir si les reflets sont supportés par cet item, en théorie c'est pour du debug
-	this.x = x;
-	this.y = y;
+	this.col = col;
+	this.line = line;
+	this.x = 0;
+	this.y = 0;
 	this.centerX = centerX;//attention ceci est la distance top-left au centre de la tile, réferentiel indispensable
 	this.centerY = centerY;
 	this.imageLeft = 0;
@@ -15,6 +19,14 @@ function TileItem(image, x, y, centerX, centerY, reflected) {
 }
 
 TileItem.prototype = {
+	//cherche l'image correspondante à l'humidité et la fertilité
+	updateImage: function () {
+
+	},
+	updateCoord: function () {
+		this.x = this.col * tileWidth - (tileWidth) * (this.line);
+		this.y = (this.line - lineSize) * tileHeight + this.col * tileHeight;
+	},
 	updateImageCoord: function () {
 		this.imageLeft = this.x - this.centerX;
 		this.imageTop = this.y - this.centerY;
@@ -32,9 +44,8 @@ function LoadTiles() {
 
 function LoadTexTiles() {
 	for (var i = 0; i < texTileList.length; i++) {
-		var tile = new Image();
-		tile.src = 'src/tiles/' + texTileList[i] + '.png';
-		tile.onload = function () {
+		var tile = new Texture(i, texTileList[i].image, 'src/tiles/' + texTileList[i] + '.png');
+		tile.image.onload = function () {
 			texTiles.push(this);
 			currentLoadingCount++;
 		};

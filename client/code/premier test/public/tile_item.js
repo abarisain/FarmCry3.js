@@ -23,6 +23,7 @@ TileItem.prototype = {
 		this.imageTop = this.y - this.centerY;
 	},
 	//attention a bien se préoccuper du context avant, ici je m'en occupe pas
+	//par contre il faudra modifier l'utilisation de la liste des textures parce que tel quel c'est tout pourris
 	drawReflection: function (imageReflectionList) {
 		if (this.reflected) {
 			context.drawImage(imageReflectionList[this.image], this.imageLeft, this.imageTop);
@@ -44,9 +45,8 @@ function LoadTileItems() {
 function LoadTexBorders() {
 	totalLoadingCount += texBorderList.length;
 	for (var i = 0; i < texBorderList.length; i++) {
-		var tile = new Image();
-		tile.src = 'src/borders/' + texBorderList[i] + '.png';
-		tile.onload = function () {
+		var texture = new Texture(i, texBorderList[i], 'src/borders/' + texBorderList[i] + '.png');
+		texture.image.onload = function () {
 			texBorders.push(this);
 			currentLoadingCount++;
 		};

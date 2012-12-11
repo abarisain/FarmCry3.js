@@ -38,6 +38,7 @@ var networkEngine = {
 			initialData: function (data) {
 				//Initial data is received here
 				initialDataLoaded = true;
+				Map.init(data);
 				currentLoadingCount++;
 				console.log("Initial data ok");
 			}

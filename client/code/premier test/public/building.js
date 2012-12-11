@@ -9,13 +9,19 @@ var texBuildingReflections = [];
 function Building(type, col, line) {
 	this.col = col;
 	this.line = line;
-	this.x = col * tileWidth - (tileWidth) * line - tileWidth;
-	this.y = (line - lineSize) * tileHeight + (tileHeight) * col - 62;
+	this.x = 0;
+	this.y = 0;
 	//gère l'image avec la réflection
+	this.updateCoord();
 	this.tileItem = new TileItem(type, this.x, this.y, 0, 0, type < 3);
+
 }
 
 Building.prototype = {
+	updateCoord: function () {
+		this.x = this.col * tileWidth - (tileWidth) * (this.line - 1);
+		this.y = (this.line - lineSize) * tileHeight + this.col * tileHeight - 62;
+	},
 	drawReflection: function () {
 		this.tileItem.drawReflection(texBuildingReflections);
 	},
@@ -27,16 +33,14 @@ Building.prototype = {
 function LoadTexBuildings() {
 	totalLoadingCount += 2 * texBuildingList.length;//2 pour les reflets
 	for (var i = 0; i < texBuildingList.length; i++) {
-		var building = new Image();
-		building.src = 'src/buildings/' + texBuildingList[i].image + '.png';
-		building.onload = function () {
+		var texture = new Texture(i, texBuildingList[i].image, 'src/buildings/' + texBuildingList[i].image + '.png');
+		texture.image.onload = function () {
 			texBuildings.push(this);
 			currentLoadingCount++;
 		};
 		if (texBuildingList[i].reflected) {
-			var buildingReflection = new Image();
-			buildingReflection.src = 'src/buildings/' + texBuildingList[i].image + '_reflect.png';
-			buildingReflection.onload = function () {
+			var textureReflection = new Texture(i, texBuildingList[i].image, 'src/buildings/' + texBuildingList[i].image + '_reflect.png');
+			textureReflection.image.onload = function () {
 				texBuildingReflections.push(this);
 				currentLoadingCount++;
 			};
