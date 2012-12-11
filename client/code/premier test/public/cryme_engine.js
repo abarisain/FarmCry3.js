@@ -19,6 +19,7 @@ var animationDuration = 30;
 var buildings = [];
 var crops = [];
 var tiles = [];
+var hudElements = [];
 
 //temporaire mais ça fait joli
 var hudLife = new Image();
@@ -61,6 +62,18 @@ window.onload = function () {
 				//activation du deplacement de la map
 				moveMap = true;
 			}
+			else if (event.button == 1)//clic central
+			{
+				if (hudElements[3].visible) {
+					hudElements[3].visible = false;
+				}
+				else {
+					hudElements[3].visible = true;
+				}
+				window.requestAnimFrame(function () {
+					Draw()
+				});
+			}
 		}
 	};
 
@@ -100,6 +113,7 @@ function DrawWelcome() {
 		});
 	}
 	else {
+		CreateHud();
 		CreateMap();
 		window.requestAnimFrame(function () {
 			InitLoading();
@@ -217,11 +231,14 @@ function Draw() {
 		for (i = 0; i < crops.length; i++) {
 			crops[i].drawItem();
 		}
+
+		//indispensable pour l'affichage du hud, tant qu'on a pas séparé les 2 canvas
 		context.restore();
 
 		//affichage du hudLife
-		context.drawImage(hudLife, 0, 0);
-		context.drawImage(hudTime, canvasWidth - 160, 0);
+		/*context.drawImage(hudLife, 0, 0);
+		 context.drawImage(hudTime, canvasWidth - 160, 0);*/
+		hud.drawHud();
 		context.fillStyle = "#6f440d";
 		context.fillText("x : " + cameraPosition.x + ", y : " + cameraPosition.y, 120, 34);
 		var currentTime = new Date();
@@ -233,6 +250,18 @@ function Draw() {
 function InitLoading() {
 	LoadTiles();
 	LoadTileItems();
+	LoadHud();
+}
+
+function CreateHud() {
+	var hudElement = new HudElement(0, 0, 0, true);
+	hudElements.push(hudElement);
+	hudElement = new HudElement(1, canvasWidth - 160, 0, true);
+	hudElements.push(hudElement);
+	hudElement = new HudElement(2, canvasWidth - 320, 200, true);
+	hudElements.push(hudElement);
+	hudElement = new HudElement(3, canvasWidth / 2 - 500, 200, false);
+	hudElements.push(hudElement);
 }
 
 //fonction pour placer des trucs sur la map pour test le rendu
