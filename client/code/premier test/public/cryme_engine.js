@@ -7,25 +7,18 @@
 
 var moveMap = false;
 var cameraPosition = {
-	x: 1000,
-	y: 800
+	x: -1000,
+	y: -1000
 };
 var mousePosition = {
 	x: 0,
 	y: 0
 };
-var animationDuration = 30;
 
 var buildings = [];
 var crops = [];
 var tiles = [];
 var hudElements = [];
-
-//temporaire mais ça fait joli
-var hudLife = new Image();
-hudLife.src = "src/hud/life.png";
-var hudTime = new Image();
-hudTime.src = "src/hud/time.png";
 
 window.requestAnimFrame = (function () {
 	return window.requestAnimationFrame || // La forme standardisée
@@ -125,7 +118,7 @@ function DrawWelcome() {
 function DrawLoading() {
 	context.save();
 	context.clearRect(0, 0, canvasWidth, canvasHeight);
-	if (texTiles.length != texTileList.length && !initialDataLoaded) {
+	if (texTiles.length != texTileList.length && initialDataLoaded) {
 		context.fillStyle = "#fff";
 		context.fillText("Loading...", canvasWidth / 2 - 30, 260);
 
@@ -154,19 +147,16 @@ function DrawMapCreation(progress, speed) {
 		context.save();
 		context.clearRect(0, 0, canvasWidth, canvasHeight);
 
+		context.translate(cameraPosition.x, cameraPosition.y);
+
+		//dessin du terrain
+		Map.drawMapLoading(progress);
+		//il vaux mieux restaurer le contexte avant de commencer à dessiner, pour être tranquille
+		context.restore();
+
 		context.fillStyle = "#fff";
 		context.fillText("Loading...  " + currentLoadingCount + '/' + totalLoadingCount, 20, 20);
 
-		//dessin du terrain
-		for (var line = 0; line < lineSize * (progress / (animationDuration)); line++) {
-			for (var col = 0; col < colSize * (progress / (animationDuration)); col++) {
-				context.drawImage(texTiles[Math.round((line + col) / 2) % texTiles.length], cameraPosition.x + col *
-					tileWidth - (tileWidth) * line, (cameraPosition.y + (line - lineSize) * tileHeight +
-					(tileHeight) * col) * (progress / animationDuration));
-			}
-		}
-		//il vaux mieux restaurer le contexte avant de commencer à dessiner, pour être tranquille
-		context.restore();
 		if (progress == animationDuration && currentLoadingCount == totalLoadingCount) {
 			loadingComplete = true;
 			window.requestAnimFrame(function () {
@@ -207,22 +197,7 @@ function Draw() {
 		}
 		context.fillStyle = "#fff";
 		//dessin du terrain
-		for (var line = 0; line < lineSize; line++) {
-			for (var col = 0; col < colSize; col++) {
-				context.drawImage(texTiles[Math.round((line + col) / 2) % texTiles.length], col * tileWidth - (tileWidth) * line, (line - lineSize) * tileHeight + (tileHeight) * col);
-
-				//affichage de la bordure
-				if (col == colSize - 1) {
-					context.drawImage(texBorders[1], (col) * tileWidth - (tileWidth) * line, (line - lineSize + 1) * tileHeight + (tileHeight) * col + 1);
-				}
-				if (line == 0) {
-					context.fillText('col : ' + col, col * tileWidth - (tileWidth) * (line - 1), (line - lineSize + 1) * tileHeight + (tileHeight) * col);
-				}
-				else if (line == lineSize - 1) {
-					context.drawImage(texBorders[0], col * tileWidth - (tileWidth) * (line), (line - lineSize + 1) * tileHeight + (tileHeight) * (col) + 1);
-				}
-			}
-		}
+		Map.drawMap();
 
 		//dessin des bâtiments
 		for (var i = 0; i < buildings.length; i++) {
@@ -266,15 +241,15 @@ function CreateHud() {
 
 //fonction pour placer des trucs sur la map pour test le rendu
 function CreateMap() {
-	var building = new Building(0, 2, 8);
+	var building = new Building(0, 3, 9);
 	buildings.push(building);
-	building = new Building(1, 4, 5);
+	building = new Building(1, 0, 0);
 	buildings.push(building);
 	building = new Building(2, 7, 1);
 	buildings.push(building);
-	var crop = new Crop(0, 0, 1);
+	var crop = new Crop(0, 4, 3);
 	crops.push(crop);
-	crop = new Crop(1, 1, 1);
+	crop = new Crop(1, 3, 5);
 	crops.push(crop);
 	crop = new Crop(2, 2, 1);
 	crops.push(crop);

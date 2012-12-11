@@ -5,14 +5,16 @@ var context = [];
 var canvasWidth = window.innerWidth;
 var canvasHeight = window.innerHeight;
 
-var tileWidth = 122;
-var tileHeight = 86;
+var tileWidth = 246;
+var tileHeight = 174;
 
-var lineSize = Math.round(canvasHeight / tileHeight + 1);
-var colSize = Math.round(canvasWidth / tileWidth + 1);
+var lineSize = 16;
+var colSize = 16;
 
 //liste des emetteurs de particules
 var particleEmitters;
+
+var animationDuration = 30;
 
 //gestion du chargement
 var initialDataLoaded = false;//initialise la connexion avec le serveur et telecharge les donnees initiales

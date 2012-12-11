@@ -1,7 +1,7 @@
 var texCropList = [
-	{image: 'wheat', reflected: false},
+	{image: 'wheat', reflected: true},
 	{image: 'tomato', reflected: true},
-	{image: 'corn', reflected: false}
+	{image: 'corn', reflected: true}
 ];
 var texCrops = [];
 var texCropsReflections = [];
@@ -9,10 +9,8 @@ var texCropsReflections = [];
 function Crop(type, col, line) {
 	this.col = col;
 	this.line = line;
-	this.x = col * tileWidth - (tileWidth) * (line);
-	this.y = (line - lineSize) * tileHeight + (tileHeight) * (col - 0.5) + 12;
 	//gère l'image avec la réflection
-	this.tileItem = new TileItem(type, this.x, this.y, 0, 0, false);
+	this.tileItem = new TileItem(type, this.col, this.line, 0, 22, true);
 }
 
 Crop.prototype = {
@@ -25,7 +23,7 @@ Crop.prototype = {
 };
 
 function LoadTexCrops() {
-	totalLoadingCount += texCropList.length + 1;//+1 pour le reflet
+	totalLoadingCount += 2 * texCropList.length;//+1 pour le reflet
 	for (var i = 0; i < texCropList.length; i++) {
 		var texture = new Texture(i, texCropList[i].image, 'src/crops/' + texCropList[i].image + '.png');
 		texture.image.onload = function () {
@@ -33,7 +31,7 @@ function LoadTexCrops() {
 			currentLoadingCount++;
 		};
 		if (texCropList[i].reflected) {
-			textureReflection = new Texture(i, texCropList[i].image, 'src/crops/' + texCropList[i].image + '_reflect.png');
+			var textureReflection = new Texture(i, texCropList[i].image, 'src/crops/' + texCropList[i].image + '_reflect.png');
 			textureReflection.image.onload = function () {
 				texCropsReflections.push(this);
 				currentLoadingCount++;
