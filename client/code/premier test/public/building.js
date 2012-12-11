@@ -9,19 +9,11 @@ var texBuildingReflections = [];
 function Building(type, col, line) {
 	this.col = col;
 	this.line = line;
-	this.x = 0;
-	this.y = 0;
 	//gère l'image avec la réflection
-	this.updateCoord();
-	this.tileItem = new TileItem(type, this.x, this.y, 0, 0, type < 3);
-
+	this.tileItem = new TileItem(type, this.col, this.line, 0, 148, type < 3);
 }
 
 Building.prototype = {
-	updateCoord: function () {
-		this.x = this.col * tileWidth - (tileWidth) * (this.line - 1);
-		this.y = (this.line - lineSize) * tileHeight + this.col * tileHeight - 62;
-	},
 	drawReflection: function () {
 		this.tileItem.drawReflection(texBuildingReflections);
 	},

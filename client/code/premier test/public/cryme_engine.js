@@ -7,25 +7,18 @@
 
 var moveMap = false;
 var cameraPosition = {
-	x: 1000,
-	y: 800
+	x: -1000,
+	y: -1000
 };
 var mousePosition = {
 	x: 0,
 	y: 0
 };
-var animationDuration = 30;
 
 var buildings = [];
 var crops = [];
 var tiles = [];
 var hudElements = [];
-
-//temporaire mais ça fait joli
-var hudLife = new Image();
-hudLife.src = "src/hud/life.png";
-var hudTime = new Image();
-hudTime.src = "src/hud/time.png";
 
 window.requestAnimFrame = (function () {
 	return window.requestAnimationFrame || // La forme standardisée
@@ -42,17 +35,23 @@ window.onload = function () {
 	canvas = document.querySelector('#canvas');
 	context = canvas.getContext('2d');
 
+	canvasHud = document.querySelector('#canvasHud');
+	contextHud = canvasHud.getContext('2d');
+
 	/*initialisation du canvas
 	 * indispensable sinon le canvas fait 150px de large*/
 	canvas.width = canvasWidth;
 	canvas.height = canvasHeight;
+	canvasHud.width = canvasWidth;
+	canvasHud.height = canvasHeight;
 
 	context.font = "bold 16pt Calibri,Geneva,Arial";
+	contextHud.font = "bold 16pt Calibri,Geneva,Arial";
 
 	/*Initialisation de la connexion reseau*/
 	DrawWelcome();
 
-	canvas.onmousedown = function (event) {
+	canvasHud.onmousedown = function (event) {
 		if (loadingComplete) {
 			if (event.button == 2)//le clic droit sers a bouger la map, et le gauche a agir
 			{
@@ -62,18 +61,21 @@ window.onload = function () {
 				//activation du deplacement de la map
 				moveMap = true;
 			}
-			else if (event.button == 1)//clic central
-			{
-				if (hudElements[3].visible) {
-					hudElements[3].visible = false;
-				}
-				else {
-					hudElements[3].visible = true;
-				}
-				window.requestAnimFrame(function () {
-					Draw()
-				});
+		}
+	};
+
+	window.onkeydown = function (event) {
+		if (event.keyCode == 32)//touche espace
+		{
+			if (hudElements[3].visible) {
+				hudElements[3].visible = false;
 			}
+			else {
+				hudElements[3].visible = true;
+			}
+			window.requestAnimFrame(function () {
+				Draw()
+			});
 		}
 	};
 
@@ -81,7 +83,7 @@ window.onload = function () {
 		moveMap = false;
 	};
 
-	canvas.onmousemove = function (event) {
+	canvasHud.onmousemove = function (event) {
 		if (moveMap) {
 			event = event || window.event;
 
@@ -109,7 +111,7 @@ function DrawWelcome() {
 
 		context.restore();
 		window.requestAnimFrame(function () {
-			DrawWelcome()
+			DrawWelcome();
 		});
 	}
 	else {
@@ -125,7 +127,7 @@ function DrawWelcome() {
 function DrawLoading() {
 	context.save();
 	context.clearRect(0, 0, canvasWidth, canvasHeight);
-	if (texTiles.length != texTileList.length && !initialDataLoaded) {
+	if (texTiles.length != texTileList.length && initialDataLoaded) {
 		context.fillStyle = "#fff";
 		context.fillText("Loading...", canvasWidth / 2 - 30, 260);
 
@@ -154,19 +156,16 @@ function DrawMapCreation(progress, speed) {
 		context.save();
 		context.clearRect(0, 0, canvasWidth, canvasHeight);
 
+		context.translate(cameraPosition.x, cameraPosition.y);
+
+		//dessin du terrain
+		Map.drawMapLoading(progress);
+		//il vaux mieux restaurer le contexte avant de commencer à dessiner, pour être tranquille
+		context.restore();
+
 		context.fillStyle = "#fff";
 		context.fillText("Loading...  " + currentLoadingCount + '/' + totalLoadingCount, 20, 20);
 
-		//dessin du terrain
-		for (var line = 0; line < lineSize * (progress / (animationDuration)); line++) {
-			for (var col = 0; col < colSize * (progress / (animationDuration)); col++) {
-				context.drawImage(texTiles[Math.round((line + col) / 2) % texTiles.length], cameraPosition.x + col *
-					tileWidth - (tileWidth) * line, (cameraPosition.y + (line - lineSize) * tileHeight +
-					(tileHeight) * col) * (progress / animationDuration));
-			}
-		}
-		//il vaux mieux restaurer le contexte avant de commencer à dessiner, pour être tranquille
-		context.restore();
 		if (progress == animationDuration && currentLoadingCount == totalLoadingCount) {
 			loadingComplete = true;
 			window.requestAnimFrame(function () {
@@ -179,6 +178,9 @@ function DrawMapCreation(progress, speed) {
 			}
 			window.requestAnimFrame(function () {
 				DrawMapCreation(progress + speed, speed)
+			});
+			window.requestAnimFrame(function () {
+				DrawHud();
 			});
 		}
 	}
@@ -207,22 +209,7 @@ function Draw() {
 		}
 		context.fillStyle = "#fff";
 		//dessin du terrain
-		for (var line = 0; line < lineSize; line++) {
-			for (var col = 0; col < colSize; col++) {
-				context.drawImage(texTiles[Math.round((line + col) / 2) % texTiles.length], col * tileWidth - (tileWidth) * line, (line - lineSize) * tileHeight + (tileHeight) * col);
-
-				//affichage de la bordure
-				if (col == colSize - 1) {
-					context.drawImage(texBorders[1], (col) * tileWidth - (tileWidth) * line, (line - lineSize + 1) * tileHeight + (tileHeight) * col + 1);
-				}
-				if (line == 0) {
-					context.fillText('col : ' + col, col * tileWidth - (tileWidth) * (line - 1), (line - lineSize + 1) * tileHeight + (tileHeight) * col);
-				}
-				else if (line == lineSize - 1) {
-					context.drawImage(texBorders[0], col * tileWidth - (tileWidth) * (line), (line - lineSize + 1) * tileHeight + (tileHeight) * (col) + 1);
-				}
-			}
-		}
+		Map.drawMap();
 
 		//dessin des bâtiments
 		for (var i = 0; i < buildings.length; i++) {
@@ -234,19 +221,26 @@ function Draw() {
 
 		//indispensable pour l'affichage du hud, tant qu'on a pas séparé les 2 canvas
 		context.restore();
-
-		//affichage du hudLife
-		/*context.drawImage(hudLife, 0, 0);
-		 context.drawImage(hudTime, canvasWidth - 160, 0);*/
-		hud.drawHud();
-		context.fillStyle = "#6f440d";
-		context.fillText("x : " + cameraPosition.x + ", y : " + cameraPosition.y, 120, 34);
-		var currentTime = new Date();
-		context.fillText(currentTime.getHours() + ':' + currentTime.getMinutes(), canvasWidth - 72, 34);
 	}
-
-
 }
+
+function DrawHud() {
+	contextHud.clearRect(0, 0, canvasWidth, canvasHeight);
+	contextHud.save();
+
+	hud.drawHud();
+	contextHud.fillStyle = "#6f440d";
+	contextHud.fillText("x : " + cameraPosition.x + ", y : " + cameraPosition.y, 120, 34);
+	var currentTime = new Date();
+	contextHud.fillText(currentTime.getHours() + ':' + currentTime.getSeconds(), canvasWidth - 72, 34);
+
+	contextHud.restore();
+
+	window.requestAnimFrame(function () {
+		DrawHud();
+	});
+}
+
 function InitLoading() {
 	LoadTiles();
 	LoadTileItems();
@@ -266,15 +260,15 @@ function CreateHud() {
 
 //fonction pour placer des trucs sur la map pour test le rendu
 function CreateMap() {
-	var building = new Building(0, 2, 8);
+	var building = new Building(0, 5, 13);
 	buildings.push(building);
-	building = new Building(1, 4, 5);
+	building = new Building(1, 2, 7);
 	buildings.push(building);
-	building = new Building(2, 7, 1);
+	building = new Building(2, 8, 9);
 	buildings.push(building);
-	var crop = new Crop(0, 0, 1);
+	var crop = new Crop(0, 1, 6);
 	crops.push(crop);
-	crop = new Crop(1, 1, 1);
+	crop = new Crop(1, 3, 5);
 	crops.push(crop);
 	crop = new Crop(2, 2, 1);
 	crops.push(crop);
