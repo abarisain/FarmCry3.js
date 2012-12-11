@@ -35,17 +35,23 @@ window.onload = function () {
 	canvas = document.querySelector('#canvas');
 	context = canvas.getContext('2d');
 
+	canvasHud = document.querySelector('#canvasHud');
+	contextHud = canvasHud.getContext('2d');
+
 	/*initialisation du canvas
 	 * indispensable sinon le canvas fait 150px de large*/
 	canvas.width = canvasWidth;
 	canvas.height = canvasHeight;
+	canvasHud.width = canvasWidth;
+	canvasHud.height = canvasHeight;
 
 	context.font = "bold 16pt Calibri,Geneva,Arial";
+	contextHud.font = "bold 16pt Calibri,Geneva,Arial";
 
 	/*Initialisation de la connexion reseau*/
 	DrawWelcome();
 
-	canvas.onmousedown = function (event) {
+	canvasHud.onmousedown = function (event) {
 		if (loadingComplete) {
 			if (event.button == 2)//le clic droit sers a bouger la map, et le gauche a agir
 			{
@@ -55,18 +61,21 @@ window.onload = function () {
 				//activation du deplacement de la map
 				moveMap = true;
 			}
-			else if (event.button == 1)//clic central
-			{
-				if (hudElements[3].visible) {
-					hudElements[3].visible = false;
-				}
-				else {
-					hudElements[3].visible = true;
-				}
-				window.requestAnimFrame(function () {
-					Draw()
-				});
+		}
+	};
+
+	window.onkeydown = function (event) {
+		if (event.keyCode == 32)//touche espace
+		{
+			if (hudElements[3].visible) {
+				hudElements[3].visible = false;
 			}
+			else {
+				hudElements[3].visible = true;
+			}
+			window.requestAnimFrame(function () {
+				Draw()
+			});
 		}
 	};
 
@@ -74,7 +83,7 @@ window.onload = function () {
 		moveMap = false;
 	};
 
-	canvas.onmousemove = function (event) {
+	canvasHud.onmousemove = function (event) {
 		if (moveMap) {
 			event = event || window.event;
 
@@ -102,7 +111,7 @@ function DrawWelcome() {
 
 		context.restore();
 		window.requestAnimFrame(function () {
-			DrawWelcome()
+			DrawWelcome();
 		});
 	}
 	else {
@@ -170,6 +179,9 @@ function DrawMapCreation(progress, speed) {
 			window.requestAnimFrame(function () {
 				DrawMapCreation(progress + speed, speed)
 			});
+			window.requestAnimFrame(function () {
+				DrawHud();
+			});
 		}
 	}
 }
@@ -209,19 +221,26 @@ function Draw() {
 
 		//indispensable pour l'affichage du hud, tant qu'on a pas séparé les 2 canvas
 		context.restore();
-
-		//affichage du hudLife
-		/*context.drawImage(hudLife, 0, 0);
-		 context.drawImage(hudTime, canvasWidth - 160, 0);*/
-		hud.drawHud();
-		context.fillStyle = "#6f440d";
-		context.fillText("x : " + cameraPosition.x + ", y : " + cameraPosition.y, 120, 34);
-		var currentTime = new Date();
-		context.fillText(currentTime.getHours() + ':' + currentTime.getMinutes(), canvasWidth - 72, 34);
 	}
-
-
 }
+
+function DrawHud() {
+	contextHud.clearRect(0, 0, canvasWidth, canvasHeight);
+	contextHud.save();
+
+	hud.drawHud();
+	contextHud.fillStyle = "#6f440d";
+	contextHud.fillText("x : " + cameraPosition.x + ", y : " + cameraPosition.y, 120, 34);
+	var currentTime = new Date();
+	contextHud.fillText(currentTime.getHours() + ':' + currentTime.getSeconds(), canvasWidth - 72, 34);
+
+	contextHud.restore();
+
+	window.requestAnimFrame(function () {
+		DrawHud();
+	});
+}
+
 function InitLoading() {
 	LoadTiles();
 	LoadTileItems();
@@ -241,13 +260,13 @@ function CreateHud() {
 
 //fonction pour placer des trucs sur la map pour test le rendu
 function CreateMap() {
-	var building = new Building(0, 3, 9);
+	var building = new Building(0, 5, 13);
 	buildings.push(building);
-	building = new Building(1, 0, 0);
+	building = new Building(1, 2, 7);
 	buildings.push(building);
-	building = new Building(2, 7, 1);
+	building = new Building(2, 8, 9);
 	buildings.push(building);
-	var crop = new Crop(0, 4, 3);
+	var crop = new Crop(0, 1, 6);
 	crops.push(crop);
 	crop = new Crop(1, 3, 5);
 	crops.push(crop);

@@ -1,6 +1,9 @@
 /*initialisation* du moteur*/
-var canvas = [];
-var context = [];
+var canvas;
+var context;
+var canvasHud;
+var contextHud;
+
 
 var canvasWidth = window.innerWidth;
 var canvasHeight = window.innerHeight;

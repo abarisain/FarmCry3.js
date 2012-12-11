@@ -10,7 +10,7 @@ function Crop(type, col, line) {
 	this.col = col;
 	this.line = line;
 	//gère l'image avec la réflection
-	this.tileItem = new TileItem(type, this.col, this.line, 0, 22, true);
+	this.tileItem = new TileItem(type, this.col, this.line, 0, 24, true);
 }
 
 Crop.prototype = {
