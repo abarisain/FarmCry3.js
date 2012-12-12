@@ -20,10 +20,14 @@
 	<title>FarmCry</title>
 	<link rel="shortcut icon" href="favicon.ico"/>
 	<style type="text/css" media="screen">
+		html {
+			min-height: 100%;
+		}
+
 		body {
 			font-family: Helvetica, Arial, sans-serif;
 			font-size: 10pt;
-			background: #666;
+			background: url('src/hud/background.jpg');
 			border: none;
 			margin: 0;
 			padding: 0;
@@ -46,7 +50,9 @@
 <canvas id="canvas" class="canvasDrawable" oncontextmenu="return false;">
 	<p>Désolé, votre navigateur ne supporte pas Canvas. Mettez-vous à jour</p>
 </canvas>
-<canvas id="canvasHud" class="canvasDrawable" style="z-index: 1;" oncontextmenu="return false;">
+<canvas id="canvasAnimation" class="canvasDrawable" style="z-index: 1;" oncontextmenu="return false;">
+</canvas>
+<canvas id="canvasHud" class="canvasDrawable" style="z-index: 10;" oncontextmenu="return false;">
 </canvas>
 </body>
 </html> 
