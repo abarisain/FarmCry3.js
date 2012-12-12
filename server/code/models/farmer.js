@@ -23,4 +23,19 @@ function Farmer(nickname, email, password) {
 	this.weapons = [ GameState.settings.weapons[0] ];
 }
 
+Farmer.prototype = {
+	getSmallFarmer: function () {
+		var tmpFarmer = {};
+		tmpFarmer.nickname = this.nickname;
+		tmpFarmer.money = this.money;
+		tmpFarmer.col = this.last_pos.x;
+		tmpFarmer.line = this.last_pos.y;
+		tmpFarmer.weapons = [];
+		for (var weapon in tmpFarmer.weapons) {
+			tmpFarmer.weapons.push(weapon.codename);
+		}
+		return tmpFarmer;
+	}
+};
+
 module.exports = Farmer;

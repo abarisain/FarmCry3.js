@@ -9,7 +9,7 @@ var NetworkModule = {
 			data.col = (typeof data.col == 'undefined') ? 0 : Math.floor(data.col);
 			data.line = (typeof data.line == 'undefined') ? 0 : Math.floor(data.line);
 			if (data.col < -1 || data.col > 1 || data.line < -1 || data.line > 1) {
-				connection.sendError(Error.BadRequest(request, data));
+				connection.sendError(new Error(Error.Codes.BAD_REQUEST, null, request, data));
 				return;
 			}
 

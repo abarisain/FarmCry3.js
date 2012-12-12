@@ -46,4 +46,4 @@ var networkEngine = {
 	}
 };
 
-networkEngine.init('http://localhost:8080');
+networkEngine.init('http://localhost:8080', "dreamteam69@gmail.com", "prout");

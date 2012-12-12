@@ -1,11 +1,30 @@
 Error = require('../error.js');
+GameState = require('../../models/gamestate');
 
 var NetworkModule = {
 	name: "auth",
 	functions: {
 		login: function (connection, request, data, callback) {
-			connection.authenticated = true;
-			callback({result: "ok"});
+			if (typeof data.email == 'undefined' || typeof data.password == 'undefined') {
+				callback(new Error(Error.Codes.BAD_REQUEST, null, request, data));
+				return;
+			}
+			var farmersCount = GameState.farmers.length;
+			var currentFarmer;
+			for (var i = 0; i < farmersCount; i++) {
+				currentFarmer = GameState.farmers[i];
+				if (data.email == currentFarmer.email) {
+					//TODO : CRYPT THIS SHIT
+					//Password check is disabled, too annoying for debugging. I tested it before commenting it.
+					//if(data.password == currentFarmer.password) {
+					connection.authenticated = true;
+					callback({result: "ok", farmer: currentFarmer.getSmallFarmer()});
+					return;
+					//}
+				}
+			}
+			//Login failed if this code is reached
+			callback(new Error(Error.Codes.BAD_LOGIN));
 		}
 	}
 };
