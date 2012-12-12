@@ -1,9 +1,15 @@
+@font-face {
+    font-family: 'stanberry';
+    src: url('stanberry-webfont.eot?#iefix') format('embedded-opentype'), url('stanberry-webfont.woff') format('woff'), url('stanberry-webfont.ttf') format('truetype'), font-weight: normal;
+    font-style: normal;
+}
+
 html {
     min-height: 100%;
 }
 
 body {
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: 'stanberry', Helvetica, Arial, sans-serif;
     font-size: 10pt;
     background: url('src/hud/background.jpg');
     border: none;
