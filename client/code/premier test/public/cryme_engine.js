@@ -50,7 +50,7 @@ window.onload = function () {
 	canvasHud.width = canvasWidth;
 	canvasHud.height = canvasHeight;
 
-	contextHud.font = "bold 16pt Calibri,Geneva,Arial";
+	contextHud.font = "bold 13pt stanberry,Calibri,Geneva,Arial";
 
 	/*Initialisation de la connexion reseau automatique*/
 
