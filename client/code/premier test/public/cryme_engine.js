@@ -35,6 +35,9 @@ window.onload = function () {
 	canvas = document.querySelector('#canvas');
 	context = canvas.getContext('2d');
 
+	canvasAnimation = document.querySelector('#canvasAnimation');
+	contextAnimation = canvas.getContext('2d');
+
 	canvasHud = document.querySelector('#canvasHud');
 	contextHud = canvasHud.getContext('2d');
 
@@ -42,10 +45,11 @@ window.onload = function () {
 	 * indispensable sinon le canvas fait 150px de large*/
 	canvas.width = canvasWidth;
 	canvas.height = canvasHeight;
+	canvasAnimation.width = canvasWidth;
+	canvasAnimation.height = canvasHeight;
 	canvasHud.width = canvasWidth;
 	canvasHud.height = canvasHeight;
 
-	context.font = "bold 16pt Calibri,Geneva,Arial";
 	contextHud.font = "bold 16pt Calibri,Geneva,Arial";
 
 	/*Initialisation de la connexion reseau*/
@@ -103,13 +107,13 @@ window.onload = function () {
 };
 
 function DrawWelcome() {
-	context.save();
-	context.clearRect(0, 0, canvasWidth, canvasHeight);
+	contextHud.save();
+	contextHud.clearRect(0, 0, canvasWidth, canvasHeight);
 	if (!initialDataLoaded) {
-		context.fillStyle = "#fff";
-		context.fillText("Waiting for server...", canvasWidth / 2 - 30, 260);
+		contextHud.fillStyle = "#fff";
+		contextHud.fillText("Waiting for server...", canvasWidth / 2 - 30, 260);
 
-		context.restore();
+		contextHud.restore();
 		window.requestAnimFrame(function () {
 			DrawWelcome();
 		});
@@ -125,19 +129,19 @@ function DrawWelcome() {
 }
 
 function DrawLoading() {
-	context.save();
-	context.clearRect(0, 0, canvasWidth, canvasHeight);
+	contextHud.save();
+	contextHud.clearRect(0, 0, canvasWidth, canvasHeight);
 	if (texTiles.length != texTileList.length && initialDataLoaded) {
-		context.fillStyle = "#fff";
-		context.fillText("Loading...", canvasWidth / 2 - 30, 260);
+		contextHud.fillStyle = "#fff";
+		contextHud.fillText("Loading...", canvasWidth / 2 - 30, 260);
 
 		//affichage de la barre de progression
-		context.fillStyle = "rgba(60, 60, 60, 1)";
-		context.fillRect(canvasWidth / 2 - 202, 300, 404, 20);
+		contextHud.fillStyle = "rgba(60, 60, 60, 1)";
+		contextHud.fillRect(canvasWidth / 2 - 202, 300, 404, 20);
 
-		context.fillStyle = "rgba(120, 120, 120, 1)";
-		context.fillRect(canvasWidth / 2 - 200, 302, 200 * (currentLoadingCount / totalLoadingCount), 16);
-		context.restore();
+		contextHud.fillStyle = "rgba(120, 120, 120, 1)";
+		contextHud.fillRect(canvasWidth / 2 - 200, 302, 200 * (currentLoadingCount / totalLoadingCount), 16);
+		contextHud.restore();
 		window.requestAnimFrame(function () {
 			DrawLoading()
 		});
@@ -209,6 +213,7 @@ function Draw() {
 		}
 		context.fillStyle = "#fff";
 		//dessin du terrain
+		Map.drawMask();
 		Map.drawMap();
 
 		//dessin des bâtiments
@@ -262,7 +267,7 @@ function CreateHud() {
 function CreateMap() {
 	var building = new Building(0, 5, 13);
 	buildings.push(building);
-	building = new Building(1, 2, 7);
+	building = new Building(1, 4, 7);
 	buildings.push(building);
 	building = new Building(2, 8, 9);
 	buildings.push(building);

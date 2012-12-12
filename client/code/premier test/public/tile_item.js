@@ -21,7 +21,7 @@ function TileItem(image, col, line, centerX, centerY, reflected) {
 TileItem.prototype = {
 	updateCoord: function () {
 		this.x = (this.col + this.line) * (tileWidth / 2);
-		this.y = (lineSize - this.line + this.col) * (tileHeight / 2);
+		this.y = (lineSize - this.line + this.col - 1) * (tileHeight / 2);
 	},
 	updateImageCoord: function () {
 		this.imageLeft = this.x - this.centerX;

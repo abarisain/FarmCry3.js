@@ -3,8 +3,11 @@ var Map = {
 	buildings: [],
 	crops: [],
 	borders: [],
+	rect: { x: 1, y: 1, dx: 0, dy: 0 },
 	init: function (data) {
 		this.loadTiles((data.tiles));
+		this.rect.dx = (tileWidth / 2) * (colSize + lineSize);
+		this.rect.dy = (tileHeight / 2) * (colSize + lineSize);
 	},
 	loadTiles: function (tileData) {
 		for (var i = 0; i < tileData.length; i++) {
@@ -18,6 +21,38 @@ var Map = {
 		for (var i = 0; i < Math.min(tiles.length * progress / animationDuration, tiles.length); i++) {
 			tiles[i].drawTileLoading(progress);
 		}
+	},
+	//fonction qui dessine des grands triangles de chaque côté de la map pour masquer le ciel
+	drawMask: function () {
+		var margin = 500;
+
+		//bordure gauche
+		context.beginPath();
+		context.moveTo(this.rect.x + this.rect.dx / 2, this.rect.y + 2);
+		context.lineTo(this.rect.x, this.rect.y + this.rect.dy / 2);
+		context.lineTo(this.rect.x + this.rect.dx / 2, this.rect.y + this.rect.dy);
+		context.lineTo(this.rect.x + this.rect.dx / 2, this.rect.y + this.rect.dy + margin);
+		context.lineTo(this.rect.x - margin, this.rect.y + this.rect.dy + margin);
+		context.lineTo(this.rect.x - margin, this.rect.y - margin);
+		context.lineTo(this.rect.x + this.rect.dx / 2, this.rect.y - margin);
+		context.lineTo(this.rect.x + this.rect.dx / 2, this.rect.y + 2);
+		context.closePath();
+		context.fillStyle = "rgb(10, 10, 10)";
+		context.fill();
+
+		//bordure droite
+		context.beginPath();
+		context.moveTo(this.rect.x + this.rect.dx / 2, this.rect.y + 2);
+		context.lineTo(this.rect.x + this.rect.dx, this.rect.y + this.rect.dy / 2);
+		context.lineTo(this.rect.x + this.rect.dx / 2, this.rect.y + this.rect.dy);
+		context.lineTo(this.rect.x + this.rect.dx / 2, this.rect.y + this.rect.dy + margin);
+		context.lineTo(this.rect.x + this.rect.dx + margin, this.rect.y + this.rect.dy + margin);
+		context.lineTo(this.rect.x + this.rect.dx + margin, this.rect.y - margin);
+		context.lineTo(this.rect.x + this.rect.dx / 2, this.rect.y - margin);
+		context.lineTo(this.rect.x + this.rect.dx / 2, this.rect.y + 2);
+		context.closePath();
+		context.fillStyle = "rgb(10, 10, 10)";
+		context.fill();
 	},
 	drawMap: function () {
 		for (var i = 0; i < tiles.length; i++) {
