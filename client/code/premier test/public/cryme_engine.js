@@ -36,7 +36,7 @@ window.onload = function () {
 	context = canvas.getContext('2d');
 
 	canvasAnimation = document.querySelector('#canvasAnimation');
-	contextAnimation = canvas.getContext('2d');
+	contextAnimation = canvasAnimation.getContext('2d');
 
 	canvasHud = document.querySelector('#canvasHud');
 	contextHud = canvasHud.getContext('2d');
@@ -52,7 +52,14 @@ window.onload = function () {
 
 	contextHud.font = "bold 16pt Calibri,Geneva,Arial";
 
-	/*Initialisation de la connexion reseau*/
+	/*Initialisation de la connexion reseau automatique*/
+
+	/*Gestion de la musique*/
+	var audioPlayer = document.getElementById('audioPlayer');
+	audioPlayer.style.top = (canvasHeight - 30) + 'px';
+	if (music) {
+		audioPlayer.play();
+	}
 	DrawWelcome();
 
 	canvasHud.onmousedown = function (event) {
@@ -120,7 +127,6 @@ function DrawWelcome() {
 	}
 	else {
 		CreateHud();
-		CreateMap();
 		window.requestAnimFrame(function () {
 			InitLoading();
 			DrawLoading();
@@ -168,12 +174,13 @@ function DrawMapCreation(progress, speed) {
 		context.restore();
 
 		context.fillStyle = "#fff";
-		context.fillText("Loading...  " + currentLoadingCount + '/' + totalLoadingCount, 20, 20);
+		context.fillText("Loading...  " + currentLoadingCount + '/' + totalLoadingCount, 20, 150);
 
 		if (progress == animationDuration && currentLoadingCount == totalLoadingCount) {
 			loadingComplete = true;
 			window.requestAnimFrame(function () {
-				Draw()
+				Draw();
+				DrawAnimation();
 			});
 		}
 		else {
@@ -181,10 +188,7 @@ function DrawMapCreation(progress, speed) {
 				speed *= -1;
 			}
 			window.requestAnimFrame(function () {
-				DrawMapCreation(progress + speed, speed)
-			});
-			window.requestAnimFrame(function () {
-				DrawHud();
+				DrawMapCreation(progress + speed, speed);
 			});
 		}
 	}
@@ -220,6 +224,7 @@ function Draw() {
 		for (var i = 0; i < buildings.length; i++) {
 			buildings[i].drawItem();
 		}
+
 		for (i = 0; i < crops.length; i++) {
 			crops[i].drawItem();
 		}
@@ -229,25 +234,50 @@ function Draw() {
 	}
 }
 
+function DrawAnimation() {
+	if (loadingComplete) {
+		contextAnimation.clearRect(0, 0, canvasWidth, canvasHeight);
+		contextAnimation.save();
+
+		//gestion du positionnement de la caméra
+		contextAnimation.translate(cameraPosition.x, cameraPosition.y);
+
+		//dessin des reflets
+		if (animationActivated) {
+			//dessin des bâtiments
+			for (var i = 0; i < buildings.length; i++) {
+				buildings[i].drawAnimation();
+			}
+		}
+
+		//indispensable pour l'affichage du hud, tant qu'on a pas séparé les 2 canvas
+		contextAnimation.restore();
+
+		window.requestAnimFrame(function () {
+			DrawAnimation();
+			DrawHud();
+		});
+	}
+}
+
 function DrawHud() {
-	contextHud.clearRect(0, 0, canvasWidth, canvasHeight);
-	contextHud.save();
+	if (loadingComplete) {
+		contextHud.clearRect(0, 0, canvasWidth, canvasHeight);
+		contextHud.save();
 
-	hud.drawHud();
-	contextHud.fillStyle = "#6f440d";
-	contextHud.fillText("x : " + cameraPosition.x + ", y : " + cameraPosition.y, 120, 34);
-	var currentTime = new Date();
-	contextHud.fillText(currentTime.getHours() + ':' + currentTime.getSeconds(), canvasWidth - 72, 34);
+		hud.drawHud();
+		contextHud.fillStyle = "#6f440d";
+		contextHud.fillText("x : " + cameraPosition.x + ", y : " + cameraPosition.y, 120, 34);
+		var currentTime = new Date();
+		contextHud.fillText(currentTime.getHours() + ':' + currentTime.getSeconds(), canvasWidth - 72, 34);
 
-	contextHud.restore();
-
-	window.requestAnimFrame(function () {
-		DrawHud();
-	});
+		contextHud.restore();
+	}
 }
 
 function InitLoading() {
 	LoadTiles();
+	LoadAnimations();
 	LoadTileItems();
 	LoadHud();
 }
@@ -267,10 +297,18 @@ function CreateHud() {
 function CreateMap() {
 	var building = new Building(0, 5, 13);
 	buildings.push(building);
-	building = new Building(1, 4, 7);
+	building = new Building(1, 4, 7, [2]);
 	buildings.push(building);
-	building = new Building(2, 8, 9);
+	building = new Building(2, 8, 9, [0, 1]);
 	buildings.push(building);
+	Map.changeTile(6, 8, 8);
+	Map.changeTile(6, 9, 8);
+	Map.changeTile(6, 10, 8);
+	Map.changeTile(6, 11, 8);
+	Map.changeTile(6, 11, 9);
+	Map.changeTile(6, 10, 9);//pour mettre de l'eau sous le cold storage
+	Map.changeTile(6, 10, 10);
+	Map.changeTile(6, 11, 10);
 	var crop = new Crop(0, 1, 6);
 	crops.push(crop);
 	crop = new Crop(1, 3, 5);

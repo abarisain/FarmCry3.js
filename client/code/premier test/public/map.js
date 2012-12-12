@@ -22,6 +22,14 @@ var Map = {
 			tiles[i].drawTileLoading(progress);
 		}
 	},
+	changeTile: function (type, col, line) {
+		for (var i = 0; i < tiles.length; i++) {
+			if (tiles[i].col == col && tiles[i].line == line) {
+				tiles[i].image = type;
+				break;
+			}
+		}
+	},
 	//fonction qui dessine des grands triangles de chaque côté de la map pour masquer le ciel
 	drawMask: function () {
 		var margin = 500;
