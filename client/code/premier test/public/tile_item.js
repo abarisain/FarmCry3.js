@@ -31,11 +31,11 @@ TileItem.prototype = {
 	//par contre il faudra modifier l'utilisation de la liste des textures parce que tel quel c'est tout pourris
 	drawReflection: function (imageReflectionList) {
 		if (this.reflected) {
-			context.drawImage(imageReflectionList[this.image], this.imageLeft, this.y + tileHeight / 2);
+			context.drawImage(imageReflectionList[this.image].image, this.imageLeft, this.y + tileHeight / 2);
 		}
 	},
 	drawItem: function (imageList) {
-		context.drawImage(imageList[this.image], this.imageLeft, this.imageTop);
+		context.drawImage(imageList[this.image].image, this.imageLeft, this.imageTop);
 		context.fillStyle = "#fff";
 		context.fillRect(this.imageLeft, this.imageTop.y, 10, 10);
 	}
@@ -52,8 +52,8 @@ function LoadTexBorders() {
 	for (var i = 0; i < texBorderList.length; i++) {
 		var texture = new Texture(i, texBorderList[i], 'src/borders/' + texBorderList[i] + '.png');
 		texture.image.onload = function () {
-			texBorders.push(this);
 			currentLoadingCount++;
 		};
+		texBorders[i] = texture;
 	}
 }

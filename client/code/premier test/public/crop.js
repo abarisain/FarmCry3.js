@@ -27,15 +27,15 @@ function LoadTexCrops() {
 	for (var i = 0; i < texCropList.length; i++) {
 		var texture = new Texture(i, texCropList[i].image, 'src/crops/' + texCropList[i].image + '.png');
 		texture.image.onload = function () {
-			texCrops.push(this);
 			currentLoadingCount++;
 		};
+		texCrops[i] = texture;
 		if (texCropList[i].reflected) {
 			var textureReflection = new Texture(i, texCropList[i].image, 'src/crops/' + texCropList[i].image + '_reflect.png');
 			textureReflection.image.onload = function () {
-				texCropsReflections.push(this);
 				currentLoadingCount++;
 			};
+			texCropsReflections[i] = textureReflection;
 		}
 	}
 }

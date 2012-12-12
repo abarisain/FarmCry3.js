@@ -58,11 +58,11 @@ Tile.prototype = {
 		this.imageTop = this.y;// - this.centerY;
 	},
 	drawTileLoading: function (progress) {
-		context.drawImage(texTiles[this.image], this.imageLeft, this.imageTop - this.col * tileHeight * (1 - progress / animationDuration));
+		context.drawImage(texTiles[this.image].image, this.imageLeft, this.imageTop - this.col * tileHeight * (1 - progress / animationDuration));
 	},
 	//attention a bien se préoccuper du context avant, ici je m'en occupe pas
 	drawTile: function () {
-		context.drawImage(texTiles[this.image], this.imageLeft, this.imageTop);
+		context.drawImage(texTiles[this.image].image, this.imageLeft, this.imageTop);
 	}
 };
 
@@ -75,8 +75,8 @@ function LoadTexTiles() {
 	for (var i = 0; i < texTileList.length; i++) {
 		var tile = new Texture(i, texTileList[i].image, 'src/tiles/' + texTileList[i] + '.png');
 		tile.image.onload = function () {
-			texTiles.push(this);
 			currentLoadingCount++;
 		};
+		texTiles[i] = tile;
 	}
 }

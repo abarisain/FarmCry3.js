@@ -82,15 +82,15 @@ function LoadTexBuildings() {
 	for (var i = 0; i < texBuildingList.length; i++) {
 		var texture = new Texture(i, texBuildingList[i].image, 'src/buildings/' + texBuildingList[i].image + '.png');
 		texture.image.onload = function () {
-			texBuildings.push(this);
 			currentLoadingCount++;
 		};
+		texBuildings[i] = texture;
 		if (texBuildingList[i].reflected) {
 			var textureReflection = new Texture(i, texBuildingList[i].image, 'src/buildings/' + texBuildingList[i].image + '_reflect.png');
 			textureReflection.image.onload = function () {
-				texBuildingReflections.push(this);
 				currentLoadingCount++;
 			};
+			texBuildingReflections[i] = textureReflection;
 		}
 	}
 }
@@ -103,14 +103,14 @@ function LoadAnimations() {
 function LoadTexAnimations() {
 	for (var i = 0; i < texAnimatedList.length; i++) {
 		var texture = new TextureAnimated(i, 'src/animation/' + texAnimatedList[i].image + '.png');
-		animationList.push({
+		this.animationList.push({
 			animation: texture,
 			x: texAnimatedList[i].x,
 			y: texAnimatedList[i].y
 		});
 		texture.image.onload = function () {
-			texAnimations.push(this);
 			currentLoadingCount++;
 		};
+		texAnimations[i] = texture;
 	}
 }
