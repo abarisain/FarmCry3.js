@@ -17,4 +17,10 @@ Error.Descriptions = {
 	2: "Bad request. Check if the input parameters match the documentation."
 };
 
+Error.BadRequest = function (request, params) {
+	var tmpError = new Error(Error.Codes.BAD_REQUEST);
+	tmpError.error.description += " Request : " + request + " Parameters : " + params;
+	return tmpError;
+};
+
 module.exports = Error;

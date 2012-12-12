@@ -33,7 +33,7 @@ NetworkConnection.prototype = {
 			require_auth = true;
 		}
 		if (require_auth && !this.authenticated) {
-			this.sendError(Error.Codes.NOT_AUTHENTICATED);
+			console.log("Not sending message to unauthenticated user");
 			return;
 		}
 		this.socket.emit(event, data);

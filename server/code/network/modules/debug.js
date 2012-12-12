@@ -44,12 +44,12 @@ var NetworkModule = {
 		 * Search the socket.io doc for "Sending and getting data (acknowledgements)."
 		 * Client implementation is detailed there
 		 */
-		hello: function (connection, data, callback) {
+		hello: function (connection, request, data, callback) {
 			//Hello does not except any data. It sends back "world".
 			//Callback always excepts one argument, which is a literal
 			callback({result: "world"});
 		},
-		error: function (connection, data, callback) {
+		error: function (connection, request, data, callback) {
 			//This function always sends an error, echoing the "message" variable sent by the client
 			callback(new Error(Error.Codes.DEBUG_TEST_ERROR, "Debug test error, message : " + data.message));
 		}

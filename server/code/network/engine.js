@@ -18,10 +18,11 @@ var NetworkEngine = {
 			//Iterate over the modules and their functions to bind them to events (module.function)
 			NetworkEngine.modules.forEach(function (_module) {
 				Object.keys(_module.functions).forEach(function (_function) {
-					socket.on(_module.name + '.' + _function, function (data, callback) {
+					var request = _module.name + '.' + _function;
+					socket.on(request, function (data, callback) {
 						//Whitelist the auth module for authless events
 						if (connection.authenticated || _module == AuthModule) {
-							_module.functions[_function](connection, data, callback);
+							_module.functions[_function](connection, request, data, callback);
 						} else {
 							//If the function uses a callback, send the error this way, otherwise
 							//send it async.
@@ -38,6 +39,12 @@ var NetworkEngine = {
 			});
 			//Add the socket to the list
 			this.list.push(connection);
+		},
+		broadcast: function (event, data, require_auth) {
+			var listLength = this.list.length;
+			for (var i = 0; i < listLength; i++) {
+				this.list[i].send(event, data, require_auth);
+			}
 		}
 	},
 	modules: [

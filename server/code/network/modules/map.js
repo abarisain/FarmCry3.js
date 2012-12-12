@@ -4,7 +4,7 @@ GameState = require('../../models/gamestate');
 var NetworkModule = {
 	name: "map",
 	functions: {
-		dump: function (connection, data, callback) {
+		dump: function (connection, request, data, callback) {
 			//WARNING : This is a debug function and should never be used in production code
 			var tmpTiles = [];
 			for (var y = 0; y < GameState.board.size.y; y++) {

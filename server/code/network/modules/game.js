@@ -4,7 +4,7 @@ GameState = require('../../models/gamestate');
 var NetworkModule = {
 	name: "game",
 	functions: {
-		getInitialData: function (connection, data, callback) {
+		getInitialData: function (connection, request, data, callback) {
 			var tmpTiles = [];
 			for (var y = 0; y < GameState.board.size.y; y++) {
 				if (typeof tmpTiles[y] == 'undefined') {
