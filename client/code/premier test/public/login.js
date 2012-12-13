@@ -57,7 +57,6 @@ var initLogin = function () {
 	};
 
 	networkEngine.onLoadingStarted = function () {
-		document.querySelector("body").removeChild(document.querySelector("#login"));
 		setProgressbarValue(loadingProgressSpan, 0);
 	};
 
@@ -67,6 +66,7 @@ var initLogin = function () {
 
 	networkEngine.onLoadingFinished = function () {
 		loadingPanel.style.display = "none";
+		document.querySelector("body").removeChild(document.querySelector("#login"));
 	};
 
 	document.querySelector("#login_connect_button").onclick = function () {
