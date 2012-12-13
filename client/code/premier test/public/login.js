@@ -13,6 +13,18 @@ function supports_html5_storage() {
 	}
 }
 
+//IE localStorage failure on file:// workaround
+window.localStorageAlias = window.localStorage;
+if (document.all && !window.localStorage) {
+	window.localStorageAlias = {};
+	window.localStorageAlias.removeItem = function () {
+	};
+}
+
+function setProgressbarValue(progressSpan, progress) {
+	progressSpan.style.width = progress + "%";
+}
+
 var initLogin = function () {
 	loginEmailField = document.querySelector("#login_email");
 	loginPasswordField = document.querySelector("#login_password");
@@ -26,8 +38,8 @@ var initLogin = function () {
 	if (supports_html5_storage()) {
 		//Load the email from local storage
 		loginRememberCheckbox.checked = true;
-		if (typeof localStorage['email'] != 'undefined') {
-			loginEmailField.value = localStorage['email'];
+		if (typeof localStorageAlias['email'] != 'undefined') {
+			loginEmailField.value = localStorageAlias['email'];
 			loginPasswordField.focus();
 		}
 	} else {
@@ -44,6 +56,15 @@ var initLogin = function () {
 		window.location.reload();
 	};
 
+	networkEngine.onLoadingStarted = function () {
+		setProgressbarValue(loadingProgressSpan, 0);
+	};
+
+	networkEngine.onLoadingProgress = function (current, total) {
+		setProgressbarValue(loadingProgressSpan, current / total);
+		fsd, fsdf;
+	};
+
 	networkEngine.onLoadingFinished = function () {
 		document.querySelector("body").removeChild(document.querySelector("#login"));
 		loadingPanel.style.display = "none";
@@ -52,9 +73,9 @@ var initLogin = function () {
 	document.querySelector("#login_connect_button").onclick = function () {
 		if (supports_html5_storage()) {
 			if (loginRememberCheckbox.checked) {
-				localStorage['email'] = loginEmailField.value;
+				localStorageAlias['email'] = loginEmailField.value;
 			} else {
-				localStorage.removeItem('email');
+				localStorageAlias.removeItem('email');
 			}
 		}
 		loginPanel.style.visibility = "hidden";
@@ -63,8 +84,6 @@ var initLogin = function () {
 			networkEngine.init(document.querySelector("#login_server").value,
 				loginEmailField.value, loginPasswordField.value);
 		}, 1000);
-
-		//document.querySelector("body").removeChild(document.querySelector("#login"));
 		return true;
 	};
 };

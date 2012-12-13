@@ -9,7 +9,7 @@ var networkEngine = {
 	},
 	onLoginFailed: function (error) {
 	},
-	onStartLoading: function () {
+	onLoadingStarted: function () {
 	},
 	onLoadingProgress: function (current, total) {
 	},
@@ -48,7 +48,7 @@ var networkEngine = {
 		game: {
 			initialData: function (data) {
 				//Initial data is received here
-				networkEngine.onLoadingFinished();
+				networkEngine.onLoadingStarted();
 				initialDataLoaded = true;
 				Map.init(data);
 				CrymeEngine.init();

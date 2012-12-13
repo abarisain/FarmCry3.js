@@ -45,25 +45,15 @@ var CrymeEngine = {
 	},
 	Draw: {
 		Loading: function () {
-			CrymeEngine.canvas.hud.context.save();
-			CrymeEngine.canvas.hud.clear();
 			if (texTiles.length != texTileList.length && initialDataLoaded) {
-				CrymeEngine.canvas.hud.context.fillStyle = "#fff";
-				CrymeEngine.canvas.hud.context.fillText("Loading...", canvasWidth / 2 - 30, 260);
-
-				//affichage de la barre de progression
-				CrymeEngine.canvas.hud.context.fillStyle = "rgba(60, 60, 60, 1)";
-				CrymeEngine.canvas.hud.context.fillRect(canvasWidth / 2 - 202, 300, 404, 20);
-
-				CrymeEngine.canvas.hud.context.fillStyle = "rgba(120, 120, 120, 1)";
-				CrymeEngine.canvas.hud.context.fillRect(canvasWidth / 2 - 200, 302, 200 *
-					(currentLoadingCount / totalLoadingCount), 16);
-				CrymeEngine.canvas.hud.context.restore();
+				networkEngine.onLoadingProgress(currentLoadingCount, totalLoadingCount);
+				//Kind of a hack, but redoing the whole loading system is really hard and not so useful
 				window.requestAnimFrame(function () {
 					CrymeEngine.Draw.Loading();
 				});
 			}
 			else {
+				networkEngine.onLoadingFinished();
 				CreateMap();
 				window.requestAnimFrame(function () {
 					CrymeEngine.Draw.MapCreation(1, 1);
