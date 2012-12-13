@@ -40,6 +40,8 @@ var initLogin = function () {
 		loadingPanel.style.visibility = "hidden";
 		loginEmailField.focus();
 		alert(error);
+		//Reload the page because of a "bug" : 2nd connection will not work
+		window.location.reload();
 	};
 
 	networkEngine.onLoadingFinished = function () {
