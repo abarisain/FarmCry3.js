@@ -22,7 +22,7 @@ if (document.all && !window.localStorage) {
 }
 
 function setProgressbarValue(progressSpan, progress) {
-	progressSpan.style.width = progress + "%";
+	progressSpan.style.width = progress * 100 + "%";
 }
 
 var initLogin = function () {
@@ -57,6 +57,7 @@ var initLogin = function () {
 	};
 
 	networkEngine.onLoadingStarted = function () {
+		document.querySelector("body").removeChild(document.querySelector("#login"));
 		setProgressbarValue(loadingProgressSpan, 0);
 	};
 
@@ -65,7 +66,6 @@ var initLogin = function () {
 	};
 
 	networkEngine.onLoadingFinished = function () {
-		document.querySelector("body").removeChild(document.querySelector("#login"));
 		loadingPanel.style.display = "none";
 	};
 

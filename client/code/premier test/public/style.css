@@ -266,11 +266,6 @@ body {
     height: 100%;
     border-radius: 8px;
     box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
-    -webkit-transition: width .4s ease-in-out;
-    -moz-transition: width .4s ease-in-out;
-    -ms-transition: width .4s ease-in-out;
-    -o-transition: width .4s ease-in-out;
-    transition: width .4s ease-in-out;
 }
 
 .fc_window .blue span {

@@ -46,14 +46,12 @@ var CrymeEngine = {
 	Draw: {
 		Loading: function () {
 			if (texTiles.length != texTileList.length && initialDataLoaded) {
-				networkEngine.onLoadingProgress(currentLoadingCount, totalLoadingCount);
 				//Kind of a hack, but redoing the whole loading system is really hard and not so useful
 				window.requestAnimFrame(function () {
 					CrymeEngine.Draw.Loading();
 				});
 			}
 			else {
-				networkEngine.onLoadingFinished();
 				CreateMap();
 				window.requestAnimFrame(function () {
 					CrymeEngine.Draw.MapCreation(1, 1);
@@ -74,11 +72,13 @@ var CrymeEngine = {
 				//il vaux mieux restaurer le contexte avant de commencer à dessiner, pour être tranquille
 				CrymeEngine.canvas.map.context.restore();
 
-				CrymeEngine.canvas.map.context.fillStyle = "#fff";
-				CrymeEngine.canvas.map.context.fillText("Loading...  " + currentLoadingCount + '/' + totalLoadingCount, 20, 150);
+				//CrymeEngine.canvas.map.context.fillStyle = "#fff";
+				//CrymeEngine.canvas.map.context.fillText("Loading...  " + currentLoadingCount + '/' + totalLoadingCount, 20, 150);
+				networkEngine.onLoadingProgress(currentLoadingCount, totalLoadingCount);
 
 				if (progress == animationDuration && currentLoadingCount == totalLoadingCount) {
 					//Normal draw loop will now handle the rendering
+					networkEngine.onLoadingFinished();
 					loadingComplete = true;
 					CE.mapInvalidated = true;
 				}
