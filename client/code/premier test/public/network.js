@@ -5,6 +5,16 @@
 var networkEngine = {
 	socket: null,
 	socket_connected: false,
+	onConnectionFailed: function () {
+	},
+	onLoginFailed: function (error) {
+	},
+	onStartLoading: function () {
+	},
+	onLoadingProgress: function (current, total) {
+	},
+	onLoadingFinished: function () {
+	},
 	init: function (serverUrl, email, password) {
 		console.log("Network connecting to " + serverUrl);
 		this.socket = io.connect(serverUrl);
@@ -23,6 +33,7 @@ var networkEngine = {
 				if (typeof data.error != 'undefined') {
 					console.log("Error while logging in : " + data.error.description);
 					networkEngine.socket.disconnect();
+					networkEngine.onLoginFailed(data.error.description);
 				} else {
 					console.log("Network engine ready ! Requesting initial data.");
 					networkEngine.socket.emit("game.getInitialData");
@@ -37,6 +48,7 @@ var networkEngine = {
 		game: {
 			initialData: function (data) {
 				//Initial data is received here
+				networkEngine.onLoadingFinished();
 				initialDataLoaded = true;
 				Map.init(data);
 				CrymeEngine.init();

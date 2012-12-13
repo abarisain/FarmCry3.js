@@ -27,3 +27,6 @@ var networkEngine;
 var loginRememberCheckbox;
 var loginEmailField;
 var loginPasswordField;
+var loginPanel;
+var loadingPanel;
+var loadingProgressSpan;

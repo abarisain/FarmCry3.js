@@ -17,6 +17,10 @@ window.onload = function () {
 	loginEmailField = document.querySelector("#login_email");
 	loginPasswordField = document.querySelector("#login_password");
 	loginRememberCheckbox = document.querySelector("#login_remember_me");
+	loginPanel = document.querySelector("#login_panel");
+	loadingPanel = document.querySelector("#loading_panel");
+	loadingProgressSpan = document.querySelector("#loading_progress span");
+
 	//Check if local storage is supported
 	loginEmailField.focus();
 	if (supports_html5_storage()) {
@@ -31,6 +35,18 @@ window.onload = function () {
 		document.querySelector("#login_remember_me_label").style.visibility = "hidden";
 	}
 
+	networkEngine.onLoginFailed = function (error) {
+		loginPanel.style.visibility = "visible";
+		loadingPanel.style.visibility = "hidden";
+		loginEmailField.focus();
+		alert(error);
+	};
+
+	networkEngine.onLoadingFinished = function () {
+		document.querySelector("body").removeChild(document.querySelector("#login"));
+		loadingPanel.style.display = "none";
+	};
+
 	document.querySelector("#login_connect_button").onclick = function () {
 		if (supports_html5_storage()) {
 			if (loginRememberCheckbox.checked) {
@@ -39,10 +55,14 @@ window.onload = function () {
 				localStorage.removeItem('email');
 			}
 		}
-		networkEngine.init(document.querySelector("#login_server").value,
-			loginEmailField.value, loginPasswordField.value);
-		document.querySelector("body").removeChild(document.querySelector("#login"));
+		loginPanel.style.visibility = "hidden";
+		loadingPanel.style.visibility = "visible";
+		setTimeout(function () {
+			networkEngine.init(document.querySelector("#login_server").value,
+				loginEmailField.value, loginPasswordField.value);
+		}, 1000);
+
+		//document.querySelector("body").removeChild(document.querySelector("#login"));
 		return true;
 	};
-	//networkEngine.init('http://localhost:8080', "dreamteam69@gmail.com", "prout");
 };
