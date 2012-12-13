@@ -12,6 +12,7 @@ window.requestAnimFrame = (function () {
 })();
 
 var CrymeEngine = {
+	pauseRendering: false,
 	movingMap: false,
 	mapInvalidated: false, //If this is true, the map will be redrawn
 	camera: {
@@ -43,26 +44,6 @@ var CrymeEngine = {
 		}
 	},
 	Draw: {
-		Welcome: function () {
-			CrymeEngine.canvas.hud.context.save();
-			CrymeEngine.canvas.hud.clear();
-			if (!initialDataLoaded) {
-				CrymeEngine.canvas.hud.context.fillStyle = "#fff";
-				CrymeEngine.canvas.hud.context.fillText("Waiting for server...", canvasWidth / 2 - 30, 260);
-
-				CrymeEngine.canvas.hud.context.restore();
-				window.requestAnimFrame(function () {
-					CrymeEngine.Draw.Welcome();
-				});
-			}
-			else {
-				CreateHud();
-				window.requestAnimFrame(function () {
-					InitLoading();
-					CrymeEngine.Draw.Loading();
-				});
-			}
-		},
 		Loading: function () {
 			CrymeEngine.canvas.hud.context.save();
 			CrymeEngine.canvas.hud.clear();
@@ -93,7 +74,7 @@ var CrymeEngine = {
 			//Pour faire apparaître la map de façon un peu "Qui pête"
 			if (texTiles.length == texTileList.length) {
 				CrymeEngine.canvas.map.context.save();
-				CrymeEngine.canvas.map.context.clearRect(0, 0, canvasWidth, canvasHeight);
+				CrymeEngine.canvas.map.clear();
 
 				CrymeEngine.canvas.map.context.translate(CrymeEngine.camera.position.x,
 					CrymeEngine.camera.position.y);
@@ -107,11 +88,9 @@ var CrymeEngine = {
 				CrymeEngine.canvas.map.context.fillText("Loading...  " + currentLoadingCount + '/' + totalLoadingCount, 20, 150);
 
 				if (progress == animationDuration && currentLoadingCount == totalLoadingCount) {
+					//Normal draw loop will now handle the rendering
 					loadingComplete = true;
-					window.requestAnimFrame(function () {
-						CrymeEngine.Draw.Map();
-						CrymeEngine.Draw.Animation();
-					});
+					CE.mapInvalidated = true;
 				}
 				else {
 					if (progress >= animationDuration * 2 || progress <= 0) {
@@ -124,94 +103,93 @@ var CrymeEngine = {
 			}
 		},
 		Map: function () {
-			if (loadingComplete) {
-				CrymeEngine.canvas.map.clear();
-				CrymeEngine.canvas.map.context.save();
+			CrymeEngine.canvas.map.clear();
+			CrymeEngine.canvas.map.context.save();
 
-				//gestion du positionnement de la caméra
-				CrymeEngine.canvas.map.context.translate(CrymeEngine.camera.position.x, CrymeEngine.camera.position.y);
+			//gestion du positionnement de la caméra
+			CrymeEngine.canvas.map.context.translate(CrymeEngine.camera.position.x, CrymeEngine.camera.position.y);
 
-				var tmpLength;
+			var tmpLength;
 
-				//dessin des reflets
-				if (reflectActivated) {
-					if (reflectBuilding) {
-						tmpLength = CrymeEngine.buildings.length;
-						for (i = 0; i < tmpLength; i++) {
-							CrymeEngine.buildings[i].drawReflection();
-						}
-					}
-					if (reflectCrop) {
-						tmpLength = CrymeEngine.crops.length;
-						for (i = 0; i < tmpLength; i++) {
-							CrymeEngine.crops[i].drawReflection();
-						}
+			//dessin des reflets
+			if (reflectActivated) {
+				if (reflectBuilding) {
+					tmpLength = CrymeEngine.buildings.length;
+					for (i = 0; i < tmpLength; i++) {
+						CrymeEngine.buildings[i].drawReflection();
 					}
 				}
-				CrymeEngine.canvas.map.context.fillStyle = "#fff";
-				//dessin du terrain
-				Map.drawMask();
-				Map.drawMap();
-
-				//dessin des bâtiments
-				tmpLength = CrymeEngine.buildings.length;
-				for (var i = 0; i < tmpLength; i++) {
-					CrymeEngine.buildings[i].drawItem();
+				if (reflectCrop) {
+					tmpLength = CrymeEngine.crops.length;
+					for (i = 0; i < tmpLength; i++) {
+						CrymeEngine.crops[i].drawReflection();
+					}
 				}
-
-				tmpLength = CrymeEngine.crops.length;
-				for (i = 0; i < tmpLength; i++) {
-					CrymeEngine.crops[i].drawItem();
-				}
-
-				//indispensable pour l'affichage du hud, tant qu'on a pas séparé les 2 canvas
-				CrymeEngine.canvas.map.context.restore();
 			}
+			CrymeEngine.canvas.map.context.fillStyle = "#fff";
+			//dessin du terrain
+			Map.drawMask();
+			Map.drawMap();
+
+			//dessin des bâtiments
+			tmpLength = CrymeEngine.buildings.length;
+			for (var i = 0; i < tmpLength; i++) {
+				CrymeEngine.buildings[i].drawItem();
+			}
+
+			tmpLength = CrymeEngine.crops.length;
+			for (i = 0; i < tmpLength; i++) {
+				CrymeEngine.crops[i].drawItem();
+			}
+
+			CrymeEngine.canvas.map.context.restore();
 		},
 		Animation: function () {
-			if (loadingComplete) {
-				CrymeEngine.canvas.animation.clear();
-				CrymeEngine.canvas.animation.context.save();
+			CrymeEngine.canvas.animation.clear();
+			CrymeEngine.canvas.animation.context.save();
 
-				//gestion du positionnement de la caméra
-				CrymeEngine.canvas.animation.context.translate(CE.camera.position.x, CE.camera.position.y);
+			//gestion du positionnement de la caméra
+			CrymeEngine.canvas.animation.context.translate(CE.camera.position.x, CE.camera.position.y);
 
-				//dessin des reflets
-				if (animationActivated) {
-					//dessin des bâtiments
-					var tmpLength = CrymeEngine.buildings.length;
-					for (var i = 0; i < tmpLength; i++) {
-						CrymeEngine.buildings[i].drawAnimation();
-					}
+			//dessin des reflets
+			if (animationActivated) {
+				//dessin des bâtiments
+				var tmpLength = CrymeEngine.buildings.length;
+				for (var i = 0; i < tmpLength; i++) {
+					CrymeEngine.buildings[i].drawAnimation();
 				}
-
-				//indispensable pour l'affichage du hud, tant qu'on a pas séparé les 2 canvas
-				CrymeEngine.canvas.animation.context.restore();
-
-				window.requestAnimFrame(function () {
-					CrymeEngine.Draw.Animation();
-					CrymeEngine.Draw.Hud();
-				});
 			}
+
+			CrymeEngine.canvas.animation.context.restore();
 		},
 		Hud: function () {
-			if (loadingComplete) {
-				CrymeEngine.canvas.hud.clear();
-				CrymeEngine.canvas.hud.context.save();
+			CrymeEngine.canvas.hud.clear();
+			CrymeEngine.canvas.hud.context.save();
 
-				hud.drawHud();
-				CrymeEngine.canvas.hud.context.fillStyle = "#6f440d";
-				CrymeEngine.canvas.hud.context.fillText("x : " + CrymeEngine.camera.position.x + ", y : "
-					+ CrymeEngine.camera.position.y, 120, 34);
-				var currentTime = new Date();
-				CrymeEngine.canvas.hud.context.fillText(currentTime.getHours() + ':' +
-					currentTime.getSeconds(), canvasWidth - 72, 34);
+			hud.drawHud();
+			CrymeEngine.canvas.hud.context.fillStyle = "#6f440d";
+			CrymeEngine.canvas.hud.context.fillText("x : " + CrymeEngine.camera.position.x + ", y : "
+				+ CrymeEngine.camera.position.y, 120, 34);
+			var currentTime = new Date();
+			CrymeEngine.canvas.hud.context.fillText(currentTime.getHours() + ':' +
+				currentTime.getSeconds(), canvasWidth - 72, 34);
 
-				CrymeEngine.canvas.hud.context.restore();
-			}
+			CrymeEngine.canvas.hud.context.restore();
 		},
 		MainLoop: function () {
-
+			if (!CrymeEngine.pauseRendering) {
+				if (loadingComplete) {
+					//There is another render loop for when the map is loading
+					if (CrymeEngine.mapInvalidated) {
+						CrymeEngine.Draw.Map();
+					}
+					CrymeEngine.Draw.Animation();
+					CrymeEngine.Draw.Hud();
+				}
+			}
+			window.requestAnimFrame(function () {
+				CrymeEngine.Draw.MainLoop();
+			});
 		}
 	},
 	init: function () {
@@ -246,9 +224,9 @@ var CrymeEngine = {
 			if (event.keyCode == 32)//touche espace
 			{
 				CrymeEngine.hudElements[3].visible = !CrymeEngine.hudElements[3].visible;
-				window.requestAnimFrame(function () {
-					CrymeEngine.Draw.Map();
-				});
+				/*window.requestAnimFrame(function () {
+				 CrymeEngine.Draw.Map();
+				 });*/
 			}
 		};
 
@@ -268,13 +246,16 @@ var CrymeEngine = {
 				CrymeEngine.mousePosition.x = event.pageX - this.offsetLeft;
 				CrymeEngine.mousePosition.y = event.pageY - this.offsetTop;
 
-				window.requestAnimFrame(function () {
-					CrymeEngine.Draw.Map()
-				});
+				CrymeEngine.mapInvalidated = true;
 			}
 		};
 
-		CrymeEngine.Draw.Welcome();
+		CreateHud();
+		InitLoading();
+
+		//Start the main drawing loop.
+		CrymeEngine.Draw.Loading();
+		CrymeEngine.Draw.MainLoop();
 	}
 };
 
