@@ -76,9 +76,12 @@ var CrymeEngine = {
 				//CrymeEngine.canvas.map.context.fillText("Loading...  " + currentLoadingCount + '/' + totalLoadingCount, 20, 150);
 				networkEngine.onLoadingProgress(currentLoadingCount, totalLoadingCount);
 
+				if (progress == 1 && currentLoadingCount == totalLoadingCount) {
+					networkEngine.onLoadingFinished();
+				}
 				if (progress == animationDuration && currentLoadingCount == totalLoadingCount) {
 					//Normal draw loop will now handle the rendering
-					networkEngine.onLoadingFinished();
+					//networkEngine.onLoadingFinished();
 					loadingComplete = true;
 					CE.mapInvalidated = true;
 				}
