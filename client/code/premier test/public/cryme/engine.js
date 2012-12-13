@@ -228,6 +228,13 @@ var CrymeEngine = {
 			CrymeEngine.movingMap = false;
 		};
 
+		window.onresize = function () {
+			//Doesn't work yet
+			//canvasWidth = window.innerWidth;
+			//canvasHeight = window.height;
+			//CrymeEngine.canvas.resizeAll(canvasWidth, canvasHeight);
+		};
+
 		this.canvas.hud.canvas.onmousemove = function (event) {
 			if (CrymeEngine.movingMap) {
 				event = event || window.event;
@@ -296,7 +303,3 @@ function CreateMap() {
 	crop = new Crop(2, 2, 1);
 	CrymeEngine.crops.push(crop);
 }
-
-window.onload = function () {
-	networkEngine.init('http://localhost:8080', "dreamteam69@gmail.com", "prout");
-};
