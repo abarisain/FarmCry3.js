@@ -241,12 +241,12 @@ var CrymeEngine = {
 			}
 		};
 
-		CreateHud();
-		InitLoading();
-
 		//Start the main drawing loop.
 		CrymeEngine.Draw.Loading();
 		CrymeEngine.Draw.MainLoop();
+
+		CreateHud();
+		InitLoading();
 	}
 };
 

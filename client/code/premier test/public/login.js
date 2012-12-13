@@ -62,7 +62,6 @@ var initLogin = function () {
 
 	networkEngine.onLoadingProgress = function (current, total) {
 		setProgressbarValue(loadingProgressSpan, current / total);
-		fsd, fsdf;
 	};
 
 	networkEngine.onLoadingFinished = function () {
@@ -80,10 +79,11 @@ var initLogin = function () {
 		}
 		loginPanel.style.visibility = "hidden";
 		loadingPanel.style.visibility = "visible";
+		//Fake a small login delay, remove this later
 		setTimeout(function () {
 			networkEngine.init(document.querySelector("#login_server").value,
 				loginEmailField.value, loginPasswordField.value);
-		}, 1000);
+		}, 500);
 		return true;
 	};
 };
