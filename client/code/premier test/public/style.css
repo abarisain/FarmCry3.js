@@ -1,6 +1,7 @@
 @font-face {
     font-family: 'stanberry';
-    src: url('stanberry-webfont.eot?#iefix') format('embedded-opentype'), url('stanberry-webfont.woff') format('woff'), url('stanberry-webfont.ttf') format('truetype'), font-weight: normal;
+    src: url('src/fonts/stanberry-webfont.eot?#iefix') format('embedded-opentype'), url('src/fonts/stanberry-webfont.woff') format('woff'), url('src/fonts/stanberry-webfont.ttf') format('truetype');
+    font-weight: normal;
     font-style: normal;
 }
 

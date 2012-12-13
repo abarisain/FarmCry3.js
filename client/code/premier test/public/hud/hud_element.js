@@ -9,7 +9,7 @@ HudElement.prototype = {
 	//attention a bien se préoccuper du context avant, ici je m'en occupe pas
 	drawItem: function (imageList) {
 		if (this.visible) {
-			contextHud.drawImage(imageList[this.image], this.x, this.y);
+			CrymeEngine.canvas.hud.context.drawImage(imageList[this.image].image, this.x, this.y);
 		}
 	}
 };

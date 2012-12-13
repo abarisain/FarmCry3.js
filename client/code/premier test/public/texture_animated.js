@@ -21,6 +21,6 @@ TextureAnimated.prototype = {
 	},
 	drawAnimation: function (x, y) {
 		this.currentFrame = (this.currentFrame + 1 / this.frameTimer) % this.frameCount;
-		contextAnimation.drawImage(texAnimations[this.index].image, Math.floor(this.currentFrame) * this.frameWidth, 0, this.frameWidth, this.height, x, y, this.frameWidth, this.height);
+		CE.canvas.animation.context.drawImage(texAnimations[this.index].image, Math.floor(this.currentFrame) * this.frameWidth, 0, this.frameWidth, this.height, x, y, this.frameWidth, this.height);
 	}
 };

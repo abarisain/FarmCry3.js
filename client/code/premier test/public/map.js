@@ -13,19 +13,20 @@ var Map = {
 		for (var i = 0; i < tileData.length; i++) {
 			for (var j = 0; j < tileData[i].length; j++) {
 				var tile = new Tile(tileData[i][j]);
-				tiles.push(tile);
+				CrymeEngine.tiles.push(tile);
 			}
 		}
 	},
 	drawMapLoading: function (progress) {
-		for (var i = 0; i < Math.min(tiles.length * progress / animationDuration, tiles.length); i++) {
-			tiles[i].drawTileLoading(progress);
+		for (var i = 0;
+			 i < Math.min(CrymeEngine.tiles.length * progress / animationDuration, CrymeEngine.tiles.length); i++) {
+			CrymeEngine.tiles[i].drawTileLoading(progress);
 		}
 	},
 	changeTile: function (type, col, line) {
-		for (var i = 0; i < tiles.length; i++) {
-			if (tiles[i].col == col && tiles[i].line == line) {
-				tiles[i].image = type;
+		for (var i = 0; i < CrymeEngine.tiles.length; i++) {
+			if (CrymeEngine.tiles[i].col == col && CrymeEngine.tiles[i].line == line) {
+				CrymeEngine.tiles[i].image = type;
 				break;
 			}
 		}
@@ -33,6 +34,7 @@ var Map = {
 	//fonction qui dessine des grands triangles de chaque côté de la map pour masquer le ciel
 	drawMask: function () {
 		var margin = 500;
+		var context = CrymeEngine.canvas.map.context;
 
 		//bordure gauche
 		context.beginPath();
@@ -63,17 +65,17 @@ var Map = {
 		context.fill();
 	},
 	drawMap: function () {
-		for (var i = 0; i < tiles.length; i++) {
-			tiles[i].drawTile();
+		for (var i = 0; i < CrymeEngine.tiles.length; i++) {
+			CrymeEngine.tiles[i].drawTile();
 			/*if (this.col == colSize - 1) {
 			 context.drawImage(texBorders[1], (this.col) * tileWidth - (tileWidth) * this.line, (this.line - lineSize + 1) * tileHeight + (tileHeight) * this.col + 1);
 			 }*/
 			if (this.line == 0) {
-				context.fillText('col : ' + this.col, this.col * tileWidth, this.line * tileHeight);
+				CrymeEngine.canvas.map.context.fillText('col : ' + this.col, this.col * tileWidth, this.line * tileHeight);
 			}
 			/*else if (this.line == lineSize - 1) {
 			 context.drawImage(texBorders[0], this.col * tileWidth - (tileWidth) * (this.line), (this.line - lineSize + 1) * tileHeight + (tileHeight) * (this.col) + 1);
 			 }*/
 		}
 	}
-}
+};

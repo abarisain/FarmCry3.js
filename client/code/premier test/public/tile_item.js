@@ -31,13 +31,13 @@ TileItem.prototype = {
 	//par contre il faudra modifier l'utilisation de la liste des textures parce que tel quel c'est tout pourris
 	drawReflection: function (imageReflectionList) {
 		if (this.reflected) {
-			context.drawImage(imageReflectionList[this.image].image, this.imageLeft, this.y + tileHeight / 2);
+			CE.canvas.map.context.drawImage(imageReflectionList[this.image].image, this.imageLeft, this.y + tileHeight / 2);
 		}
 	},
 	drawItem: function (imageList) {
-		context.drawImage(imageList[this.image].image, this.imageLeft, this.imageTop);
-		context.fillStyle = "#fff";
-		context.fillRect(this.imageLeft, this.imageTop.y, 10, 10);
+		CE.canvas.map.context.drawImage(imageList[this.image].image, this.imageLeft, this.imageTop);
+		CE.canvas.map.context.fillStyle = "#fff";
+		CE.canvas.map.context.fillRect(this.imageLeft, this.imageTop.y, 10, 10);
 	}
 };
 
