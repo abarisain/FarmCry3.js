@@ -22,3 +22,8 @@ var loadingComplete = false;
 
 //Moteur réseau
 var networkEngine;
+
+//Login
+var loginRememberCheckbox;
+var loginEmailField;
+var loginPasswordField;
