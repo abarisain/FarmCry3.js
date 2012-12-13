@@ -92,7 +92,7 @@ body {
     height: 100%;
     width: 100%;
     background-image: url('src/login/background.jpg');
-    background-size: 100%;
+    background-size: cover;
     min-height: 700px;
 }
 
