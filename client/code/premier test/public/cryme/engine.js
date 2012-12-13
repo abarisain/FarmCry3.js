@@ -205,8 +205,8 @@ var CrymeEngine = {
 
 		this.canvas.hud.canvas.onmousedown = function (event) {
 			if (loadingComplete) {
-				if (event.button == 2)//le clic droit sers a bouger la map, et le gauche a agir
-				{
+				if (event.button == 2) {
+					//le clic droit sers a bouger la map, et le gauche a agir
 					//positionnement de la souris
 					CrymeEngine.mousePosition.x = event.pageX - this.offsetLeft;
 					CrymeEngine.mousePosition.y = event.pageY - this.offsetTop;
@@ -218,12 +218,9 @@ var CrymeEngine = {
 		};
 
 		window.onkeydown = function (event) {
-			if (event.keyCode == 32)//touche espace
-			{
+			if (event.keyCode == 32) {
+				//touche espace
 				CrymeEngine.hudElements[3].visible = !CrymeEngine.hudElements[3].visible;
-				/*window.requestAnimFrame(function () {
-				 CrymeEngine.Draw.Map();
-				 });*/
 			}
 		};
 
