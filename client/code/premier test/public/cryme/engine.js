@@ -164,7 +164,6 @@ var CrymeEngine = {
 		},
 		Hud: function () {
 			CrymeEngine.canvas.hud.clear();
-			CrymeEngine.canvas.hud.context.save();
 
 			hud.drawHud();
 			CrymeEngine.canvas.hud.context.fillStyle = "#6f440d";
@@ -173,8 +172,6 @@ var CrymeEngine = {
 			var currentTime = new Date();
 			CrymeEngine.canvas.hud.context.fillText(currentTime.getHours() + ':' +
 				currentTime.getSeconds(), canvasWidth - 72, 34);
-
-			CrymeEngine.canvas.hud.context.restore();
 		},
 		MainLoop: function () {
 			if (!CrymeEngine.pauseRendering) {
