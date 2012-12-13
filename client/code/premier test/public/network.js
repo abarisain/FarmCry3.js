@@ -39,6 +39,7 @@ var networkEngine = {
 				//Initial data is received here
 				initialDataLoaded = true;
 				Map.init(data);
+				CrymeEngine.init();
 				currentLoadingCount++;
 				console.log("Initial data ok");
 			}

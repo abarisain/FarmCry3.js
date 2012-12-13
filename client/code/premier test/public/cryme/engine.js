@@ -301,6 +301,5 @@ function CreateMap() {
 }
 
 window.onload = function () {
-	CrymeEngine.init();
 	networkEngine.init('http://localhost:8080', "dreamteam69@gmail.com", "prout");
 };
