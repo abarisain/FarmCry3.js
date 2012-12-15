@@ -21,8 +21,8 @@ function NetworkConnection(socket) {
 			return this.isPointInViewport(tile.position.x, tile.position.y);
 		},
 		isPointInViewport: function (x, y) {
-			return (x >= this.viewport.x && x <= (this.viewport.width + this.viewport.x) &&
-				y >= this.viewport.y && y <= (this.viewport.height + this.viewport.y))
+			return (x >= this.x && x <= (this.width + this.x) &&
+				y >= this.y && y <= (this.height + this.y))
 		}
 	}
 }
