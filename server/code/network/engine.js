@@ -3,6 +3,7 @@ DebugModule = require('./modules/debug');
 AuthModule = require('./modules/auth');
 MapModule = require('./modules/map');
 GameModule = require('./modules/game');
+EventManager = require('../event_manager');
 
 // Check modules/debug.js for an explanation of how modules work and should be written
 
@@ -15,6 +16,19 @@ var NetworkEngine = {
 			//TODO : Implement a remove thingy
 			//Register the NetworkModules to socket.io
 			var connection = new NetworkConnection(socket);
+			socket.on('disconnect', function () {
+				console.log((connection.farmer == null ? "Unknown farmer" : connection.farmer.nickname)
+					+ " disconnected");
+				var clientCount = NetworkEngine.clients.list.length;
+				for (var i = clientCount - 1; i >= 0; i--) {
+					if (NetworkEngine.clients.list[i].socket.id == socket.id) {
+						NetworkEngine.clients.list.removeItemAtIndex(i);
+					}
+				}
+				if (connection.farmer != null) {
+					EventManager.subsystems.player.disconnected(farmer);
+				}
+			});
 			//Iterate over the modules and their functions to bind them to events (module.function)
 			NetworkEngine.modules.forEach(function (_module) {
 				Object.keys(_module.functions).forEach(function (_function) {

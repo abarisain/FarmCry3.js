@@ -9,6 +9,26 @@ var EventManager = {
 	},
 	subsystems: {
 		player: {
+			connected: function (socketID, farmer) {
+				farmer.logged_in = true;
+				//Disconnect already connected clients, but check for socket id so we don't disconnect ourselves
+				var clientCount = NetworkEngine.clients.list.length;
+				var connection;
+				for (var i = 0; i < clientCount; i++) {
+					connection = NetworkEngine.clients.list[i];
+					if (connection.farmer.email == farmer.email &&
+						connection.socket.id != socketID) {
+						connection.socket.disconnect();
+					}
+				}
+			},
+			disconnected: function (farmer) {
+				if (farmer == null) {
+					return;
+				}
+				farmer.logged_in = false;
+
+			},
 			move: function (farmer, x, y) {
 				x = Math.floor(x);
 				y = Math.floor(y);

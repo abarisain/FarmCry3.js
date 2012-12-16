@@ -1,6 +1,24 @@
 console.log("Starting server ...");
+
+/*
+ * Javascript builtin objects patching, this needs to be done before anything else
+ */
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function (from, to) {
+	var rest = this.slice((to || from) + 1 || this.length);
+	this.length = from < 0 ? this.length + from : from;
+	return this.push.apply(this, rest);
+};
+Array.prototype.removeItem = function (element) {
+	this.splice(this.indexOf(element), 1);
+};
+Array.prototype.removeItemAtIndex = function (index) {
+	this.splice(index, 1);
+};
+
 GameState = require('./models/gamestate');
 NetworkEngine = require('./network/engine');
+
 
 var io = require('socket.io').listen(8080);
 
