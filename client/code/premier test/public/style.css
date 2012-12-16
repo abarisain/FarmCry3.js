@@ -160,6 +160,83 @@ body {
     margin-top: 35px;
 }
 
+/* Chat */
+
+#hud_chat {
+    z-index: 12;
+    height: 245px;
+    width: 460px;
+    position: absolute;
+    top: 100%;
+    margin-top: -275px;
+    background-color: rgba(0, 0, 0, 0.4);
+    font-family: 'stanberry', sans-serif;
+    font-weight: normal;
+    font-size: 14px;
+    border-style: none;
+    color: white;
+}
+
+#hud_chat_messages {
+    padding: 5px;
+    height: 205px;
+    width: 450px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border-bottom: solid 1px rgba(255, 255, 255, 0.15);
+}
+
+#hud_chat .chat_text {
+
+}
+
+#hud_chat .server {
+
+}
+
+#hud_chat .player {
+
+}
+
+#hud_chat .self {
+
+}
+
+#hud_chat input[type="text"] {
+    padding: 4px;
+    background-color: transparent;
+    outline: none;
+    font-family: 'stanberry', sans-serif;
+    font-weight: normal;
+    font-size: 14px;
+    color: white;
+    border: none;
+    height: 20px;
+    width: 370px;
+    position: absolute;
+    top: 216px;
+}
+
+#hud_chat_send {
+    padding: 2px;
+    padding-top: 4px;
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-weight: normal;
+    color: white;
+    font: 14px 'stanberry', Arial, Helvetica, sans-serif;
+    background-color: transparent;
+    height: 23px;
+    width: 75px;
+    position: absolute;
+    top: 216px;
+    left: 381px;
+    border-left: solid 1px rgba(255, 255, 255, 0.15);
+}
+
 /* Shared styles */
 
 .center {
