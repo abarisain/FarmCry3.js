@@ -3,6 +3,7 @@ DebugModule = require('./modules/debug');
 AuthModule = require('./modules/auth');
 MapModule = require('./modules/map');
 GameModule = require('./modules/game');
+ChatModule = require('./modules/chat');
 EventManager = require('../event_manager');
 
 // Check modules/debug.js for an explanation of how modules work and should be written
@@ -65,7 +66,8 @@ var NetworkEngine = {
 		DebugModule,
 		AuthModule,
 		MapModule,
-		GameModule
+		GameModule,
+		ChatModule
 	]
 };
 
