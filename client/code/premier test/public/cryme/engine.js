@@ -206,10 +206,23 @@ var CrymeEngine = {
 		};
 
 		window.onkeydown = function (event) {
-			if (event.keyCode == 32) {
-				//touche espace
-				CrymeEngine.hudElements[3].visible = !CrymeEngine.hudElements[3].visible;
+			//Special case, unless we are pressing enter, ignore everything while we're in the chat box
+			if (document.activeElement == hud.chat.divs.input && event.keyCode != 13) {
+				return true;
 			}
+			switch (event.keyCode) {
+				case 13: //Enter
+					if (document.activeElement == hud.chat.divs.input) {
+						hud.chat.send();
+					} else {
+						hud.chat.divs.input.focus();
+					}
+					break;
+				case 32: //Space
+					CrymeEngine.hudElements[3].visible = !CrymeEngine.hudElements[3].visible;
+					break;
+			}
+			return false;
 		};
 
 		window.onmouseup = function () {

@@ -62,6 +62,7 @@ hud.chat = {
 		}
 		this.divs.input.value = "";
 		this.hideSendButton();
+		this.divs.input.blur();
 	},
 	clear: function () {
 		if (this.divs.log.hasChildNodes()) {
