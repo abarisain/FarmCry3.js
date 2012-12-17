@@ -28,7 +28,7 @@ function LoadTexHud() {
 /* Chat methods */
 //TODO : Refactor the HUD, really. No, REALLY.
 hud.chat = {
-	timestampFormat: "HH:MM:SS",
+	timestampFormat: "HH:MM:ss",
 	Kind: {
 		SERVER: 0,
 		PLAYER: 1
@@ -76,7 +76,7 @@ hud.chat = {
 			console.log("Error : invalid chat message, ignoring. Data : " + messageData);
 		}
 		var tmpDiv = document.createElement("div");
-		var messagePrefix = dateformat(new Date(), this.timestampFormat);
+		var messagePrefix = new Date().format(this.timestampFormat) + " ";
 		var classText = "";
 		switch (messageData.kind) {
 			case this.Kind.SERVER:
@@ -88,8 +88,8 @@ hud.chat = {
 				break;
 		}
 		tmpDiv.setAttribute("class", "chat_text " + classText);
-		tmpDiv.append(document.createTextNode(messagePrefix + messageData.message));
-		this.divs.log.append(tmpDiv);
+		tmpDiv.appendChild(document.createTextNode(messagePrefix + messageData.message));
+		this.divs.log.appendChild(tmpDiv);
 		this.divs.log.scrollTop = this.divs.log.scrollHeight;
 	}
 };
