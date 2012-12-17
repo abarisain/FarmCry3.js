@@ -38,7 +38,7 @@ var EventManager = {
 				var isGhost = false;
 				var clientCount = NetworkEngine.clients.list.length;
 				for (var i = 0; i < clientCount; i++) {
-					if (NetworkEngine.clients.list[i].farmer.nickname == farmer.nickname) {
+					if (NetworkEngine.clients.list[i].farmer.email == farmer.email) {
 						isGhost = true;
 						break;
 					}
