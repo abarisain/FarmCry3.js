@@ -24,3 +24,72 @@ function LoadTexHud() {
 		texHud[i] = texture;
 	}
 }
+
+/* Chat methods */
+//TODO : Refactor the HUD, really. No, REALLY.
+hud.chat = {
+	timestampFormat: "HH:MM:SS",
+	Kind: {
+		SERVER: 0,
+		PLAYER: 1
+	},
+	divs: {
+		log: null,
+		input: null,
+		send: null
+	},
+	init: function () {
+		this.divs.log = document.getElementById("hud_chat_messages");
+		this.divs.input = document.getElementById("hud_chat_message");
+		this.divs.send = document.getElementById("hud_chat_send");
+		this.divs.input.addEventListener("input", function () {
+			hud.chat.divs.send.setAttribute("class", hud.chat.divs.input.value == "" ? "hidden" : "");
+			return false;
+		});
+		this.hideSendButton();
+		this.divs.send.onclick = function () {
+			hud.chat.send();
+			return false;
+		}
+	},
+	hideSendButton: function () {
+		this.divs.send.setAttribute("class", "hidden");
+	},
+	send: function () {
+		if (this.divs.input.value != "") {
+			//TODO : Parse /commands here
+			networkEngine.subsystems.chat.sendMessage(this.divs.input.value);
+		}
+		this.divs.input.value = "";
+		this.hideSendButton();
+	},
+	clear: function () {
+		if (this.divs.log.hasChildNodes()) {
+			while (this.divs.log.childNodes.length >= 1) {
+				this.divs.log.removeChild(this.divs.log.firstChild);
+			}
+		}
+	},
+	append: function (messageData) {
+		if (typeof messageData == 'undefined' || typeof messageData.kind == 'undefined' ||
+			typeof messageData.message == 'undefined') {
+			console.log("Error : invalid chat message, ignoring. Data : " + messageData);
+		}
+		var tmpDiv = document.createElement("div");
+		var messagePrefix = dateformat(new Date(), this.timestampFormat);
+		var classText = "";
+		switch (messageData.kind) {
+			case this.Kind.SERVER:
+				classText = "server";
+				break;
+			case this.Kind.PLAYER:
+				classText = "player";
+				messagePrefix += "<" + messageData.player + "> ";
+				break;
+		}
+		tmpDiv.setAttribute("class", "chat_text " + classText);
+		tmpDiv.append(document.createTextNode(messagePrefix + messageData.message));
+		this.divs.log.append(tmpDiv);
+		this.divs.log.scrollTop = this.divs.log.scrollHeight;
+	}
+};

@@ -259,6 +259,10 @@ body {
     font-size: 19px;
 }
 
+.hidden {
+    visibility: hidden;
+}
+
 .fc_window {
     background-image: linear-gradient(bottom, rgb(193, 185, 156) 0%, rgb(243, 233, 196) 100%);
     background-image: -o-linear-gradient(bottom, rgb(193, 185, 156) 0%, rgb(243, 233, 196) 100%);

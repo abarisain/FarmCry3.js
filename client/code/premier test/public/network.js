@@ -22,9 +22,9 @@ var networkEngine = {
 		this.socket.on('connect', function () {
 			//Iterate over the subsystems and their functions to bind them to events (module.function)
 			Object.keys(networkEngine.subsystems).forEach(function (subsystem) {
-				Object.keys(networkEngine.subsystems[subsystem]).forEach(function (_function) {
+				Object.keys(networkEngine.subsystems[subsystem].events).forEach(function (_function) {
 					networkEngine.socket.on(subsystem + '.' + _function, function (data) {
-						networkEngine.subsystems[subsystem][_function](data);
+						networkEngine.subsystems[subsystem].events[_function](data);
 					});
 				});
 			});
@@ -51,14 +51,29 @@ var networkEngine = {
 	},
 	subsystems: {
 		game: {
-			initialData: function (data) {
-				//Initial data is received here
-				networkEngine.onLoadingStarted();
-				initialDataLoaded = true;
-				Map.init(data);
-				CrymeEngine.init();
-				currentLoadingCount++;
-				console.log("Initial data ok");
+			events: {
+				initialData: function (data) {
+					//Initial data is received here
+					networkEngine.onLoadingStarted();
+					initialDataLoaded = true;
+					Map.init(data);
+					CrymeEngine.init();
+					currentLoadingCount++;
+					console.log("Initial data ok");
+				}
+			}
+		},
+		chat: {
+			sendMessage: function (message) {
+				this.sendCommand("message", message);
+			},
+			sendCommand: function (command, data) {
+				networkEngine.call("chat", command, data);
+			},
+			events: {
+				message: function (data) {
+					hud.chat.append(data);
+				}
 			}
 		}
 	}
