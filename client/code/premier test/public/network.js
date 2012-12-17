@@ -65,7 +65,7 @@ var networkEngine = {
 		},
 		chat: {
 			sendMessage: function (message) {
-				this.sendCommand("message", message);
+				this.sendCommand("message", {message: message});
 			},
 			sendCommand: function (command, data) {
 				networkEngine.call("chat", command, data);
