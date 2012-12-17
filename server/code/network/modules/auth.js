@@ -22,7 +22,7 @@ var NetworkModule = {
 					connection.authenticated = true;
 					connection.farmer = currentFarmer;
 					callback({result: "ok", farmer: currentFarmer.getSmallFarmer()});
-					EventManager.subsystems.player.connected(connection.socket.id, connection.farmer);
+					EventManager.subsystems.player.connected(connection, connection.farmer);
 					return;
 					//}
 				}

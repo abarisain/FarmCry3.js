@@ -10,7 +10,7 @@ var EventManager = {
 	},
 	subsystems: {
 		player: {
-			connected: function (socketID, farmer) {
+			connected: function (newConnection, farmer) {
 				farmer.logged_in = true;
 				//Disconnect already connected clients, but check for socket id so we don't disconnect ourselves
 				var clientCount = NetworkEngine.clients.list.length;
@@ -21,13 +21,14 @@ var EventManager = {
 						//This should never happen, but I'm tired of crashing because of this
 					}
 					if (connection.farmer.email == farmer.email &&
-						connection.socket.id != socketID) {
+						connection.socket.id != newConnection.socket.id) {
 						connection.socket.disconnect();
 						//There should not be any ghost left, this needs to be tested
 						//But due to the single threaded nature of node, even some asyncness won't matter
 						break;
 					}
 				}
+				Chat.sendServerMessage(newConnection, "Welcome to FarmCry, " + farmer.nickname + " !");
 				Chat.broadcastServerMessage(farmer.nickname + " signed in");
 			},
 			disconnected: function (farmer) {
