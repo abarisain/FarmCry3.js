@@ -18,7 +18,7 @@ var NetworkModule = {
 			if (typeof data.message == 'undefined') {
 				//TODO : Work out a better way to handle BAD_REQUEST logging and feeback. Contract based programming ?
 				console.log("Bad request in chat.messages. Data : " + data);
-				callback(new Error(Error.Codes.BAD_REQUEST, null, request, data));
+				//callback(new Error(Error.Codes.BAD_REQUEST, null, request, data));
 				return;
 			}
 			if (connection.farmer == null) {
