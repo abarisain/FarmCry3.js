@@ -1,5 +1,6 @@
 GameState = require('./models/gamestate');
 NetworkEngine = require('./network/engine');
+Chat = require('./network/modules/chat');
 
 var EventManager = {
 	tick: function () {
@@ -16,18 +17,36 @@ var EventManager = {
 				var connection;
 				for (var i = 0; i < clientCount; i++) {
 					connection = NetworkEngine.clients.list[i];
+					if (typeof connection == 'undefined') {
+						//This should never happen, but I'm tired of crashing because of this
+					}
 					if (connection.farmer.email == farmer.email &&
 						connection.socket.id != socketID) {
 						connection.socket.disconnect();
+						//There should not be any ghost left, this needs to be tested
+						//But due to the single threaded nature of node, even some asyncness won't matter
+						break;
 					}
 				}
+				Chat.broadcastServerMessage(farmer.nickname + " signed in");
 			},
 			disconnected: function (farmer) {
 				if (farmer == null) {
 					return;
 				}
-				farmer.logged_in = false;
-
+				//Check if it was a ghost disconnection (the farmer connected but disconnected the other client)
+				var isGhost = false;
+				var clientCount = NetworkEngine.clients.list.length;
+				for (var i = 0; i < clientCount; i++) {
+					if (NetworkEngine.clients.list[i].farmer.nickname == farmer.nickname) {
+						isGhost = true;
+						break;
+					}
+				}
+				if (!isGhost) {
+					farmer.logged_in = false;
+					Chat.broadcastServerMessage(farmer.nickname + " signed out");
+				}
 			},
 			move: function (farmer, x, y) {
 				x = Math.floor(x);

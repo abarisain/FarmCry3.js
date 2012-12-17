@@ -1,30 +1,31 @@
 Error = require('../error.js');
+NetworkEngine = require('../engine');
 
 var NetworkModule = {
 	name: "chat",
+	Kind: {
+		SERVER: 0,
+		PLAYER: 1
+	},
+	broadcastServerMessage: function (message) {
+		NetworkEngine.clients.broadcast("chat.message", {kind: NetworkModule.Kind.SERVER, message: message});
+	},
 	functions: {
 		send: function (connection, request, data, callback) {
 			if (typeof data.message == 'undefined') {
 				callback(new Error(Error.Codes.BAD_REQUEST, null, request, data));
 				return;
 			}
-			var farmersCount = GameState.farmers.length;
-			var currentFarmer;
-			for (var i = 0; i < farmersCount; i++) {
-				currentFarmer = GameState.farmers[i];
-				if (data.email == currentFarmer.email) {
-					//TODO : Disconnect already connected farmers for that email (if any)
-					//TODO : CRYPT THIS SHIT
-					//Password check is disabled, too annoying for debugging. I tested it before commenting it.
-					//if(data.password == currentFarmer.password) {
-					connection.authenticated = true;
-					callback({result: "ok", farmer: currentFarmer.getSmallFarmer()});
-					return;
-					//}
-				}
+			if (connection.farmer == null) {
+				//wat
+				console.log("Internal error in chat module : Farmer == null");
+				return;
 			}
-			//Login failed if this code is reached
-			callback(new Error(Error.Codes.BAD_LOGIN));
+			NetworkEngine.clients.broadcast("chat.message", {
+				kind: NetworkModule.Kind.PLAYER,
+				message: data.message,
+				player: connection.farmer.nickname
+			});
 		}
 	}
 };

@@ -1,5 +1,6 @@
 Error = require('../error.js');
 GameState = require('../../models/gamestate');
+EventManager = require('../../event_manager');
 
 var NetworkModule = {
 	name: "auth",
@@ -21,6 +22,7 @@ var NetworkModule = {
 					connection.authenticated = true;
 					connection.farmer = currentFarmer;
 					callback({result: "ok", farmer: currentFarmer.getSmallFarmer()});
+					EventManager.subsystems.player.connected(connection.socket.id, connection.farmer);
 					return;
 					//}
 				}

@@ -19,7 +19,7 @@ var NetworkEngine = {
 			var connection = new NetworkConnection(socket);
 			socket.on('disconnect', function () {
 				console.log((connection.farmer == null ? "Unknown farmer" : connection.farmer.nickname)
-					+ " disconnected");
+					+ " disconnected, socketID : " + connection.socket.id);
 				var clientCount = NetworkEngine.clients.list.length;
 				for (var i = clientCount - 1; i >= 0; i--) {
 					if (NetworkEngine.clients.list[i].socket.id == socket.id) {
