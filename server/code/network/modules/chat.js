@@ -14,7 +14,7 @@ var NetworkModule = {
 		connection.send("chat.message", {kind: NetworkModule.Kind.SERVER, message: message});
 	},
 	functions: {
-		send: function (connection, request, data, callback) {
+		message: function (connection, request, data, callback) {
 			if (typeof data.message == 'undefined') {
 				callback(new Error(Error.Codes.BAD_REQUEST, null, request, data));
 				return;
