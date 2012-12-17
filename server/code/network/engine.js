@@ -12,6 +12,23 @@ var NetworkEngine = {
 	timeout: 300, //5 minutes
 	clients: {
 		list: [],
+		getConnectionForFarmer: function (farmer) {
+			if (typeof farmer == 'undefined') {
+				return null;
+			}
+			var clientCount = NetworkEngine.clients.list.length;
+			var connection;
+			for (var i = 0; i < clientCount; i++) {
+				connection = NetworkEngine.clients.list[i];
+				if (typeof connection == 'undefined') {
+					//This should never happen
+				}
+				if (connection.farmer.email == farmer.email) {
+					return connection;
+				}
+			}
+			return null;
+		},
 		add: function (socket) {
 			//We wrap this so we can do stuff when we add a connection
 			//TODO : Implement a remove thingy
