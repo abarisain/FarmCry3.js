@@ -40,6 +40,11 @@ var networkEngine = {
 				}
 			});
 		});
+		this.socket.on('disconnect', function () {
+			alert("Network error : Socket Disconnected !\nYou may have logged on from another location.\n" +
+				"Going back to login page.");
+			window.location.reload();
+		});
 	},
 	call: function (subsystem, method, data, callback) {
 		networkEngine.socket.emit(subsystem + "." + method, data, callback);
