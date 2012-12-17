@@ -19,6 +19,7 @@ var NetworkModule = {
 					//Password check is disabled, too annoying for debugging. I tested it before commenting it.
 					//if(data.password == currentFarmer.password) {
 					connection.authenticated = true;
+					connection.farmer = currentFarmer;
 					callback({result: "ok", farmer: currentFarmer.getSmallFarmer()});
 					return;
 					//}

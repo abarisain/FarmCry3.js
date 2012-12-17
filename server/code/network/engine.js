@@ -27,7 +27,7 @@ var NetworkEngine = {
 					}
 				}
 				if (connection.farmer != null) {
-					EventManager.subsystems.player.disconnected(farmer);
+					EventManager.subsystems.player.disconnected(connection.farmer);
 				}
 			});
 			//Iterate over the modules and their functions to bind them to events (module.function)
