@@ -17,7 +17,7 @@ var networkEngine = {
 	onLoadingFinished: function () {
 	},
 	init: function (serverUrl, email, password) {
-		manual_disconnect = false;
+		this.manual_disconnect = false;
 		console.log("Network connecting to " + serverUrl);
 		this.socket = io.connect(serverUrl);
 		//TODO : Add a connection timeout
