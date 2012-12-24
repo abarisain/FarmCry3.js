@@ -3,6 +3,7 @@
 //(En fait j'ai juste aucune idée de comment l'implémenter)
 
 var networkEngine = {
+	manual_disconnect: false,
 	socket: null,
 	socket_connected: false,
 	onConnectionFailed: function () {
@@ -16,6 +17,7 @@ var networkEngine = {
 	onLoadingFinished: function () {
 	},
 	init: function (serverUrl, email, password) {
+		manual_disconnect = false;
 		console.log("Network connecting to " + serverUrl);
 		this.socket = io.connect(serverUrl);
 		//TODO : Add a connection timeout
@@ -32,6 +34,7 @@ var networkEngine = {
 			networkEngine.socket.emit("auth.login", {email: email, password: password}, function (data) {
 				if (typeof data.error != 'undefined') {
 					console.log("Error while logging in : " + data.error.description);
+					manual_disconnect = true;
 					networkEngine.socket.disconnect();
 					networkEngine.onLoginFailed(data.error.description);
 				} else {
@@ -41,6 +44,9 @@ var networkEngine = {
 			});
 		});
 		this.socket.on('disconnect', function () {
+			if (manual_disconnect) {
+				return;
+			}
 			alert("Network error : Socket Disconnected !\nYou may have logged on from another location.\n" +
 				"Going back to login page.");
 			window.location.reload();

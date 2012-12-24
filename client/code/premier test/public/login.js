@@ -33,6 +33,24 @@ var initLogin = function () {
 	loadingPanel = document.querySelector("#loading_panel");
 	loadingProgressSpan = document.querySelector("#loading_progress span");
 	var loginConnectButton = document.querySelector("#login_connect_button");
+	var startLogin = function () {
+		window.onkeyup = null;
+		if (supports_html5_storage()) {
+			if (loginRememberCheckbox.checked) {
+				localStorageAlias['email'] = loginEmailField.value;
+			} else {
+				localStorageAlias.removeItem('email');
+			}
+		}
+		loginPanel.style.display = "none";
+		loadingPanel.style.visibility = "visible";
+		//Fake a small login delay, remove this later
+		setTimeout(function () {
+			networkEngine.init(document.querySelector("#login_server").value,
+				loginEmailField.value, loginPasswordField.value);
+		}, 500);
+		return true;
+	};
 
 	//Check if local storage is supported
 	loginEmailField.focus();
@@ -50,10 +68,16 @@ var initLogin = function () {
 		document.querySelector("#login_remember_me_label").style.visibility = "hidden";
 	}
 
+	window.onkeyup = function (event) {
+		if (event.keyCode == 13) { //Enter
+			startLogin();
+		}
+	};
+
 	loginConnectButton.setAttribute("class", loginConnectButton.getAttribute("class").replace("disabled", ""));
 
 	networkEngine.onLoginFailed = function (error) {
-		loginPanel.style.visibility = "visible";
+		loginPanel.style.display = "";
 		loadingPanel.style.visibility = "hidden";
 		loginEmailField.focus();
 		alert(error);
@@ -74,21 +98,5 @@ var initLogin = function () {
 		document.querySelector("body").removeChild(document.querySelector("#login"));
 	};
 
-	loginConnectButton.onclick = function () {
-		if (supports_html5_storage()) {
-			if (loginRememberCheckbox.checked) {
-				localStorageAlias['email'] = loginEmailField.value;
-			} else {
-				localStorageAlias.removeItem('email');
-			}
-		}
-		loginPanel.style.visibility = "hidden";
-		loadingPanel.style.visibility = "visible";
-		//Fake a small login delay, remove this later
-		setTimeout(function () {
-			networkEngine.init(document.querySelector("#login_server").value,
-				loginEmailField.value, loginPasswordField.value);
-		}, 500);
-		return true;
-	};
+	loginConnectButton.onclick = startLogin;
 };
