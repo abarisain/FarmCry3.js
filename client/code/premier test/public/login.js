@@ -32,11 +32,14 @@ var initLogin = function () {
 	loginPanel = document.querySelector("#login_panel");
 	loadingPanel = document.querySelector("#loading_panel");
 	loadingProgressSpan = document.querySelector("#loading_progress span");
+	var loginConnectButton = document.querySelector("#login_connect_button");
 
 	//Check if local storage is supported
 	loginEmailField.focus();
 	if (supports_html5_storage()) {
 		//Load the email from local storage
+		loginRememberCheckbox.style.visibility = "visible";
+		document.querySelector("#login_remember_me_label").style.visibility = "visible";
 		loginRememberCheckbox.checked = true;
 		if (typeof localStorageAlias['email'] != 'undefined') {
 			loginEmailField.value = localStorageAlias['email'];
@@ -46,6 +49,8 @@ var initLogin = function () {
 		loginRememberCheckbox.style.visibility = "hidden";
 		document.querySelector("#login_remember_me_label").style.visibility = "hidden";
 	}
+
+	loginConnectButton.setAttribute("class", loginConnectButton.getAttribute("class").replace("disabled", ""));
 
 	networkEngine.onLoginFailed = function (error) {
 		loginPanel.style.visibility = "visible";
@@ -69,7 +74,7 @@ var initLogin = function () {
 		document.querySelector("body").removeChild(document.querySelector("#login"));
 	};
 
-	document.querySelector("#login_connect_button").onclick = function () {
+	loginConnectButton.onclick = function () {
 		if (supports_html5_storage()) {
 			if (loginRememberCheckbox.checked) {
 				localStorageAlias['email'] = loginEmailField.value;
