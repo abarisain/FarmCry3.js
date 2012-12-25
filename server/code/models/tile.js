@@ -16,6 +16,8 @@ function Tile() {
 }
 
 Tile.prototype = {
+	constructor: Tile,
+
 	isNeutral: function () {
 		return (this.owner.name == "dummy");
 	},

@@ -24,6 +24,7 @@ function Farmer(nickname, email, password) {
 }
 
 Farmer.prototype = {
+	constructor: Farmer,
 	getSmallFarmer: function () {
 		var tmpFarmer = {};
 		tmpFarmer.nickname = this.nickname;

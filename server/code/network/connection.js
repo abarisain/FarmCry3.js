@@ -28,6 +28,7 @@ function NetworkConnection(socket) {
 }
 
 NetworkConnection.prototype = {
+	constructor: NetworkConnection,
 	send: function (event, data, require_auth) {
 		if (typeof require_auth == 'undefined') {
 			require_auth = true;
