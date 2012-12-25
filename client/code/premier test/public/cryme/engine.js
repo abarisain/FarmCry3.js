@@ -33,7 +33,6 @@ var CrymeEngine = {
 	buildings: [],
 	crops: [],
 	tiles: [],
-	hudElements: [],
 	canvas: { //Element type : CrymeCanvas
 		resizeAll: function (width, height) {
 			Object.keys(CrymeEngine.canvas).forEach(function (targetCanvas) {
@@ -152,8 +151,8 @@ var CrymeEngine = {
 		},
 		Hud: function () {
 			CrymeEngine.canvas.hud.clear();
+			CrymeEngine.hud.draw();
 
-			hud.drawHud();
 			CrymeEngine.canvas.hud.context.fillStyle = "#6f440d";
 			CrymeEngine.canvas.hud.context.fillText("x : " + CrymeEngine.camera.position.x + ", y : "
 				+ CrymeEngine.camera.position.y, 120, 34);
@@ -268,18 +267,10 @@ function InitLoading() {
 	LoadTiles();
 	LoadAnimations();
 	LoadTileItems();
-	LoadHud();
+	CrymeEngine.hud.loadTextures();
 }
 
 function CreateHud() {
-	var hudElement = new HudElement(0, 0, 0, true);
-	CrymeEngine.hudElements.push(hudElement);
-	hudElement = new HudElement(1, canvasWidth - 160, 0, true);
-	CrymeEngine.hudElements.push(hudElement);
-	hudElement = new HudElement(2, canvasWidth - 320, 200, true);
-	CrymeEngine.hudElements.push(hudElement);
-	hudElement = new HudElement(3, canvasWidth / 2 - 500, 200, false);
-	CrymeEngine.hudElements.push(hudElement);
 }
 
 //fonction pour placer des trucs sur la map pour test le rendu

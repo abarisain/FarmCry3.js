@@ -1,4 +1,4 @@
 window.onload = function () {
 	initLogin();
-	hud.chat.init();
+	CrymeEngine.hud.chat.init();
 };

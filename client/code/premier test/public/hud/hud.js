@@ -1,33 +1,50 @@
 var texHudList = ['life', 'time', 'popup', 'inventory'];
 var texHud = [];
 
-var hud = {
-	drawHud: function () {
+CrymeEngine.hud = {
+	textures: {
+		life: null,
+		time: null,
+		popup: null,
+		inventory: null
+	},
+	init: function () {
+		var hudElement = new HudElement(0, 0, 0, true);
+		CrymeEngine.hudElements.push(hudElement);
+		hudElement = new HudElement(1, canvasWidth - 160, 0, true);
+		CrymeEngine.hudElements.push(hudElement);
+		hudElement = new HudElement(2, canvasWidth - 320, 200, true);
+		CrymeEngine.hudElements.push(hudElement);
+		hudElement = new HudElement(3, canvasWidth / 2 - 500, 200, false);
+		CrymeEngine.hudElements.push(hudElement);
+	},
+	loadTextures: function () {
+		var textureList = Object.keys(this.textures);
+		totalLoadingCount += textureList.length;
+		var i = 0;
+		textureList.forEach(function (textureName) {
+			var texture = new Texture(i, textureName, 'src/hud/' + textureName + '.png');
+			texture.image.onload = function () {
+				currentLoadingCount++;
+			};
+			CrymeEngine.hud.textures[textureName] = texture;
+			i++;
+		});
+	},
+	draw: function () {
 		var tmpLength = CrymeEngine.hudElements.length;
 		for (var i = 0; i < tmpLength; i++) {
-			CrymeEngine.hudElements[i].drawItem(texHud);
+			CrymeEngine.hudElements[i].draw(texHud);
 		}
 	}
 };
 
-function LoadHud() {
-	totalLoadingCount += texHudList.length;
-	LoadTexHud();
-}
-
-function LoadTexHud() {
-	for (var i = 0; i < texHudList.length; i++) {
-		var texture = new Texture(i, texHudList[i].image, 'src/hud/' + texHudList[i] + '.png');
-		texture.image.onload = function () {
-			currentLoadingCount++;
-		};
-		texHud[i] = texture;
-	}
-}
-
-/* Chat methods */
+/* Chat methods
+ It's a special case, so it's not implemented as an HudElement.
+ It's drawn using the DOM (html/css) and not canvas, so there it goes.
+ */
 //TODO : Refactor the HUD, really. No, REALLY.
-hud.chat = {
+CrymeEngine.hud.chat = {
 	timestampFormat: "HH:MM:ss",
 	Kind: {
 		SERVER: 0,
@@ -43,12 +60,12 @@ hud.chat = {
 		this.divs.input = document.getElementById("hud_chat_message");
 		this.divs.send = document.getElementById("hud_chat_send");
 		this.divs.input.addEventListener("input", function () {
-			hud.chat.divs.send.setAttribute("class", hud.chat.divs.input.value == "" ? "hidden" : "");
+			CrymeEngine.hud.chat.divs.send.setAttribute("class", CrymeEngine.hud.chat.divs.input.value == "" ? "hidden" : "");
 			return false;
 		});
 		this.hideSendButton();
 		this.divs.send.onclick = function () {
-			hud.chat.send();
+			CrymeEngine.hud.chat.send();
 			return false;
 		}
 	},

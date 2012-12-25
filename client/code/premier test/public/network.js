@@ -78,7 +78,7 @@ var networkEngine = {
 			},
 			events: {
 				message: function (data) {
-					hud.chat.append(data);
+					CrymeEngine.hud.chat.append(data);
 				}
 			}
 		}
