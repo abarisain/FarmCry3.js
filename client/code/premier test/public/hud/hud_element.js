@@ -3,16 +3,16 @@ function HudElement(name, image, width, height, verticalMargin, horizontalMargin
 	this._x = 0;
 	this._y = 0;
 	// -------------
-	this.name = name; //Just a name for easier debugging
-	this.image = image;
-	this.verticalMargin = verticalMargin;
-	this.horizontalMargin = horizontalMargin;
-	this.anchor = anchor;
-	this.width = width; // Set width or height to -1 for page width/height
-	this.height = height;
+	this.name = name || 'BasicHudElement'; //Just a name for easier debugging
+	this.image = image || null;
+	this.verticalMargin = verticalMargin || 0;
+	this.horizontalMargin = horizontalMargin || 0;
+	this.anchor = anchor || HudElement.Anchors.CENTER;
+	this.width = width || 10; // Set width or height to -1 for page width/height
+	this.height = height || 10;
 	this.visible = true;
 	this.opacity = 1;
-	this.clickable = true;
+	this.disabled = false;
 	this.children = [];
 	this.parent = null;
 }
