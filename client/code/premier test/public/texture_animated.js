@@ -13,6 +13,7 @@ function TextureAnimated(index, imageSrc) {
 }
 
 TextureAnimated.prototype = {
+	constructor: TextureAnimated,
 	initAnimation: function () {
 		this.frameWidth = texAnimatedList[this.index].frameWidth;
 		this.width = this.frameWidth * this.frameCount;

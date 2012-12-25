@@ -56,6 +56,7 @@ function Building(type, col, line, animationIndex) {
 }
 
 Building.prototype = {
+	constructor: Building,
 	/*addAnimation: function(textureAnimated, x, y) {
 	 var temp = {
 	 animation: textureAnimated,

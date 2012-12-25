@@ -22,6 +22,7 @@ function Tile(data) {
 }
 
 Tile.prototype = {
+	constructor: Tile,
 	//cherche l'image correspondante à l'humidité et la fertilité
 	updateImage: function () {
 		if (this.humidity < 0.3) {

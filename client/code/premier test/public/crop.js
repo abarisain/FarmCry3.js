@@ -14,6 +14,7 @@ function Crop(type, col, line) {
 }
 
 Crop.prototype = {
+	constructor: Crop,
 	drawReflection: function () {
 		this.tileItem.drawReflection(texCropsReflections);
 	},

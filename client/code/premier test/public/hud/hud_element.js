@@ -18,6 +18,7 @@ function HudElement(name, image, width, height, verticalMargin, horizontalMargin
 }
 
 HudElement.prototype = {
+	constructor: HudElement,
 	//attention a bien se préoccuper du context avant, ici je m'en occupe pas
 	draw: function (imageList) {
 		if (this.visible) {

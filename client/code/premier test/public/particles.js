@@ -34,6 +34,7 @@ function ParticlesEmitter(type, x, y) {
 }
 
 ParticlesEmitter.prototype = {
+	constructor: ParticlesEmitter,
 	update: function () {
 		if (this.amount < this.amountMax) {
 			var newParticleCount = Math.min(this.amountMax - this.amount, this.growth);
