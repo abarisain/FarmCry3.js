@@ -54,7 +54,7 @@ HudElements.Text.prototype.setupCanvas = function () {
 	CrymeEngine.canvas.hud.context.font = this._font;
 	CrymeEngine.canvas.hud.context.fillStyle = this._color;
 }
-HudElements.Root.prototype.resize = function (width, height) {
+HudElements.Text.prototype.resize = function (width, height) {
 	//Disable resizing if auto sizing is enabled since it will be recalculated at some point anyway
 	if (!this._enableAutoSizing) {
 		HudElement.prototype.resize.call(this, width, height);
