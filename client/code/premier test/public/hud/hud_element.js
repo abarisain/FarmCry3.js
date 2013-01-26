@@ -31,7 +31,7 @@ HudElement.prototype = {
 	draw: function (imageList) {
 		if (this.visible) {
 			if (this.image != null) {
-				CrymeEngine.canvas.hud.context.drawImage(imageList[this.image].image, this._x, this._y);
+				CrymeEngine.canvas.hud.context.drawImage(CrymeEngine.hud.textures[this.image].image, this._x, this._y);
 			}
 			var childrenCount = this.children.length;
 			for (var i = 0; i < childrenCount; i++) {
