@@ -8,7 +8,7 @@ function HudElement(name, image, width, height, verticalMargin, horizontalMargin
 	this.image = image || null;
 	this.verticalMargin = verticalMargin || 0;
 	this.horizontalMargin = horizontalMargin || 0;
-	this.anchor = anchor || HudElement.Anchors.CENTER;
+	this.anchor = anchor || HudElement.Anchors.TOP_LEFT;
 	this.width = width || 10; // Set width or height to -1 for page width/height
 	this.height = height || 10;
 	this.visible = true;
@@ -52,6 +52,10 @@ HudElement.prototype = {
 	 This method computes where the child will position itself in it's parent. I know it's weird
 	 */
 	computeLayout: function () {
+		//If the element is an orphan, automatically attach it to RootHud. Except if it's root itself.
+		if (this.parent == null && this.name != "RootHudElement") {
+			this.parent = CrymeEngine.hud.rootHudElement;
+		}
 		//RootHudElement has a anchor of 0, which will position the view at 0,0
 		//Compute the vertial margin
 		switch (this.anchor) {
