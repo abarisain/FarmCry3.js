@@ -32,10 +32,10 @@ CrymeEngine.hud = {
 		});
 	},
 	draw: function () {
-		var tmpLength = CrymeEngine.hudElements.length;
-		for (var i = 0; i < tmpLength; i++) {
-			CrymeEngine.hudElements[i].draw(texHud);
-		}
+		CrymeEngine.hud.rootHudElement.draw();
+	},
+	onClick: function () {
+		CrymeEngine.hud.rootHudElement.onClick();
 	},
 	rootHudElement: new RootHudElement()
 };
@@ -44,7 +44,6 @@ CrymeEngine.hud = {
  It's a special case, so it's not implemented as an HudElement.
  It's drawn using the DOM (html/css) and not canvas, so there it goes.
  */
-//TODO : Refactor the HUD, really. No, REALLY.
 CrymeEngine.hud.chat = {
 	timestampFormat: "HH:MM:ss",
 	Kind: {
