@@ -41,7 +41,7 @@ CrymeEngine.hud = {
 	onClick: function (x, y) {
 		CrymeEngine.hud.rootHudElement.onClick(x, y);
 	},
-	rootHudElement: new RootHudElement()
+	rootHudElement: new HudElements.Root()
 };
 
 /* Chat methods

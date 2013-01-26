@@ -145,16 +145,3 @@ HudElement.Anchors = {
 	BOTTOM_CENTER: 9
 };
 
-function RootHudElement() {
-	HudElement.call(this);
-	this.name = "RootHudElement";
-	this.anchor = 0;
-	this.image = null;
-}
-
-RootHudElement.prototype = new HudElement();
-RootHudElement.prototype.constructor = RootHudElement;
-RootHudElement.prototype.resize = function () {
-	HudElement.prototype.resize.call(this, canvasWidth, canvasHeight);
-}
-
