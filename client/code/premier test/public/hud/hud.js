@@ -12,6 +12,14 @@ CrymeEngine.hud = {
 		this.rootHudElement.resize();
 		//var hudElement = new HudElement(0, 0, 0, true);
 		this.rootHudElement.addChild(new HudElement("Lifebar", "life", 317, 124, 0, 0, HudElement.Anchors.TOP_LEFT, false));
+		var posText = new HudElements.Text("position_text");
+		posText.horizontalMargin = 120;
+		posText.verticalMargin = 16;
+		posText.setTextFunction(function () {
+			return "x : " + CrymeEngine.camera.position.x + ", y : "
+				+ CrymeEngine.camera.position.y
+		});
+		this.rootHudElement.children[0].addChild(posText);
 		/*hudElement = new HudElement(1, canvasWidth - 160, 0, true);
 		 CrymeEngine.hudElements.push(hudElement);
 		 hudElement = new HudElement(2, canvasWidth - 320, 200, true);

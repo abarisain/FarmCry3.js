@@ -154,9 +154,6 @@ var CrymeEngine = {
 			CrymeEngine.canvas.hud.clear();
 			CrymeEngine.hud.draw();
 
-			CrymeEngine.canvas.hud.context.fillStyle = "#6f440d";
-			CrymeEngine.canvas.hud.context.fillText("x : " + CrymeEngine.camera.position.x + ", y : "
-				+ CrymeEngine.camera.position.y, 120, 34);
 			var currentTime = new Date();
 			CrymeEngine.canvas.hud.context.fillText(currentTime.getHours() + ':' +
 				currentTime.getSeconds(), canvasWidth - 72, 34);
