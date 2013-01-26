@@ -193,6 +193,8 @@ var CrymeEngine = {
 
 		this.canvas.hud.canvas.onmousedown = function (event) {
 			if (loadingComplete) {
+				if (event.button == 0)
+					CrymeEngine.hud.onClick(event.pageX, event.pageY);
 				if (event.button == 2) {
 					//le clic droit sers a bouger la map, et le gauche a agir
 					//positionnement de la souris
