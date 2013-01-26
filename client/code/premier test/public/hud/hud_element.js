@@ -28,7 +28,7 @@ function HudElement(name, image, width, height, verticalMargin, horizontalMargin
 HudElement.prototype = {
 	constructor: HudElement,
 	//attention a bien se préoccuper du context avant, ici je m'en occupe pas
-	draw: function (imageList) {
+	draw: function () {
 		if (this.visible) {
 			if (this.image != null) {
 				CrymeEngine.canvas.hud.context.drawImage(CrymeEngine.hud.textures[this.image].image, this._x, this._y);
