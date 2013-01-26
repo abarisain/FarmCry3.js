@@ -11,11 +11,7 @@ CrymeEngine.hud = {
 	init: function () {
 		this.rootHudElement.resize();
 		//var hudElement = new HudElement(0, 0, 0, true);
-		this.rootHudElement.addChild(new HudElement("Lifebar", "life", 317, 124, 0, 0, HudElement.Anchors.CENTER, false));
-		this.rootHudElement.children[0].addChild(new HudElement("Time", "time", 159, 61, 0, 0, HudElement.Anchors.TOP_RIGHT, false));
-		this.rootHudElement.children[0].children[0].onClick = function () {
-			alert = "prout";
-		};
+		this.rootHudElement.addChild(new HudElement("Lifebar", "life", 317, 124, 0, 0, HudElement.Anchors.TOP_LEFT, false));
 		/*hudElement = new HudElement(1, canvasWidth - 160, 0, true);
 		 CrymeEngine.hudElements.push(hudElement);
 		 hudElement = new HudElement(2, canvasWidth - 320, 200, true);

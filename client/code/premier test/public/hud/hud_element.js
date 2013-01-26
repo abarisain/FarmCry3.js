@@ -16,7 +16,7 @@ function HudElement(name, image, width, height, verticalMargin, horizontalMargin
 	this.disabled = false;
 	this.children = [];
 	this.parent = null;
-	this.clickable = clickable || true;
+	this.clickable = typeof clickable == 'undefined' ? true : clickable;
 
 	this.onClick = function (x, y) {
 		//Override this for custom click behaviour.
@@ -114,12 +114,10 @@ HudElement.prototype = {
 		var child;
 		for (var i = 0; i < childrenCount; i++) {
 			child = this.children[i];
-			if (!child.isPointInBounds(x, y)) {
-				if (child.clickable && child.onClick(x, y)) {
-					//STOP ! HAMMERTIME (I mean that the even has been consumed by a children, so we propagate this)
-					//Don't propagate if onClick returned false, for obvious reasons
-					return true;
-				}
+			if (child.clickable && child.isPointInBounds(x, y) && child.onClick(x, y)) {
+				//STOP ! HAMMERTIME (I mean that the even has been consumed by a children, so we propagate this)
+				//Don't propagate if onClick returned false, for obvious reasons
+				return true;
 			}
 		}
 		//Nothing happened
