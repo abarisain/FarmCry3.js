@@ -1,4 +1,4 @@
-function HudElement(name, image, width, height, verticalMargin, horizontalMargin, anchor) {
+function HudElement(name, image, width, height, verticalMargin, horizontalMargin, anchor, clickable) {
 	// -- Do NOT touch these values manually, they are recalculated by "computeLayout" --
 	// Please note that for simplicity, they will be relative to the canvas
 	this._x = 0;
@@ -16,6 +16,7 @@ function HudElement(name, image, width, height, verticalMargin, horizontalMargin
 	this.disabled = false;
 	this.children = [];
 	this.parent = null;
+	this.clickable = clickable || true;
 
 	this.onClick = function (x, y) {
 		//Override this for custom click behaviour.
@@ -43,6 +44,8 @@ HudElement.prototype = {
 			console.log("Invalid resize for HudElement '" + this.name + "'");
 			return;
 		}
+		this.width = width;
+		this.height = height;
 		this.computeLayout();
 	},
 	/*
@@ -89,7 +92,9 @@ HudElement.prototype = {
 			case HudElement.Anchors.CENTER:
 				this._x = this.parent._x + this.parent.width / 2 - this.width / 2 + this.horizontalMargin;
 				break;
-
+			default:
+				this._x = 0;
+				break;
 		}
 
 		var childrenCount = this.children.length;
@@ -106,13 +111,16 @@ HudElement.prototype = {
 	 */
 	baseOnClick: function (x, y) {
 		var childrenCount = this.children.length;
+		var child;
 		for (var i = 0; i < childrenCount; i++) {
-			if (!this.children[i].isPointInBounds(x, y))
-				if (this.children[i].onClick(x, y)) {
+			child = this.children[i];
+			if (!child.isPointInBounds(x, y)) {
+				if (child.clickable && child.onClick(x, y)) {
 					//STOP ! HAMMERTIME (I mean that the even has been consumed by a children, so we propagate this)
 					//Don't propagate if onClick returned false, for obvious reasons
 					return true;
 				}
+			}
 		}
 		//Nothing happened
 		return false;
