@@ -235,6 +235,7 @@ var CrymeEngine = {
 			canvasHeight = window.innerHeight;
 			CrymeEngine.canvas.resizeAll(canvasWidth, canvasHeight);
 			audioPlayer.style.top = (canvasHeight - 30) + 'px';
+			CrymeEngine.hud.rootHudElement.resize();
 		};
 
 		this.canvas.hud.canvas.onmousemove = function (event) {
@@ -257,7 +258,7 @@ var CrymeEngine = {
 		CrymeEngine.Draw.Loading();
 		CrymeEngine.Draw.MainLoop();
 
-		CreateHud();
+		CrymeEngine.hud.init();
 		InitLoading();
 	}
 };
@@ -269,9 +270,6 @@ function InitLoading() {
 	LoadAnimations();
 	LoadTileItems();
 	CrymeEngine.hud.loadTextures();
-}
-
-function CreateHud() {
 }
 
 //fonction pour placer des trucs sur la map pour test le rendu

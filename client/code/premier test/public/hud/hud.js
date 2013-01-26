@@ -9,14 +9,16 @@ CrymeEngine.hud = {
 		inventory: null
 	},
 	init: function () {
-		var hudElement = new HudElement(0, 0, 0, true);
-		CrymeEngine.hudElements.push(hudElement);
-		hudElement = new HudElement(1, canvasWidth - 160, 0, true);
-		CrymeEngine.hudElements.push(hudElement);
-		hudElement = new HudElement(2, canvasWidth - 320, 200, true);
-		CrymeEngine.hudElements.push(hudElement);
-		hudElement = new HudElement(3, canvasWidth / 2 - 500, 200, false);
-		CrymeEngine.hudElements.push(hudElement);
+		this.rootHudElement.resize();
+		//var hudElement = new HudElement(0, 0, 0, true);
+		this.rootHudElement.addChild(new HudElement("Lifebar", "life", 317, 124, 0, 0, HudElement.Anchors.TOP_LEFT, false));
+		/*hudElement = new HudElement(1, canvasWidth - 160, 0, true);
+		 CrymeEngine.hudElements.push(hudElement);
+		 hudElement = new HudElement(2, canvasWidth - 320, 200, true);
+		 CrymeEngine.hudElements.push(hudElement);
+		 hudElement = new HudElement(3, canvasWidth / 2 - 500, 200, false);
+		 CrymeEngine.hudElements.push(hudElement);*/
+		//Now compute the layout
 	},
 	loadTextures: function () {
 		var textureList = Object.keys(this.textures);
@@ -32,7 +34,9 @@ CrymeEngine.hud = {
 		});
 	},
 	draw: function () {
-		CrymeEngine.hud.rootHudElement.draw();
+		if (loadingComplete) {
+			CrymeEngine.hud.rootHudElement.draw();
+		}
 	},
 	onClick: function () {
 		CrymeEngine.hud.rootHudElement.onClick();

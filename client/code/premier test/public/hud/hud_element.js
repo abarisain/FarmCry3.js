@@ -127,6 +127,7 @@ HudElement.prototype = {
 	},
 	addChild: function (hudElement) { //Override this if you want your view not to be able to have children (poor view)
 		hudElement.parent = this;
+		hudElement.computeLayout();
 		this.children.push(hudElement);
 	},
 	removeAllChildren: function () {
@@ -155,4 +156,7 @@ function RootHudElement() {
 
 RootHudElement.prototype = new HudElement();
 RootHudElement.prototype.constructor = RootHudElement;
+RootHudElement.prototype.resize = function () {
+	HudElement.prototype.resize.call(this, canvasWidth, canvasHeight);
+}
 
