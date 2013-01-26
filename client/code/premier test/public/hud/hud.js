@@ -36,7 +36,8 @@ CrymeEngine.hud = {
 		for (var i = 0; i < tmpLength; i++) {
 			CrymeEngine.hudElements[i].draw(texHud);
 		}
-	}
+	},
+	rootHudElement: new RootHudElement()
 };
 
 /* Chat methods

@@ -15,6 +15,7 @@ var CrymeEngine = {
 	pauseRendering: false,
 	movingMap: false,
 	mapInvalidated: false, //If this is true, the map will be redrawn
+	hudElements: [],
 	camera: {
 		position: {
 			x: -1000,

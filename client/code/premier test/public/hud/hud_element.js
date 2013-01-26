@@ -1,5 +1,6 @@
 function HudElement(name, image, width, height, verticalMargin, horizontalMargin, anchor) {
 	// -- Do NOT touch these values manually, they are recalculated by "computeLayout" --
+	// Please note that for simplicity, they will be relative to the canvas
 	this._x = 0;
 	this._y = 0;
 	// -------------
@@ -15,6 +16,12 @@ function HudElement(name, image, width, height, verticalMargin, horizontalMargin
 	this.disabled = false;
 	this.children = [];
 	this.parent = null;
+
+	this.onClick = function (x, y) {
+		//Override this for custom click behaviour.
+		//Return true if you handled the click and want to consume the event
+		return this.baseOnClick(x, y);
+	}
 }
 
 HudElement.prototype = {
@@ -23,7 +30,7 @@ HudElement.prototype = {
 	draw: function (imageList) {
 		if (this.visible) {
 			if (this.image != null) {
-				CrymeEngine.canvas.hud.context.drawImage(imageList[this.image].image, this.x, this.y);
+				CrymeEngine.canvas.hud.context.drawImage(imageList[this.image].image, this._x, this._y);
 			}
 			var childrenCount = this.children.length;
 			for (var i = 0; i < childrenCount; i++) {
@@ -38,8 +45,57 @@ HudElement.prototype = {
 		}
 		this.computeLayout();
 	},
+	/*
+	 This method computes where the child will position itself in it's parent. I know it's weird
+	 */
 	computeLayout: function () {
-		//Todo : Do the magic with the anchors and parent relativity here
+		//RootHudElement has a anchor of 0, which will position the view at 0,0
+		//Compute the vertial margin
+		switch (this.anchor) {
+			case HudElement.Anchors.TOP_LEFT:
+			case HudElement.Anchors.TOP_RIGHT:
+			case HudElement.Anchors.TOP_CENTER:
+				this._y = this.parent._y + this.verticalMargin;
+				break;
+			case HudElement.Anchors.BOTTOM_LEFT:
+			case HudElement.Anchors.BOTTOM_RIGHT:
+			case HudElement.Anchors.BOTTOM_CENTER:
+				this._y = this.parent._y + this.parent.height - this.height + this.verticalMargin;
+				break;
+			case HudElement.Anchors.CENTER:
+			case HudElement.Anchors.CENTER_LEFT:
+			case HudElement.Anchors.CENTER_RIGHT:
+				this._y = this.parent._y + this.parent.height / 2 - this.height / 2 + this.verticalMargin;
+				break;
+			default:
+				this._y = 0;
+				break;
+		}
+
+		//Now for horizontal margins
+		switch (this.anchor) {
+			case HudElement.Anchors.BOTTOM_LEFT:
+			case HudElement.Anchors.TOP_LEFT:
+			case HudElement.Anchors.CENTER_LEFT:
+				this._x = this.parent._x + this.horizontalMargin;
+				break;
+			case HudElement.Anchors.BOTTOM_RIGHT:
+			case HudElement.Anchors.TOP_RIGHT:
+			case HudElement.Anchors.CENTER_RIGHT:
+				this._x = this.parent._x + this.parent.width - this.width + this.horizontalMargin;
+				break;
+			case HudElement.Anchors.BOTTOM_CENTER:
+			case HudElement.Anchors.TOP_CENTER:
+			case HudElement.Anchors.CENTER:
+				this._x = this.parent._x + this.parent.width / 2 - this.width / 2 + this.horizontalMargin;
+				break;
+
+		}
+
+		var childrenCount = this.children.length;
+		for (var i = 0; i < childrenCount; i++) {
+			this.children[i].computeLayout();
+		}
 	},
 	isPointInBounds: function (x, y) { //Point corrdinates are absolute (relative to the canvas/screen)
 		return x >= this._x && x < (this._x + this.width) && y >= this._y && y < (this._y + this.height);
@@ -48,7 +104,7 @@ HudElement.prototype = {
 	 Return true if you handled the click and want to consume the event
 	 Once you are in this function, you can safely assume that the user clicked inside your view
 	 */
-	onClick: function (x, y) {
+	baseOnClick: function (x, y) {
 		var childrenCount = this.children.length;
 		for (var i = 0; i < childrenCount; i++) {
 			if (!this.children[i].isPointInBounds(x, y))
@@ -81,3 +137,14 @@ HudElement.Anchors = {
 	BOTTOM_RIGHT: 8,
 	BOTTOM_CENTER: 9
 };
+
+function RootHudElement() {
+	HudElement.call(this);
+	this.name = "RootHudElement";
+	this.anchor = 0;
+	this.image = null;
+}
+
+RootHudElement.prototype = new HudElement();
+RootHudElement.prototype.constructor = RootHudElement;
+
