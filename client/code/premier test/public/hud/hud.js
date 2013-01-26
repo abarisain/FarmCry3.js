@@ -1,6 +1,3 @@
-var texHudList = ['life', 'time', 'popup', 'inventory'];
-var texHud = [];
-
 CrymeEngine.hud = {
 	textures: {
 		life: null,
@@ -10,8 +7,8 @@ CrymeEngine.hud = {
 	},
 	init: function () {
 		this.rootHudElement.resize();
-		//var hudElement = new HudElement(0, 0, 0, true);
-		this.rootHudElement.addChild(new HudElement("Lifebar", "life", 317, 124, 0, 0, HudElement.Anchors.TOP_LEFT, false));
+		//Lifebar
+		var lifebar = new HudElement("lifebar", "life", 317, 124, 0, 0, HudElement.Anchors.TOP_LEFT, false);
 		var posText = new HudElements.Text("position_text");
 		posText.horizontalMargin = 120;
 		posText.verticalMargin = 16;
@@ -19,14 +16,21 @@ CrymeEngine.hud = {
 			return "x : " + CrymeEngine.camera.position.x + ", y : "
 				+ CrymeEngine.camera.position.y
 		});
-		this.rootHudElement.children[0].addChild(posText);
-		/*hudElement = new HudElement(1, canvasWidth - 160, 0, true);
-		 CrymeEngine.hudElements.push(hudElement);
-		 hudElement = new HudElement(2, canvasWidth - 320, 200, true);
-		 CrymeEngine.hudElements.push(hudElement);
-		 hudElement = new HudElement(3, canvasWidth / 2 - 500, 200, false);
-		 CrymeEngine.hudElements.push(hudElement);*/
-		//Now compute the layout
+		lifebar.addChild(posText);
+		this.rootHudElement.addChild(lifebar);
+
+		//Time and notifications (tray)
+		var tray = new HudElement("tray", "time", 159, 61, 0, 0, HudElement.Anchors.TOP_RIGHT, true);
+		var timeText = new HudElements.Text("time_text");
+		timeText.horizontalMargin = -20;
+		timeText.verticalMargin = 18;
+		timeText.anchor = HudElement.Anchors.TOP_RIGHT;
+		timeText.setTextFunction(function () {
+			var currentTime = new Date();
+			return currentTime.getHours() + ':' + currentTime.getSeconds();
+		});
+		tray.addChild(timeText);
+		this.rootHudElement.addChild(tray);
 	},
 	loadTextures: function () {
 		var textureList = Object.keys(this.textures);
