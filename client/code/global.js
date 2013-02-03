@@ -1,10 +1,8 @@
-/*initialisation* du moteur*/
-
 var canvasWidth = window.innerWidth;
 var canvasHeight = window.innerHeight;
 
-var tileWidth = 246;
-var tileHeight = 174;
+var tileWidth = 267;
+var tileHeight = 189;
 
 var lineSize = 16;
 var colSize = 16;

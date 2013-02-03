@@ -99,21 +99,6 @@ var CrymeEngine = {
 
 			var tmpLength;
 
-			//dessin des reflets
-			if (reflectActivated) {
-				if (reflectBuilding) {
-					tmpLength = CrymeEngine.buildings.length;
-					for (i = 0; i < tmpLength; i++) {
-						CrymeEngine.buildings[i].drawReflection();
-					}
-				}
-				if (reflectCrop) {
-					tmpLength = CrymeEngine.crops.length;
-					for (i = 0; i < tmpLength; i++) {
-						CrymeEngine.crops[i].drawReflection();
-					}
-				}
-			}
 			CrymeEngine.canvas.map.context.fillStyle = "#fff";
 			//dessin du terrain
 			Map.drawMask();
@@ -132,24 +117,6 @@ var CrymeEngine = {
 
 			CrymeEngine.canvas.map.context.restore();
 		},
-		Animation: function () {
-			CrymeEngine.canvas.animation.clear();
-			CrymeEngine.canvas.animation.context.save();
-
-			//gestion du positionnement de la caméra
-			CrymeEngine.canvas.animation.context.translate(CE.camera.position.x, CE.camera.position.y);
-
-			//dessin des reflets
-			if (animationActivated) {
-				//dessin des bâtiments
-				var tmpLength = CrymeEngine.buildings.length;
-				for (var i = 0; i < tmpLength; i++) {
-					CrymeEngine.buildings[i].drawAnimation();
-				}
-			}
-
-			CrymeEngine.canvas.animation.context.restore();
-		},
 		Hud: function () {
 			CrymeEngine.canvas.hud.clear();
 			CrymeEngine.hud.draw();
@@ -161,7 +128,6 @@ var CrymeEngine = {
 					if (CrymeEngine.mapInvalidated) {
 						CrymeEngine.Draw.Map();
 					}
-					CrymeEngine.Draw.Animation();
 					CrymeEngine.Draw.Hud();
 				}
 			}
@@ -262,7 +228,6 @@ var CE = CrymeEngine;
 
 function InitLoading() {
 	LoadTiles();
-	LoadAnimations();
 	LoadTileItems();
 	CrymeEngine.hud.loadTextures();
 }
@@ -271,9 +236,9 @@ function InitLoading() {
 function CreateMap() {
 	var building = new Building(0, 5, 13);
 	CrymeEngine.buildings.push(building);
-	building = new Building(1, 4, 7, [2]);
+	building = new Building(0, 4, 7, [2]);
 	CrymeEngine.buildings.push(building);
-	building = new Building(2, 8, 9, [0, 1]);
+	building = new Building(0, 8, 9, [0, 1]);
 	CrymeEngine.buildings.push(building);
 	Map.changeTile(6, 8, 8);
 	Map.changeTile(6, 9, 8);

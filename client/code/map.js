@@ -10,7 +10,7 @@ var Map = {
 		this.rect.dy = (tileHeight / 2) * (colSize + lineSize);
 	},
 	loadTiles: function (tileData) {
-		for (var i = 0; i < tileData.length; i++) {
+		for (var i = tileData.length - 1; i >= 0; i--) {
 			for (var j = 0; j < tileData[i].length; j++) {
 				var tile = new Tile(tileData[i][j]);
 				CrymeEngine.tiles.push(tile);

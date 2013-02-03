@@ -1,11 +1,5 @@
-//declaration des images a charger
-var texBorderList = ['border_0', 'border_1', 'barrier_0', 'barrier_1', 'barrier_2', 'barrier_3'];
-var texBorders = [];
-//var borders = [];
-
 function TileItem(image, col, line, centerX, centerY, reflected) {
 	this.image = image;
-	this.reflected = reflected;//pour savoir si les reflets sont supportés par cet item, en théorie c'est pour du debug
 	this.col = col;
 	this.line = line;
 	this.x = 0;
@@ -28,13 +22,6 @@ TileItem.prototype = {
 		this.imageLeft = this.x - this.centerX;
 		this.imageTop = this.y - this.centerY;
 	},
-	//attention a bien se préoccuper du context avant, ici je m'en occupe pas
-	//par contre il faudra modifier l'utilisation de la liste des textures parce que tel quel c'est tout pourris
-	drawReflection: function (imageReflectionList) {
-		if (this.reflected) {
-			CE.canvas.map.context.drawImage(imageReflectionList[this.image].image, this.imageLeft, this.y + tileHeight / 2);
-		}
-	},
 	drawItem: function (imageList) {
 		CE.canvas.map.context.drawImage(imageList[this.image].image, this.imageLeft, this.imageTop);
 		CE.canvas.map.context.fillStyle = "#fff";
@@ -44,17 +31,5 @@ TileItem.prototype = {
 
 function LoadTileItems() {
 	LoadTexCrops();
-	LoadTexBorders();
 	LoadTexBuildings();
-}
-
-function LoadTexBorders() {
-	totalLoadingCount += texBorderList.length;
-	for (var i = 0; i < texBorderList.length; i++) {
-		var texture = new Texture(i, texBorderList[i], 'src/borders/' + texBorderList[i] + '.png');
-		texture.image.onload = function () {
-			currentLoadingCount++;
-		};
-		texBorders[i] = texture;
-	}
 }

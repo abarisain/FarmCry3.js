@@ -1,6 +1,6 @@
 //gestion des textures
 //je précise qu'ici il faudra que je fasse commencer grass à 0 et que j'inverse les 2 tiles
-var texTileList = ['mountain', 'rock', 'soil', 'grass_2', 'grass_1', 'leave', 'water'];
+var texTileList = ['grass_0', 'grass_1', 'grass_2', 'grass_3', 'rock', 'leave', 'soil', 'water_0', 'water_1', 'water_2'];
 var texTiles = [];
 
 function Tile(data) {
