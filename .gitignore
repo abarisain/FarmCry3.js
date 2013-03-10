@@ -21,3 +21,7 @@ server/docs/database.mwb.bak
 
 server/code/.idea
 client/code/.idea
+
+/client/code/Client.iml
+/server/code/Server.iml
+.DS_Store
