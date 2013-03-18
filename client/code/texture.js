@@ -1,6 +1,6 @@
-function Texture(index, nom, imageSrc) {
+function Texture(index, name, imageSrc) {
 	this.index = index;
-	this.nom = nom;
+	this.name = name;
 	this.image = new Image();
 	this.image.src = imageSrc;
 }

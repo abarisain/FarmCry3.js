@@ -10,6 +10,7 @@ function Tile(data) {
 	this.image = undefined;
 	this.col = data.position.col;
 	this.line = data.position.line;
+	this.alpha = 0;
 	this.x = 0;
 	this.y = 0;
 	this.centerX = tileWidth / 2;//attention ceci est la distance top-left au centre de la tile, réferentiel indispensable
@@ -59,8 +60,12 @@ Tile.prototype = {
 		this.imageTop = this.y;// - this.centerY;
 	},
 	drawTileLoading: function (progress) {
+		if (this.alpha < 1) {
+			this.alpha += 0.1;
+		}
+		CrymeEngine.canvas.map.context.globalAlpha = this.alpha;
 		CrymeEngine.canvas.map.context.drawImage(texTiles[this.image].image, this.imageLeft,
-			this.imageTop - this.col * tileHeight * (1 - progress / animationDuration));
+			this.imageTop - this.col * tileHeight * (1 - progress / (animationDuration / 2)));
 	},
 	//attention a bien se préoccuper du context avant, ici je m'en occupe pas
 	drawTile: function () {

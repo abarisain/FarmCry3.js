@@ -13,6 +13,9 @@ function Crop(type, col, line) {
 
 Crop.prototype = {
 	constructor: Crop,
+	drawItemLoading: function (progress) {
+		this.tileItem.drawItemLoading(texCrops, progress);
+	},
 	drawItem: function () {
 		this.tileItem.drawItem(texCrops);
 	}

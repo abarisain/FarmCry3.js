@@ -1,4 +1,4 @@
-function TileItem(image, col, line, centerX, centerY, reflected) {
+function TileItem(image, col, line, centerX, centerY) {
 	this.image = image;
 	this.col = col;
 	this.line = line;
@@ -22,10 +22,17 @@ TileItem.prototype = {
 		this.imageLeft = this.x - this.centerX;
 		this.imageTop = this.y - this.centerY;
 	},
+	drawItemLoading: function (imageList, progress) {
+		CE.canvas.map.context.drawImage(imageList[this.image].image, this.imageLeft,
+			this.imageTop - this.col * tileHeight * (1 - progress / (animationDuration / 2)));
+	},
 	drawItem: function (imageList) {
 		CE.canvas.map.context.drawImage(imageList[this.image].image, this.imageLeft, this.imageTop);
 		CE.canvas.map.context.fillStyle = "#fff";
-		CE.canvas.map.context.fillRect(this.imageLeft, this.imageTop.y, 10, 10);
+		CE.canvas.map.context.fillRect(this.imageLeft, this.imageTop, 10, 10);
+		CE.canvas.map.context.fillStyle = "#ff0007";
+		CE.canvas.map.context.fillRect(this.x - 5, this.y - 1, 10, 2);
+		CE.canvas.map.context.fillRect(this.x - 1, this.y - 5, 2, 10);
 	}
 };
 

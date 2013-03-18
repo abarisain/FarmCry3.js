@@ -18,9 +18,22 @@ var Map = {
 		}
 	},
 	drawMapLoading: function (progress) {
-		for (var i = 0;
-			 i < Math.min(CrymeEngine.tiles.length * progress / animationDuration, CrymeEngine.tiles.length); i++) {
-			CrymeEngine.tiles[i].drawTileLoading(progress);
+		if (progress < animationDuration / 2) {
+			for (var i = 0;
+				 i < Math.min(CrymeEngine.tiles.length * progress / (animationDuration / 2), CrymeEngine.tiles.length); i++) {
+				CrymeEngine.tiles[i].drawTileLoading(progress);
+			}
+		}
+		else {
+			for (var i = 0; i < CrymeEngine.tiles.length; i++) {
+				CrymeEngine.tiles[i].drawTile();
+			}
+			for (var i = 0; i < CrymeEngine.buildings.length; i++) {
+				CrymeEngine.buildings[i].drawItemLoading(progress - animationDuration / 2);
+			}
+			for (var i = 0; i < CrymeEngine.crops.length; i++) {
+				CrymeEngine.crops[i].drawItemLoading(progress - animationDuration / 2);
+			}
 		}
 	},
 	changeTile: function (type, col, line) {

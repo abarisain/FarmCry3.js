@@ -79,6 +79,7 @@ var CrymeEngine = {
 					//Normal draw loop will now handle the rendering
 					loadingComplete = true;
 					CE.mapInvalidated = true;
+					CrymeEngine.canvas.map.context.globalAlpha = 1;//pour être sur de ne pas avoir de bug de transparence
 				}
 				else {
 					if (progress >= animationDuration * 2 || progress <= 0) {
@@ -95,13 +96,14 @@ var CrymeEngine = {
 			CrymeEngine.canvas.map.context.save();
 
 			//gestion du positionnement de la caméra
+			CrymeEngine.canvas.map.context.scale(scaleFactor, scaleFactor);
 			CrymeEngine.canvas.map.context.translate(CrymeEngine.camera.position.x, CrymeEngine.camera.position.y);
 
 			var tmpLength;
 
 			CrymeEngine.canvas.map.context.fillStyle = "#fff";
 			//dessin du terrain
-			Map.drawMask();
+			//Map.drawMask();
 			Map.drawMap();
 
 			//dessin des bâtiments
@@ -174,9 +176,9 @@ var CrymeEngine = {
 			switch (event.keyCode) {
 				case 13: //Enter
 					if (document.activeElement == CrymeEngine.hud.chat.divs.input) {
-                        CrymeEngine.hud.chat.send();
+						CrymeEngine.hud.chat.send();
 					} else {
-                        CrymeEngine.hud.chat.divs.input.focus();
+						CrymeEngine.hud.chat.divs.input.focus();
 					}
 					break;
 				case 32: //Space
@@ -184,6 +186,17 @@ var CrymeEngine = {
 					break;
 			}
 			return false;
+		};
+
+		window.onmousewheel = function (evt) {
+			if (evt.wheelDeltaY > 0) {
+				scaleFactor += 0.25;
+			}
+			else {
+				if (scaleFactor > 0.25) {
+					scaleFactor -= 0.25;
+				}
+			}
 		};
 
 		window.onmouseup = function () {

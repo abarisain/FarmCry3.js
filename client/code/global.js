@@ -7,10 +7,12 @@ var tileHeight = 189;
 var lineSize = 16;
 var colSize = 16;
 
+var scaleFactor = 1;
+
 //liste des emetteurs de particules
 var particleEmitters;
 
-var animationDuration = 30;
+var animationDuration = 60;
 
 //gestion du chargement
 var initialDataLoaded = false;//initialise la connexion avec le serveur et telecharge les donnees initiales
@@ -31,5 +33,5 @@ var loadingProgressSpan;
 
 // Patch JS
 String.prototype.beginsWith = function (string) {
-    return(this.indexOf(string) === 0);
+	return(this.indexOf(string) === 0);
 };

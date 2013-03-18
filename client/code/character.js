@@ -1,7 +1,7 @@
-var texBuildingList = [
-	{image: 'home'}
+var texCharacterList = [
+	{image: 'farmer'}
 ];
-var texBuildings = [];
+var texCharacters = [];
 
 /*var texAnimatedList = [
  {
@@ -33,9 +33,17 @@ var texBuildings = [];
  }
  ];*/
 
-function Building(type, col, line) {
+function Character(type, col, line) {
 	this.col = col;
 	this.line = line;
+	this.x = 0;
+	this.y = 0;
+	this.centerX = centerX;//attention ceci est la distance top-left au centre de la tile, réferentiel indispensable
+	this.centerY = centerY;
+	this.imageLeft = 0;
+	this.imageTop = 0;
+	this.updateCoord();
+	this.updateImageCoord();
 	/*this.animations = [];
 	 if (animationIndex != undefined) {
 	 for (var i = 0; i < animationIndex.length; i++) {
@@ -46,26 +54,22 @@ function Building(type, col, line) {
 	 });
 	 }
 	 }*/
-	this.tileItem = new TileItem(type, this.col, this.line, 0, 128);
 }
 
-Building.prototype = {
+Character.prototype = {
 	constructor: Building,
-	drawItemLoading: function (progress) {
-		this.tileItem.drawItemLoading(texBuildings, progress);
-	},
 	drawItem: function () {
-		this.tileItem.drawItem(texBuildings);
+		this.tileItem.drawItem(texCharacters);
 	}
 };
 
-function LoadTexBuildings() {
-	totalLoadingCount += texBuildingList.length;
-	for (var i = 0; i < texBuildingList.length; i++) {
-		var texture = new Texture(i, texBuildingList[i].image, 'src/buildings/' + texBuildingList[i].image + '.png');
+function LoadTexCharacters() {
+	totalLoadingCount += texCharacterList.length;
+	for (var i = 0; i < texCharacterList.length; i++) {
+		var texture = new Texture(i, texCharacterList[i].image, 'src/character/' + texCharacterList[i].image + '.png');
 		texture.image.onload = function () {
 			currentLoadingCount++;
 		};
-		texBuildings[i] = texture;
+		texCharacters[i] = texture;
 	}
 }
