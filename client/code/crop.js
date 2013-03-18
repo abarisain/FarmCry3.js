@@ -8,7 +8,7 @@ var texCrops = [];
 function Crop(type, col, line) {
 	this.col = col;
 	this.line = line;
-	this.tileItem = new TileItem(type, this.col, this.line, 0, 24, true);
+	this.tileItem = new TileItem(type, this.col, this.line, 0, 28);
 }
 
 Crop.prototype = {
