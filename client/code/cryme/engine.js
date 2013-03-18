@@ -103,7 +103,6 @@ var CrymeEngine = {
 
 			CrymeEngine.canvas.map.context.fillStyle = "#fff";
 			//dessin du terrain
-			//Map.drawMask();
 			Map.drawMap();
 
 			//dessin des bâtiments
@@ -183,6 +182,16 @@ var CrymeEngine = {
 					break;
 				case 32: //Space
 					CrymeEngine.hudElements[3].visible = !CrymeEngine.hudElements[3].visible;
+					break;
+				//graphic debug
+				case 49://1
+					showGraphicDebug = !showGraphicDebug;
+					break;
+				case 50://2
+					showGraphicDebugAdvanced = !showGraphicDebugAdvanced;
+					break;
+				case 51://3
+					showGraphicDebugMapAdvanced = !showGraphicDebugMapAdvanced;
 					break;
 			}
 			return false;

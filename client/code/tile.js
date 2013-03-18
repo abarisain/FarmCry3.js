@@ -70,6 +70,14 @@ Tile.prototype = {
 	//attention a bien se préoccuper du context avant, ici je m'en occupe pas
 	drawTile: function () {
 		CrymeEngine.canvas.map.context.drawImage(texTiles[this.image].image, this.imageLeft, this.imageTop);
+		if (showGraphicDebug) {
+			if (showGraphicDebugMapAdvanced) {
+				CrymeEngine.canvas.map.context.fillText('( ' + texTiles[this.image].name + ' : ' + this.line + ',' + this.col + ')', this.imageLeft, this.imageTop);
+			}
+			else {
+				CrymeEngine.canvas.map.context.fillText('(' + this.line + ',' + this.col + ')', this.imageLeft, this.imageTop);
+			}
+		}
 	}
 };
 
@@ -80,7 +88,7 @@ function LoadTiles() {
 
 function LoadTexTiles() {
 	for (var i = 0; i < texTileList.length; i++) {
-		var tile = new Texture(i, texTileList[i].image, 'src/tiles/' + texTileList[i] + '.png');
+		var tile = new Texture(i, texTileList[i], 'src/tiles/' + texTileList[i] + '.png');
 		tile.image.onload = function () {
 			currentLoadingCount++;
 		};

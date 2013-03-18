@@ -1,5 +1,5 @@
-function TileItem(image, col, line, centerX, centerY) {
-	this.image = image;
+function TileItem(index, col, line, centerX, centerY) {
+	this.image = index;
 	this.col = col;
 	this.line = line;
 	this.x = 0;
@@ -28,11 +28,19 @@ TileItem.prototype = {
 	},
 	drawItem: function (imageList) {
 		CE.canvas.map.context.drawImage(imageList[this.image].image, this.imageLeft, this.imageTop);
-		CE.canvas.map.context.fillStyle = "#fff";
-		CE.canvas.map.context.fillRect(this.imageLeft, this.imageTop, 10, 10);
-		CE.canvas.map.context.fillStyle = "#ff0007";
-		CE.canvas.map.context.fillRect(this.x - 5, this.y - 1, 10, 2);
-		CE.canvas.map.context.fillRect(this.x - 1, this.y - 5, 2, 10);
+		if (showGraphicDebug) {
+			CE.canvas.map.context.fillStyle = "#ff8a00";
+			CE.canvas.map.context.fillRect(this.imageLeft, this.imageTop, graphicDebugDotSize / 2, graphicDebugDotSize / 2);
+
+			CE.canvas.map.context.fillRect(this.x - graphicDebugDotSize / 2, this.y - graphicDebugDotSize / 10, graphicDebugDotSize, graphicDebugDotSize / 5);
+			CE.canvas.map.context.fillRect(this.x - graphicDebugDotSize / 10, this.y - graphicDebugDotSize / 2, graphicDebugDotSize / 5, graphicDebugDotSize);
+			if (showGraphicDebugAdvanced) {
+				CE.canvas.map.context.fillStyle = "rgba(255, 138, 0, 0.5)";
+				CE.canvas.map.context.fillRect(this.imageLeft + graphicDebugDotSize / 2, this.imageTop - 4, 100, 19);
+				CE.canvas.map.context.fillStyle = "#000";
+				CE.canvas.map.context.fillText('(' + imageList[this.image].name + ' : ' + this.line + ',' + this.col + ')', this.imageLeft + graphicDebugDotSize / 2 + 5, this.imageTop + 10);
+			}
+		}
 	}
 };
 

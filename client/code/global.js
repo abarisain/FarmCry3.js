@@ -23,6 +23,12 @@ var loadingComplete = false;
 //Moteur réseau
 var networkEngine;
 
+//graphic debug
+var showGraphicDebug = true;//affiche le debug basique
+var showGraphicDebugMapAdvanced = false;//affiche les noms des tiles, ça arrache un peu les yeux
+var showGraphicDebugAdvanced = true;//affiche les noms des tilesItems
+var graphicDebugDotSize = 20;//la taille des formes geometriques de debug à afficher
+
 //Login
 var loginRememberCheckbox;
 var loginEmailField;
