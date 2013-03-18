@@ -71,8 +71,13 @@ Tile.prototype = {
 	drawTile: function () {
 		CrymeEngine.canvas.map.context.drawImage(texTiles[this.image].image, this.imageLeft, this.imageTop);
 		if (showGraphicDebug) {
-			if (showGraphicDebugMapAdvanced) {
-				CrymeEngine.canvas.map.context.fillText('( ' + texTiles[this.image].name + ' : ' + this.line + ',' + this.col + ')', this.imageLeft, this.imageTop);
+			if (showGraphicDebugMap) {
+				CE.canvas.map.context.fillStyle = "#fff";
+				CE.canvas.map.context.fillRect(this.imageLeft, this.imageTop, graphicDebugDotSize / 2, graphicDebugDotSize / 2);
+				CE.canvas.map.context.fillStyle = "rgba(255, 255, 255, 0.2)";
+				CE.canvas.map.context.fillRect(this.imageLeft + graphicDebugDotSize / 2, this.imageTop - 4, 100, 19);
+				CE.canvas.map.context.fillStyle = "#fff";
+				CrymeEngine.canvas.map.context.fillText(texTiles[this.image].name + ' : ' + this.line + ',' + this.col, this.imageLeft + graphicDebugDotSize / 2 + 5, this.imageTop + 10);
 			}
 			else {
 				CrymeEngine.canvas.map.context.fillText('(' + this.line + ',' + this.col + ')', this.imageLeft, this.imageTop);

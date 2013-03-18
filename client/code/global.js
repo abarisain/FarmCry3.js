@@ -25,8 +25,10 @@ var networkEngine;
 
 //graphic debug
 var showGraphicDebug = true;//affiche le debug basique
-var showGraphicDebugMapAdvanced = false;//affiche les noms des tiles, ça arrache un peu les yeux
-var showGraphicDebugAdvanced = true;//affiche les noms des tilesItems
+var showGraphicDebugMap = false;//affiche les noms des tiles, ça arrache un peu les yeux
+var showGraphicDebugItem = true;//affiche les noms des tilesItems
+var showGraphicDebugAdvanced = false;//switch la transparence des éléments
+var graphicDebugAlpha = 1;//affiche tous les elements en transparence
 var graphicDebugDotSize = 20;//la taille des formes geometriques de debug à afficher
 
 //Login

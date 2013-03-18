@@ -79,7 +79,6 @@ var CrymeEngine = {
 					//Normal draw loop will now handle the rendering
 					loadingComplete = true;
 					CE.mapInvalidated = true;
-					CrymeEngine.canvas.map.context.globalAlpha = 1;//pour être sur de ne pas avoir de bug de transparence
 				}
 				else {
 					if (progress >= animationDuration * 2 || progress <= 0) {
@@ -95,6 +94,15 @@ var CrymeEngine = {
 			CrymeEngine.canvas.map.clear();
 			CrymeEngine.canvas.map.context.save();
 
+			if (showGraphicDebug && showGraphicDebugAdvanced) {
+				CrymeEngine.canvas.map.context.fillStyle = "#000";
+				CrymeEngine.canvas.map.context.fillRect(0, 0, canvasWidth, canvasHeight);
+				CrymeEngine.canvas.map.context.globalAlpha = graphicDebugAlpha;//pour afficher tous les éléments en transparence
+			}
+			else {
+				CrymeEngine.canvas.map.context.globalAlpha = 1;//pour être sur de ne pas avoir de bug de transparence
+			}
+
 			//gestion du positionnement de la caméra
 			CrymeEngine.canvas.map.context.scale(scaleFactor, scaleFactor);
 			CrymeEngine.canvas.map.context.translate(CrymeEngine.camera.position.x, CrymeEngine.camera.position.y);
@@ -102,6 +110,7 @@ var CrymeEngine = {
 			var tmpLength;
 
 			CrymeEngine.canvas.map.context.fillStyle = "#fff";
+
 			//dessin du terrain
 			Map.drawMap();
 
@@ -188,10 +197,26 @@ var CrymeEngine = {
 					showGraphicDebug = !showGraphicDebug;
 					break;
 				case 50://2
-					showGraphicDebugAdvanced = !showGraphicDebugAdvanced;
+					showGraphicDebugItem = !showGraphicDebugItem;
 					break;
 				case 51://3
-					showGraphicDebugMapAdvanced = !showGraphicDebugMapAdvanced;
+					showGraphicDebugMap = !showGraphicDebugMap;
+					break;
+				case 52://4
+					showGraphicDebugAdvanced = !showGraphicDebugAdvanced;
+					var messageData = {
+						kind: CrymeEngine.hud.chat.Kind.LOCAL,
+						message: 'Graphical debug : advanced - ' + showGraphicDebugAdvanced
+					}
+					CrymeEngine.hud.chat.append(messageData);
+					break;
+				case 53://5
+					graphicDebugAlpha = (graphicDebugAlpha + 0.25) % 1;
+					var messageData = {
+						kind: CrymeEngine.hud.chat.Kind.LOCAL,
+						message: 'Graphical debug : advanced - opacity set to ' + graphicDebugAlpha
+					}
+					CrymeEngine.hud.chat.append(messageData);
 					break;
 			}
 			return false;

@@ -34,11 +34,11 @@ TileItem.prototype = {
 
 			CE.canvas.map.context.fillRect(this.x - graphicDebugDotSize / 2, this.y - graphicDebugDotSize / 10, graphicDebugDotSize, graphicDebugDotSize / 5);
 			CE.canvas.map.context.fillRect(this.x - graphicDebugDotSize / 10, this.y - graphicDebugDotSize / 2, graphicDebugDotSize / 5, graphicDebugDotSize);
-			if (showGraphicDebugAdvanced) {
+			if (showGraphicDebugItem) {
 				CE.canvas.map.context.fillStyle = "rgba(255, 138, 0, 0.5)";
 				CE.canvas.map.context.fillRect(this.imageLeft + graphicDebugDotSize / 2, this.imageTop - 4, 100, 19);
 				CE.canvas.map.context.fillStyle = "#000";
-				CE.canvas.map.context.fillText('(' + imageList[this.image].name + ' : ' + this.line + ',' + this.col + ')', this.imageLeft + graphicDebugDotSize / 2 + 5, this.imageTop + 10);
+				CE.canvas.map.context.fillText(imageList[this.image].name + ' : ' + this.line + ',' + this.col, this.imageLeft + graphicDebugDotSize / 2 + 5, this.imageTop + 10);
 			}
 		}
 	}
