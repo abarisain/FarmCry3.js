@@ -5,7 +5,8 @@ var NetworkModule = {
 	name: "chat",
 	Kind: {
 		SERVER: 0,
-		PLAYER: 1
+		PLAYER: 1,
+        LOCAL: 2
 	},
 	broadcastServerMessage: function (message) {
 		NetworkEngine.clients.broadcast("chat.message", {kind: NetworkModule.Kind.SERVER, message: message});

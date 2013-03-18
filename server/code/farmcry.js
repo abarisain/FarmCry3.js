@@ -16,6 +16,10 @@ Array.prototype.removeItemAtIndex = function (index) {
 	this.splice(index, 1);
 };
 
+String.prototype.beginsWith = function (string) {
+    return(this.indexOf(string) === 0);
+};
+
 GameState = require('./models/gamestate');
 NetworkEngine = require('./network/engine');
 

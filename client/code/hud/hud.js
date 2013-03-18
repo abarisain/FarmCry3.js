@@ -64,7 +64,8 @@ CrymeEngine.hud.chat = {
 	timestampFormat: "HH:MM:ss",
 	Kind: {
 		SERVER: 0,
-		PLAYER: 1
+        PLAYER: 1,
+        LOCAL: 2
 	},
 	divs: {
 		log: null,
@@ -91,7 +92,41 @@ CrymeEngine.hud.chat = {
 	send: function () {
 		if (this.divs.input.value != "") {
 			//TODO : Parse /commands here
-			networkEngine.subsystems.chat.sendMessage(this.divs.input.value);
+            var msg = this.divs.input.value;
+            if (msg.beginsWith("/")) {
+                if (msg.beginsWith("/help")) {
+                    messageData = {
+                        kind: this.Kind.LOCAL,
+                        message: 'Help : "/raw <module.command> <JSON args>" Send raw command to server. DANGEROUS'
+                    }
+                    CrymeEngine.hud.chat.append(messageData);
+                } else if (msg.beginsWith("/raw ")) {
+                    try {
+                        var splitMsg = msg.split(" ", 2);
+                        var jsonArgs = msg.substring(splitMsg[0].length + splitMsg[1].length + 2);
+                        networkEngine.socket.emit(splitMsg[1], JSON.parse(jsonArgs));
+                        messageData = {
+                            kind: this.Kind.LOCAL,
+                            message: 'Sending raw command : ' + splitMsg[1] + " " + jsonArgs
+                        }
+                        CrymeEngine.hud.chat.append(messageData);
+                    } catch (err) {
+                        messageData = {
+                            kind: this.Kind.LOCAL,
+                            message: 'Invalid raw command : ' + msg
+                        }
+                        CrymeEngine.hud.chat.append(messageData);
+                    }
+                } else {
+                    messageData = {
+                        kind: this.Kind.LOCAL,
+                        message: 'Error : Unknown command'
+                    }
+                    CrymeEngine.hud.chat.append(messageData);
+                }
+            } else {
+    			networkEngine.subsystems.chat.sendMessage(this.divs.input.value);
+            }
 		}
 		this.divs.input.value = "";
 		this.hideSendButton();
@@ -113,6 +148,10 @@ CrymeEngine.hud.chat = {
 		var messagePrefix = new Date().format(this.timestampFormat) + " ";
 		var classText = "";
 		switch (messageData.kind) {
+            case this.Kind.LOCAL:
+                classText = "local";
+                messagePrefix = "";
+                break;
 			case this.Kind.SERVER:
 				classText = "server";
 				break;

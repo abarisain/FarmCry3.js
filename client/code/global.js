@@ -28,3 +28,8 @@ var loginPasswordField;
 var loginPanel;
 var loadingPanel;
 var loadingProgressSpan;
+
+// Patch JS
+String.prototype.beginsWith = function (string) {
+    return(this.indexOf(string) === 0);
+};

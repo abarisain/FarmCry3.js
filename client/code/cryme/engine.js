@@ -168,15 +168,15 @@ var CrymeEngine = {
 
 		window.onkeydown = function (event) {
 			//Special case, unless we are pressing enter, ignore everything while we're in the chat box
-			if (document.activeElement == hud.chat.divs.input && event.keyCode != 13) {
+			if (document.activeElement == CrymeEngine.hud.chat.divs.input && event.keyCode != 13) {
 				return true;
 			}
 			switch (event.keyCode) {
 				case 13: //Enter
-					if (document.activeElement == hud.chat.divs.input) {
-						hud.chat.send();
+					if (document.activeElement == CrymeEngine.hud.chat.divs.input) {
+                        CrymeEngine.hud.chat.send();
 					} else {
-						hud.chat.divs.input.focus();
+                        CrymeEngine.hud.chat.divs.input.focus();
 					}
 					break;
 				case 32: //Space
