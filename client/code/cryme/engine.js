@@ -94,12 +94,20 @@ var CrymeEngine = {
 			CrymeEngine.canvas.map.clear();
 			CrymeEngine.canvas.map.context.save();
 
-			if (showGraphicDebug && showGraphicDebugAdvanced) {
-				CrymeEngine.canvas.map.context.fillStyle = "#000";
-				CrymeEngine.canvas.map.context.fillRect(0, 0, canvasWidth, canvasHeight);
-				CrymeEngine.canvas.map.context.globalAlpha = graphicDebugAlpha;//pour afficher tous les éléments en transparence
+			if (showGraphicDebug) {
+				if (showGraphicDebugAdvanced) {
+					CrymeEngine.canvas.map.context.fillStyle = "#000";
+					CrymeEngine.canvas.map.context.fillRect(0, 0, canvasWidth, canvasHeight);
+					CrymeEngine.canvas.map.context.globalAlpha = graphicDebugAlpha;//pour afficher tous les éléments en transparence
+				}
+
+				CrymeEngine.canvas.debug.clear();
+				CrymeEngine.canvas.debug.context.save();
+				CrymeEngine.canvas.debug.context.scale(scaleFactor, scaleFactor);
+				CrymeEngine.canvas.debug.context.translate(CrymeEngine.camera.position.x, CrymeEngine.camera.position.y);
 			}
 			else {
+				CrymeEngine.canvas.debug.clear();
 				CrymeEngine.canvas.map.context.globalAlpha = 1;//pour être sur de ne pas avoir de bug de transparence
 			}
 
@@ -126,6 +134,9 @@ var CrymeEngine = {
 			}
 
 			CrymeEngine.canvas.map.context.restore();
+			if (showGraphicDebug) {
+				CrymeEngine.canvas.debug.context.restore();
+			}
 		},
 		Hud: function () {
 			CrymeEngine.canvas.hud.clear();
@@ -150,6 +161,7 @@ var CrymeEngine = {
 		this.canvas.map = new CrymeCanvas('#canvas');
 		this.canvas.animation = new CrymeCanvas('#canvasAnimation');
 		this.canvas.hud = new CrymeCanvas('#canvasHud');
+		this.canvas.debug = new CrymeCanvas('#canvasDebug');
 		this.canvas.hud.setFont("bold 13pt stanberry,Calibri,Geneva,Arial");
 		this.canvas.resizeAll(canvasWidth, canvasHeight);
 
@@ -195,6 +207,11 @@ var CrymeEngine = {
 				//graphic debug
 				case 49://1
 					showGraphicDebug = !showGraphicDebug;
+					var messageData = {
+						kind: CrymeEngine.hud.chat.Kind.LOCAL,
+						message: 'Graphical debug : enabled - ' + showGraphicDebug
+					}
+					CrymeEngine.hud.chat.append(messageData);
 					break;
 				case 50://2
 					showGraphicDebugItem = !showGraphicDebugItem;
@@ -219,10 +236,9 @@ var CrymeEngine = {
 					CrymeEngine.hud.chat.append(messageData);
 					break;
 			}
-			return false;
 		};
 
-		window.onmousewheel = function (evt) {
+		this.canvas.hud.canvas.onmousewheel = function (evt) {
 			if (evt.wheelDeltaY > 0) {
 				scaleFactor += 0.25;
 			}

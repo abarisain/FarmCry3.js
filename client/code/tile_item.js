@@ -29,16 +29,16 @@ TileItem.prototype = {
 	drawItem: function (imageList) {
 		CE.canvas.map.context.drawImage(imageList[this.image].image, this.imageLeft, this.imageTop);
 		if (showGraphicDebug) {
-			CE.canvas.map.context.fillStyle = "#ff8a00";
-			CE.canvas.map.context.fillRect(this.imageLeft, this.imageTop, graphicDebugDotSize / 2, graphicDebugDotSize / 2);
+			CE.canvas.debug.context.fillStyle = "#ff8a00";
+			CE.canvas.debug.context.fillRect(this.imageLeft, this.imageTop, graphicDebugDotSize / 2, graphicDebugDotSize / 2);
 
-			CE.canvas.map.context.fillRect(this.x - graphicDebugDotSize / 2, this.y - graphicDebugDotSize / 10, graphicDebugDotSize, graphicDebugDotSize / 5);
-			CE.canvas.map.context.fillRect(this.x - graphicDebugDotSize / 10, this.y - graphicDebugDotSize / 2, graphicDebugDotSize / 5, graphicDebugDotSize);
+			CE.canvas.debug.context.fillRect(this.x - graphicDebugDotSize / 2, this.y - graphicDebugDotSize / 10, graphicDebugDotSize, graphicDebugDotSize / 5);
+			CE.canvas.debug.context.fillRect(this.x - graphicDebugDotSize / 10, this.y - graphicDebugDotSize / 2, graphicDebugDotSize / 5, graphicDebugDotSize);
 			if (showGraphicDebugItem) {
-				CE.canvas.map.context.fillStyle = "rgba(255, 138, 0, 0.5)";
-				CE.canvas.map.context.fillRect(this.imageLeft + graphicDebugDotSize / 2, this.imageTop - 4, 100, 19);
-				CE.canvas.map.context.fillStyle = "#000";
-				CE.canvas.map.context.fillText(imageList[this.image].name + ' : ' + this.line + ',' + this.col, this.imageLeft + graphicDebugDotSize / 2 + 5, this.imageTop + 10);
+				CE.canvas.debug.context.fillStyle = "rgba(255, 138, 0, 0.5)";
+				CE.canvas.debug.context.fillRect(this.imageLeft + graphicDebugDotSize / 2, this.imageTop - 4, 100, 19);
+				CE.canvas.debug.context.fillStyle = "#000";
+				CE.canvas.debug.context.fillText(imageList[this.image].name + ' : ' + this.line + ',' + this.col, this.imageLeft + graphicDebugDotSize / 2 + 5, this.imageTop + 10);
 			}
 		}
 	}

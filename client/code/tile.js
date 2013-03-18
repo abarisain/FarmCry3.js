@@ -56,8 +56,8 @@ Tile.prototype = {
 		this.y = (lineSize - this.line + this.col - 1) * (tileHeight / 2);
 	},
 	updateImageCoord: function () {
-		this.imageLeft = this.x;// - this.centerX;
-		this.imageTop = this.y;// - this.centerY;
+		this.imageLeft = this.x - this.centerX;
+		this.imageTop = this.y - this.centerY;
 	},
 	drawTileLoading: function (progress) {
 		if (this.alpha < 1) {
@@ -72,15 +72,20 @@ Tile.prototype = {
 		CrymeEngine.canvas.map.context.drawImage(texTiles[this.image].image, this.imageLeft, this.imageTop);
 		if (showGraphicDebug) {
 			if (showGraphicDebugMap) {
-				CE.canvas.map.context.fillStyle = "#fff";
-				CE.canvas.map.context.fillRect(this.imageLeft, this.imageTop, graphicDebugDotSize / 2, graphicDebugDotSize / 2);
-				CE.canvas.map.context.fillStyle = "rgba(255, 255, 255, 0.2)";
-				CE.canvas.map.context.fillRect(this.imageLeft + graphicDebugDotSize / 2, this.imageTop - 4, 100, 19);
-				CE.canvas.map.context.fillStyle = "#fff";
-				CrymeEngine.canvas.map.context.fillText(texTiles[this.image].name + ' : ' + this.line + ',' + this.col, this.imageLeft + graphicDebugDotSize / 2 + 5, this.imageTop + 10);
+				CE.canvas.debug.context.fillStyle = "#fff";
+				CE.canvas.debug.context.fillRect(this.x, this.y, graphicDebugDotSize / 2, graphicDebugDotSize / 2);
+				CE.canvas.debug.context.fillRect(Math.ceil(this.x - tileWidth / 2), this.y, 5, 1);
+				CE.canvas.debug.context.fillRect(Math.ceil(this.x - tileWidth / 2), this.y - 4, 1, 9);
+				CE.canvas.debug.context.fillRect(Math.ceil(this.x + tileWidth / 2) - 1, this.y - 4, 1, 9);
+				CE.canvas.debug.context.fillRect(Math.ceil(this.x + tileWidth / 2) - 5, this.y, 5, 1);
+				CE.canvas.debug.context.fillStyle = "rgba(255, 255, 255, 0.5)";
+				CE.canvas.debug.context.fillRect(this.x + graphicDebugDotSize / 2, this.y - 4, 100, 19);
+				CE.canvas.debug.context.fillStyle = "#000";
+				CE.canvas.debug.context.fillText(texTiles[this.image].name + ' : ' + this.line + ',' + this.col, this.x + graphicDebugDotSize / 2 + 5, this.y + 10);
 			}
 			else {
-				CrymeEngine.canvas.map.context.fillText('(' + this.line + ',' + this.col + ')', this.imageLeft, this.imageTop);
+				CE.canvas.debug.context.fillStyle = "#fff";
+				CE.canvas.debug.context.fillText('(' + this.line + ',' + this.col + ')', this.x, this.y);
 			}
 		}
 	}
