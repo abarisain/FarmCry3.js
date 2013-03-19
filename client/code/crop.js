@@ -1,7 +1,7 @@
 var texCropList = [
-	{image: 'wheat', centerX: 0, centerY: 28},
-	{image: 'tomato', centerX: 0, centerY: 28},
-	{image: 'corn', centerX: 0, centerY: 28}
+	{image: 'wheat', centerX: 132, centerY: 128},
+	{image: 'tomato', centerX: 131, centerY: 114},
+	{image: 'corn', centerX: 134, centerY: 124}
 ];
 var texCrops = [];
 

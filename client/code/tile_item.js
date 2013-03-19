@@ -28,6 +28,23 @@ TileItem.prototype = {
 			this.highlighted = true;
 			return true;
 		}
+		return false;
+	},
+	moveToMousePosition: function (x, y) {
+		var newCol = y / tileHeight - lineSize / 2 + x / tileWidth + 1;
+		var newLine = x / tileWidth - y / tileHeight + lineSize / 2;
+		this.move(Math.floor(newCol), Math.floor(newLine));
+	},
+	move: function (col, line) {
+		this.col = col;
+		this.line = line;
+		var messageData = {
+			kind: CE.hud.chat.Kind.LOCAL,
+			message: 'Moving ' + this.texture.name + ' to : (' + col + ', ' + line + ')'
+		}
+		CE.hud.chat.append(messageData);
+		this.updateCoord();
+		this.updateImageCoord();
 	},
 	updateCoord: function () {
 		this.x = (this.col + this.line) * (tileWidth / 2);
@@ -64,7 +81,7 @@ TileItem.prototype = {
 				CE.canvas.debug.context.fillStyle = "rgba(29, 82, 161, 0.8)";
 				CE.canvas.debug.context.fillRect(this.imageLeft + Options.Debug.Graphic.dotSize / 2, this.imageTop - 4, 100, 19);
 				CE.canvas.debug.context.fillStyle = "#fff";
-				CE.canvas.debug.context.fillText(this.texture.name + ' : ' + this.line + ',' + this.col, this.imageLeft + Options.Debug.Graphic.dotSize / 2 + 5, this.imageTop + 10);
+				CE.canvas.debug.context.fillText(this.texture.name + ' : ' + this.col + ',' + this.line, this.imageLeft + Options.Debug.Graphic.dotSize / 2 + 5, this.imageTop + 10);
 			}
 
 			if (this.highlighted) {

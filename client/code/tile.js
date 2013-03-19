@@ -81,11 +81,11 @@ Tile.prototype = {
 				CE.canvas.debug.context.fillStyle = "rgba(255, 255, 255, 0.5)";
 				CE.canvas.debug.context.fillRect(this.x + Options.Debug.Graphic.dotSize / 2, this.y - 4, 100, 19);
 				CE.canvas.debug.context.fillStyle = "#000";
-				CE.canvas.debug.context.fillText(texTiles[this.image].name + ' : ' + this.line + ',' + this.col, this.x + Options.Debug.Graphic.dotSize / 2 + 5, this.y + 10);
+				CE.canvas.debug.context.fillText(texTiles[this.image].name + ' : ' + this.col + ',' + this.line, this.x + Options.Debug.Graphic.dotSize / 2 + 5, this.y + 10);
 			}
 			else {
 				CE.canvas.debug.context.fillStyle = "#fff";
-				CE.canvas.debug.context.fillText('(' + this.line + ',' + this.col + ')', this.x, this.y);
+				CE.canvas.debug.context.fillText('(' + this.col + ',' + this.line + ')', this.x, this.y);
 			}
 		}
 	}

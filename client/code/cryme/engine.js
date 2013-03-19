@@ -202,6 +202,13 @@ var CrymeEngine = {
 			}
 		};
 
+		this.canvas.hud.canvas.ondblclick = function (event) {
+			if (loadingComplete) {
+				//pour du debug de position d'image
+				Map.player.moveToMousePosition(event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x, event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y);
+			}
+		};
+
 		window.onkeydown = function (event) {
 			CE.keyboard.keyPressed(event);
 			CE.mapInvalidated = true;
@@ -305,10 +312,10 @@ function CreateMap() {
 	Map.players.push(character);
 	Map.player = character;//pour pouvoir gerer le joueur facilement
 	Map.tileItems.push(character);//pour gérer les personnages comme n'importe quel autre item, du moins pour le moment
-	var character = new TileItems.Character(0, 12, 7);
+	var character = new TileItems.Character(1, 12, 7);
 	Map.players.push(character);
 	Map.tileItems.push(character);
-	var character = new TileItems.Character(0, 2, 3);
+	var character = new TileItems.Character(1, 2, 3);
 	Map.players.push(character);
 	Map.tileItems.push(character);
 }

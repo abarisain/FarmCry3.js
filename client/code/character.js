@@ -1,5 +1,6 @@
 var texCharacterList = [
-	{image: 'farmer', centerX: 0, centerY: 0}
+	{image: 'player', centerX: 19, centerY: 15},
+	{image: 'farmer', centerX: 15, centerY: 18}
 ];
 var texCharacters = [];
 
