@@ -1,5 +1,5 @@
 var texBuildingList = [
-	{image: 'home', centerX: 0, centerY: 128}
+	{image: 'home', centerX: 133, centerY: 275}
 ];
 var texBuildings = [];
 

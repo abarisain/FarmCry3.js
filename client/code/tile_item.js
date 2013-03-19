@@ -71,7 +71,7 @@ TileItem.prototype = {
 				CE.canvas.debug.context.fillStyle = "rgba(29, 82, 161, 0.8)";
 				CE.canvas.debug.context.fillRect(this.x + 5, this.y - 18, 100, 19);
 				CE.canvas.debug.context.fillStyle = "#fff";
-				CE.canvas.debug.context.fillText('center : ' + this.centerX + ',' + this.centerY, this.x + 10, this.y - 4);
+				CE.canvas.debug.context.fillText('center : ' + Math.floor(this.centerX) + ',' + Math.floor(this.centerY), this.x + 10, this.y - 4);
 			}
 		}
 		//ces informations sont indispensables

@@ -171,8 +171,8 @@ var CrymeEngine = {
 			if (loadingComplete) {
 				if (event.button == 0) {
 					CE.hud.onClick(event.pageX, event.pageY);
-					CrymeEngine.mousePosition.x = event.pageX - this.offsetLeft;
-					CrymeEngine.mousePosition.y = event.pageY - this.offsetTop;
+					CrymeEngine.mousePosition.x = event.pageX / scaleFactor - this.offsetLeft;
+					CrymeEngine.mousePosition.y = event.pageY / scaleFactor - this.offsetTop;
 					var objectSelected = false;
 					for (var i = 0; i < CE.tileItems.length; i++) {
 						if (CE.tileItems[i].mouseIntersect(CE.mousePosition.x - CE.camera.position.x, CE.mousePosition.y - CE.camera.position.y)) {
@@ -298,12 +298,12 @@ var CrymeEngine = {
 			}
 
 			if (CE.highlightedItem > -1) {
-				CE.tileItems[CE.highlightedItem].centerX -= (event.pageX - this.offsetLeft - CrymeEngine.mousePosition.x);
-				CE.tileItems[CE.highlightedItem].centerY -= (event.pageY - this.offsetTop - CrymeEngine.mousePosition.y);
+				CE.tileItems[CE.highlightedItem].centerX -= (event.pageX / scaleFactor - this.offsetLeft - CrymeEngine.mousePosition.x);
+				CE.tileItems[CE.highlightedItem].centerY -= (event.pageY / scaleFactor - this.offsetTop - CrymeEngine.mousePosition.y);
 				CE.tileItems[CE.highlightedItem].updateImageCoord();
 
-				CrymeEngine.mousePosition.x = event.pageX - this.offsetLeft;
-				CrymeEngine.mousePosition.y = event.pageY - this.offsetTop;
+				CrymeEngine.mousePosition.x = event.pageX / scaleFactor - this.offsetLeft;
+				CrymeEngine.mousePosition.y = event.pageY / scaleFactor - this.offsetTop;
 			}
 		};
 
@@ -332,18 +332,14 @@ function CreateMap() {
 	CrymeEngine.tileItems.push(building);
 	building = new TileItems.Building(0, 8, 9);
 	CrymeEngine.tileItems.push(building);
-	Map.changeTile(6, 8, 8);
-	Map.changeTile(6, 9, 8);
-	Map.changeTile(6, 10, 8);
-	Map.changeTile(6, 11, 8);
-	Map.changeTile(6, 11, 9);
-	Map.changeTile(6, 10, 9);//pour mettre de l'eau sous le cold storage
-	Map.changeTile(6, 10, 10);
-	Map.changeTile(6, 11, 10);
-	/*var crop = new Crop(0, 1, 6);
-	 CrymeEngine.tileItems.push(crop);
-	 crop = new Crop(1, 3, 5);
-	 CrymeEngine.tileItems.push(crop);
-	 crop = new Crop(2, 2, 1);
-	 CrymeEngine.tileItems.push(crop);*/
+
+	var crop = new TileItems.Crop(0, 1, 6);
+	CrymeEngine.tileItems.push(crop);
+	crop = new TileItems.Crop(1, 3, 5);
+	CrymeEngine.tileItems.push(crop);
+	crop = new TileItems.Crop(2, 2, 1);
+	CrymeEngine.tileItems.push(crop);
+	Map.changeTile(6, 1, 6);//pour mettre de la terre sous les crops sous le cold storage
+	Map.changeTile(6, 3, 5);
+	Map.changeTile(6, 2, 1);
 }

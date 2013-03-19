@@ -41,13 +41,13 @@ Tile.prototype = {
 			this.image = 3;//grass_2
 		}
 		else if (this.humidity < 0.6) {
-			this.image = 4;//grass_1
+			this.image = 0;//grass_1
 		}
 		else if (this.humidity < 0.8) {
-			this.image = 5;//leave
+			this.image = 8;//leave
 		}
 		else {
-			this.image = 6;//water
+			this.image = 9;//water
 		}
 
 	},

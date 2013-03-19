@@ -1,34 +1,22 @@
 var texCropList = [
-	{image: 'wheat'},
-	{image: 'tomato'},
-	{image: 'corn'}
+	{image: 'wheat', centerX: 0, centerY: 28},
+	{image: 'tomato', centerX: 0, centerY: 28},
+	{image: 'corn', centerX: 0, centerY: 28}
 ];
 var texCrops = [];
 
-function Crop(type, col, line) {
-	this.col = col;
-	this.line = line;
-	this.tileItem = new TileItem(type, this.col, this.line, 0, 28);
+TileItems.Crop = function (type, col, line) {
+	TileItem.call(this, texCrops[type], col, line, texCropList[type].centerX, texCropList[type].centerY);
 }
 
-Crop.prototype = {
-	constructor: Crop,
-	drawItemLoading: function (progress) {
-		this.tileItem.drawItemLoading(texCrops, progress);
-	},
-	drawItem: function () {
-		this.tileItem.drawItem(texCrops);
-	}
-};
+TileItems.Crop.prototype = new TileItem();
+TileItems.Crop.prototype.constructor = TileItem.Crop;
 
 function LoadTexCrops() {
 	totalLoadingCount += texCropList.length;
 	for (var i = 0; i < texCropList.length; i++) {
 		var texture = new Texture(i, texCropList[i].image, 'src/crops/' + texCropList[i].image + '.png');
-		texture.image.onload = function () {
-			currentLoadingCount++;
-			texture.updateWidthHeight();
-		};
+		texture.image.addEventListener('load', texture.loadingEnded);
 		texCrops[i] = texture;
 	}
 }
