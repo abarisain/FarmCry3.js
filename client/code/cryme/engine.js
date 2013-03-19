@@ -154,6 +154,8 @@ var CrymeEngine = {
 		this.canvas.hud.setFont("bold 13pt stanberry,Calibri,Geneva,Arial");
 		this.canvas.resizeAll(canvasWidth, canvasHeight);
 
+		CE.keyboard.init();
+
 		var audioPlayer = document.getElementById('audioPlayer');
 		audioPlayer.style.top = (canvasHeight - 30) + 'px';
 		if (music) {
@@ -165,6 +167,8 @@ var CrymeEngine = {
 			if (loadingComplete) {
 				if (event.button == 0) {
 					CE.hud.onClick(event.pageX, event.pageY);
+
+					//pour du debug de position d'image
 					CrymeEngine.mousePosition.x = event.pageX / scaleFactor - this.offsetLeft;
 					CrymeEngine.mousePosition.y = event.pageY / scaleFactor - this.offsetTop;
 					var objectSelected = false;
@@ -204,44 +208,44 @@ var CrymeEngine = {
 				return true;
 			}
 			switch (event.keyCode) {
-				case 13: //Enter
+				case CE.keyboard.Shortcuts.CHAT:
 					if (document.activeElement == CrymeEngine.hud.chat.divs.input) {
 						CrymeEngine.hud.chat.send();
 					} else {
 						CrymeEngine.hud.chat.divs.input.focus();
 					}
 					break;
-				case 32: //Space
+				case CE.keyboard.Shortcuts.INVENTORY:
 					CrymeEngine.hudElements[3].visible = !CrymeEngine.hudElements[3].visible;
 					break;
 				//graphic debug
-				case 49://1
-					showGraphicDebug = !showGraphicDebug;
+				case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG:
+					this.showGraphicDebug = !this.showGraphicDebug;
 					var messageData = {
 						kind: CrymeEngine.hud.chat.Kind.LOCAL,
-						message: 'Graphical debug : enabled - ' + showGraphicDebug
+						message: 'Graphical debug : enabled - ' + this.showGraphicDebug
 					}
 					CrymeEngine.hud.chat.append(messageData);
 					break;
-				case 50://2
-					showGraphicDebugItem = !showGraphicDebugItem;
+				case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ITEM:
+					this.showGraphicDebugItem = !this.showGraphicDebugItem;
 					break;
-				case 51://3
-					showGraphicDebugMap = !showGraphicDebugMap;
+				case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_MAP:
+					this.showGraphicDebugMap = !this.showGraphicDebugMap;
 					break;
-				case 52://4
-					showGraphicDebugAdvanced = !showGraphicDebugAdvanced;
+				case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ADVANCED:
+					this.showGraphicDebugAdvanced = !this.showGraphicDebugAdvanced;
 					var messageData = {
 						kind: CrymeEngine.hud.chat.Kind.LOCAL,
-						message: 'Graphical debug : advanced - ' + showGraphicDebugAdvanced
+						message: 'Graphical debug : advanced - ' + this.showGraphicDebugAdvanced
 					}
 					CrymeEngine.hud.chat.append(messageData);
 					break;
-				case 53://5
-					graphicDebugAlpha = (graphicDebugAlpha + 0.25) % 1;
+				case CE.keyboard.Shortcuts.CHANGE_GRAPHIC_DEBUG_ALPHA:
+					this.graphicDebugAlpha = (this.graphicDebugAlpha + 0.25) % 1;
 					var messageData = {
 						kind: CrymeEngine.hud.chat.Kind.LOCAL,
-						message: 'Graphical debug : advanced - opacity set to ' + graphicDebugAlpha
+						message: 'Graphical debug : advanced - opacity set to ' + this.graphicDebugAlpha
 					}
 					CrymeEngine.hud.chat.append(messageData);
 					break;
