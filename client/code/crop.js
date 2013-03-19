@@ -27,6 +27,7 @@ function LoadTexCrops() {
 		var texture = new Texture(i, texCropList[i].image, 'src/crops/' + texCropList[i].image + '.png');
 		texture.image.onload = function () {
 			currentLoadingCount++;
+			texture.updateWidthHeight();
 		};
 		texCrops[i] = texture;
 	}

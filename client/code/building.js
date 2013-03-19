@@ -1,71 +1,20 @@
 var texBuildingList = [
-	{image: 'home'}
+	{image: 'home', centerX: 0, centerY: 128}
 ];
 var texBuildings = [];
 
-/*var texAnimatedList = [
- {
- image: 'cold_storage_mecanism',
- x: 260,
- y: -16,
- frameWidth: 144,
- frameHeight: 147,
- frameCount: 15,
- frameTimer: 4
- },
- {
- image: 'cold_storage_water',
- x: 391,
- y: 187,
- frameWidth: 124,
- frameHeight: 96,
- frameCount: 13,
- frameTimer: 4
- },
- {
- image: 'chimney',
- x: 170,
- y: -140,
- frameWidth: 46,
- frameHeight: 136,
- frameCount: 5,
- frameTimer: 4
- }
- ];*/
-
-function Building(type, col, line) {
-	this.col = col;
-	this.line = line;
-	/*this.animations = [];
-	 if (animationIndex != undefined) {
-	 for (var i = 0; i < animationIndex.length; i++) {
-	 this.animations.push({
-	 animationIndex: animationIndex[i],
-	 x: animationList[animationIndex[i]].x,
-	 y: animationList[animationIndex[i]].y
-	 });
-	 }
-	 }*/
-	this.tileItem = new TileItem(type, this.col, this.line, 0, 128);
+TileItems.Building = function (type, col, line) {
+	TileItem.call(this, texBuildings[type], col, line, texBuildingList[type].centerX, texBuildingList[type].centerY);
 }
 
-Building.prototype = {
-	constructor: Building,
-	drawItemLoading: function (progress) {
-		this.tileItem.drawItemLoading(texBuildings, progress);
-	},
-	drawItem: function () {
-		this.tileItem.drawItem(texBuildings);
-	}
-};
+TileItems.Building.prototype = new TileItem();
+TileItems.Building.prototype.constructor = TileItems.Building;
 
 function LoadTexBuildings() {
 	totalLoadingCount += texBuildingList.length;
 	for (var i = 0; i < texBuildingList.length; i++) {
 		var texture = new Texture(i, texBuildingList[i].image, 'src/buildings/' + texBuildingList[i].image + '.png');
-		texture.image.onload = function () {
-			currentLoadingCount++;
-		};
+		texture.image.addEventListener('load', texture.loadingEnded);
 		texBuildings[i] = texture;
 	}
 }

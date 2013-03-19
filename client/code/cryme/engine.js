@@ -15,6 +15,7 @@ var CrymeEngine = {
 	pauseRendering: false,
 	movingMap: false,
 	mapInvalidated: false, //If this is true, the map will be redrawn
+	highlightedItem: -1,//index de l'item selectionne
 	hudElements: [],
 	camera: {
 		position: {
@@ -31,8 +32,7 @@ var CrymeEngine = {
 		x: 0,
 		y: 0
 	},
-	buildings: [],
-	crops: [],
+	tileItems: [],//contient à la fois les buildings et les crops de la map
 	tiles: [],
 	canvas: { //Element type : CrymeCanvas
 		resizeAll: function (width, height) {
@@ -123,14 +123,9 @@ var CrymeEngine = {
 			Map.drawMap();
 
 			//dessin des bâtiments
-			tmpLength = CrymeEngine.buildings.length;
-			for (var i = 0; i < tmpLength; i++) {
-				CrymeEngine.buildings[i].drawItem();
-			}
-
-			tmpLength = CrymeEngine.crops.length;
+			tmpLength = CrymeEngine.tileItems.length;
 			for (i = 0; i < tmpLength; i++) {
-				CrymeEngine.crops[i].drawItem();
+				CrymeEngine.tileItems[i].drawItem();
 			}
 
 			CrymeEngine.canvas.map.context.restore();
@@ -174,8 +169,29 @@ var CrymeEngine = {
 
 		this.canvas.hud.canvas.onmousedown = function (event) {
 			if (loadingComplete) {
-				if (event.button == 0)
-					CrymeEngine.hud.onClick(event.pageX, event.pageY);
+				if (event.button == 0) {
+					CE.hud.onClick(event.pageX, event.pageY);
+					CrymeEngine.mousePosition.x = event.pageX - this.offsetLeft;
+					CrymeEngine.mousePosition.y = event.pageY - this.offsetTop;
+					var objectSelected = false;
+					for (var i = 0; i < CE.tileItems.length; i++) {
+						if (CE.tileItems[i].mouseIntersect(CE.mousePosition.x - CE.camera.position.x, CE.mousePosition.y - CE.camera.position.y)) {
+							if (CE.highlightedItem > -1 && CE.highlightedItem != i) {
+								CE.tileItems[CE.highlightedItem].highlighted = false;
+							}
+							CE.highlightedItem = i;
+							objectSelected = true;
+							break;
+						}
+					}
+					//si on ne sélectionne rien, on déselectionne
+					if (!objectSelected) {
+						if (CE.highlightedItem > -1) {
+							CE.tileItems[CE.highlightedItem].highlighted = false;
+							CE.highlightedItem = -1;
+						}
+					}
+				}
 				if (event.button == 2) {
 					//le clic droit sers a bouger la map, et le gauche a agir
 					//positionnement de la souris
@@ -251,6 +267,10 @@ var CrymeEngine = {
 
 		window.onmouseup = function () {
 			CrymeEngine.movingMap = false;
+			if (CE.highlightedItem > -1) {
+				CE.tileItems[CE.highlightedItem].highlighted = false;
+				CE.highlightedItem = -1;
+			}
 		};
 
 		window.onresize = function () {
@@ -266,6 +286,7 @@ var CrymeEngine = {
 			if (CrymeEngine.movingMap) {
 				event = event || window.event;
 
+
 				//deplacement de la caméra en fonction de la dernière position de la souris
 				CrymeEngine.camera.position.x += (event.pageX - this.offsetLeft - CrymeEngine.mousePosition.x);
 				CrymeEngine.camera.position.y += (event.pageY - this.offsetTop - CrymeEngine.mousePosition.y);
@@ -273,8 +294,16 @@ var CrymeEngine = {
 				//pour se souvenir de la dernière position de la souris
 				CrymeEngine.mousePosition.x = event.pageX - this.offsetLeft;
 				CrymeEngine.mousePosition.y = event.pageY - this.offsetTop;
-
 				CrymeEngine.mapInvalidated = true;
+			}
+
+			if (CE.highlightedItem > -1) {
+				CE.tileItems[CE.highlightedItem].centerX -= (event.pageX - this.offsetLeft - CrymeEngine.mousePosition.x);
+				CE.tileItems[CE.highlightedItem].centerY -= (event.pageY - this.offsetTop - CrymeEngine.mousePosition.y);
+				CE.tileItems[CE.highlightedItem].updateImageCoord();
+
+				CrymeEngine.mousePosition.x = event.pageX - this.offsetLeft;
+				CrymeEngine.mousePosition.y = event.pageY - this.offsetTop;
 			}
 		};
 
@@ -297,12 +326,12 @@ function InitLoading() {
 
 //fonction pour placer des trucs sur la map pour test le rendu
 function CreateMap() {
-	var building = new Building(0, 5, 13);
-	CrymeEngine.buildings.push(building);
-	building = new Building(0, 4, 7, [2]);
-	CrymeEngine.buildings.push(building);
-	building = new Building(0, 8, 9, [0, 1]);
-	CrymeEngine.buildings.push(building);
+	var building = new TileItems.Building(0, 5, 13);
+	CrymeEngine.tileItems.push(building);
+	building = new TileItems.Building(0, 4, 7);
+	CrymeEngine.tileItems.push(building);
+	building = new TileItems.Building(0, 8, 9);
+	CrymeEngine.tileItems.push(building);
 	Map.changeTile(6, 8, 8);
 	Map.changeTile(6, 9, 8);
 	Map.changeTile(6, 10, 8);
@@ -311,10 +340,10 @@ function CreateMap() {
 	Map.changeTile(6, 10, 9);//pour mettre de l'eau sous le cold storage
 	Map.changeTile(6, 10, 10);
 	Map.changeTile(6, 11, 10);
-	var crop = new Crop(0, 1, 6);
-	CrymeEngine.crops.push(crop);
-	crop = new Crop(1, 3, 5);
-	CrymeEngine.crops.push(crop);
-	crop = new Crop(2, 2, 1);
-	CrymeEngine.crops.push(crop);
+	/*var crop = new Crop(0, 1, 6);
+	 CrymeEngine.tileItems.push(crop);
+	 crop = new Crop(1, 3, 5);
+	 CrymeEngine.tileItems.push(crop);
+	 crop = new Crop(2, 2, 1);
+	 CrymeEngine.tileItems.push(crop);*/
 }

@@ -28,11 +28,8 @@ var Map = {
 			for (var i = 0; i < CrymeEngine.tiles.length; i++) {
 				CrymeEngine.tiles[i].drawTile();
 			}
-			for (var i = 0; i < CrymeEngine.buildings.length; i++) {
-				CrymeEngine.buildings[i].drawItemLoading(progress - animationDuration / 2);
-			}
-			for (var i = 0; i < CrymeEngine.crops.length; i++) {
-				CrymeEngine.crops[i].drawItemLoading(progress - animationDuration / 2);
+			for (var i = 0; i < CrymeEngine.tileItems.length; i++) {
+				CrymeEngine.tileItems[i].drawItemLoading(progress - animationDuration / 2);
 			}
 		}
 	},
