@@ -168,7 +168,7 @@ var CrymeEngine = {
 					CrymeEngine.mousePosition.x = event.pageX / scaleFactor - this.offsetLeft;
 					CrymeEngine.mousePosition.y = event.pageY / scaleFactor - this.offsetTop;
 					var objectSelected = false;
-					for (var i = 0; i < CE.tileItems.length; i++) {
+					for (var i = Map.tileItems.length - 1; i > 0; i--) {//en gérant par la fin, on sélectionne l'élément au premier plan
 						if (Map.tileItems[i].mouseIntersect(CE.mousePosition.x - CE.camera.position.x, CE.mousePosition.y - CE.camera.position.y)) {
 							if (CE.highlightedItem > -1 && CE.highlightedItem != i) {
 								Map.tileItems[CE.highlightedItem].highlighted = false;
@@ -292,9 +292,9 @@ var CrymeEngine = {
 			}
 
 			if (CE.highlightedItem > -1) {
-				CE.tileItems[CE.highlightedItem].centerX -= (event.pageX / scaleFactor - this.offsetLeft - CrymeEngine.mousePosition.x);
-				CE.tileItems[CE.highlightedItem].centerY -= (event.pageY / scaleFactor - this.offsetTop - CrymeEngine.mousePosition.y);
-				CE.tileItems[CE.highlightedItem].updateImageCoord();
+				Map.tileItems[CE.highlightedItem].centerX -= (event.pageX / scaleFactor - this.offsetLeft - CrymeEngine.mousePosition.x);
+				Map.tileItems[CE.highlightedItem].centerY -= (event.pageY / scaleFactor - this.offsetTop - CrymeEngine.mousePosition.y);
+				Map.tileItems[CE.highlightedItem].updateImageCoord();
 
 				CrymeEngine.mousePosition.x = event.pageX / scaleFactor - this.offsetLeft;
 				CrymeEngine.mousePosition.y = event.pageY / scaleFactor - this.offsetTop;
@@ -320,6 +320,7 @@ function InitLoading() {
 
 //fonction pour placer des trucs sur la map pour test le rendu
 function CreateMap() {
+	//ajout de buildings
 	var building = new TileItems.Building(0, 5, 13);
 	Map.tileItems.push(building);
 	building = new TileItems.Building(0, 4, 7);
@@ -327,13 +328,28 @@ function CreateMap() {
 	building = new TileItems.Building(0, 8, 9);
 	Map.tileItems.push(building);
 
+	//ajout de crops
 	var crop = new TileItems.Crop(0, 1, 6);
 	Map.tileItems.push(crop);
 	crop = new TileItems.Crop(1, 3, 5);
 	Map.tileItems.push(crop);
 	crop = new TileItems.Crop(2, 2, 1);
 	Map.tileItems.push(crop);
+
+	//modification de la map
 	Map.changeTile(6, 1, 6);//pour mettre de la terre sous les crops sous le cold storage
 	Map.changeTile(6, 3, 5);
 	Map.changeTile(6, 2, 1);
+
+	//ajout de characters
+	var character = new TileItems.Character(0, 5, 5);
+	Map.players.push(character);
+	Map.player = character;//pour pouvoir gerer le joueur facilement
+	Map.tileItems.push(character);//pour gérer les personnages comme n'importe quel autre item, du moins pour le moment
+	var character = new TileItems.Character(0, 12, 7);
+	Map.players.push(character);
+	Map.tileItems.push(character);
+	var character = new TileItems.Character(0, 2, 3);
+	Map.players.push(character);
+	Map.tileItems.push(character);
 }

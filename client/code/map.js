@@ -47,7 +47,7 @@ var Map = {
 		}
 	},
 	drawTileItems: function () {
-		for (i = 0; i < this.tileItems.length; i++) {
+		for (var i = 0; i < this.tileItems.length; i++) {
 			this.tileItems[i].drawItem();
 		}
 	}
