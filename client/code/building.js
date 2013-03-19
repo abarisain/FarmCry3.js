@@ -10,7 +10,7 @@ TileItems.Building = function (type, col, line) {
 TileItems.Building.prototype = new TileItem();
 TileItems.Building.prototype.constructor = TileItems.Building;
 
-function LoadTexBuildings() {
+function LoadTexCharacters() {
 	totalLoadingCount += texBuildingList.length;
 	for (var i = 0; i < texBuildingList.length; i++) {
 		var texture = new Texture(i, texBuildingList[i].image, 'src/buildings/' + texBuildingList[i].image + '.png');

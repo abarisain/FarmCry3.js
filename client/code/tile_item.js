@@ -83,7 +83,8 @@ TileItem.prototype = {
 	}
 };
 
-function LoadTileItems() {
+function LoadTexTilesItem() {
 	LoadTexCrops();
 	LoadTexBuildings();
+	LoadTexCharacters();
 }

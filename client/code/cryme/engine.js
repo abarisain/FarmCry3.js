@@ -32,8 +32,6 @@ var CrymeEngine = {
 		x: 0,
 		y: 0
 	},
-	tileItems: [],//contient à la fois les buildings et les crops de la map
-	tiles: [],
 	canvas: { //Element type : CrymeCanvas
 		resizeAll: function (width, height) {
 			Object.keys(CrymeEngine.canvas).forEach(function (targetCanvas) {
@@ -115,18 +113,14 @@ var CrymeEngine = {
 			CrymeEngine.canvas.map.context.scale(scaleFactor, scaleFactor);
 			CrymeEngine.canvas.map.context.translate(CrymeEngine.camera.position.x, CrymeEngine.camera.position.y);
 
-			var tmpLength;
-
+			//couleur par defaut
 			CrymeEngine.canvas.map.context.fillStyle = "#fff";
 
 			//dessin du terrain
 			Map.drawMap();
 
 			//dessin des bâtiments
-			tmpLength = CrymeEngine.tileItems.length;
-			for (i = 0; i < tmpLength; i++) {
-				CrymeEngine.tileItems[i].drawItem();
-			}
+			Map.drawTileItems();
 
 			CrymeEngine.canvas.map.context.restore();
 			if (showGraphicDebug) {
@@ -175,9 +169,9 @@ var CrymeEngine = {
 					CrymeEngine.mousePosition.y = event.pageY / scaleFactor - this.offsetTop;
 					var objectSelected = false;
 					for (var i = 0; i < CE.tileItems.length; i++) {
-						if (CE.tileItems[i].mouseIntersect(CE.mousePosition.x - CE.camera.position.x, CE.mousePosition.y - CE.camera.position.y)) {
+						if (Map.tileItems[i].mouseIntersect(CE.mousePosition.x - CE.camera.position.x, CE.mousePosition.y - CE.camera.position.y)) {
 							if (CE.highlightedItem > -1 && CE.highlightedItem != i) {
-								CE.tileItems[CE.highlightedItem].highlighted = false;
+								Map.tileItems[CE.highlightedItem].highlighted = false;
 							}
 							CE.highlightedItem = i;
 							objectSelected = true;
@@ -187,7 +181,7 @@ var CrymeEngine = {
 					//si on ne sélectionne rien, on déselectionne
 					if (!objectSelected) {
 						if (CE.highlightedItem > -1) {
-							CE.tileItems[CE.highlightedItem].highlighted = false;
+							Map.tileItems[CE.highlightedItem].highlighted = false;
 							CE.highlightedItem = -1;
 						}
 					}
@@ -268,7 +262,7 @@ var CrymeEngine = {
 		window.onmouseup = function () {
 			CrymeEngine.movingMap = false;
 			if (CE.highlightedItem > -1) {
-				CE.tileItems[CE.highlightedItem].highlighted = false;
+				Map.tileItems[CE.highlightedItem].highlighted = false;
 				CE.highlightedItem = -1;
 			}
 		};
@@ -319,26 +313,26 @@ var CrymeEngine = {
 var CE = CrymeEngine;
 
 function InitLoading() {
-	LoadTiles();
-	LoadTileItems();
+	LoadTexTiles();
+	LoadTexTilesItem();
 	CrymeEngine.hud.loadTextures();
 }
 
 //fonction pour placer des trucs sur la map pour test le rendu
 function CreateMap() {
 	var building = new TileItems.Building(0, 5, 13);
-	CrymeEngine.tileItems.push(building);
+	Map.tileItems.push(building);
 	building = new TileItems.Building(0, 4, 7);
-	CrymeEngine.tileItems.push(building);
+	Map.tileItems.push(building);
 	building = new TileItems.Building(0, 8, 9);
-	CrymeEngine.tileItems.push(building);
+	Map.tileItems.push(building);
 
 	var crop = new TileItems.Crop(0, 1, 6);
-	CrymeEngine.tileItems.push(crop);
+	Map.tileItems.push(crop);
 	crop = new TileItems.Crop(1, 3, 5);
-	CrymeEngine.tileItems.push(crop);
+	Map.tileItems.push(crop);
 	crop = new TileItems.Crop(2, 2, 1);
-	CrymeEngine.tileItems.push(crop);
+	Map.tileItems.push(crop);
 	Map.changeTile(6, 1, 6);//pour mettre de la terre sous les crops sous le cold storage
 	Map.changeTile(6, 3, 5);
 	Map.changeTile(6, 2, 1);
