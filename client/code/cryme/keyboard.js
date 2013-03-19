@@ -30,6 +30,55 @@ CrymeEngine.keyboard = {
 		CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ADVANCED = CE.keyboard.Keys.KEY_4;
 		CE.keyboard.Shortcuts.CHANGE_GRAPHIC_DEBUG_ALPHA = CE.keyboard.Keys.KEY_5;
 	},
+	keyPressed: function (event) {
+		//Special case, unless we are pressing enter, ignore everything while we're in the chat box
+		if (document.activeElement == CE.hud.chat.divs.input && event.keyCode != CE.keyboard.Shortcuts.CHAT) {
+			return true;
+		}
+		switch (event.keyCode) {
+			case CE.keyboard.Shortcuts.CHAT:
+				if (document.activeElement == CE.hud.chat.divs.input) {
+					CE.hud.chat.send();
+				} else {
+					CE.hud.chat.divs.input.focus();
+				}
+				break;
+			case CE.keyboard.Shortcuts.INVENTORY:
+				//a réimplémenter plus tard
+				break;
+			//graphic debug
+			case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG:
+				Options.Debug.Graphic.enabled = !Options.Debug.Graphic.enabled;
+				var messageData = {
+					kind: CE.hud.chat.Kind.LOCAL,
+					message: 'Graphical debug : enabled - ' + Options.Debug.Graphic.enabled
+				}
+				CE.hud.chat.append(messageData);
+				break;
+			case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ITEM:
+				Options.Debug.Graphic.item = !Options.Debug.Graphic.item;
+				break;
+			case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_MAP:
+				Options.Debug.Graphic.map = !Options.Debug.Graphic.map;
+				break;
+			case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ADVANCED:
+				Options.Debug.Graphic.advanced = !Options.Debug.Graphic.advanced;
+				var messageData = {
+					kind: CE.hud.chat.Kind.LOCAL,
+					message: 'Graphical debug : advanced - ' + Options.Debug.Graphic.advanced
+				}
+				CE.hud.chat.append(messageData);
+				break;
+			case CE.keyboard.Shortcuts.CHANGE_GRAPHIC_DEBUG_ALPHA:
+				Options.Debug.Graphic.globalAlpha = (Options.Debug.Graphic.globalAlpha + 0.25) % 1;
+				var messageData = {
+					kind: CE.hud.chat.Kind.LOCAL,
+					message: 'Graphical debug : advanced - opacity set to ' + Options.Debug.Graphic.globalAlpha
+				}
+				CE.hud.chat.append(messageData);
+				break;
+		}
+	},
 	drawKeyMap: function () {
 		CE.canvas.hud.context.fillStyle = "rgba(29, 82, 161, 0.8)";
 		CE.canvas.hud.context.fillRect(0, 200, 400, 20 * CE.keyboard.Shortcuts.length);

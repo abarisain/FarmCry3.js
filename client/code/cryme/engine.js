@@ -92,11 +92,11 @@ var CrymeEngine = {
 			CrymeEngine.canvas.map.clear();
 			CrymeEngine.canvas.map.context.save();
 
-			if (showGraphicDebug) {
-				if (showGraphicDebugAdvanced) {
+			if (Options.Debug.Graphic.enabled) {
+				if (Options.Debug.Graphic.advanced) {
 					CrymeEngine.canvas.map.context.fillStyle = "#000";
 					CrymeEngine.canvas.map.context.fillRect(0, 0, canvasWidth, canvasHeight);
-					CrymeEngine.canvas.map.context.globalAlpha = graphicDebugAlpha;//pour afficher tous les éléments en transparence
+					CrymeEngine.canvas.map.context.globalAlpha = Options.Debug.Graphic.globalAlpha;//pour afficher tous les éléments en transparence
 				}
 
 				CrymeEngine.canvas.debug.clear();
@@ -123,7 +123,7 @@ var CrymeEngine = {
 			Map.drawTileItems();
 
 			CrymeEngine.canvas.map.context.restore();
-			if (showGraphicDebug) {
+			if (Options.Debug.Graphic.enabled) {
 				CrymeEngine.canvas.debug.context.restore();
 			}
 		},
@@ -203,53 +203,8 @@ var CrymeEngine = {
 		};
 
 		window.onkeydown = function (event) {
-			//Special case, unless we are pressing enter, ignore everything while we're in the chat box
-			if (document.activeElement == CrymeEngine.hud.chat.divs.input && event.keyCode != 13) {
-				return true;
-			}
-			switch (event.keyCode) {
-				case CE.keyboard.Shortcuts.CHAT:
-					if (document.activeElement == CrymeEngine.hud.chat.divs.input) {
-						CrymeEngine.hud.chat.send();
-					} else {
-						CrymeEngine.hud.chat.divs.input.focus();
-					}
-					break;
-				case CE.keyboard.Shortcuts.INVENTORY:
-					CrymeEngine.hudElements[3].visible = !CrymeEngine.hudElements[3].visible;
-					break;
-				//graphic debug
-				case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG:
-					this.showGraphicDebug = !this.showGraphicDebug;
-					var messageData = {
-						kind: CrymeEngine.hud.chat.Kind.LOCAL,
-						message: 'Graphical debug : enabled - ' + this.showGraphicDebug
-					}
-					CrymeEngine.hud.chat.append(messageData);
-					break;
-				case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ITEM:
-					this.showGraphicDebugItem = !this.showGraphicDebugItem;
-					break;
-				case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_MAP:
-					this.showGraphicDebugMap = !this.showGraphicDebugMap;
-					break;
-				case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ADVANCED:
-					this.showGraphicDebugAdvanced = !this.showGraphicDebugAdvanced;
-					var messageData = {
-						kind: CrymeEngine.hud.chat.Kind.LOCAL,
-						message: 'Graphical debug : advanced - ' + this.showGraphicDebugAdvanced
-					}
-					CrymeEngine.hud.chat.append(messageData);
-					break;
-				case CE.keyboard.Shortcuts.CHANGE_GRAPHIC_DEBUG_ALPHA:
-					this.graphicDebugAlpha = (this.graphicDebugAlpha + 0.25) % 1;
-					var messageData = {
-						kind: CrymeEngine.hud.chat.Kind.LOCAL,
-						message: 'Graphical debug : advanced - opacity set to ' + this.graphicDebugAlpha
-					}
-					CrymeEngine.hud.chat.append(messageData);
-					break;
-			}
+			CE.keyboard.keyPressed(event);
+			CE.mapInvalidated = true;
 		};
 
 		this.canvas.hud.canvas.onmousewheel = function (evt) {

@@ -45,13 +45,13 @@ TileItem.prototype = {
 	},
 	drawItem: function () {
 		CE.canvas.map.context.drawImage(this.texture.image, this.imageLeft, this.imageTop);
-		if (showGraphicDebug) {
+		if (Options.Debug.Graphic.enabled) {
 			CE.canvas.debug.context.fillStyle = "rgb(29, 82, 161)";
-			CE.canvas.debug.context.fillRect(this.x - graphicDebugDotSize / 2, this.y - graphicDebugDotSize / 10, graphicDebugDotSize, graphicDebugDotSize / 5);
-			CE.canvas.debug.context.fillRect(this.x - graphicDebugDotSize / 10, this.y - graphicDebugDotSize / 2, graphicDebugDotSize / 5, graphicDebugDotSize);
+			CE.canvas.debug.context.fillRect(this.x - Options.Debug.Graphic.dotSize / 2, this.y - Options.Debug.Graphic.dotSize / 10, Options.Debug.Graphic.dotSize, Options.Debug.Graphic.dotSize / 5);
+			CE.canvas.debug.context.fillRect(this.x - Options.Debug.Graphic.dotSize / 10, this.y - Options.Debug.Graphic.dotSize / 2, Options.Debug.Graphic.dotSize / 5, Options.Debug.Graphic.dotSize);
 
-			if (showGraphicDebugItem) {
-				CE.canvas.debug.context.fillRect(this.imageLeft, this.imageTop, graphicDebugDotSize / 2, graphicDebugDotSize / 2);
+			if (Options.Debug.Graphic.item) {
+				CE.canvas.debug.context.fillRect(this.imageLeft, this.imageTop, Options.Debug.Graphic.dotSize / 2, Options.Debug.Graphic.dotSize / 2);
 
 				CE.canvas.debug.context.beginPath();
 				CE.canvas.debug.context.moveTo(this.imageLeft, this.imageTop);
@@ -62,9 +62,9 @@ TileItem.prototype = {
 
 
 				CE.canvas.debug.context.fillStyle = "rgba(29, 82, 161, 0.8)";
-				CE.canvas.debug.context.fillRect(this.imageLeft + graphicDebugDotSize / 2, this.imageTop - 4, 100, 19);
+				CE.canvas.debug.context.fillRect(this.imageLeft + Options.Debug.Graphic.dotSize / 2, this.imageTop - 4, 100, 19);
 				CE.canvas.debug.context.fillStyle = "#fff";
-				CE.canvas.debug.context.fillText(this.texture.name + ' : ' + this.line + ',' + this.col, this.imageLeft + graphicDebugDotSize / 2 + 5, this.imageTop + 10);
+				CE.canvas.debug.context.fillText(this.texture.name + ' : ' + this.line + ',' + this.col, this.imageLeft + Options.Debug.Graphic.dotSize / 2 + 5, this.imageTop + 10);
 			}
 
 			if (this.highlighted) {

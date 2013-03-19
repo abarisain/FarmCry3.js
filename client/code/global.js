@@ -1,3 +1,5 @@
+Options = {};
+
 var canvasWidth = window.innerWidth;
 var canvasHeight = window.innerHeight;
 
@@ -24,12 +26,15 @@ var loadingComplete = false;
 var networkEngine;
 
 //graphic debug
-var showGraphicDebug = true;//affiche le debug basique
-var showGraphicDebugMap = false;//affiche les noms des tiles, ça arrache un peu les yeux
-var showGraphicDebugItem = true;//affiche les noms des tilesItems
-var showGraphicDebugAdvanced = false;//switch la transparence des éléments
-var graphicDebugAlpha = 1;//affiche tous les elements en transparence
-var graphicDebugDotSize = 20;//la taille des formes geometriques de debug à afficher
+Options.Debug = {};
+Options.Debug.Graphic = {
+	enabled: true,//affiche le debug basique
+	map: false,//affiche les noms des tiles, ça arrache un peu les yeux
+	item: true,//affiche les noms des tilesItems
+	advanced: false,//switch la transparence des éléments
+	globalAlpha: 1,//affiche tous les elements en transparence
+	dotSize: 20//la taille des formes geometriques de debug à afficher
+}
 
 //Login
 var loginRememberCheckbox;

@@ -70,18 +70,18 @@ Tile.prototype = {
 	//attention a bien se préoccuper du context avant, ici je m'en occupe pas
 	drawTile: function () {
 		CrymeEngine.canvas.map.context.drawImage(texTiles[this.image].image, this.imageLeft, this.imageTop);
-		if (showGraphicDebug) {
-			if (showGraphicDebugMap) {
+		if (Options.Debug.Graphic.enabled) {
+			if (Options.Debug.Graphic.map) {
 				CE.canvas.debug.context.fillStyle = "#fff";
-				CE.canvas.debug.context.fillRect(this.x, this.y, graphicDebugDotSize / 2, graphicDebugDotSize / 2);
+				CE.canvas.debug.context.fillRect(this.x, this.y, Options.Debug.Graphic.dotSize / 2, Options.Debug.Graphic.dotSize / 2);
 				CE.canvas.debug.context.fillRect(Math.ceil(this.x - tileWidth / 2), this.y, 5, 1);
 				CE.canvas.debug.context.fillRect(Math.ceil(this.x - tileWidth / 2), this.y - 4, 1, 9);
 				CE.canvas.debug.context.fillRect(Math.ceil(this.x + tileWidth / 2) - 1, this.y - 4, 1, 9);
 				CE.canvas.debug.context.fillRect(Math.ceil(this.x + tileWidth / 2) - 5, this.y, 5, 1);
 				CE.canvas.debug.context.fillStyle = "rgba(255, 255, 255, 0.5)";
-				CE.canvas.debug.context.fillRect(this.x + graphicDebugDotSize / 2, this.y - 4, 100, 19);
+				CE.canvas.debug.context.fillRect(this.x + Options.Debug.Graphic.dotSize / 2, this.y - 4, 100, 19);
 				CE.canvas.debug.context.fillStyle = "#000";
-				CE.canvas.debug.context.fillText(texTiles[this.image].name + ' : ' + this.line + ',' + this.col, this.x + graphicDebugDotSize / 2 + 5, this.y + 10);
+				CE.canvas.debug.context.fillText(texTiles[this.image].name + ' : ' + this.line + ',' + this.col, this.x + Options.Debug.Graphic.dotSize / 2 + 5, this.y + 10);
 			}
 			else {
 				CE.canvas.debug.context.fillStyle = "#fff";
@@ -90,11 +90,6 @@ Tile.prototype = {
 		}
 	}
 };
-
-function LoadTiles() {
-
-
-}
 
 function LoadTexTiles() {
 	totalLoadingCount += texTileList.length;
