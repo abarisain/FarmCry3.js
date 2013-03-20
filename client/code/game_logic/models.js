@@ -1,7 +1,7 @@
 function Farmer(nickname) {
     this.position = {
-        x: 0,
-        y: 0
+        col: 0,
+        line: 0
     };
     this.is_allied = false;
     this.nickname = nickname;
@@ -12,14 +12,14 @@ Farmer.prototype = {
     getSmallFarmer: function () {
         var tmpFarmer = {};
         tmpFarmer.nickname = this.nickname;
-        tmpFarmer.col = this.position.x;
-        tmpFarmer.line = this.position.y;
+        tmpFarmer.col = this.position.col;
+        tmpFarmer.line = this.position.line;
         return tmpFarmer;
     },
     initFromFarmer: function(smallFarmer) {
         this.nickname = smallFarmer.nickname;
-        this.position.x = smallFarmer.col;
-        this.position.y = smallFarmer.line;
+        this.position.col = smallFarmer.col;
+        this.position.line = smallFarmer.line;
         //TODO : Add support for allies
     }
 };
