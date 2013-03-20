@@ -1,6 +1,6 @@
 //gestion des textures
 //je précise qu'ici il faudra que je fasse commencer grass à 0 et que j'inverse les 2 tiles
-var texTileList = ['grass_0', 'grass_1', 'grass_2', 'grass_3', 'rock', 'leave', 'soil', 'water_0', 'water_1', 'water_2'];
+var texTileList = ['grass_0', 'grass_1', 'grass_2', 'grass_3', 'rock', 'leave', 'soil', 'water_0', 'water_1', 'water_2', 'white'];
 var texTiles = [];
 
 function Tile(data) {
@@ -49,7 +49,6 @@ Tile.prototype = {
 		else {
 			this.image = 9;//water
 		}
-
 	},
 	updateCoord: function () {
 		this.x = (this.col + this.line) * (tileWidth / 2);
@@ -69,7 +68,12 @@ Tile.prototype = {
 	},
 	//attention a bien se préoccuper du context avant, ici je m'en occupe pas
 	drawTile: function () {
-		CrymeEngine.canvas.map.context.drawImage(texTiles[this.image].image, this.imageLeft, this.imageTop);
+		if (CE.displayType == CE.DisplayType.STANDARD) {
+			CrymeEngine.canvas.map.context.drawImage(texTiles[this.image].image, this.imageLeft, this.imageTop);
+		} else {
+			CrymeEngine.canvas.map.context.drawImage(texTiles[10].image, this.imageLeft, this.imageTop);
+		}
+
 		if (Options.Debug.Graphic.enabled) {
 			if (Options.Debug.Graphic.map) {
 				CE.canvas.debug.context.fillStyle = "#fff";

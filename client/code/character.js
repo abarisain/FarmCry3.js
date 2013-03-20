@@ -1,11 +1,11 @@
 var texCharacterList = [
-	{image: 'player', centerX: 19, centerY: 15},
+	{image: 'player', centerX: 33, centerY: 29},
 	{image: 'farmer', centerX: 15, centerY: 18}
 ];
 var texCharacters = [];
 
 TileItems.Character = function (type, col, line) {
-	TileItem.call(this, texCharacters[type], col, line, texCharacterList[type].centerX, texCharacterList[type].centerY);
+	TileItem.call(this, texCharacters[type], texCharacters[type], col, line, texCharacterList[type].centerX, texCharacterList[type].centerY);
 }
 
 TileItems.Character.prototype = new TileItem();

@@ -1,9 +1,10 @@
 TileItems = {};
 
-function TileItem(texture, col, line, centerX, centerY) {
+function TileItem(texture, textureInfo, col, line, centerX, centerY) {
 	if (texture != undefined) {
 		this.texture = texture;//à partir de maintenant il s'agit de l'image et plus de l'index
 		this.texture.updateWidthHeight();
+		this.textureInfo = textureInfo;
 		this.col = col;
 		this.line = line;
 		this.x = 0;
@@ -15,6 +16,7 @@ function TileItem(texture, col, line, centerX, centerY) {
 		this.imageTop = 0;
 		this.imageRight = 0;
 		this.imageBottom = 0;
+		this.diagram = new Diagram(0, Diagram.Color.WHITE, this.texture.index + 1);
 		this.updateCoord();
 		this.updateImageCoord();
 	}
@@ -61,7 +63,12 @@ TileItem.prototype = {
 			this.imageTop - this.col * tileHeight * (1 - progress / (animationDuration / 2)));
 	},
 	drawItem: function () {
-		CE.canvas.map.context.drawImage(this.texture.image, this.imageLeft, this.imageTop);
+		if (CE.displayType == CE.DisplayType.STANDARD) {
+			CE.canvas.map.context.drawImage(this.texture.image, this.imageLeft, this.imageTop);
+		} else {
+			CE.canvas.map.context.drawImage(this.textureInfo.image, this.imageLeft, this.imageTop);
+			this.diagram.drawItem(this.x, this.y);
+		}
 		if (Options.Debug.Graphic.enabled) {
 			CE.canvas.debug.context.fillStyle = "rgb(29, 82, 161)";
 			CE.canvas.debug.context.fillRect(this.x - Options.Debug.Graphic.dotSize / 2, this.y - Options.Debug.Graphic.dotSize / 10, Options.Debug.Graphic.dotSize, Options.Debug.Graphic.dotSize / 5);
@@ -86,7 +93,7 @@ TileItem.prototype = {
 
 			if (this.highlighted) {
 				CE.canvas.debug.context.fillStyle = "rgba(29, 82, 161, 0.8)";
-				CE.canvas.debug.context.fillRect(this.x + 5, this.y - 18, 100, 19);
+				CE.canvas.debug.context.fillRect(this.x + 5, this.y - 18, 140, 19);
 				CE.canvas.debug.context.fillStyle = "#fff";
 				CE.canvas.debug.context.fillText('center : ' + Math.floor(this.centerX) + ',' + Math.floor(this.centerY), this.x + 10, this.y - 4);
 			}
@@ -104,4 +111,5 @@ function LoadTexTilesItem() {
 	LoadTexCrops();
 	LoadTexBuildings();
 	LoadTexCharacters();
+	LoadTexDiagram();
 }
