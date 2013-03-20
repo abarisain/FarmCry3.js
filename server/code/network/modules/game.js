@@ -16,9 +16,9 @@ var NetworkModule = {
 			}
 
             var tmpFarmers = [];
-            for (farmer in GameState.farmers) {
-                if(farmer.logged_in && farmer.nickname != connection.farmer.nickname)
-                    tmpFarmers.push(farmer.getMinimalFarmer());
+            for (var i = 0; i < GameState.farmers.length; i++) {
+                if(GameState.farmers[i].logged_in && GameState.farmers[i].nickname != connection.farmer.nickname)
+                    tmpFarmers.push(GameState.farmers[i].getMinimalFarmer());
             }
 
 			connection.send("game.initialData", {

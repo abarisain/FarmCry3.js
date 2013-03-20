@@ -30,6 +30,9 @@ var EventManager = {
 				}
 				Chat.sendServerMessage(newConnection, "Welcome to FarmCry, " + farmer.nickname + " !");
 				Chat.broadcastServerMessage(farmer.nickname + " signed in");
+                NetworkEngine.clients.broadcast("player.connected", {
+                    farmer: farmer.getMinimalFarmer()
+                });
 			},
 			disconnected: function (farmer) {
 				if (farmer == null) {
@@ -47,6 +50,9 @@ var EventManager = {
 				if (!isGhost) {
 					farmer.logged_in = false;
 					Chat.broadcastServerMessage(farmer.nickname + " signed out");
+                    NetworkEngine.clients.broadcast("player.disconnected", {
+                        nickname: farmer.nickname
+                    });
 				}
 			},
 			move: function (farmer, x, y) {
@@ -60,7 +66,7 @@ var EventManager = {
 					return false;
 				}*/
 				//TODO : Send events only to people in the viewport
-				NetworkEngine.broadcast("player.moved", {
+				NetworkEngine.clients.broadcast("player.moved", {
 					nickname: farmer.nickname,
 					col: farmer.last_pos.x,
 					line: farmer.last_pos.y
