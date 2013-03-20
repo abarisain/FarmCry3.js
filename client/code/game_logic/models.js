@@ -21,6 +21,14 @@ Farmer.prototype = {
         this.position.col = smallFarmer.col;
         this.position.line = smallFarmer.line;
         //TODO : Add support for allies
+    },
+    invalidate: function() {
+        // Refresh everything about the farmer here.
+        // This include telling the engine about it
+        for(var i = 0; i < Map.players.length; i++) {
+            if(Map.players[i].nickname == this.nickname)
+                Map.players[i].invalidate();
+        }
     }
 };
 

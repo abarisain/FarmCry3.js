@@ -65,6 +65,22 @@ var networkEngine = {
                 },
                 disconnected: function (data) {
                     GameState.removePlayer(data.nickname);
+                },
+                moved: function (data) {
+                    var target = null;
+                    if(data.nickname == GameState.player.nickname) {
+                        target = GameState.player;
+                    } else {
+                        for(var i = 0; i < GameState.players.length; i++) {
+                            if(Map.players[i].nickname == this.nickname)
+                                target = Map.players[i];
+                        }
+                    }
+                    if(target != null) {
+                        target.position.col = data.col;
+                        target.position.col = data.line;
+                    }
+                    target.invalidate();
                 }
             }
         },
