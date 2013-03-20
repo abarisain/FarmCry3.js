@@ -8,12 +8,6 @@ var Map = {
 		this.loadTiles(data.tiles);
 		this.rect.dx = (tileWidth / 2) * (colSize + lineSize);
 		this.rect.dy = (tileHeight / 2) * (colSize + lineSize);
-        for(var lplayer in GameState.online_players) {
-            this.tileItems.push(new TileItems.Character(lplayer));
-        }
-        var tmpPlayerItem = new TileItems.Character(GameState.player);
-        this.tileItems.push(tmpPlayerItem);
-        this.player = tmpPlayerItem;
 	},
     addPlayer: function(player) {
         this.removePlayer(player.nickname);
@@ -74,5 +68,13 @@ var Map = {
 		for (var i = 0; i < this.tileItems.length; i++) {
 			this.tileItems[i].drawItem();
 		}
-	}
+	},
+    coordinatesFromMousePosition: function (x, y) {
+        var newCol = y / tileHeight - lineSize / 2 + x / tileWidth + 1;
+        var newLine = x / tileWidth - y / tileHeight + lineSize / 2;
+        return {
+            col: Math.floor(newCol),
+            line: Math.floor(newLine)
+        };
+    }
 };

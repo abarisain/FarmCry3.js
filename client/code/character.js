@@ -12,6 +12,13 @@ TileItems.Character = function (targetFarmer) {
 
 TileItems.Character.prototype = new TileItem();
 TileItems.Character.prototype.constructor = TileItems.Character;
+TileItems.Character.prototype.getCol = function() {
+    return this.farmer.position.col;
+};
+TileItems.Character.prototype.getLine = function() {
+    return this.farmer.position.line;
+};
+
 
 function LoadTexCharacters() {
 	totalLoadingCount += texCharacterList.length;

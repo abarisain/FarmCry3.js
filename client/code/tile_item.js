@@ -48,9 +48,13 @@ TileItem.prototype = {
 		this.updateCoord();
 		this.updateImageCoord();
 	},
+    invalidate: function () {
+        this.updateCoord();
+        this.updateImageCoord();
+    },
 	updateCoord: function () {
-		this.x = (this.col + this.line) * (tileWidth / 2);
-		this.y = (lineSize - this.line + this.col - 1) * (tileHeight / 2);
+		this.x = (this.getCol() + this.getLine()) * (tileWidth / 2);
+		this.y = (lineSize - this.getLine() + this.getCol() - 1) * (tileHeight / 2);
 	},
 	updateImageCoord: function () {
 		this.imageLeft = this.x - this.centerX;
@@ -104,7 +108,13 @@ TileItem.prototype = {
 			CE.canvas.map.context.strokeStyle = 'rgba(255, 255, 255, 0.5)';
 			CE.canvas.map.context.strokeRect(this.imageLeft + 1, this.imageTop - 1, this.texture.width - 2, this.texture.height - 2);
 		}
-	}
+	},
+    getCol: function() {
+        return this.col;
+    },
+    getLine: function() {
+        return this.line;
+    }
 };
 
 function LoadTexTilesItem() {
