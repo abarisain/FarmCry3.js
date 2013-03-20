@@ -1,9 +1,15 @@
 CrymeEngine.keyboard = {
 	showKeyMap: true,//pour afficher ou non la keyMap à l'écran
+	keyCount: 14,
 	Keys: {
 		ENTER: { value: 13, name: 'Enter' },
 		SPACE: { value: 32, name: 'Space' },
 		TAB: { value: 9, name: 'Tab' },
+		KEY_A: { value: 65, name: 'A' },
+		KEY_Z: { value: 90, name: 'Z' },
+		KEY_S: { value: 83, name: 'S' },
+		KEY_Q: { value: 91, name: 'Q' },
+		KEY_D: { value: 68, name: 'D' },
 		KEY_1: { value: 49, name: '&' },
 		KEY_2: { value: 50, name: 'é' },
 		KEY_3: { value: 51, name: '"' },
@@ -11,18 +17,28 @@ CrymeEngine.keyboard = {
 		KEY_5: { value: 53, name: '(' }
 	},
 	Shortcuts: {
-		CHAT: undefined,
-		INVENTORY: undefined,
-		SHOW_KEY_MAP: undefined,
-		SHOW_GRAPHIC_DEBUG: undefined,
-		SHOW_GRAPHIC_DEBUG_ITEM: undefined,
-		SHOW_GRAPHIC_DEBUG_MAP: undefined,
-		SHOW_GRAPHIC_DEBUG_ADVANCED: undefined,
-		CHANGE_GRAPHIC_DEBUG_ALPHA: undefined
+		CHAT: null,
+		CHANGE_DISPLAY_TYPE: null,
+		MOVE_UP: null,
+		MOVE_DOWN: null,
+		MOVE_LEFT: null,
+		MOVE_RIGHT: null,
+		MOVE_MAP: null,
+		SHOW_KEY_MAP: null,
+		SHOW_GRAPHIC_DEBUG: null,
+		SHOW_GRAPHIC_DEBUG_ITEM: null,
+		SHOW_GRAPHIC_DEBUG_MAP: null,
+		SHOW_GRAPHIC_DEBUG_ADVANCED: null,
+		CHANGE_GRAPHIC_DEBUG_ALPHA: null
 	},
 	init: function () {
 		CE.keyboard.Shortcuts.CHAT = CrymeEngine.keyboard.Keys.ENTER;
-		CE.keyboard.Shortcuts.INVENTORY = CE.keyboard.Keys.SPACE;
+		CE.keyboard.Shortcuts.CHANGE_DISPLAY_TYPE = CE.keyboard.Keys.KEY_A;
+		CE.keyboard.Shortcuts.MOVE_UP = CE.keyboard.Keys.KEY_Z;
+		CE.keyboard.Shortcuts.MOVE_DOWN = CE.keyboard.Keys.KEY_S;
+		CE.keyboard.Shortcuts.MOVE_LEFT = CE.keyboard.Keys.KEY_Q;
+		CE.keyboard.Shortcuts.MOVE_RIGHT = CE.keyboard.Keys.KEY_D;
+		CE.keyboard.Shortcuts.MOVE_MAP = CE.keyboard.Keys.SPACE;
 		CE.keyboard.Shortcuts.SHOW_KEY_MAP = CE.keyboard.Keys.TAB;
 		CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG = CE.keyboard.Keys.KEY_1;
 		CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ITEM = CE.keyboard.Keys.KEY_2;
@@ -43,12 +59,13 @@ CrymeEngine.keyboard = {
 					CE.hud.chat.divs.input.focus();
 				}
 				break;
-			case CE.keyboard.Shortcuts.INVENTORY.value:
-				//TODO a réimplémenter plus tard
+			case CE.keyboard.Shortcuts.CHANGE_DISPLAY_TYPE.value:
+				CE.displayType = (CE.displayType + 1) % 3;
 				break;
 			case CE.keyboard.Shortcuts.SHOW_KEY_MAP.value:
 				CE.keyboard.showKeyMap = !CE.keyboard.showKeyMap;
 				break;
+
 			//graphic debug
 			case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG.value:
 				Options.Debug.Graphic.enabled = !Options.Debug.Graphic.enabled;
@@ -85,7 +102,7 @@ CrymeEngine.keyboard = {
 	drawKeyMap: function () {
 		if (CE.keyboard.showKeyMap) {
 			CE.canvas.hud.context.fillStyle = "rgba(0, 0, 0, 0.5)";
-			CE.canvas.hud.context.fillRect(0, 180, 400, 20 * 10);
+			CE.canvas.hud.context.fillRect(0, 180, 400, 20 * (this.keyCount + 1));
 			//Pour afficher/masquer la bordure
 			/*CE.canvas.hud.context.strokeStyle = "rgba(0, 0, 0, 0.8)";
 			 CE.canvas.hud.context.strokeRect(0, 180, 400, 20 * 10);*/

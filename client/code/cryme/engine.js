@@ -17,6 +17,12 @@ var CrymeEngine = {
 	mapInvalidated: false, //If this is true, the map will be redrawn
 	highlightedItem: -1,//index de l'item selectionne
 	hudElements: [],
+	DisplayType: {
+		STANDARD: 0,
+		INFO_MAP: 1,
+		INFO_BUILDING: 2
+	},
+	displayType: 0,
 	camera: {
 		position: {
 			x: -1000,
@@ -174,7 +180,7 @@ var CrymeEngine = {
 					CrymeEngine.mousePosition.x = event.pageX / scaleFactor - this.offsetLeft;
 					CrymeEngine.mousePosition.y = event.pageY / scaleFactor - this.offsetTop;
 					var objectSelected = false;
-					for (var i = Map.tileItems.length - 1; i > 0; i--) {//en gérant par la fin, on sélectionne l'élément au premier plan
+					for (var i = Map.tileItems.length - 1; i >= 0; i--) {//en gérant par la fin, on sélectionne l'élément au premier plan
 						if (Map.tileItems[i].mouseIntersect(CE.mousePosition.x - CE.camera.position.x, CE.mousePosition.y - CE.camera.position.y)) {
 							if (CE.highlightedItem > -1 && CE.highlightedItem != i) {
 								Map.tileItems[CE.highlightedItem].highlighted = false;
@@ -192,7 +198,7 @@ var CrymeEngine = {
 						}
 					}
 				}
-				if (event.button == 2) {
+				if (event.button == 1) {
 					//le clic droit sers a bouger la map, et le gauche a agir
 					//positionnement de la souris
 					CrymeEngine.mousePosition.x = event.pageX - this.offsetLeft;
@@ -305,9 +311,9 @@ function CreateMap() {
 	Map.tileItems.push(crop);
 
 	//modification de la map
-	Map.changeTile(6, 1, 6);//pour mettre de la terre sous les crops sous le cold storage
-	Map.changeTile(6, 3, 5);
-	Map.changeTile(6, 2, 1);
+	/*Map.changeTile(6, 1, 6);//pour mettre de la terre sous les crops sous le cold storage
+	 Map.changeTile(6, 3, 5);
+	 Map.changeTile(6, 2, 1);*/
 
 	//ajout de characters
 	/*var character = new TileItems.Character(0, 5, 5);

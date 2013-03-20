@@ -4,10 +4,8 @@ var texCharacterList = [
 ];
 var texCharacters = [];
 
-TileItems.Character = function (targetFarmer) {
-    var type = targetFarmer.constructor == PlayableFarmer ? 1 : 0;
-	TileItem.call(this, texCharacters[type], targetFarmer.col, targetFarmer.line, texCharacterList[type].centerX, texCharacterList[type].centerY);
-    this.farmer = targetFarmer;
+TileItems.Character = function (type, col, line) {
+	TileItem.call(this, texCharacters[type], col, line, texCharacterList[type].centerX, texCharacterList[type].centerY);
 }
 
 TileItems.Character.prototype = new TileItem();
