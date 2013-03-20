@@ -130,6 +130,8 @@ var CrymeEngine = {
 		Hud: function () {
 			CrymeEngine.canvas.hud.clear();
 			CrymeEngine.hud.draw();
+			//dessin de la keymap si nécessaire
+			CE.keyboard.drawKeyMap();
 		},
 		MainLoop: function () {
 			if (!CrymeEngine.pauseRendering) {
