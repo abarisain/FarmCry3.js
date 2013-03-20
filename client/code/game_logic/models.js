@@ -28,7 +28,7 @@ Farmer.prototype = {
  * Object representing the current farmer (the player)
  */
 function PlayableFarmer(nickname) {
-    PlayableFarmer.call(this, nickname);
+    Farmer.call(this, nickname);
     this.money = 0;
     this.allied_farmers = [];
     this.weapons = [];
@@ -45,7 +45,7 @@ PlayableFarmer.prototype.getSmallFarmer = function() {
     }
 }
 PlayableFarmer.prototype.initFromFarmer = function(smallFarmer) {
-    Farmer.prototype.initFromSmallFarmer.call(this, smallFarmer);
+    Farmer.prototype.initFromFarmer.call(this, smallFarmer);
     this.money = smallFarmer.money;
     //TODO : Add support for allies
     this.allied_farmers = [];
