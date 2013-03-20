@@ -173,7 +173,7 @@ body {
 	position: absolute;
 	top: 100%;
 	margin-top: -275px;
-	background-color: rgba(0, 0, 0, 0.4);
+	background-color: rgba(0, 0, 0, 0.7);
 	font-family: 'stanberry', sans-serif;
 	font-weight: normal;
 	font-size: 14px;
@@ -200,6 +200,12 @@ body {
 
 #hud_chat .player {
 
+}
+
+#hud_chat .local {
+    font-family: sans-serif;
+    font-style: oblique;
+    color: rgb(255, 129, 129);
 }
 
 #hud_chat .self {
