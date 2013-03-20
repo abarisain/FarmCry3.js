@@ -1,14 +1,38 @@
 var Map = {
 	tiles: [],
-	player: undefined,//le character du joueur
+	player: null,//le character du joueur
 	players: [],//tous les joueurs y compris le notre
 	tileItems: [],//contient à la fois les buildings et les crops de la map
 	rect: { x: 1, y: 1, dx: 0, dy: 0 },
 	init: function (data) {
-		this.loadTiles((data.tiles));
+		this.loadTiles(data.tiles);
 		this.rect.dx = (tileWidth / 2) * (colSize + lineSize);
 		this.rect.dy = (tileHeight / 2) * (colSize + lineSize);
+        for(var lplayer in GameState.online_players) {
+            this.tileItems.push(new TileItems.Character(lplayer));
+        }
+        var tmpPlayerItem = new TileItems.Character(GameState.player);
+        this.tileItems.push(tmpPlayerItem);
+        this.player = tmpPlayerItem;
 	},
+    addPlayer: function(player) {
+        this.removePlayer(player.nickname);
+        var tmpPlayer = new TileItems.Character(player);
+        this.players.push(tmpPlayer);
+        if(player.constructor == PlayableFarmer)
+            this.player = tmpPlayer;
+    },
+    removePlayer: function(nickname) {
+        if(this.player != null && nickname == this.player.farmer.nickname)
+            return;
+        var playerCount = this.players.length;
+        for (var i = playerCount - 1; i >= 0; i--) {
+            if (this.players[i].farmer.nickname == nickname) {
+                this.players.removeItemAtIndex(i);
+            }
+            break;
+        }
+    },
 	loadTiles: function (tileData) {
 		for (var i = tileData.length - 1; i >= 0; i--) {
 			for (var j = 0; j < tileData[i].length; j++) {

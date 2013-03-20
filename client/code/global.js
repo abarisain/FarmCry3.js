@@ -45,6 +45,18 @@ var loadingPanel;
 var loadingProgressSpan;
 
 // Patch JS
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function (from, to) {
+    var rest = this.slice((to || from) + 1 || this.length);
+    this.length = from < 0 ? this.length + from : from;
+    return this.push.apply(this, rest);
+};
+Array.prototype.removeItem = function (element) {
+    this.splice(this.indexOf(element), 1);
+};
+Array.prototype.removeItemAtIndex = function (index) {
+    this.splice(index, 1);
+};
 String.prototype.beginsWith = function (string) {
 	return(this.indexOf(string) === 0);
 };

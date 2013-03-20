@@ -310,7 +310,7 @@ function CreateMap() {
 	Map.changeTile(6, 2, 1);
 
 	//ajout de characters
-	var character = new TileItems.Character(0, 5, 5);
+	/*var character = new TileItems.Character(0, 5, 5);
 	Map.players.push(character);
 	Map.player = character;//pour pouvoir gerer le joueur facilement
 	Map.tileItems.push(character);//pour gérer les personnages comme n'importe quel autre item, du moins pour le moment
@@ -319,5 +319,5 @@ function CreateMap() {
 	Map.tileItems.push(character);
 	var character = new TileItems.Character(1, 2, 3);
 	Map.players.push(character);
-	Map.tileItems.push(character);
+	Map.tileItems.push(character);*/
 }

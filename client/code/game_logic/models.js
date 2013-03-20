@@ -1,10 +1,10 @@
-function Farmer(nickname) {
+function Farmer() {
     this.position = {
         col: 0,
         line: 0
     };
     this.is_allied = false;
-    this.nickname = nickname;
+    this.nickname = "nick";
 }
 
 Farmer.prototype = {
@@ -27,8 +27,8 @@ Farmer.prototype = {
 /*
  * Object representing the current farmer (the player)
  */
-function PlayableFarmer(nickname) {
-    Farmer.call(this, nickname);
+function PlayableFarmer() {
+    Farmer.call(this);
     this.money = 0;
     this.allied_farmers = [];
     this.weapons = [];

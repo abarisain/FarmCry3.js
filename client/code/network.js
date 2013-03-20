@@ -34,7 +34,7 @@ var networkEngine = {
 			networkEngine.socket.emit("auth.login", {email: email, password: password}, function (data) {
 				if (typeof data.error != 'undefined') {
 					console.log("Error while logging in : " + data.error.description);
-					manual_disconnect = true;
+					this.manual_disconnect = true;
 					networkEngine.socket.disconnect();
 					networkEngine.onLoginFailed(data.error.description);
 				} else {
@@ -44,7 +44,7 @@ var networkEngine = {
 			});
 		});
 		this.socket.on('disconnect', function () {
-			if (manual_disconnect) {
+			if (this.manual_disconnect) {
 				return;
 			}
 			alert("Network error : Socket Disconnected !\nYou may have logged on from another location.\n" +
@@ -56,12 +56,33 @@ var networkEngine = {
 		networkEngine.socket.emit(subsystem + "." + method, data, callback);
 	},
 	subsystems: {
+        player: {
+            events: {
+                connected: function (data) {
+                    var tmpPlayer = new Farmer();
+                    tmpPlayer.initFromFarmer(data.farmer);
+                    GameState.addPlayer(tmpPlayer);
+                },
+                disconnected: function (data) {
+                    GameState.removePlayer(data.nickname);
+                }
+            }
+        },
 		game: {
 			events: {
 				initialData: function (data) {
 					//Initial data is received here
 					networkEngine.onLoadingStarted();
 					initialDataLoaded = true;
+                    var tmpFarmer;
+                    for (var i = 0; i < data.online_farmers.length; i++) {
+                        tmpFarmer = new Farmer();
+                        tmpFarmer.initFromFarmer(data.online_farmers[i]);
+                        GameState.addPlayer(tmpFarmer);
+                    }
+                    tmpFarmer = new PlayableFarmer();
+                    tmpFarmer.initFromFarmer(data.player_farmer);
+                    GameState.player = tmpFarmer;
 					Map.init(data);
 					CrymeEngine.init();
 					currentLoadingCount++;
