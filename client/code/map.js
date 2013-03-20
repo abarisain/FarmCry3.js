@@ -12,17 +12,28 @@ var Map = {
     addPlayer: function(player) {
         this.removePlayer(player.nickname);
         var tmpPlayer = new TileItems.Character(player);
+        //TODO : REMOVE THIS LATER, QUICK FIX !!!!!
+        if(typeof tmpPlayer.texture == "undefined")
+            return;
         this.players.push(tmpPlayer);
+        this.tileItems.push(tmpPlayer);
         if(player.constructor == PlayableFarmer)
             this.player = tmpPlayer;
     },
     removePlayer: function(nickname) {
         if(this.player != null && nickname == this.player.farmer.nickname)
             return;
-        var playerCount = this.players.length;
-        for (var i = playerCount - 1; i >= 0; i--) {
+        var count = this.players.length;
+        for (var i = count - 1; i >= 0; i--) {
             if (this.players[i].farmer.nickname == nickname) {
                 this.players.removeItemAtIndex(i);
+            }
+            break;
+        }
+        var count = this.players.length;
+        for (var i = count - 1; i >= 0; i--) {
+            if (this.tileItems[i].constructor == Farmer && this.tileItems[i].farmer.nickname == nickname) {
+                this.tileItems.removeItemAtIndex(i);
             }
             break;
         }

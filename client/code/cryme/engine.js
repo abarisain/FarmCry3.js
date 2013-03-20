@@ -326,4 +326,15 @@ function CreateMap() {
 	var character = new TileItems.Character(1, 2, 3);
 	Map.players.push(character);
 	Map.tileItems.push(character);*/
+
+    var tmpFarmer;
+    for (var i = 0; i < initialData.online_farmers.length; i++) {
+        tmpFarmer = new Farmer();
+        tmpFarmer.initFromFarmer(initialData.online_farmers[i]);
+        GameState.addPlayer(tmpFarmer);
+    }
+    tmpFarmer = new PlayableFarmer();
+    tmpFarmer.initFromFarmer(initialData.player_farmer);
+    GameState.player = tmpFarmer;
+    Map.addPlayer(tmpFarmer);
 }

@@ -88,18 +88,10 @@ var networkEngine = {
 			events: {
 				initialData: function (data) {
 					//Initial data is received here
+                    initialData = data;
 					networkEngine.onLoadingStarted();
 					initialDataLoaded = true;
-                    GameState.player = tmpFarmer;
 					Map.init(data);
-                    var tmpFarmer;
-                    for (var i = 0; i < data.online_farmers.length; i++) {
-                        tmpFarmer = new Farmer();
-                        tmpFarmer.initFromFarmer(data.online_farmers[i]);
-                        GameState.addPlayer(tmpFarmer);
-                    }
-                    tmpFarmer = new PlayableFarmer();
-                    tmpFarmer.initFromFarmer(data.player_farmer);
 					CrymeEngine.init();
 					currentLoadingCount++;
 					console.log("Initial data ok");

@@ -21,6 +21,7 @@ var initialDataLoaded = false;//initialise la connexion avec le serveur et telec
 var totalLoadingCount = 1;//1 car je compte la connexion au réseau
 var currentLoadingCount = 0;
 var loadingComplete = false;
+var initialData;
 
 //Moteur réseau
 var networkEngine;
