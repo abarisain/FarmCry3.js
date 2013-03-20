@@ -26,17 +26,21 @@ function Farmer(nickname, email, password) {
 Farmer.prototype = {
 	constructor: Farmer,
 	getSmallFarmer: function () {
-		var tmpFarmer = {};
-		tmpFarmer.nickname = this.nickname;
+		var tmpFarmer = this.getMinimalFarmer();
 		tmpFarmer.money = this.money;
-		tmpFarmer.col = this.last_pos.x;
-		tmpFarmer.line = this.last_pos.y;
 		tmpFarmer.weapons = [];
 		for (var weapon in tmpFarmer.weapons) {
 			tmpFarmer.weapons.push(weapon.codename);
 		}
 		return tmpFarmer;
-	}
+	},
+    getMinimalFarmer: function() {
+        var tmpFarmer = {};
+        tmpFarmer.nickname = this.nickname;
+        tmpFarmer.col = this.last_pos.x;
+        tmpFarmer.line = this.last_pos.y;
+        return tmpFarmer;
+    }
 };
 
 module.exports = Farmer;

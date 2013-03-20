@@ -15,8 +15,16 @@ var NetworkModule = {
 				}
 			}
 
+            var tmpFarmers = [];
+            for (farmer in GameState.farmers) {
+                if(farmer.logged_in && farmer.nickname != connection.farmer.nickname)
+                    tmpFarmers.push(farmer.getMinimalFarmer());
+            }
+
 			connection.send("game.initialData", {
 				tiles: tmpTiles,
+                player_farmer: connection.farmer.getSmallFarmer(),
+                online_farmers: tmpFarmers,
 				weapons: GameState.settings.weapons,
 				crops: GameState.settings.crops,
 				storages: GameState.settings.storages
