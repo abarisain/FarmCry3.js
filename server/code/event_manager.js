@@ -54,10 +54,11 @@ var EventManager = {
 				y = Math.floor(y);
 				var newX = farmer.last_pos.x + x;
 				var newY = farmer.last_pos.y + y;
-				if (x < -1 || x > 1 || y < -1 || y > 1 || newX > GameState.board.size.x || newY > GameState.board.size.y
+                //TODO : Re-enable this to disallow teleportation
+				/*if (x < -1 || x > 1 || y < -1 || y > 1 || newX > GameState.board.size.x || newY > GameState.board.size.y
 					|| newX < 0 || newY < 0) {
 					return false;
-				}
+				}*/
 				//TODO : Send events only to people in the viewport
 				NetworkEngine.broadcast("player.moved", {
 					nickname: farmer.nickname,
