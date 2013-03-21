@@ -55,15 +55,22 @@ Diagram.prototype = {
 	},
 	drawItemDetailed: function () {
 		//Todo améliorer l'affichage détaillé de la case
+		if (Map.transitionInformationDetailed.started) {
+			CE.canvas.map.context.globalAlpha = Map.transitionInformationDetailed.progress / 10;
+		}
 		CE.canvas.map.context.translate(this.x + this.detailPosition.x, this.y - (this.count / 2) * (diagramDeltaY / 2) + this.detailPosition.y);//deplacement du context pour le degrade
 		CE.canvas.map.context.fillStyle = this.gradient;
 		CE.canvas.map.context.fillRect(0, 0, diagramDetailWidth, 22);
 		CE.canvas.map.context.strokeStyle = this.color.colorGradient;
 		CE.canvas.map.context.lineWidth = 2;
+		CE.canvas.map.context.lineCap = 'round';
 		CE.canvas.map.context.strokeRect(0, 0, diagramDetailWidth, 22);
 		CE.canvas.map.context.fillStyle = "#fff";
 		CE.canvas.map.context.fillText(this.color.text + Math.floor(this.count * 10) + '%', 10, 15);
 		CE.canvas.map.context.translate(-(this.x + this.detailPosition.x), -(this.y - (this.count / 2) * (diagramDeltaY / 2) + this.detailPosition.y));//remise en place du context
+		if (Map.transitionInformationDetailed.started) {
+			CE.canvas.map.context.globalAlpha = 1;
+		}
 	},
 	drawItemTransition: function () {
 		/*if (this.texture == null) {

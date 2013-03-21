@@ -7,6 +7,8 @@ var Map = {
 	tileHighLighted: {col: 0, line: 0, index: -1 },//pour pouvoir retrouver sur quelle case on veux interagir
 	transitionInformation: new Transition(0, 10, 15, function (transitionType) {
 	}),
+	transitionInformationDetailed: new Transition(0, 10, 10, function (transitionType) {
+	}),
 	init: function (data) {
 		this.loadTiles(data.tiles);
 		this.rect.dx = (tileWidth / 2) * (colSize + lineSize);
@@ -83,6 +85,7 @@ var Map = {
 	drawMap: function () {
 		//Todo séparer l'update du draw
 		this.transitionInformation.updateProgress();
+		this.transitionInformationDetailed.updateProgress();
 		for (var i = 0; i < this.tiles.length; i++) {
 			this.tiles[i].drawTile();
 		}
@@ -121,6 +124,7 @@ var Map = {
 		this.transitionInformation.start(Transition.Type.FADE_IN);
 	},
 	highlightTile: function (x, y) {
+		var exHighlighted = this.tileHighLighted.index;
 		this.tileHighLighted.index = -1;
 		var coord = Map.coordinatesFromMousePosition(x, y);
 		if (CE.displayType == CE.DisplayType.INFO_MAP) {
@@ -129,6 +133,9 @@ var Map = {
 					this.tileHighLighted.col = coord.col;
 					this.tileHighLighted.line = coord.line;
 					this.tileHighLighted.index = i;
+					if (i != exHighlighted) {
+						this.transitionInformationDetailed.start(Transition.Type.FADE_IN);
+					}
 					break;
 				}
 			}
@@ -138,6 +145,9 @@ var Map = {
 					this.tileHighLighted.col = coord.col;
 					this.tileHighLighted.line = coord.line;
 					this.tileHighLighted.index = i;
+					if (i != exHighlighted) {
+						this.transitionInformationDetailed.start(Transition.Type.FADE_IN);
+					}
 					break;
 				}
 			}
