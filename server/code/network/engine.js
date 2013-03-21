@@ -72,10 +72,11 @@ var NetworkEngine = {
 			//Add the socket to the list
 			this.list.push(connection);
 		},
-		broadcast: function (event, data, require_auth) {
+		broadcast: function (event, data, require_auth, excluded_connection) {
 			var listLength = this.list.length;
 			for (var i = 0; i < listLength; i++) {
-				this.list[i].send(event, data, require_auth);
+                if(this.list[i] != excluded_connection)
+				    this.list[i].send(event, data, require_auth);
 			}
 		}
 	},

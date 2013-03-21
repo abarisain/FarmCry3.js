@@ -32,7 +32,7 @@ var EventManager = {
 				Chat.broadcastServerMessage(farmer.nickname + " signed in");
                 NetworkEngine.clients.broadcast("player.connected", {
                     farmer: farmer.getMinimalFarmer()
-                });
+                }, null, newConnection);
 			},
 			disconnected: function (farmer) {
 				if (farmer == null) {
