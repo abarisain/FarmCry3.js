@@ -115,6 +115,9 @@ TileItem.prototype = {
 		this.informations.loadInformations();
 	},
 	drawTileItemInfo: function () {
+		this.informations.drawInformations();
+	},
+	drawTileItemInfoDetailed: function () {
 		this.informations.drawInformationDetailed();
 	},
 	getCol: function () {
@@ -122,6 +125,13 @@ TileItem.prototype = {
 	},
 	getLine: function () {
 		return this.line;
+	},
+	match: function (col, line) {
+		if (col == this.col && line == this.line) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 };
 

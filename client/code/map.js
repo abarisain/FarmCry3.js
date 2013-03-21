@@ -4,8 +4,10 @@ var Map = {
 	players: [],//tous les joueurs y compris le notre
 	tileItems: [],//contient à la fois les buildings et les crops de la map
 	rect: { x: 1, y: 1, dx: 0, dy: 0 },
-	tileHighLighted: {col: 0, line: 0, index: 0 },//pour pouvoir retrouver sur quelle case on veux interagir
-	transition: new Transition(0, 10, 15, function (transitionType) {
+	tileHighLighted: {col: 0, line: 0, index: -1 },//pour pouvoir retrouver sur quelle case on veux interagir
+	transitionInformation: new Transition(0, 10, 15, function (transitionType) {
+	}),
+	transitionInformationDetailed: new Transition(0, 10, 10, function (transitionType) {
 	}),
 	init: function (data) {
 		this.loadTiles(data.tiles);
@@ -59,8 +61,7 @@ var Map = {
 	},
 	drawMapLoading: function (progress) {
 		if (progress < animationDuration / 2) {
-			for (var i = 0;
-				 i < Math.min(this.tiles.length * progress / (animationDuration / 2), this.tiles.length); i++) {
+			for (var i = 0; i < Math.min(this.tiles.length * progress / (animationDuration / 2), this.tiles.length); i++) {
 				this.tiles[i].drawTileLoading(progress);
 			}
 		}
@@ -83,7 +84,8 @@ var Map = {
 	},
 	drawMap: function () {
 		//Todo séparer l'update du draw
-		this.transition.updateProgress();
+		this.transitionInformation.updateProgress();
+		this.transitionInformationDetailed.updateProgress();
 		for (var i = 0; i < this.tiles.length; i++) {
 			this.tiles[i].drawTile();
 		}
@@ -93,9 +95,15 @@ var Map = {
 			for (var i = 0; i < this.tiles.length; i++) {
 				this.tiles[i].drawTileInfo();
 			}
+			if (this.tileHighLighted.index > -1) {
+				this.tiles[this.tileHighLighted.index].drawTileInfoDetailed();
+			}
 		} else if (CE.displayType == CE.DisplayType.INFO_BUILDING) {
 			for (var i = 0; i < this.tileItems.length; i++) {
 				this.tileItems[i].drawTileItemInfo();
+			}
+			if (this.tileHighLighted.index > -1) {
+				this.tileItems[this.tileHighLighted.index].drawTileItemInfoDetailed();
 			}
 		}
 	},
@@ -113,6 +121,36 @@ var Map = {
 		};
 	},
 	showMapInformations: function () {
-		this.transition.start(Transition.Type.FADE_IN);
+		this.transitionInformation.start(Transition.Type.FADE_IN);
+	},
+	highlightTile: function (x, y) {
+		var exHighlighted = this.tileHighLighted.index;
+		this.tileHighLighted.index = -1;
+		var coord = Map.coordinatesFromMousePosition(x, y);
+		if (CE.displayType == CE.DisplayType.INFO_MAP) {
+			for (var i = 0; i < this.tiles.length; i++) {
+				if (this.tiles[i].match(coord.col, coord.line)) {
+					this.tileHighLighted.col = coord.col;
+					this.tileHighLighted.line = coord.line;
+					this.tileHighLighted.index = i;
+					if (i != exHighlighted) {
+						this.transitionInformationDetailed.start(Transition.Type.FADE_IN);
+					}
+					break;
+				}
+			}
+		} else {
+			for (var i = 0; i < this.tileItems.length; i++) {
+				if (this.tileItems[i].match(coord.col, coord.line)) {
+					this.tileHighLighted.col = coord.col;
+					this.tileHighLighted.line = coord.line;
+					this.tileHighLighted.index = i;
+					if (i != exHighlighted) {
+						this.transitionInformationDetailed.start(Transition.Type.FADE_IN);
+					}
+					break;
+				}
+			}
+		}
 	}
 };

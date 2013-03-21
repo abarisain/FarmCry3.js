@@ -48,5 +48,13 @@ Transition.prototype = {
 				}
 			}
 		}
+	},
+	percentage: function () {
+		if (this.transitionType == Transition.Type.FADE_IN) {
+			return this.progress / (this.progressMax - this.progressInit);
+		}
+		else {
+			return this.progress / (this.progressInit - this.progressMax);
+		}
 	}
 }
