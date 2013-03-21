@@ -65,7 +65,12 @@ CrymeEngine.keyboard = {
 			case CE.keyboard.Shortcuts.SHOW_KEY_MAP.value:
 				CE.keyboard.showKeyMap = !CE.keyboard.showKeyMap;
 				break;
-
+			case CE.keyboard.Shortcuts.MOVE_MAP.value:
+				//Todo ajouter une recuperation de la position de la souris
+				CrymeEngine.mousePosition.x = event.pageX - this.offsetLeft;
+				CrymeEngine.mousePosition.y = event.pageY - this.offsetTop;
+				CE.movingMap = true;
+				break;
 			//graphic debug
 			case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG.value:
 				Options.Debug.Graphic.enabled = !Options.Debug.Graphic.enabled;
@@ -96,6 +101,13 @@ CrymeEngine.keyboard = {
 					message: 'Graphical debug : advanced - opacity set to ' + Options.Debug.Graphic.globalAlpha
 				}
 				CE.hud.chat.append(messageData);
+				break;
+		}
+	},
+	keyReleased: function (event) {
+		switch (event.keyCode) {
+			case CE.keyboard.Shortcuts.MOVE_MAP.value:
+				CE.movingMap = false;
 				break;
 		}
 	},

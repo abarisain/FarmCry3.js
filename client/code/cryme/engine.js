@@ -98,6 +98,11 @@ var CrymeEngine = {
 			CrymeEngine.canvas.map.clear();
 			CrymeEngine.canvas.map.context.save();
 
+			if (CE.displayType != CE.DisplayType.STANDARD) {
+				CrymeEngine.canvas.map.context.fillStyle = "#ddd";
+				CrymeEngine.canvas.map.context.fillRect(0, 0, canvasWidth, canvasHeight);
+			}
+
 			if (Options.Debug.Graphic.enabled) {
 				if (Options.Debug.Graphic.advanced) {
 					CrymeEngine.canvas.map.context.fillStyle = "#000";
@@ -114,6 +119,7 @@ var CrymeEngine = {
 				CrymeEngine.canvas.debug.clear();
 				CrymeEngine.canvas.map.context.globalAlpha = 1;//pour être sur de ne pas avoir de bug de transparence
 			}
+
 
 			//gestion du positionnement de la caméra
 			CrymeEngine.canvas.map.context.scale(scaleFactor, scaleFactor);
@@ -228,6 +234,11 @@ var CrymeEngine = {
 		window.onkeydown = function (event) {
 			CE.keyboard.keyPressed(event);
 			CE.mapInvalidated = true;
+			//Todo rajouter l'invalidation de la map lorsque nécessaire
+		};
+
+		window.onkeyup = function (event) {
+			CE.keyboard.keyReleased(event);
 		};
 
 		this.canvas.hud.canvas.onmousewheel = function (evt) {
