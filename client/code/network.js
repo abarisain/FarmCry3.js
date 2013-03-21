@@ -18,7 +18,6 @@ var networkEngine = {
 	},
 	init: function (serverUrl, email, password) {
 		this.manual_disconnect = false;
-        io.set('heartbeats', false);
 		console.log("Network connecting to " + serverUrl);
 		this.socket = io.connect(serverUrl);
 		//TODO : Add a connection timeout
