@@ -25,6 +25,7 @@ NetworkEngine = require('./network/engine');
 
 
 var io = require('socket.io').listen(8088);
+io.set('heartbeats', false);
 
 console.log("Server started on port 8088");
 
