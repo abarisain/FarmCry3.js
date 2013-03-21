@@ -29,7 +29,7 @@ var networkEngine;
 //graphic debug
 Options.Debug = {};
 Options.Debug.Graphic = {
-	enabled: true,//affiche le debug basique
+	enabled: false,//affiche le debug basique
 	map: false,//affiche les noms des tiles, ça arrache un peu les yeux
 	item: true,//affiche les noms des tilesItems
 	advanced: false,//switch la transparence des éléments
@@ -48,15 +48,15 @@ var loadingProgressSpan;
 // Patch JS
 // Array Remove - By John Resig (MIT Licensed)
 Array.prototype.remove = function (from, to) {
-    var rest = this.slice((to || from) + 1 || this.length);
-    this.length = from < 0 ? this.length + from : from;
-    return this.push.apply(this, rest);
+	var rest = this.slice((to || from) + 1 || this.length);
+	this.length = from < 0 ? this.length + from : from;
+	return this.push.apply(this, rest);
 };
 Array.prototype.removeItem = function (element) {
-    this.splice(this.indexOf(element), 1);
+	this.splice(this.indexOf(element), 1);
 };
 Array.prototype.removeItemAtIndex = function (index) {
-    this.splice(index, 1);
+	this.splice(index, 1);
 };
 String.prototype.beginsWith = function (string) {
 	return(this.indexOf(string) === 0);

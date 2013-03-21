@@ -14,7 +14,7 @@ TileItems.Crop.prototype = new TileItem();
 TileItems.Crop.prototype.constructor = TileItem.Crop;
 
 function LoadTexCrops() {
-	totalLoadingCount += texCropList.length;
+	totalLoadingCount += texCropList.length * 2;
 	for (var i = 0; i < texCropList.length; i++) {
 		var texture = new Texture(i, texCropList[i].image, 'src/crops/' + texCropList[i].image + '.png');
 		texture.image.addEventListener('load', texture.loadingEnded);

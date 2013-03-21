@@ -1,5 +1,5 @@
 CrymeEngine.keyboard = {
-	showKeyMap: true,//pour afficher ou non la keyMap à l'écran
+	showKeyMap: false,//pour afficher ou non la keyMap à l'écran
 	keyCount: 14,
 	Keys: {
 		ENTER: { value: 13, name: 'Enter' },

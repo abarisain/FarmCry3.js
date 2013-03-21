@@ -1,26 +1,37 @@
 var texDiagramList = [
-	{image: 'block'}
+	{image: 'block'},
+	{image: 'yellow'},
+	{image: 'blue'},
+	{image: 'green'}
 ];
 
 var texDiagrams = [];
 
-function Diagram(index, color, count) {
-	this.texture = texDiagrams[index];//à partir de maintenant il s'agit de l'image et plus de l'index
-	this.texture.updateWidthHeight();
+function Diagram(color, count) {
+	this.texture = null;
 	this.count = count;
 	this.color = color;//de type Color
+	this.x = 0;
+	this.y = 0;
 }
 
 Diagram.Color = {
-	WHITE: { color: 'rgb(125, 200, 0)', text: 'Value' }
+	WHITE: { color: 'rgb(125, 200, 0)', text: 'Value', index: 0 },
+	YELLOW: { color: 'rgb(125, 200, 0)', text: 'Value', index: 1 },
+	BLUE: { color: 'rgb(125, 200, 0)', text: 'Value', index: 2 },
+	GREEN: { color: 'rgb(125, 200, 0)', text: 'Value', index: 3 }
 };
 
 Diagram.prototype = {
 	constructor: Diagram,
 	//coordonnees du centre de dessin
-	drawItem: function (x, y) {
+	drawItem: function () {
+		if (this.texture == null) {
+			this.texture = texDiagrams[this.color.index];
+			//this.texture.updateWidthHeight();
+		}
 		for (var i = 0; i < this.count; i++) {
-			CE.canvas.map.context.drawImage(this.texture.image, x - this.texture.width / 2, y - this.texture.height / 2 - i * 23);
+			CE.canvas.map.context.drawImage(this.texture.image, this.x, this.y - i * diagramDeltaY / 2, diagramSizeX / 2, diagramSizeY / 2);
 		}
 		/*CE.canvas.map.context.globalCompositeOperation = 'lighter';
 		 CE.canvas.map.context.fillStyle = this.color.color;
@@ -30,7 +41,7 @@ Diagram.prototype = {
 };
 
 function LoadTexDiagram() {
-	totalLoadingCount += texDiagramList.length * 2;//2 pour les textures infos
+	totalLoadingCount += texDiagramList.length;
 	for (var i = 0; i < texDiagramList.length; i++) {
 		var texture = new Texture(i, texDiagramList[i].image, 'src/diagram/' + texDiagramList[i].image + '.png');
 		texture.image.addEventListener('load', texture.loadingEnded);

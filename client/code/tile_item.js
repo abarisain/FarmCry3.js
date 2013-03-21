@@ -16,9 +16,12 @@ function TileItem(texture, textureInfo, col, line, centerX, centerY) {
 		this.imageTop = 0;
 		this.imageRight = 0;
 		this.imageBottom = 0;
-		this.diagram = new Diagram(0, Diagram.Color.WHITE, this.texture.index + 1);
 		this.updateCoord();
 		this.updateImageCoord();
+		this.informations = new TileItemInfos(this.x, this.y, [
+			new Diagram(Diagram.Color.YELLOW, this.texture.index + 1),
+			new Diagram(Diagram.Color.BLUE, 5 - this.texture.index)
+		]);
 	}
 }
 
@@ -48,10 +51,10 @@ TileItem.prototype = {
 		this.updateCoord();
 		this.updateImageCoord();
 	},
-    invalidate: function () {
-        this.updateCoord();
-        this.updateImageCoord();
-    },
+	invalidate: function () {
+		this.updateCoord();
+		this.updateImageCoord();
+	},
 	updateCoord: function () {
 		this.x = (this.getCol() + this.getLine()) * (tileWidth / 2);
 		this.y = (lineSize - this.getLine() + this.getCol() - 1) * (tileHeight / 2);
@@ -71,7 +74,6 @@ TileItem.prototype = {
 			CE.canvas.map.context.drawImage(this.texture.image, this.imageLeft, this.imageTop);
 		} else {
 			CE.canvas.map.context.drawImage(this.textureInfo.image, this.imageLeft, this.imageTop);
-			this.diagram.drawItem(this.x, this.y);
 		}
 		if (Options.Debug.Graphic.enabled) {
 			CE.canvas.debug.context.fillStyle = "rgb(29, 82, 161)";
@@ -109,12 +111,15 @@ TileItem.prototype = {
 			CE.canvas.map.context.strokeRect(this.imageLeft + 1, this.imageTop - 1, this.texture.width - 2, this.texture.height - 2);
 		}
 	},
-    getCol: function() {
-        return this.col;
-    },
-    getLine: function() {
-        return this.line;
-    }
+	drawTileItemInfo: function () {
+		this.informations.drawInformations();
+	},
+	getCol: function () {
+		return this.col;
+	},
+	getLine: function () {
+		return this.line;
+	}
 };
 
 function LoadTexTilesItem() {

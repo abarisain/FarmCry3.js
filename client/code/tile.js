@@ -20,6 +20,11 @@ function Tile(data) {
 	this.updateImage();
 	this.updateCoord();
 	this.updateImageCoord();
+	this.informations = new TileItemInfos(this.x, this.y, [
+		new Diagram(Diagram.Color.BLUE, this.humidity * 10),
+		new Diagram(Diagram.Color.YELLOW, this.maturity * 10),
+		new Diagram(Diagram.Color.GREEN, this.fertility * 10)
+	]);
 }
 
 Tile.prototype = {
@@ -92,6 +97,9 @@ Tile.prototype = {
 				CE.canvas.debug.context.fillText('(' + this.col + ',' + this.line + ')', this.x, this.y);
 			}
 		}
+	},
+	drawTileInfo: function () {
+		this.informations.drawInformations();
 	}
 };
 

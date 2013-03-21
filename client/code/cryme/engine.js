@@ -128,6 +128,14 @@ var CrymeEngine = {
 			//dessin des bâtiments
 			Map.drawTileItems();
 
+			if (CE.displayType != CE.DisplayType.STANDARD) {
+				//dessin du terrain
+				Map.drawMapInfos();
+
+				//dessin des bâtiments
+				Map.drawTileItemInfos();
+			}
+
 			CrymeEngine.canvas.map.context.restore();
 			if (Options.Debug.Graphic.enabled) {
 				CrymeEngine.canvas.debug.context.restore();
@@ -317,24 +325,24 @@ function CreateMap() {
 
 	//ajout de characters
 	/*var character = new TileItems.Character(0, 5, 5);
-	Map.players.push(character);
-	Map.player = character;//pour pouvoir gerer le joueur facilement
-	Map.tileItems.push(character);//pour gérer les personnages comme n'importe quel autre item, du moins pour le moment
-	var character = new TileItems.Character(1, 12, 7);
-	Map.players.push(character);
-	Map.tileItems.push(character);
-	var character = new TileItems.Character(1, 2, 3);
-	Map.players.push(character);
-	Map.tileItems.push(character);*/
+	 Map.players.push(character);
+	 Map.player = character;//pour pouvoir gerer le joueur facilement
+	 Map.tileItems.push(character);//pour gérer les personnages comme n'importe quel autre item, du moins pour le moment
+	 var character = new TileItems.Character(1, 12, 7);
+	 Map.players.push(character);
+	 Map.tileItems.push(character);
+	 var character = new TileItems.Character(1, 2, 3);
+	 Map.players.push(character);
+	 Map.tileItems.push(character);*/
 
-    var tmpFarmer;
-    for (var i = 0; i < initialData.online_farmers.length; i++) {
-        tmpFarmer = new Farmer();
-        tmpFarmer.initFromFarmer(initialData.online_farmers[i]);
-        GameState.addPlayer(tmpFarmer);
-    }
-    tmpFarmer = new PlayableFarmer();
-    tmpFarmer.initFromFarmer(initialData.player_farmer);
-    GameState.player = tmpFarmer;
-    Map.addPlayer(tmpFarmer);
+	var tmpFarmer;
+	for (var i = 0; i < initialData.online_farmers.length; i++) {
+		tmpFarmer = new Farmer();
+		tmpFarmer.initFromFarmer(initialData.online_farmers[i]);
+		GameState.addPlayer(tmpFarmer);
+	}
+	tmpFarmer = new PlayableFarmer();
+	tmpFarmer.initFromFarmer(initialData.player_farmer);
+	GameState.player = tmpFarmer;
+	Map.addPlayer(tmpFarmer);
 }
