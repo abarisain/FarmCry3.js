@@ -78,7 +78,6 @@ Tile.prototype = {
 		} else {
 			CrymeEngine.canvas.map.context.drawImage(texTiles[10].image, this.imageLeft, this.imageTop);
 		}
-
 		if (Options.Debug.Graphic.enabled) {
 			if (Options.Debug.Graphic.map) {
 				CE.canvas.debug.context.fillStyle = "#fff";

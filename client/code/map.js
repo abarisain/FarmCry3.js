@@ -59,8 +59,7 @@ var Map = {
 	},
 	drawMapLoading: function (progress) {
 		if (progress < animationDuration / 2) {
-			for (var i = 0;
-				 i < Math.min(this.tiles.length * progress / (animationDuration / 2), this.tiles.length); i++) {
+			for (var i = 0; i < Math.min(this.tiles.length * progress / (animationDuration / 2), this.tiles.length); i++) {
 				this.tiles[i].drawTileLoading(progress);
 			}
 		}

@@ -154,7 +154,7 @@ var CrymeEngine = {
 			if (!CrymeEngine.pauseRendering) {
 				if (loadingComplete) {
 					//There is another render loop for when the map is loading
-					if (CrymeEngine.mapInvalidated) {
+					if (CrymeEngine.mapInvalidated || Map.transition.started) {
 						CrymeEngine.Draw.Map();
 					}
 					CrymeEngine.Draw.Hud();
