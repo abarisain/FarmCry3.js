@@ -4,12 +4,21 @@ var Map = {
 	players: [],//tous les joueurs y compris le notre
 	tileItems: [],//contient à la fois les buildings et les crops de la map
 	rect: { x: 1, y: 1, dx: 0, dy: 0 },
+	tileHighLighted: {col: 0, line: 0, index: 0 },//pour pouvoir retrouver sur quelle case on veux interagir
 	transition: new Transition(0, 10, 15, function (transitionType) {
 	}),
 	init: function (data) {
 		this.loadTiles(data.tiles);
 		this.rect.dx = (tileWidth / 2) * (colSize + lineSize);
 		this.rect.dy = (tileHeight / 2) * (colSize + lineSize);
+	},
+	loadInformations: function () {
+		for (var i = 0; i < this.tiles.length; i++) {
+			this.tiles[i].loadInformations();
+		}
+		for (var i = 0; i < this.tileItems.length; i++) {
+			this.tileItems[i].loadInformations();
+		}
 	},
 	addPlayer: function (player) {
 		this.removePlayer(player.nickname);
@@ -84,18 +93,15 @@ var Map = {
 			for (var i = 0; i < this.tiles.length; i++) {
 				this.tiles[i].drawTileInfo();
 			}
+		} else if (CE.displayType == CE.DisplayType.INFO_BUILDING) {
+			for (var i = 0; i < this.tileItems.length; i++) {
+				this.tileItems[i].drawTileItemInfo();
+			}
 		}
 	},
 	drawTileItems: function () {
 		for (var i = 0; i < this.tileItems.length; i++) {
 			this.tileItems[i].drawItem();
-		}
-	},
-	drawTileItemInfos: function () {
-		if (CE.displayType == CE.DisplayType.INFO_BUILDING) {
-			for (var i = 0; i < this.tileItems.length; i++) {
-				this.tileItems[i].drawTileItemInfo();
-			}
 		}
 	},
 	coordinatesFromMousePosition: function (x, y) {

@@ -111,8 +111,11 @@ TileItem.prototype = {
 			CE.canvas.map.context.strokeRect(this.imageLeft + 1, this.imageTop - 1, this.texture.width - 2, this.texture.height - 2);
 		}
 	},
+	loadInformations: function () {
+		this.informations.loadInformations();
+	},
 	drawTileItemInfo: function () {
-		this.informations.drawInformations();
+		this.informations.drawInformationDetailed();
 	},
 	getCol: function () {
 		return this.col;

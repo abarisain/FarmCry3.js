@@ -137,9 +137,6 @@ var CrymeEngine = {
 			if (CE.displayType != CE.DisplayType.STANDARD) {
 				//dessin du terrain
 				Map.drawMapInfos();
-
-				//dessin des bâtiments
-				Map.drawTileItemInfos();
 			}
 
 			CrymeEngine.canvas.map.context.restore();
@@ -356,4 +353,6 @@ function CreateMap() {
 	tmpFarmer.initFromFarmer(initialData.player_farmer);
 	GameState.player = tmpFarmer;
 	Map.addPlayer(tmpFarmer);
+
+	Map.loadInformations();
 }

@@ -10,6 +10,7 @@ function TileItemInfos(x, y, diagrams) {
 	for (var i = 0; i < this.count; i++) {
 		this.diagrams[i].x = this.x + TileItemInfos.Place[this.count - 1][i].x - diagramSizeX / 4;
 		this.diagrams[i].y = this.y + TileItemInfos.Place[this.count - 1][i].y - diagramSizeY / 4;
+		this.diagrams[i].detailPosition = Diagram.DetailPosition[i];
 	}
 
 }
@@ -20,8 +21,8 @@ TileItemInfos.Place = [
 		{ x: 0, y: 0}
 	],
 	[
-		{ x: 10, y: -10},
-		{ x: -10, y: 10}
+		{ x: 12, y: -12},
+		{ x: -12, y: 12}
 	],
 	[
 		{ x: 20, y: -5},
@@ -42,6 +43,22 @@ TileItemInfos.prototype = {
 			for (var i = 0; i < this.count; i++) {
 				this.diagrams[i].drawItem();
 			}
+		}
+	},
+	drawInformationDetailed: function () {
+		if (Map.transition.started) {
+			for (var i = 0; i < this.count; i++) {
+				this.diagrams[i].drawItemTransition();
+			}
+		} else {
+			for (var i = 0; i < this.count; i++) {
+				this.diagrams[i].drawItemDetailed();
+			}
+		}
+	},
+	loadInformations: function () {
+		for (var i = 0; i < this.count; i++) {
+			this.diagrams[i].init();
 		}
 	}
 };

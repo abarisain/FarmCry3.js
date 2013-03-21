@@ -100,6 +100,9 @@ Tile.prototype = {
 	},
 	drawTileInfo: function () {
 		this.informations.drawInformations();
+	},
+	loadInformations: function () {
+		this.informations.loadInformations();
 	}
 };
 
