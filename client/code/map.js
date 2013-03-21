@@ -4,8 +4,8 @@ var Map = {
 	players: [],//tous les joueurs y compris le notre
 	tileItems: [],//contient à la fois les buildings et les crops de la map
 	rect: { x: 1, y: 1, dx: 0, dy: 0 },
-	tileHighLighted: {col: 0, line: 0, index: 0 },//pour pouvoir retrouver sur quelle case on veux interagir
-	transition: new Transition(0, 10, 15, function (transitionType) {
+	tileHighLighted: {col: 0, line: 0, index: -1 },//pour pouvoir retrouver sur quelle case on veux interagir
+	transitionInformation: new Transition(0, 10, 15, function (transitionType) {
 	}),
 	init: function (data) {
 		this.loadTiles(data.tiles);
@@ -82,7 +82,7 @@ var Map = {
 	},
 	drawMap: function () {
 		//Todo séparer l'update du draw
-		this.transition.updateProgress();
+		this.transitionInformation.updateProgress();
 		for (var i = 0; i < this.tiles.length; i++) {
 			this.tiles[i].drawTile();
 		}
@@ -92,9 +92,15 @@ var Map = {
 			for (var i = 0; i < this.tiles.length; i++) {
 				this.tiles[i].drawTileInfo();
 			}
+			if (this.tileHighLighted.index > -1) {
+				this.tiles[this.tileHighLighted.index].drawTileInfoDetailed();
+			}
 		} else if (CE.displayType == CE.DisplayType.INFO_BUILDING) {
 			for (var i = 0; i < this.tileItems.length; i++) {
 				this.tileItems[i].drawTileItemInfo();
+			}
+			if (this.tileHighLighted.index > -1) {
+				this.tileItems[this.tileHighLighted.index].drawTileItemInfoDetailed();
 			}
 		}
 	},
@@ -112,6 +118,29 @@ var Map = {
 		};
 	},
 	showMapInformations: function () {
-		this.transition.start(Transition.Type.FADE_IN);
+		this.transitionInformation.start(Transition.Type.FADE_IN);
+	},
+	highlightTile: function (x, y) {
+		this.tileHighLighted.index = -1;
+		var coord = Map.coordinatesFromMousePosition(x, y);
+		if (CE.displayType == CE.DisplayType.INFO_MAP) {
+			for (var i = 0; i < this.tiles.length; i++) {
+				if (this.tiles[i].match(coord.col, coord.line)) {
+					this.tileHighLighted.col = coord.col;
+					this.tileHighLighted.line = coord.line;
+					this.tileHighLighted.index = i;
+					break;
+				}
+			}
+		} else {
+			for (var i = 0; i < this.tileItems.length; i++) {
+				if (this.tileItems[i].match(coord.col, coord.line)) {
+					this.tileHighLighted.col = coord.col;
+					this.tileHighLighted.line = coord.line;
+					this.tileHighLighted.index = i;
+					break;
+				}
+			}
+		}
 	}
 };

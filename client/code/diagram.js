@@ -55,9 +55,6 @@ Diagram.prototype = {
 	},
 	drawItemDetailed: function () {
 		//Todo améliorer l'affichage détaillé de la case
-		for (var i = 0; i < this.count; i++) {
-			CE.canvas.map.context.drawImage(this.texture.image, this.x, this.y - i * diagramDeltaY / 2, diagramSizeX / 2, diagramSizeY / 2);
-		}
 		CE.canvas.map.context.translate(this.x + this.detailPosition.x, this.y - (this.count / 2) * (diagramDeltaY / 2) + this.detailPosition.y);//deplacement du context pour le degrade
 		CE.canvas.map.context.fillStyle = this.gradient;
 		CE.canvas.map.context.fillRect(0, 0, diagramDetailWidth, 22);
@@ -73,7 +70,7 @@ Diagram.prototype = {
 		 this.init();
 		 }*/
 		for (var i = 0; i < this.count; i++) {
-			CE.canvas.map.context.drawImage(this.texture.image, this.x, this.y - (i * diagramDeltaY / (2 * (Map.transition.progressMax - Map.transition.progress + 1))), diagramSizeX / 2, diagramSizeY / 2);
+			CE.canvas.map.context.drawImage(this.texture.image, this.x, this.y - (i * diagramDeltaY / (2 * (Map.transitionInformation.progressMax - Map.transitionInformation.progress + 1))), diagramSizeX / 2, diagramSizeY / 2);
 		}
 	}
 };

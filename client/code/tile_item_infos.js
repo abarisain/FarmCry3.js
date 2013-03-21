@@ -35,7 +35,7 @@ TileItemInfos.prototype = {
 	constructor: TileItemInfos,
 	//coordonnees du centre de dessin
 	drawInformations: function () {
-		if (Map.transition.started) {
+		if (Map.transitionInformation.started) {
 			for (var i = 0; i < this.count; i++) {
 				this.diagrams[i].drawItemTransition();
 			}
@@ -46,14 +46,8 @@ TileItemInfos.prototype = {
 		}
 	},
 	drawInformationDetailed: function () {
-		if (Map.transition.started) {
-			for (var i = 0; i < this.count; i++) {
-				this.diagrams[i].drawItemTransition();
-			}
-		} else {
-			for (var i = 0; i < this.count; i++) {
-				this.diagrams[i].drawItemDetailed();
-			}
+		for (var i = 0; i < this.count; i++) {
+			this.diagrams[i].drawItemDetailed();
 		}
 	},
 	loadInformations: function () {

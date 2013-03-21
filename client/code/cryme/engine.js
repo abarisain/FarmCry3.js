@@ -154,7 +154,7 @@ var CrymeEngine = {
 			if (!CrymeEngine.pauseRendering) {
 				if (loadingComplete) {
 					//There is another render loop for when the map is loading
-					if (CrymeEngine.mapInvalidated || Map.transition.started) {
+					if (CrymeEngine.mapInvalidated || Map.transitionInformation.started) {
 						CrymeEngine.Draw.Map();
 					}
 					CrymeEngine.Draw.Hud();
@@ -218,6 +218,10 @@ var CrymeEngine = {
 					//activation du deplacement de la map
 					CrymeEngine.movingMap = true;
 				}
+				if (event.button == 0) {
+					//le clic gauche permet de sélectionner une case lorsqu'on est en mode informations
+					var coord = Map.coordinatesFromMousePosition(event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x, event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y);
+				}
 			}
 		};
 
@@ -267,9 +271,12 @@ var CrymeEngine = {
 		};
 
 		this.canvas.hud.canvas.onmousemove = function (event) {
+			if (CE.displayType != CE.DisplayType.STANDARD) {
+				Map.highlightTile(event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x, event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y);
+				this.mapInvalidated = true;
+			}
 			if (CrymeEngine.movingMap) {
 				event = event || window.event;
-
 
 				//deplacement de la caméra en fonction de la dernière position de la souris
 				CrymeEngine.camera.position.x += (event.pageX - this.offsetLeft - CrymeEngine.mousePosition.x);

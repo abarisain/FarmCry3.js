@@ -100,8 +100,18 @@ Tile.prototype = {
 	drawTileInfo: function () {
 		this.informations.drawInformations();
 	},
+	drawTileInfoDetailed: function () {
+		this.informations.drawInformationDetailed();
+	},
 	loadInformations: function () {
 		this.informations.loadInformations();
+	},
+	match: function (col, line) {
+		if (col == this.col && line == this.line) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 };
 
