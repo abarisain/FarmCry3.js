@@ -61,6 +61,9 @@ CrymeEngine.keyboard = {
 				break;
 			case CE.keyboard.Shortcuts.CHANGE_DISPLAY_TYPE.value:
 				CE.displayType = (CE.displayType + 1) % 3;
+				if (CE.displayType != CE.DisplayType.STANDARD) {
+					Map.showMapInformations();
+				}
 				break;
 			case CE.keyboard.Shortcuts.SHOW_KEY_MAP.value:
 				CE.keyboard.showKeyMap = !CE.keyboard.showKeyMap;

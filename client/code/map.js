@@ -4,6 +4,8 @@ var Map = {
 	players: [],//tous les joueurs y compris le notre
 	tileItems: [],//contient à la fois les buildings et les crops de la map
 	rect: { x: 1, y: 1, dx: 0, dy: 0 },
+	transition: new Transition(0, 10, 15, function (transitionType) {
+	}),
 	init: function (data) {
 		this.loadTiles(data.tiles);
 		this.rect.dx = (tileWidth / 2) * (colSize + lineSize);
@@ -71,6 +73,8 @@ var Map = {
 		}
 	},
 	drawMap: function () {
+		//Todo séparer l'update du draw
+		this.transition.updateProgress();
 		for (var i = 0; i < this.tiles.length; i++) {
 			this.tiles[i].drawTile();
 		}
@@ -101,5 +105,8 @@ var Map = {
 			col: Math.floor(newCol),
 			line: Math.floor(newLine)
 		};
+	},
+	showMapInformations: function () {
+		this.transition.start(Transition.Type.FADE_IN);
 	}
 };

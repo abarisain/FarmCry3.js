@@ -26,10 +26,6 @@ Diagram.prototype = {
 	constructor: Diagram,
 	//coordonnees du centre de dessin
 	drawItem: function () {
-		if (this.texture == null) {
-			this.texture = texDiagrams[this.color.index];
-			//this.texture.updateWidthHeight();
-		}
 		for (var i = 0; i < this.count; i++) {
 			CE.canvas.map.context.drawImage(this.texture.image, this.x, this.y - i * diagramDeltaY / 2, diagramSizeX / 2, diagramSizeY / 2);
 		}
@@ -37,6 +33,15 @@ Diagram.prototype = {
 		 CE.canvas.map.context.fillStyle = this.color.color;
 		 CE.canvas.map.context.fillRect(x, y, 50, 80);
 		 CE.canvas.map.context.globalCompositeOperation = 'source-over';*/
+	},
+	drawItemTransition: function () {
+		if (this.texture == null) {
+			this.texture = texDiagrams[this.color.index];
+			//this.texture.updateWidthHeight();
+		}
+		for (var i = 0; i < this.count; i++) {
+			CE.canvas.map.context.drawImage(this.texture.image, this.x, this.y - (i * diagramDeltaY / (2 * (Map.transition.progressMax - Map.transition.progress + 1))), diagramSizeX / 2, diagramSizeY / 2);
+		}
 	}
 };
 

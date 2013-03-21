@@ -11,6 +11,7 @@ function TileItemInfos(x, y, diagrams) {
 		this.diagrams[i].x = this.x + TileItemInfos.Place[this.count - 1][i].x - diagramSizeX / 4;
 		this.diagrams[i].y = this.y + TileItemInfos.Place[this.count - 1][i].y - diagramSizeY / 4;
 	}
+
 }
 
 //contient les coordonnées disponibles pour placer plusieurs diagrammes sur une case
@@ -33,8 +34,14 @@ TileItemInfos.prototype = {
 	constructor: TileItemInfos,
 	//coordonnees du centre de dessin
 	drawInformations: function () {
-		for (var i = 0; i < this.count; i++) {
-			this.diagrams[i].drawItem();
+		if (Map.transition.started) {
+			for (var i = 0; i < this.count; i++) {
+				this.diagrams[i].drawItemTransition();
+			}
+		} else {
+			for (var i = 0; i < this.count; i++) {
+				this.diagrams[i].drawItem();
+			}
 		}
 	}
 };
