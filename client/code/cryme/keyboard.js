@@ -8,7 +8,7 @@ CrymeEngine.keyboard = {
 		KEY_A: { value: 65, name: 'A' },
 		KEY_Z: { value: 90, name: 'Z' },
 		KEY_S: { value: 83, name: 'S' },
-		KEY_Q: { value: 91, name: 'Q' },
+		KEY_Q: { value: 81, name: 'Q' },
 		KEY_D: { value: 68, name: 'D' },
 		KEY_1: { value: 49, name: '&' },
 		KEY_2: { value: 50, name: 'é' },
@@ -69,11 +69,23 @@ CrymeEngine.keyboard = {
 			case CE.keyboard.Shortcuts.SHOW_KEY_MAP.value:
 				CE.keyboard.showKeyMap = !CE.keyboard.showKeyMap;
 				break;
+			case CE.keyboard.Shortcuts.MOVE_UP.value:
+				CE.camera.position.y += Options.Gameplay.mapSpeed;
+				break;
+			case CE.keyboard.Shortcuts.MOVE_DOWN.value:
+				CE.camera.position.y -= Options.Gameplay.mapSpeed;
+				break;
+			case CE.keyboard.Shortcuts.MOVE_LEFT.value:
+				CE.camera.position.x += Options.Gameplay.mapSpeed;
+				break;
+			case CE.keyboard.Shortcuts.MOVE_RIGHT.value:
+				CE.camera.position.x -= Options.Gameplay.mapSpeed;
+				break;
 			case CE.keyboard.Shortcuts.MOVE_MAP.value:
 				//Todo ajouter une recuperation de la position de la souris
-				CrymeEngine.mousePosition.x = event.pageX - this.offsetLeft;
-				CrymeEngine.mousePosition.y = event.pageY - this.offsetTop;
-				CE.movingMap = true;
+				/*CrymeEngine.mousePosition.x = event.pageX - this.offsetLeft;
+				 CrymeEngine.mousePosition.y = event.pageY - this.offsetTop;
+				 CE.movingMap = true;*/
 				break;
 			//graphic debug
 			case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG.value:

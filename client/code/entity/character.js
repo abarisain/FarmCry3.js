@@ -5,19 +5,19 @@ var texCharacterList = [
 var texCharacters = [];
 
 TileItems.Character = function (targetFarmer) {
-    var type = targetFarmer.constructor == PlayableFarmer ? 1 : 0;
-    this.farmer = targetFarmer;
+	var type = targetFarmer.constructor == PlayableFarmer ? 1 : 0;
+	this.farmer = targetFarmer;
 	TileItem.call(this, texCharacters[type], texCharacters[type], targetFarmer.position.col, targetFarmer.position.line, texCharacterList[type].centerX, texCharacterList[type].centerY);
 }
 
 TileItems.Character.prototype = new TileItem();
 TileItems.Character.prototype.constructor = TileItems.Character;
 /*TileItems.Character.prototype.getCol = function() {
-    return this.farmer.position.col;
-};
-TileItems.Character.prototype.getLine = function() {
-    return this.farmer.position.line;
-};*/
+ return this.farmer.position.col;
+ };
+ TileItems.Character.prototype.getLine = function() {
+ return this.farmer.position.line;
+ };*/
 
 
 function LoadTexCharacters() {

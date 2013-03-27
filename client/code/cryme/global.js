@@ -26,6 +26,20 @@ var initialData;
 //Moteur réseau
 var networkEngine;
 
+Options.Graphic = {
+	particles: true,
+	clouds: true,
+	advancedEffects: true
+};
+
+Options.Sound = {
+	music: false
+};
+
+Options.Gameplay = {
+	mapSpeed: 5
+};
+
 //graphic debug
 Options.Debug = {};
 Options.Debug.Graphic = {
@@ -35,7 +49,7 @@ Options.Debug.Graphic = {
 	advanced: false,//switch la transparence des éléments
 	globalAlpha: 1,//affiche tous les elements en transparence
 	dotSize: 20//la taille des formes geometriques de debug à afficher
-}
+};
 
 //Login
 var loginRememberCheckbox;

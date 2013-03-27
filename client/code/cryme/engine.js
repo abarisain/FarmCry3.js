@@ -177,7 +177,7 @@ var CrymeEngine = {
 
 		var audioPlayer = document.getElementById('audioPlayer');
 		audioPlayer.style.top = (canvasHeight - 30) + 'px';
-		if (music) {
+		if (Options.Sound.music) {
 			audioPlayer.play();
 		}
 		//Bind events
@@ -322,7 +322,9 @@ function CreateMap() {
 	Map.tileItems.push(building);
 	building = new TileItems.Building(0, 4, 7);
 	Map.tileItems.push(building);
-	building = new TileItems.Building(0, 8, 9);
+	building = new TileItems.Building(1, 8, 9);
+	Map.tileItems.push(building);
+	building = new TileItems.Building(1, 2, 12);
 	Map.tileItems.push(building);
 
 	//ajout de crops

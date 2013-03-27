@@ -1,5 +1,6 @@
 var texBuildingList = [
-	{image: 'home', centerX: 133, centerY: 275}
+	{image: 'home', centerX: 133, centerY: 275},
+	{image: 'barn', centerX: 132, centerY: 142}
 ];
 var texBuildings = [];
 var texBuildingInfos = [];
