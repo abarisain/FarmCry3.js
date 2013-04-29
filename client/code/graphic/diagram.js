@@ -38,11 +38,11 @@ Diagram.ColorById = [
 	Diagram.Color.GREEN,
 	Diagram.Color.RED,
 	Diagram.Color.YELLOW,
-	Diagram.Color.ORANGE
-	/*Diagram.Color.BROWN,
-	 Diagram.Color.VIOLET,
-	 Diagram.Color.CYAN,
-	 Diagram.Color.WHITE*/
+	Diagram.Color.ORANGE,
+	Diagram.Color.BROWN,
+	Diagram.Color.VIOLET,
+	Diagram.Color.CYAN,
+	Diagram.Color.WHITE
 ];
 
 Diagram.prototype = {
@@ -81,9 +81,6 @@ Diagram.prototype = {
 		CE.canvas.map.context.fill();
 	},
 	drawItemDetailed: function () {
-		if (this.gradient === null || this.gradient === undefined) {
-			this.init();
-		}
 		if (Map.transitionInformationDetailed.started) {
 			CE.canvas.map.context.globalAlpha = Map.transitionInformationDetailed.progress / 10;
 		}
