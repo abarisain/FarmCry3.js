@@ -1,25 +1,15 @@
-//gestion des textures
-//je précise qu'ici il faudra que je fasse commencer grass à 0 et que j'inverse les 2 tiles
-var texTileList = ['grass_0', 'grass_1', 'grass_2', 'grass_3', 'rock', 'leave', 'soil', 'water_0', 'water_1', 'water_2', 'white'];
-var texTiles = [];
-
 function Tile(data) {
 	this.humidity = data.humidity;
 	this.fertility = data.fertility;
 	this.maturity = data.maturity;
-	this.image = undefined;
+	this.sprite = {};
 	this.col = data.position.col;
 	this.line = data.position.line;
 	this.alpha = 0;
 	this.x = 0;
 	this.y = 0;
-	this.centerX = tileWidth / 2;//attention ceci est la distance top-left au centre de la tile, réferentiel indispensable
-	this.centerY = tileHeight / 2;
 	this.imageLeft = 0;
 	this.imageTop = 0;
-	this.updateImage();
-	this.updateCoord();
-	this.updateImageCoord();
 	this.informations = new TileItemInfos(this.x, this.y, [
 		new Diagram(Diagram.Color.BLUE, this.humidity * 10),
 		new Diagram(Diagram.Color.YELLOW, this.maturity * 10),
@@ -29,30 +19,39 @@ function Tile(data) {
 
 Tile.prototype = {
 	constructor: Tile,
-	//cherche l'image correspondante à l'humidité et la fertilité
+	//cherche le sprite correspondante à l'humidité et la fertilité
 	updateImage: function () {
 		if (this.humidity < 0.3) {
 			if (this.fertility < 0.2) {
-				this.image = 0;//mountain
+				this.sprite = SpritePack.Tiles.Sprites.ROCK;
 			}
 			else if (this.fertility < 0.5) {
-				this.image = 1;//rock
+				this.sprite = SpritePack.Tiles.Sprites.LEAVE;
 			}
 			else {
-				this.image = 2;//soil
+				this.sprite = SpritePack.Tiles.Sprites.SOIL;
 			}
 		}
-		else if (this.humidity < 0.4) {
-			this.image = 3;//grass_2
+		else if (this.humidity < 0.5) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_0;
+		}
+		else if (this.humidity < 0.55) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_1;
 		}
 		else if (this.humidity < 0.6) {
-			this.image = 0;//grass_1
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_2;
+		}
+		else if (this.humidity < 0.7) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_3;
 		}
 		else if (this.humidity < 0.8) {
-			this.image = 8;//leave
+			this.sprite = SpritePack.Tiles.Sprites.WATER_0;
+		}
+		else if (this.humidity < 0.9) {
+			this.sprite = SpritePack.Tiles.Sprites.WATER_1;
 		}
 		else {
-			this.image = 9;//water
+			this.sprite = SpritePack.Tiles.Sprites.WATER_2;
 		}
 	},
 	updateCoord: function () {
@@ -60,23 +59,23 @@ Tile.prototype = {
 		this.y = (lineSize - this.line + this.col - 1) * (tileHeight / 2);
 	},
 	updateImageCoord: function () {
-		this.imageLeft = this.x - this.centerX;
-		this.imageTop = this.y - this.centerY;
+		this.imageLeft = this.x - this.sprite.centerX;
+		this.imageTop = this.y - this.sprite.centerY;
 	},
 	drawTileLoading: function (progress) {
 		if (this.alpha < 1) {
 			this.alpha += 0.1;
 		}
 		CrymeEngine.canvas.map.context.globalAlpha = this.alpha;
-		CrymeEngine.canvas.map.context.drawImage(texTiles[this.image].image, this.imageLeft,
+		CrymeEngine.canvas.map.context.drawImage(this.sprite.image, this.imageLeft,
 			this.imageTop - this.col * tileHeight * (1 - progress / (animationDuration / 2)));
 	},
 	//attention a bien se préoccuper du context avant, ici je m'en occupe pas
 	drawTile: function () {
 		if (CE.displayType == CE.DisplayType.STANDARD) {
-			CrymeEngine.canvas.map.context.drawImage(texTiles[this.image].image, this.imageLeft, this.imageTop);
+			CrymeEngine.canvas.map.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
 		} else {
-			CrymeEngine.canvas.map.context.drawImage(texTiles[10].image, this.imageLeft, this.imageTop);
+			CrymeEngine.canvas.map.context.drawImage(SpritePack.Tiles.Sprites.WHITE.image, this.imageLeft, this.imageTop);
 		}
 		if (Options.Debug.Graphic.enabled) {
 			if (Options.Debug.Graphic.map) {
@@ -89,7 +88,7 @@ Tile.prototype = {
 				CE.canvas.debug.context.fillStyle = "rgba(255, 255, 255, 0.5)";
 				CE.canvas.debug.context.fillRect(this.x + Options.Debug.Graphic.dotSize / 2, this.y - 4, 100, 19);
 				CE.canvas.debug.context.fillStyle = "#000";
-				CE.canvas.debug.context.fillText(texTiles[this.image].name + ' : ' + this.col + ',' + this.line, this.x + Options.Debug.Graphic.dotSize / 2 + 5, this.y + 10);
+				CE.canvas.debug.context.fillText(this.sprite.name + ' : ' + this.col + ',' + this.line, this.x + Options.Debug.Graphic.dotSize / 2 + 5, this.y + 10);
 			}
 			else {
 				CE.canvas.debug.context.fillStyle = "#fff";
@@ -103,7 +102,10 @@ Tile.prototype = {
 	drawTileInfoDetailed: function () {
 		this.informations.drawInformationDetailed();
 	},
-	loadInformations: function () {
+	loadTile: function () {
+		this.updateImage();
+		this.updateCoord();
+		this.updateImageCoord();
 		this.informations.loadInformations();
 	},
 	match: function (col, line) {
@@ -114,14 +116,3 @@ Tile.prototype = {
 		}
 	}
 };
-
-function LoadTexTiles() {
-	totalLoadingCount += texTileList.length;
-	for (var i = 0; i < texTileList.length; i++) {
-		var tile = new Texture(texTileList[i], 'src/tiles/' + texTileList[i] + '.png');
-		tile.image.onload = function () {
-			currentLoadingCount++;
-		};
-		texTiles[i] = tile;
-	}
-}

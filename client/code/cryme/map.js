@@ -16,7 +16,7 @@ var Map = {
 	},
 	loadInformations: function () {
 		for (var i = 0; i < this.tiles.length; i++) {
-			this.tiles[i].loadInformations();
+			this.tiles[i].loadTile();
 		}
 		for (var i = 0; i < this.tileItems.length; i++) {
 			this.tileItems[i].loadInformations();
@@ -74,10 +74,10 @@ var Map = {
 			}
 		}
 	},
-	changeTile: function (type, col, line) {
+	changeTile: function (sprite, col, line) {
 		for (var i = 0; i < this.tiles.length; i++) {
 			if (this.tiles[i].col == col && this.tiles[i].line == line) {
-				this.tiles[i].image = type;
+				this.tiles[i].sprite = sprite;
 				break;
 			}
 		}

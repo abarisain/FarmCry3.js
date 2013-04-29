@@ -49,49 +49,46 @@ var CrymeEngine = {
 	},
 	Draw: {
 		Loading: function () {
-			if ((texTiles.length != texTileList.length && initialDataLoaded) ||
-				currentLoadingCount < totalLoadingCount) {
-				//Kind of a hack, but redoing the whole loading system is really hard and not so useful
-				networkEngine.onLoadingProgress(currentLoadingCount, totalLoadingCount);
-				window.requestAnimFrame(function () {
-					CrymeEngine.Draw.Loading();
-				});
-			}
-			else {
+			if (initialDataLoaded && currentLoadingCount >= totalLoadingCount) {
 				networkEngine.onLoadingFinished();
 				CreateMap();
 				window.requestAnimFrame(function () {
 					CrymeEngine.Draw.MapCreation(1, 1);
 				});
 			}
+			else {
+				//Kind of a hack, but redoing the whole loading system is really hard and not so useful
+				networkEngine.onLoadingProgress(currentLoadingCount, totalLoadingCount);
+				window.requestAnimFrame(function () {
+					CrymeEngine.Draw.Loading();
+				});
+			}
 		},
 		MapCreation: function (progress, speed) {
 			//Pour faire apparaître la map de façon un peu "Qui pête"
-			if (texTiles.length == texTileList.length) {
-				CrymeEngine.canvas.map.context.save();
-				CrymeEngine.canvas.map.clear();
+			CrymeEngine.canvas.map.context.save();
+			CrymeEngine.canvas.map.clear();
 
-				CrymeEngine.canvas.map.context.translate(CrymeEngine.camera.position.x,
-					CrymeEngine.camera.position.y);
+			CrymeEngine.canvas.map.context.translate(CrymeEngine.camera.position.x,
+				CrymeEngine.camera.position.y);
 
-				//dessin du terrain
-				Map.drawMapLoading(progress);
-				//il vaux mieux restaurer le contexte avant de commencer à dessiner, pour être tranquille
-				CrymeEngine.canvas.map.context.restore();
+			//dessin du terrain
+			Map.drawMapLoading(progress);
+			//il vaux mieux restaurer le contexte avant de commencer à dessiner, pour être tranquille
+			CrymeEngine.canvas.map.context.restore();
 
-				if (progress == animationDuration) {
-					//Normal draw loop will now handle the rendering
-					loadingComplete = true;
-					CE.mapInvalidated = true;
+			if (progress == animationDuration) {
+				//Normal draw loop will now handle the rendering
+				loadingComplete = true;
+				CE.mapInvalidated = true;
+			}
+			else {
+				if (progress >= animationDuration * 2 || progress <= 0) {
+					speed *= -1;
 				}
-				else {
-					if (progress >= animationDuration * 2 || progress <= 0) {
-						speed *= -1;
-					}
-					window.requestAnimFrame(function () {
-						CrymeEngine.Draw.MapCreation(progress + speed, speed);
-					});
-				}
+				window.requestAnimFrame(function () {
+					CrymeEngine.Draw.MapCreation(progress + speed, speed);
+				});
 			}
 		},
 		Map: function () {
@@ -316,6 +313,8 @@ function InitLoading() {
 
 //fonction pour placer des trucs sur la map pour test le rendu
 function CreateMap() {
+	Map.loadInformations();
+
 	//ajout de buildings
 	var building = new TileItems.Building(SpritePack.Buildings.Sprites.HOME, 5, 13);
 	Map.tileItems.push(building);
@@ -335,9 +334,9 @@ function CreateMap() {
 	Map.tileItems.push(crop);
 
 	//modification de la map
-	Map.changeTile(6, 1, 6);//pour mettre de la terre sous les crops sous le cold storage
-	Map.changeTile(6, 3, 5);
-	Map.changeTile(6, 2, 1);
+	Map.changeTile(SpritePack.Tiles.Sprites.SOIL, 1, 6);//pour mettre de la terre sous les crops sous le cold storage
+	Map.changeTile(SpritePack.Tiles.Sprites.SOIL, 3, 5);
+	Map.changeTile(SpritePack.Tiles.Sprites.SOIL, 2, 1);
 
 	//ajout de characters
 	/*var character = new TileItems.Character(0, 5, 5);
@@ -361,6 +360,4 @@ function CreateMap() {
 	tmpFarmer.initFromFarmer(initialData.player_farmer);
 	GameState.player = tmpFarmer;
 	Map.addPlayer(tmpFarmer);
-
-	Map.loadInformations();
 }

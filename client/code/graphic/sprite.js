@@ -1,8 +1,8 @@
 function Sprite(name, centerX, centerY, textureInfo) {
 	this.name = name;
 	if (centerX === undefined || centerX === null) {
-		this.centerX = 0;
-		this.centerY = 0;
+		this.centerX = tileWidth / 2;
+		this.centerY = tileHeight / 2;
 	} else {
 		this.centerX = centerX;
 		this.centerY = centerY;
