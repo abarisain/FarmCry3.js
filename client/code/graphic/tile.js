@@ -10,6 +10,7 @@ function Tile(data) {
 	this.y = 0;
 	this.imageLeft = 0;
 	this.imageTop = 0;
+	this.updateCoord();
 	this.informations = new TileItemInfos(this.x, this.y, [
 		new Diagram(Diagram.Color.BLUE, this.humidity * 10),
 		new Diagram(Diagram.Color.YELLOW, this.maturity * 10),
@@ -104,7 +105,6 @@ Tile.prototype = {
 	},
 	loadTile: function () {
 		this.updateImage();
-		this.updateCoord();
 		this.updateImageCoord();
 		this.informations.loadInformations();
 	},

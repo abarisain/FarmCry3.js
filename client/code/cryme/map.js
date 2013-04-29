@@ -121,7 +121,7 @@ var Map = {
 		};
 	},
 	showMapInformations: function () {
-		this.transitionInformation.start(Transition.Type.FADE_IN);
+		this.transitionInformation.start(Transition.Type.FADE_IN, true);
 	},
 	highlightTile: function (x, y) {
 		var exHighlighted = this.tileHighLighted.index;
@@ -134,7 +134,7 @@ var Map = {
 					this.tileHighLighted.line = coord.line;
 					this.tileHighLighted.index = i;
 					if (i != exHighlighted) {
-						this.transitionInformationDetailed.start(Transition.Type.FADE_IN);
+						this.transitionInformationDetailed.start(Transition.Type.FADE_IN, true);
 					}
 					break;
 				}
@@ -146,7 +146,7 @@ var Map = {
 					this.tileHighLighted.line = coord.line;
 					this.tileHighLighted.index = i;
 					if (i != exHighlighted) {
-						this.transitionInformationDetailed.start(Transition.Type.FADE_IN);
+						this.transitionInformationDetailed.start(Transition.Type.FADE_IN, true);
 					}
 					break;
 				}
