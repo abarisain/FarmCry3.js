@@ -310,35 +310,34 @@ var CrymeEngine = {
 var CE = CrymeEngine;
 
 function InitLoading() {
-	LoadTexTiles();
-	LoadTexTilesItem();
+	LoadSpritePack();
 	CrymeEngine.hud.loadTextures();
 }
 
 //fonction pour placer des trucs sur la map pour test le rendu
 function CreateMap() {
 	//ajout de buildings
-	var building = new TileItems.Building(0, 5, 13);
+	var building = new TileItems.Building(SpritePack.Buildings.Sprites.HOME, 5, 13);
 	Map.tileItems.push(building);
-	building = new TileItems.Building(0, 4, 7);
+	building = new TileItems.Building(SpritePack.Buildings.Sprites.HOME, 4, 7);
 	Map.tileItems.push(building);
-	building = new TileItems.Building(1, 8, 9);
+	building = new TileItems.Building(SpritePack.Buildings.Sprites.BARN, 8, 9);
 	Map.tileItems.push(building);
-	building = new TileItems.Building(1, 2, 12);
+	building = new TileItems.Building(SpritePack.Buildings.Sprites.BARN, 2, 12);
 	Map.tileItems.push(building);
 
 	//ajout de crops
-	var crop = new TileItems.Crop(0, 1, 6);
+	var crop = new TileItems.Crop(SpritePack.Crops.Sprites.TOMATO, 1, 6);
 	Map.tileItems.push(crop);
-	crop = new TileItems.Crop(1, 3, 5);
+	crop = new TileItems.Crop(SpritePack.Crops.Sprites.CORN, 3, 5);
 	Map.tileItems.push(crop);
-	crop = new TileItems.Crop(2, 2, 1);
+	crop = new TileItems.Crop(SpritePack.Crops.Sprites.WHEAT, 2, 1);
 	Map.tileItems.push(crop);
 
 	//modification de la map
-	/*Map.changeTile(6, 1, 6);//pour mettre de la terre sous les crops sous le cold storage
-	 Map.changeTile(6, 3, 5);
-	 Map.changeTile(6, 2, 1);*/
+	Map.changeTile(6, 1, 6);//pour mettre de la terre sous les crops sous le cold storage
+	Map.changeTile(6, 3, 5);
+	Map.changeTile(6, 2, 1);
 
 	//ajout de characters
 	/*var character = new TileItems.Character(0, 5, 5);

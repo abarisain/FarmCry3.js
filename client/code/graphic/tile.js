@@ -118,7 +118,7 @@ Tile.prototype = {
 function LoadTexTiles() {
 	totalLoadingCount += texTileList.length;
 	for (var i = 0; i < texTileList.length; i++) {
-		var tile = new Texture(i, texTileList[i], 'src/tiles/' + texTileList[i] + '.png');
+		var tile = new Texture(texTileList[i], 'src/tiles/' + texTileList[i] + '.png');
 		tile.image.onload = function () {
 			currentLoadingCount++;
 		};

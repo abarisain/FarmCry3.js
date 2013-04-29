@@ -37,7 +37,7 @@ CrymeEngine.hud = {
 		totalLoadingCount += textureList.length;
 		var i = 0;
 		textureList.forEach(function (textureName) {
-			var texture = new Texture(i, textureName, 'src/hud/' + textureName + '.png');
+			var texture = new Texture(textureName, 'src/hud/' + textureName + '.png');
 			texture.image.onload = function () {
 				currentLoadingCount++;
 			};
