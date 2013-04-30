@@ -27,8 +27,17 @@ var SpritePack = {
 	Buildings: new SpriteSheet('src/buildings/', true),
 	Characters: new SpriteSheet('src/character/', false),
 	Crops: new SpriteSheet('src/crops/', true),
-	Tiles: new SpriteSheet('src/tiles/', false)
+	Tiles: new SpriteSheet('src/tiles/', false),
+	Battle: new SpriteSheet('src/battle/', false)
 }
+
+var SP = {
+	Battles: SpritePack.Battle.Sprites,
+	Buildings: SpritePack.Buildings.Sprites,
+	Characters: SpritePack.Characters.Sprites,
+	Crops: SpritePack.Crops.Sprites,
+	Tiles: SpritePack.Tiles.Sprites
+};
 
 function LoadSpritePack() {
 	SpritePack.Buildings.Sprites.HOME = new Sprite('home', 133, 275);
@@ -52,6 +61,22 @@ function LoadSpritePack() {
 	SpritePack.Tiles.Sprites.WATER_1 = new Sprite('water_1');
 	SpritePack.Tiles.Sprites.WATER_2 = new Sprite('water_2');
 	SpritePack.Tiles.Sprites.WHITE = new Sprite('white');
+
+	SpritePack.Battle.Sprites.BACKGROUND = new Sprite('background', 0, 0);
+	SpritePack.Battle.Sprites.ACTION = new Sprite('action', 42, 40);
+	SpritePack.Battle.Sprites.BUTTON = new Sprite('button', 126, 126);
+	SpritePack.Battle.Sprites.BUTTON_AK47 = new Sprite('button_ak', 81, 81);
+	SpritePack.Battle.Sprites.BUTTON_ANTHRAX = new Sprite('button_anthrax', 81, 81);
+	SpritePack.Battle.Sprites.BUTTON_DODGE = new Sprite('button_dodge', 81, 81);
+	SpritePack.Battle.Sprites.BUTTON_JUMP = new Sprite('button_jump', 81, 81);
+	SpritePack.Battle.Sprites.BUTTON_RUN = new Sprite('button_run', 81, 81);
+	SpritePack.Battle.Sprites.BUTTON_CROP = new Sprite('button_wheat', 81, 81);
+	SpritePack.Battle.Sprites.BACKGROUND = new Sprite('background', 0, 0);
+	SpritePack.Battle.Sprites.LENGTH = new Sprite('length', 81, 81);
+	SpritePack.Battle.Sprites.BUTTON_ANTHRAX = new Sprite('button_anthrax', 81, 81);
+
+	SpritePack.Battle.Sprites.AVATAR = new Sprite('avatar', 147, 156);
+	SpritePack.Battle.Sprites.AURA = new Sprite('aura', 347, 346);
 
 	for (var key in SpritePack) {
 		SpritePack[key].loadSprites();

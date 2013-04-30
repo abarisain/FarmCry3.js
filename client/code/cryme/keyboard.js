@@ -6,10 +6,14 @@ CrymeEngine.keyboard = {
 		SPACE: { value: 32, name: 'Space' },
 		TAB: { value: 9, name: 'Tab' },
 		KEY_A: { value: 65, name: 'A' },
-		KEY_Z: { value: 90, name: 'Z' },
-		KEY_S: { value: 83, name: 'S' },
-		KEY_Q: { value: 81, name: 'Q' },
+		KEY_B: { value: 66, name: 'B' },
+		KEY_C: { value: 67, name: 'C' },
 		KEY_D: { value: 68, name: 'D' },
+		KEY_E: { value: 69, name: 'E' },
+		KEY_Q: { value: 81, name: 'Q' },
+		KEY_R: { value: 82, name: 'R' },
+		KEY_S: { value: 83, name: 'S' },
+		KEY_Z: { value: 90, name: 'Z' },
 		KEY_1: { value: 49, name: '&' },
 		KEY_2: { value: 50, name: 'é' },
 		KEY_3: { value: 51, name: '"' },
@@ -24,6 +28,8 @@ CrymeEngine.keyboard = {
 		MOVE_LEFT: null,
 		MOVE_RIGHT: null,
 		MOVE_MAP: null,
+		LAUNCH_BATTLE: null,
+		STOP_BATTLE: null,
 		SHOW_KEY_MAP: null,
 		SHOW_GRAPHIC_DEBUG: null,
 		SHOW_GRAPHIC_DEBUG_ITEM: null,
@@ -34,6 +40,8 @@ CrymeEngine.keyboard = {
 	init: function () {
 		CE.keyboard.Shortcuts.CHAT = CrymeEngine.keyboard.Keys.ENTER;
 		CE.keyboard.Shortcuts.CHANGE_DISPLAY_TYPE = CE.keyboard.Keys.KEY_A;
+		CE.keyboard.Shortcuts.LAUNCH_BATTLE = CE.keyboard.Keys.KEY_E;
+		CE.keyboard.Shortcuts.STOP_BATTLE = CE.keyboard.Keys.KEY_R;
 		CE.keyboard.Shortcuts.MOVE_UP = CE.keyboard.Keys.KEY_Z;
 		CE.keyboard.Shortcuts.MOVE_DOWN = CE.keyboard.Keys.KEY_S;
 		CE.keyboard.Shortcuts.MOVE_LEFT = CE.keyboard.Keys.KEY_Q;
@@ -51,6 +59,11 @@ CrymeEngine.keyboard = {
 		if (document.activeElement == CE.hud.chat.divs.input && event.keyCode != CE.keyboard.Shortcuts.CHAT) {
 			return true;
 		}
+		var messageData = {
+			kind: CE.hud.chat.Kind.LOCAL,
+			message: 'Keyboard debug : key - ' + event.keyCode
+		}
+		CE.hud.chat.append(messageData);
 		switch (event.keyCode) {
 			case CE.keyboard.Shortcuts.CHAT.value:
 				if (document.activeElement == CE.hud.chat.divs.input) {
@@ -80,6 +93,15 @@ CrymeEngine.keyboard = {
 				break;
 			case CE.keyboard.Shortcuts.MOVE_RIGHT.value:
 				CE.camera.position.x -= Options.Gameplay.mapSpeed;
+				break;
+			case CE.keyboard.Shortcuts.LAUNCH_BATTLE.value:
+				CE.gameState = CE.GameState.BATTLE;
+				Battle.launchBattle();
+				CE.mapInvalidated = true;
+				break;
+			case CE.keyboard.Shortcuts.STOP_BATTLE.value:
+				CE.gameState = CE.GameState.FARMING;
+				CE.mapInvalidated = true;
 				break;
 			case CE.keyboard.Shortcuts.MOVE_MAP.value:
 				//Todo ajouter une recuperation de la position de la souris

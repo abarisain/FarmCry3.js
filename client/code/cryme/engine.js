@@ -23,6 +23,11 @@ var CrymeEngine = {
 		INFO_BUILDING: 2
 	},
 	displayType: 0,
+	GameState: {
+		FARMING: 0,
+		BATTLE: 1
+	},
+	gameState: 0,
 	camera: {
 		position: {
 			x: -1000,
@@ -94,6 +99,7 @@ var CrymeEngine = {
 		Map: function () {
 			CrymeEngine.canvas.map.clear();
 			CrymeEngine.canvas.map.context.save();
+			CrymeEngine.canvas.animation.clear();
 
 			if (CE.displayType != CE.DisplayType.STANDARD) {
 				CrymeEngine.canvas.map.context.fillStyle = "#ddd";
@@ -141,6 +147,16 @@ var CrymeEngine = {
 				CrymeEngine.canvas.debug.context.restore();
 			}
 		},
+		Battle: function () {
+			CrymeEngine.canvas.map.clear();
+			CrymeEngine.canvas.hud.clear();
+			CrymeEngine.canvas.animation.clear();
+			CrymeEngine.canvas.animation.context.save();
+
+			Battle.draw();
+
+			CrymeEngine.canvas.animation.context.restore();
+		},
 		Hud: function () {
 			CrymeEngine.canvas.hud.clear();
 			CrymeEngine.hud.draw();
@@ -150,11 +166,15 @@ var CrymeEngine = {
 		MainLoop: function () {
 			if (!CrymeEngine.pauseRendering) {
 				if (loadingComplete) {
-					//There is another render loop for when the map is loading
-					if (CrymeEngine.mapInvalidated || Map.transitionInformation.started) {
-						CrymeEngine.Draw.Map();
+					if (CrymeEngine.gameState == CE.GameState.FARMING) {
+						//There is another render loop for when the map is loading
+						if (CrymeEngine.mapInvalidated || Map.transitionInformation.started) {
+							CrymeEngine.Draw.Map();
+						}
+						CrymeEngine.Draw.Hud();
+					} else if (CrymeEngine.gameState == CE.GameState.BATTLE) {
+						CrymeEngine.Draw.Battle();
 					}
-					CrymeEngine.Draw.Hud();
 				}
 			}
 			window.requestAnimFrame(function () {
