@@ -11,6 +11,7 @@ function Transition(progressInit, progressMax, duration, eventEnd) {
 	this.transitionType = Transition.Type.FADE_IN;
 	this.eventEnd = eventEnd;
 	this.state = Transition.State.BEGIN;
+	this.loop = false;
 }
 
 Transition.Type = {
@@ -46,9 +47,14 @@ Transition.prototype = {
 				this.progress += this.progressRate;
 				if (Math.abs(this.progress) >= Math.abs(this.progressMax)) {
 					this.progress = this.progressMax;
-					this.started = false;
-					this.state = Transition.State.END;
-					this.eventEnd(this.transitionType);
+					if (this.loop) {
+						this.transitionType = Transition.Type.FADE_OUT;
+					} else {
+						this.started = false;
+						this.state = Transition.State.END;
+						this.eventEnd(this.transitionType);
+					}
+
 				} else {
 					return this.progress;
 				}
@@ -57,9 +63,14 @@ Transition.prototype = {
 				this.progress -= this.progressRate;
 				if (this.progress <= this.progressInit) {
 					this.progress = this.progressInit;
-					this.started = false;
-					this.state = Transition.State.BEGIN;
-					this.eventEnd(this.transitionType);
+					if (this.loop) {
+						this.transitionType = Transition.Type.FADE_IN;
+					} else {
+						this.started = false;
+						this.state = Transition.State.BEGIN;
+						this.eventEnd(this.transitionType);
+					}
+
 				} else {
 					return this.progress;
 				}

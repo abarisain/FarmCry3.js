@@ -96,7 +96,7 @@ CrymeEngine.keyboard = {
 				break;
 			case CE.keyboard.Shortcuts.LAUNCH_BATTLE.value:
 				CE.gameState = CE.GameState.BATTLE;
-				Battle.launchBattle();
+				CE.Battle.launchBattle();
 				CE.mapInvalidated = true;
 				break;
 			case CE.keyboard.Shortcuts.STOP_BATTLE.value:

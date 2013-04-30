@@ -153,7 +153,7 @@ var CrymeEngine = {
 			CrymeEngine.canvas.animation.clear();
 			CrymeEngine.canvas.animation.context.save();
 
-			Battle.draw();
+			CrymeEngine.Battle.draw();
 
 			CrymeEngine.canvas.animation.context.restore();
 		},

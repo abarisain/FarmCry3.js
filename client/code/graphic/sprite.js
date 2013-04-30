@@ -21,13 +21,20 @@ function Sprite(name, centerX, centerY, textureInfo) {
 Sprite.prototype = {
 	constructor: Sprite,
 	load: function (folderPath) {
+		var sprite = this;
 		this.image = new Image();
 		this.image.src = folderPath + this.name + '.png';
-		this.image.addEventListener('load', this.loadingEnded);
+		this.image.addEventListener('load', function () {
+			currentLoadingCount++;
+			sprite.updateWidthHeight();
+		});
 		if (this.textureInfo) {
 			this.imageInfo = new Image();
 			this.imageInfo.src = folderPath + this.name + '_white.png';
-			this.imageInfo.addEventListener('load', this.loadingEnded);
+			this.imageInfo.addEventListener('load', function () {
+				currentLoadingCount++;
+				sprite.updateWidthHeight();
+			});
 		} else {
 			this.imageInfo = this.image;
 		}
