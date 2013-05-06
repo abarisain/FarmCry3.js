@@ -23,9 +23,17 @@ String.prototype.beginsWith = function (string) {
 GameState = require('./models/gamestate');
 NetworkEngine = require('./network/engine');
 
+var express = require('express');
+var app = express();
+app.use(express.static(__dirname + '/../../client/code'));
 
-var io = require('socket.io').listen(8088);
+var http = require('http')
+    , server = http.createServer(app)
+
+var io = require('socket.io').listen(server);
 //io.set('heartbeats', false);
+
+server.listen(8088);
 
 console.log("Server started on port 8088");
 
