@@ -259,6 +259,13 @@ var CrymeEngine = {
 			}
 		};
 
+		this.canvas.hud.canvas.onclick = function (event) {
+			if (loadingComplete) {
+				//pour du debug de position d'image
+				Map.player.moveToMousePosition(event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x, event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y);
+			}
+		}
+
 		this.canvas.hud.canvas.ondblclick = function (event) {
 			if (loadingComplete) {
 				//pour du debug de position d'image

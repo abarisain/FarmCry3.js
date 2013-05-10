@@ -1,6 +1,5 @@
 MapItems.Character = function (targetFarmer) {
-	MapItem.call(this, targetFarmer.constructor == PlayableFarmer ? SpritePack.Characters.Sprites.PLAYER : SpritePack.Characters.Sprites.FARMER,
-		targetFarmer.position.col, targetFarmer.position.line);
+	MapItem.call(this, SpritePack.Characters.Sprites.FARMER, targetFarmer.position.col, targetFarmer.position.line);
 	this.farmer = targetFarmer;
 	this.updateCoord();
 	this.updateImageCoord();
@@ -38,14 +37,19 @@ MapItems.Character.prototype.move = function (col, line) {
 };
 
 MapItems.Character.prototype.draw = function () {
+
 	if (this.movementTransition.started) {
 		this.movementTransition.updateProgress();
 		this.x = this.movement.startPosition.x + (this.movement.finalPosition.x - this.movement.startPosition.x) * this.movementTransition.progress;
 		this.y = this.movement.startPosition.y + (this.movement.finalPosition.y - this.movement.startPosition.y) * this.movementTransition.progress;
 		this.updateImageCoord();
-		this.movement.sprite.draw(this.x - this.movement.sprite.centerX, this.y - this.movement.sprite.centerY);
-
+		//je suis obligé d'attendre l'update de coordonnée en cas d'animation
+		SpritePack.Characters.Sprites.SHADOW.draw(this.x, this.y);
+		SpritePack.Characters.Sprites.ANIM_AURA.draw(this.x, this.y);
+		this.movement.sprite.draw(this.x, this.y);
 	} else {
+		SpritePack.Characters.Sprites.SHADOW.draw(this.x, this.y);
+		SpritePack.Characters.Sprites.ANIM_AURA.draw(this.x, this.y);
 		CE.canvas.map.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
 	}
 	if (Options.Debug.Graphic.enabled) {

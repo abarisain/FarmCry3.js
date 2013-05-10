@@ -36,8 +36,9 @@ function LoadSpritePack() {
 	SpritePack.Buildings.Sprites.HOME = new Sprite('home', 133, 275);
 	SpritePack.Buildings.Sprites.BARN = new Sprite('barn', 132, 142);
 
-	SpritePack.Characters.Sprites.PLAYER = new Sprite('player', 30, 37);
+	SpritePack.Characters.Sprites.SHADOW = new Sprite('shadow', 14, 12);
 	SpritePack.Characters.Sprites.FARMER = new Sprite('farmer', 13, 34);
+	SpritePack.Characters.Sprites.ANIM_AURA = new Sprites.Animation('aura', 50, 36, 20, 40);
 	SpritePack.Characters.Sprites.ANIM_TOP_LEFT = new Sprites.Animation('farmer_top_left', 18, 42, 23, 30);
 	SpritePack.Characters.Sprites.ANIM_TOP_RIGHT = new Sprites.Animation('farmer_top_right', 12, 34, 23, 30);
 	SpritePack.Characters.Sprites.ANIM_BOTTOM_LEFT = new Sprites.Animation('farmer_bottom_left', 10, 49, 23, 30);

@@ -53,5 +53,9 @@ Sprite.prototype = {
 	},
 	loadingEnded: function () {
 		currentLoadingCount++;
+	},
+	draw: function (x, y) {
+		this.currentFrame = (this.currentFrame + this.frameSpeed) % this.frameCount;
+		CE.canvas.map.context.drawImage(this.image, x - this.centerX, y - this.centerY);
 	}
 }
