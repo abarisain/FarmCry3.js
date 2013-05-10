@@ -11,6 +11,8 @@ var Map = {
 	}),
 	init: function (data) {
 		this.loadTiles(data.tiles);
+		this.rect.x = -tileWidth / 2;
+		this.rect.y = -tileHeight / 2;
 		this.rect.dx = (tileWidth / 2) * (colSize + lineSize);
 		this.rect.dy = (tileHeight / 2) * (colSize + lineSize);
 	},
@@ -81,6 +83,18 @@ var Map = {
 				break;
 			}
 		}
+	},
+	drawBackground: function () {
+		CE.canvas.map.context.fillStyle = "#f9f9f9";
+		CE.canvas.map.context.fillRect(this.rect.x, this.rect.y, this.rect.dx, this.rect.dy);
+		CE.canvas.map.context.drawImage(SpritePack.Background.Sprites.TOP_LEFT.image, this.rect.x, this.rect.y);
+		CE.canvas.map.context.drawImage(SpritePack.Background.Sprites.TOP_RIGHT.image, this.rect.x + this.rect.dx -
+			SpritePack.Background.Sprites.TOP_RIGHT.centerX, this.rect.y);
+		CE.canvas.map.context.drawImage(SpritePack.Background.Sprites.BOTTOM_LEFT.image, this.rect.x, this.rect.y +
+			this.rect.dy - SpritePack.Background.Sprites.BOTTOM_LEFT.centerY);
+		CE.canvas.map.context.drawImage(SpritePack.Background.Sprites.BOTTOM_RIGHT.image, this.rect.x + this.rect.dx -
+			SpritePack.Background.Sprites.BOTTOM_RIGHT.centerX, this.rect.y + this.rect.dy -
+			SpritePack.Background.Sprites.BOTTOM_RIGHT.centerY);
 	},
 	drawMap: function () {
 		//Todo séparer l'update du draw

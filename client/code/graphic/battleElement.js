@@ -86,21 +86,34 @@ Battle.Avatar.prototype.update = function () {
 }
 Battle.Avatar.prototype.draw = function () {
 	this.initContext();
+	if (CE.Battle.playerTransition.state == Transition.State.MOVING) {
+		CE.canvas.animation.context.scale(CE.Battle.playerTransition.progress, CE.Battle.playerTransition.progress);
+		this.restoreContextRotation();
+	}
 	this.drawBackground();
 	this.drawElement();
+	if (CE.Battle.playerTransition.state == Transition.State.MOVING) {
+		CE.canvas.animation.context.scale(1 / CE.Battle.playerTransition.progress, 1 / CE.Battle.playerTransition.progress);
+	}
 	this.restoreContextScale();
 	this.restoreContextTranslation();
 }
 Battle.Avatar.prototype.drawBackground = function () {
-	this.initContextScale();
-	CE.canvas.animation.context.globalAlpha = CE.Battle.breathTransition.progress - 0.6;
-	CE.canvas.animation.context.drawImage(this.aura.image, -this.aura.centerX, -this.aura.centerY);
-	this.restoreContextRotation();
-	this.restoreContextRotation();
-	CE.canvas.animation.context.drawImage(this.aura.image, -this.aura.centerX, -this.aura.centerY);
-	this.initContextRotation();
-	CE.canvas.animation.context.globalAlpha = 1;
-	this.restoreContextScale();
+	if (CE.Battle.playerTransition.state == Transition.State.BEGIN) {
+		this.initContextScale();
+		this.initContextScale();
+		this.initContextScale();
+		CE.canvas.animation.context.globalAlpha = CE.Battle.auraTransition.progress;
+		CE.canvas.animation.context.drawImage(this.aura.image, -this.aura.centerX, -this.aura.centerY);
+		this.restoreContextRotation();
+		this.restoreContextRotation();
+		CE.canvas.animation.context.drawImage(this.aura.image, -this.aura.centerX, -this.aura.centerY);
+		this.initContextRotation();
+		CE.canvas.animation.context.globalAlpha = 1;
+		this.restoreContextScale();
+		this.restoreContextScale();
+		this.restoreContextScale();
+	}
 }
 
 Battle.BackgroundParticle = function (x, y) {
@@ -110,10 +123,10 @@ Battle.BackgroundParticle = function (x, y) {
 Battle.BackgroundParticle.prototype = new Battle.Element();
 Battle.BackgroundParticle.prototype.constructor = Battle.Button;
 Battle.BackgroundParticle.prototype.update = function () {
-	this.x += 60;
-	this.y += 46;
+	this.x += 200;
+	this.y += 150;
 	if (this.x > 2000) {
 		this.x -= 3000;
-		this.y -= 2300;
+		this.y -= 2250;// + 100 * Math.random();
 	}
 }

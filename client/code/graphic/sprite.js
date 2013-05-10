@@ -1,4 +1,4 @@
-function Sprite(name, centerX, centerY, textureInfo) {
+function Sprite(name, centerX, centerY, textureInfo, extension) {
 	this.name = name;
 	if (centerX === undefined || centerX === null) {
 		this.centerX = tileWidth / 2;
@@ -16,6 +16,11 @@ function Sprite(name, centerX, centerY, textureInfo) {
 	}
 	this.width = 0;
 	this.height = 0;
+	if (extension === undefined || extension === null) {
+		this.extension = '.png';
+	} else {
+		this.extension = extension;
+	}
 }
 
 Sprite.prototype = {
@@ -23,14 +28,14 @@ Sprite.prototype = {
 	load: function (folderPath) {
 		var sprite = this;
 		this.image = new Image();
-		this.image.src = folderPath + this.name + '.png';
+		this.image.src = folderPath + this.name + this.extension;
 		this.image.addEventListener('load', function () {
 			currentLoadingCount++;
 			sprite.updateWidthHeight();
 		});
 		if (this.textureInfo) {
 			this.imageInfo = new Image();
-			this.imageInfo.src = folderPath + this.name + '_white.png';
+			this.imageInfo.src = folderPath + this.name + '_white' + this.extension;
 			this.imageInfo.addEventListener('load', function () {
 				currentLoadingCount++;
 				sprite.updateWidthHeight();

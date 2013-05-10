@@ -62,7 +62,6 @@ html {
 body {
 	font-family: 'stanberry', Helvetica, Arial, sans-serif;
 	font-size: 14pt;
-	background: url('src/hud/background.jpg');
 	border: none;
 	margin: 0;
 	padding: 0;
@@ -203,9 +202,9 @@ body {
 }
 
 #hud_chat .local {
-    font-family: sans-serif;
-    font-style: oblique;
-    color: rgb(255, 129, 129);
+	font-family: sans-serif;
+	font-style: oblique;
+	color: rgb(255, 129, 129);
 }
 
 #hud_chat .self {

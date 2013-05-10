@@ -33,9 +33,22 @@ var CrymeEngine = {
 			x: -1000,
 			y: -1000
 		},
-		move: function (x, y) {
-			this.position.x = x;
-			this.position.y = y;
+		moveCamera: function (x, y) {
+			this.position.x += x;
+			if (this.position.x > -Map.rect.x) {
+				this.position.x = -Map.rect.x;
+			}
+			if (this.position.x < -(Map.rect.x + Map.rect.dx - canvasWidth)) {
+				this.position.x = -(Map.rect.x + Map.rect.dx - canvasWidth);
+			}
+
+			this.position.y += y;
+			if (this.position.y > -Map.rect.y) {
+				this.position.y = -Map.rect.y;
+			}
+			if (this.position.y < -(Map.rect.y + Map.rect.dy - canvasHeight)) {
+				this.position.y = -(Map.rect.y + Map.rect.dy - canvasHeight);
+			}
 			CrymeEngine.mapInvalidated = true;
 		}
 	},
@@ -127,6 +140,10 @@ var CrymeEngine = {
 			//gestion du positionnement de la caméra
 			CrymeEngine.canvas.map.context.scale(scaleFactor, scaleFactor);
 			CrymeEngine.canvas.map.context.translate(CrymeEngine.camera.position.x, CrymeEngine.camera.position.y);
+
+			if (CE.displayType == CE.DisplayType.STANDARD) {
+				Map.drawBackground();
+			}
 
 			//couleur par defaut
 			CrymeEngine.canvas.map.context.fillStyle = "#fff";
@@ -296,8 +313,7 @@ var CrymeEngine = {
 				event = event || window.event;
 
 				//deplacement de la caméra en fonction de la dernière position de la souris
-				CrymeEngine.camera.position.x += (event.pageX - this.offsetLeft - CrymeEngine.mousePosition.x);
-				CrymeEngine.camera.position.y += (event.pageY - this.offsetTop - CrymeEngine.mousePosition.y);
+				CrymeEngine.camera.moveCamera(event.pageX - this.offsetLeft - CrymeEngine.mousePosition.x, event.pageY - this.offsetTop - CrymeEngine.mousePosition.y);
 
 				//pour se souvenir de la dernière position de la souris
 				CrymeEngine.mousePosition.x = event.pageX - this.offsetLeft;

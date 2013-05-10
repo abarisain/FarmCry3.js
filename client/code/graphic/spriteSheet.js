@@ -28,7 +28,8 @@ var SpritePack = {
 	Characters: new SpriteSheet('src/character/', false),
 	Crops: new SpriteSheet('src/crops/', true),
 	Tiles: new SpriteSheet('src/tiles/', false),
-	Battle: new SpriteSheet('src/battle/', false)
+	Battle: new SpriteSheet('src/battle/', false),
+	Background: new SpriteSheet('src/background/', false)
 }
 
 var SP = {
@@ -36,7 +37,8 @@ var SP = {
 	Buildings: SpritePack.Buildings.Sprites,
 	Characters: SpritePack.Characters.Sprites,
 	Crops: SpritePack.Crops.Sprites,
-	Tiles: SpritePack.Tiles.Sprites
+	Tiles: SpritePack.Tiles.Sprites,
+	Background: SpritePack.Background
 };
 
 function LoadSpritePack() {
@@ -76,7 +78,12 @@ function LoadSpritePack() {
 	SpritePack.Battle.Sprites.BUTTON_ANTHRAX = new Sprite('button_anthrax', 81, 81);
 
 	SpritePack.Battle.Sprites.AVATAR = new Sprite('avatar', 147, 156);
-	SpritePack.Battle.Sprites.AURA = new Sprite('aura', 347, 346);
+	SpritePack.Battle.Sprites.AURA = new Sprite('aura', 797, 797);
+
+	SpritePack.Background.Sprites.TOP_LEFT = new Sprite('bkg_top_left', 0, 0, false, ".jpg");
+	SpritePack.Background.Sprites.TOP_RIGHT = new Sprite('bkg_top_right', 1920, 0, false, ".jpg");
+	SpritePack.Background.Sprites.BOTTOM_LEFT = new Sprite('bkg_bottom_left', 0, 1080, false, ".jpg");
+	SpritePack.Background.Sprites.BOTTOM_RIGHT = new Sprite('bkg_bottom_right', 1920, 1080, false, ".jpg");
 
 	for (var key in SpritePack) {
 		SpritePack[key].loadSprites();
