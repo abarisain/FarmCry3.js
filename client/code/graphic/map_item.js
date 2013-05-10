@@ -56,6 +56,11 @@ MapItem.prototype = {
 	},
 	draw: function () {
 	},
+	translateCoord: function (col, line) {
+		var x = (col + line) * (tileWidth / 2);
+		var y = (lineSize - line + col - 1) * (tileHeight / 2);
+		return {x: x, y: y};
+	},
 	getCol: function () {
 		return this.col;
 	},

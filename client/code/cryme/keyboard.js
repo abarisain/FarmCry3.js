@@ -1,6 +1,6 @@
 CrymeEngine.keyboard = {
 	showKeyMap: false,//pour afficher ou non la keyMap à l'écran
-	keyCount: 14,
+	keyCount: -1,
 	Keys: {
 		ENTER: { value: 13, name: 'Enter' },
 		SPACE: { value: 32, name: 'Space' },
@@ -151,8 +151,14 @@ CrymeEngine.keyboard = {
 	},
 	drawKeyMap: function () {
 		if (CE.keyboard.showKeyMap) {
+			if (this.keyCount === -1) {
+				this.keyCount = 0;
+				for (var item in this.Shortcuts) {
+					this.keyCount++;
+				}
+			}
 			CE.canvas.hud.context.fillStyle = "rgba(0, 0, 0, 0.5)";
-			CE.canvas.hud.context.fillRect(0, 180, 400, 20 * (this.keyCount + 1));
+			CE.canvas.hud.context.fillRect(0, 180, 400, 20 * (this.keyCount + 1) + 10);
 			//Pour afficher/masquer la bordure
 			/*CE.canvas.hud.context.strokeStyle = "rgba(0, 0, 0, 0.8)";
 			 CE.canvas.hud.context.strokeRect(0, 180, 400, 20 * 10);*/

@@ -4,12 +4,37 @@ MapItems.Character = function (targetFarmer) {
 	this.farmer = targetFarmer;
 	this.updateCoord();
 	this.updateImageCoord();
+	// col et line sont les coordonnées finale après l'animation
+	this.movement = {col: 0, line: 0, finalPosition: {x: 0, y: 0}, startPosition: {x: 0, y: 0}};
+	this.movementTransition = new Transition(0, 1, 30, function () {
+	});
 };
 
 MapItems.Character.prototype = new MapItem();
 MapItems.Character.prototype.constructor = MapItems.Character;
 
+MapItems.Character.prototype.move = function (col, line) {
+	var messageData = {
+		kind: CE.hud.chat.Kind.LOCAL,
+		message: 'Moving ' + this.sprite.name + ' to : (' + col + ', ' + line + ')'
+	}
+	CE.hud.chat.append(messageData);
+	this.movement.col = col;
+	this.movement.line = line;
+	this.movement.finalPosition = this.translateCoord(col, line);
+	this.movement.startPosition.x = this.x;
+	this.movement.startPosition.y = this.y;
+	this.movementTransition.start(Transition.Type.FADE_IN, true);
+};
+
 MapItems.Character.prototype.draw = function () {
+	if (this.movementTransition.started) {
+		this.movementTransition.updateProgress();
+		this.x = this.movement.startPosition.x + (this.movement.finalPosition.x - this.movement.startPosition.x) * this.movementTransition.progress;
+		this.y = this.movement.startPosition.y + (this.movement.finalPosition.y - this.movement.startPosition.y) * this.movementTransition.progress;
+		this.updateImageCoord();
+	}
+
 	if (CE.displayType == CE.DisplayType.STANDARD) {
 		CE.canvas.map.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
 	} else {
