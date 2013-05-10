@@ -4,9 +4,8 @@ MapItems.Character = function (targetFarmer) {
 	this.farmer = targetFarmer;
 	this.updateCoord();
 	this.updateImageCoord();
-	// col et line sont les coordonnées finale après l'animation
-	this.movement = {col: 0, line: 0, finalPosition: {x: 0, y: 0}, startPosition: {x: 0, y: 0}};
-	this.movementTransition = new Transition(0, 1, 30, function () {
+	this.movement = { sprite: {}, finalPosition: {x: 0, y: 0}, startPosition: {x: 0, y: 0}};
+	this.movementTransition = new Transition(0, 1, 60, function () {
 	});
 };
 
@@ -14,14 +13,25 @@ MapItems.Character.prototype = new MapItem();
 MapItems.Character.prototype.constructor = MapItems.Character;
 
 MapItems.Character.prototype.move = function (col, line) {
+	if (col > this.col) {
+		this.movement.sprite = SpritePack.Characters.Sprites.ANIM_TOP_LEFT;
+		this.col++;
+	} else if (col < this.col) {
+		this.movement.sprite = SpritePack.Characters.Sprites.ANIM_BOTTOM_RIGHT;
+		this.col--;
+	} else if (line > this.line) {
+		this.movement.sprite = SpritePack.Characters.Sprites.ANIM_BOTTOM_LEFT;
+		this.line++;
+	} else if (line < this.line) {
+		this.movement.sprite = SpritePack.Characters.Sprites.ANIM_TOP_RIGHT;
+		this.line--;
+	}
 	var messageData = {
 		kind: CE.hud.chat.Kind.LOCAL,
-		message: 'Moving ' + this.sprite.name + ' to : (' + col + ', ' + line + ')'
+		message: 'Moving ' + this.sprite.name + ' to : (' + this.col + ', ' + this.line + ')'
 	}
 	CE.hud.chat.append(messageData);
-	this.movement.col = col;
-	this.movement.line = line;
-	this.movement.finalPosition = this.translateCoord(col, line);
+	this.movement.finalPosition = this.translateCoord(this.col, this.line);
 	this.movement.startPosition.x = this.x;
 	this.movement.startPosition.y = this.y;
 	this.movementTransition.start(Transition.Type.FADE_IN, true);
@@ -33,12 +43,10 @@ MapItems.Character.prototype.draw = function () {
 		this.x = this.movement.startPosition.x + (this.movement.finalPosition.x - this.movement.startPosition.x) * this.movementTransition.progress;
 		this.y = this.movement.startPosition.y + (this.movement.finalPosition.y - this.movement.startPosition.y) * this.movementTransition.progress;
 		this.updateImageCoord();
-	}
+		this.movement.sprite.draw(this.x - this.movement.sprite.centerX, this.y - this.movement.sprite.centerY);
 
-	if (CE.displayType == CE.DisplayType.STANDARD) {
-		CE.canvas.map.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
 	} else {
-		CE.canvas.map.context.drawImage(this.sprite.imageInfo, this.imageLeft, this.imageTop);
+		CE.canvas.map.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
 	}
 	if (Options.Debug.Graphic.enabled) {
 		CE.canvas.debug.context.fillStyle = "rgb(29, 82, 161)";

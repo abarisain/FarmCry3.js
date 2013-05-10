@@ -1,3 +1,5 @@
+var Sprites = {};
+
 function Sprite(name, centerX, centerY, textureInfo, extension) {
 	this.name = name;
 	if (centerX === undefined || centerX === null) {
@@ -30,15 +32,16 @@ Sprite.prototype = {
 		this.image = new Image();
 		this.image.src = folderPath + this.name + this.extension;
 		this.image.addEventListener('load', function () {
-			currentLoadingCount++;
+			sprite.loadingEnded();
 			sprite.updateWidthHeight();
 		});
 		if (this.textureInfo) {
 			this.imageInfo = new Image();
 			this.imageInfo.src = folderPath + this.name + '_white' + this.extension;
 			this.imageInfo.addEventListener('load', function () {
-				currentLoadingCount++;
+				sprite.loadingEnded();
 				sprite.updateWidthHeight();
+
 			});
 		} else {
 			this.imageInfo = this.image;

@@ -32,21 +32,16 @@ var SpritePack = {
 	Background: new SpriteSheet('src/background/', false)
 }
 
-var SP = {
-	Battles: SpritePack.Battle.Sprites,
-	Buildings: SpritePack.Buildings.Sprites,
-	Characters: SpritePack.Characters.Sprites,
-	Crops: SpritePack.Crops.Sprites,
-	Tiles: SpritePack.Tiles.Sprites,
-	Background: SpritePack.Background
-};
-
 function LoadSpritePack() {
 	SpritePack.Buildings.Sprites.HOME = new Sprite('home', 133, 275);
 	SpritePack.Buildings.Sprites.BARN = new Sprite('barn', 132, 142);
 
-	SpritePack.Characters.Sprites.PLAYER = new Sprite('player', 32, 24);
-	SpritePack.Characters.Sprites.FARMER = new Sprite('farmer', 15, 18);
+	SpritePack.Characters.Sprites.PLAYER = new Sprite('player', 30, 37);
+	SpritePack.Characters.Sprites.FARMER = new Sprite('farmer', 13, 34);
+	SpritePack.Characters.Sprites.ANIM_TOP_LEFT = new Sprites.Animation('farmer_top_left', 18, 42, 23, 30);
+	SpritePack.Characters.Sprites.ANIM_TOP_RIGHT = new Sprites.Animation('farmer_top_right', 12, 34, 23, 30);
+	SpritePack.Characters.Sprites.ANIM_BOTTOM_LEFT = new Sprites.Animation('farmer_bottom_left', 10, 49, 23, 30);
+	SpritePack.Characters.Sprites.ANIM_BOTTOM_RIGHT = new Sprites.Animation('farmer_bottom_right', 30, 39, 23, 30);
 
 	SpritePack.Crops.Sprites.WHEAT = new Sprite('wheat', 111, 111);
 	SpritePack.Crops.Sprites.TOMATO = new Sprite('tomato', 125, 114);
