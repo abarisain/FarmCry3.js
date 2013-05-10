@@ -15,22 +15,6 @@ MapItems.TileItem = function (sprite, col, line) {
 
 MapItems.TileItem.prototype = new MapItem();
 MapItems.TileItem.prototype.constructor = MapItems.TileItem;
-MapItems.TileItem.prototype.moveToMousePosition = function (x, y) {
-	var newCol = y / tileHeight - lineSize / 2 + x / tileWidth + 1;
-	var newLine = x / tileWidth - y / tileHeight + lineSize / 2;
-	this.move(Math.floor(newCol), Math.floor(newLine));
-};
-MapItems.TileItem.prototype.move = function (col, line) {
-	this.col = col;
-	this.line = line;
-	var messageData = {
-		kind: CE.hud.chat.Kind.LOCAL,
-		message: 'Moving ' + this.sprite.name + ' to : (' + col + ', ' + line + ')'
-	}
-	CE.hud.chat.append(messageData);
-	this.updateCoord();
-	this.updateImageCoord();
-};
 
 MapItems.TileItem.prototype.drawLoading = function (progress) {
 	CE.canvas.map.context.drawImage(this.sprite.image, this.imageLeft,

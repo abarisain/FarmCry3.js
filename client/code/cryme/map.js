@@ -2,7 +2,7 @@ var Map = {
 	tiles: [],
 	player: null,//le character du joueur
 	players: [],//tous les joueurs y compris le notre
-	tileItems: [],//contient à la fois les buildings et les crops de la map
+	mapItems: [],//contient à la fois les buildings, les crops de la map, et tous les personnages de la map
 	rect: { x: 1, y: 1, dx: 0, dy: 0 },
 	tileHighLighted: {col: 0, line: 0, index: -1 },//pour pouvoir retrouver sur quelle case on veux interagir
 	transitionInformation: new Transition(0, 10, 15, function (transitionType) {
@@ -20,15 +20,15 @@ var Map = {
 		for (var i = 0; i < this.tiles.length; i++) {
 			this.tiles[i].load();
 		}
-		for (var i = 0; i < this.tileItems.length; i++) {
-			this.tileItems[i].load();
+		for (var i = 0; i < this.mapItems.length; i++) {
+			this.mapItems[i].load();
 		}
 	},
 	addPlayer: function (player) {
 		this.removePlayer(player.nickname);
-		var tmpPlayer = new Character(player);
+		var tmpPlayer = new MapItems.Character(player);
 		this.players.push(tmpPlayer);
-		this.tileItems.push(tmpPlayer);
+		this.mapItems.push(tmpPlayer);
 		if (player.constructor == PlayableFarmer)
 			this.player = tmpPlayer;
 	},
@@ -44,8 +44,8 @@ var Map = {
 		}
 		var count = this.players.length;
 		for (var i = count - 1; i >= 0; i--) {
-			if (this.tileItems[i].constructor == Farmer && this.tileItems[i].farmer.nickname == nickname) {
-				this.tileItems.removeItemAtIndex(i);
+			if (this.mapItems[i].constructor == Farmer && this.mapItems[i].farmer.nickname == nickname) {
+				this.mapItems.removeItemAtIndex(i);
 			}
 			break;
 		}
@@ -68,8 +68,8 @@ var Map = {
 			for (var i = 0; i < this.tiles.length; i++) {
 				this.tiles[i].draw();
 			}
-			for (var i = 0; i < this.tileItems.length; i++) {
-				this.tileItems[i].drawLoading(progress - animationDuration / 2);
+			for (var i = 0; i < this.mapItems.length; i++) {
+				this.mapItems[i].drawLoading(progress - animationDuration / 2);
 			}
 		}
 	},
@@ -110,17 +110,17 @@ var Map = {
 				this.tiles[this.tileHighLighted.index].drawInfoDetailed();
 			}
 		} else if (CE.displayType == CE.DisplayType.INFO_BUILDING) {
-			for (var i = 0; i < this.tileItems.length; i++) {
-				this.tileItems[i].drawInfo();
+			for (var i = 0; i < this.mapItems.length; i++) {
+				this.mapItems[i].drawInfo();
 			}
 			if (this.tileHighLighted.index > -1) {
-				this.tileItems[this.tileHighLighted.index].drawInfoDetailed();
+				this.mapItems[this.tileHighLighted.index].drawInfoDetailed();
 			}
 		}
 	},
 	drawTileItems: function () {
-		for (var i = 0; i < this.tileItems.length; i++) {
-			this.tileItems[i].draw();
+		for (var i = 0; i < this.mapItems.length; i++) {
+			this.mapItems[i].draw();
 		}
 	},
 	coordinatesFromMousePosition: function (x, y) {
@@ -151,8 +151,8 @@ var Map = {
 				}
 			}
 		} else {
-			for (var i = 0; i < this.tileItems.length; i++) {
-				if (this.tileItems[i].match(coord.col, coord.line)) {
+			for (var i = 0; i < this.mapItems.length; i++) {
+				if (this.mapItems[i].match(coord.col, coord.line)) {
 					this.tileHighLighted.col = coord.col;
 					this.tileHighLighted.line = coord.line;
 					this.tileHighLighted.index = i;
