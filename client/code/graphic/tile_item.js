@@ -62,7 +62,7 @@ TileItem.prototype = {
 		this.imageRight = this.imageLeft + this.sprite.width;
 		this.imageBottom = this.imageTop + this.sprite.height;
 	},
-	drawItemLoading: function (progress) {
+	drawLoading: function (progress) {
 		CE.canvas.map.context.drawImage(this.sprite.image, this.imageLeft,
 			this.imageTop - this.col * tileHeight * (1 - progress / (animationDuration / 2)));
 	},

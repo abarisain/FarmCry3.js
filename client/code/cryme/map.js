@@ -18,7 +18,7 @@ var Map = {
 	},
 	loadInformations: function () {
 		for (var i = 0; i < this.tiles.length; i++) {
-			this.tiles[i].loadTile();
+			this.tiles[i].load();
 		}
 		for (var i = 0; i < this.tileItems.length; i++) {
 			this.tileItems[i].loadInformations();
@@ -26,10 +26,7 @@ var Map = {
 	},
 	addPlayer: function (player) {
 		this.removePlayer(player.nickname);
-		var tmpPlayer = new TileItems.Character(player);
-		//TODO : REMOVE THIS LATER, QUICK FIX !!!!!
-		if (typeof tmpPlayer.texture == "undefined")
-			return;
+		var tmpPlayer = new Character(player);
 		this.players.push(tmpPlayer);
 		this.tileItems.push(tmpPlayer);
 		if (player.constructor == PlayableFarmer)
@@ -56,7 +53,7 @@ var Map = {
 	loadTiles: function (tileData) {
 		for (var i = tileData.length - 1; i >= 0; i--) {
 			for (var j = 0; j < tileData[i].length; j++) {
-				var tile = new Tile(tileData[i][j]);
+				var tile = new MapItems.Tile(tileData[i][j]);
 				this.tiles.push(tile);
 			}
 		}
@@ -64,15 +61,15 @@ var Map = {
 	drawMapLoading: function (progress) {
 		if (progress < animationDuration / 2) {
 			for (var i = 0; i < Math.min(this.tiles.length * progress / (animationDuration / 2), this.tiles.length); i++) {
-				this.tiles[i].drawTileLoading(progress);
+				this.tiles[i].drawLoading(progress);
 			}
 		}
 		else {
 			for (var i = 0; i < this.tiles.length; i++) {
-				this.tiles[i].drawTile();
+				this.tiles[i].draw();
 			}
 			for (var i = 0; i < this.tileItems.length; i++) {
-				this.tileItems[i].drawItemLoading(progress - animationDuration / 2);
+				this.tileItems[i].drawLoading(progress - animationDuration / 2);
 			}
 		}
 	},
@@ -101,16 +98,16 @@ var Map = {
 		this.transitionInformation.updateProgress();
 		this.transitionInformationDetailed.updateProgress();
 		for (var i = 0; i < this.tiles.length; i++) {
-			this.tiles[i].drawTile();
+			this.tiles[i].draw();
 		}
 	},
 	drawMapInfos: function () {
 		if (CE.displayType == CE.DisplayType.INFO_MAP) {
 			for (var i = 0; i < this.tiles.length; i++) {
-				this.tiles[i].drawTileInfo();
+				this.tiles[i].drawInfo();
 			}
 			if (this.tileHighLighted.index > -1) {
-				this.tiles[this.tileHighLighted.index].drawTileInfoDetailed();
+				this.tiles[this.tileHighLighted.index].drawInfoDetailed();
 			}
 		} else if (CE.displayType == CE.DisplayType.INFO_BUILDING) {
 			for (var i = 0; i < this.tileItems.length; i++) {

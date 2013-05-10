@@ -45,7 +45,7 @@ function LoadSpritePack() {
 	SpritePack.Buildings.Sprites.HOME = new Sprite('home', 133, 275);
 	SpritePack.Buildings.Sprites.BARN = new Sprite('barn', 132, 142);
 
-	SpritePack.Characters.Sprites.PLAYER = new Sprite('player', 19, 15);
+	SpritePack.Characters.Sprites.PLAYER = new Sprite('player', 32, 24);
 	SpritePack.Characters.Sprites.FARMER = new Sprite('farmer', 15, 18);
 
 	SpritePack.Crops.Sprites.WHEAT = new Sprite('wheat', 111, 111);
