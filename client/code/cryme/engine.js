@@ -350,21 +350,21 @@ function InitLoading() {
 //fonction pour placer des trucs sur la map pour test le rendu
 function CreateMap() {
 	//ajout de buildings
-	var building = new TileItems.Building(SpritePack.Buildings.Sprites.HOME, 5, 13);
+	var building = new MapItems.TileItems.Building(SpritePack.Buildings.Sprites.HOME, 5, 13);
 	Map.tileItems.push(building);
-	building = new TileItems.Building(SpritePack.Buildings.Sprites.HOME, 4, 7);
+	building = new MapItems.TileItems.Building(SpritePack.Buildings.Sprites.HOME, 4, 7);
 	Map.tileItems.push(building);
-	building = new TileItems.Building(SpritePack.Buildings.Sprites.BARN, 8, 9);
+	building = new MapItems.TileItems.Building(SpritePack.Buildings.Sprites.BARN, 8, 9);
 	Map.tileItems.push(building);
-	building = new TileItems.Building(SpritePack.Buildings.Sprites.BARN, 2, 12);
+	building = new MapItems.TileItems.Building(SpritePack.Buildings.Sprites.BARN, 2, 12);
 	Map.tileItems.push(building);
 
 	//ajout de crops
-	var crop = new TileItems.Crop(SpritePack.Crops.Sprites.TOMATO, 1, 6);
+	var crop = new MapItems.TileItems.Crop(SpritePack.Crops.Sprites.TOMATO, 1, 6);
 	Map.tileItems.push(crop);
-	crop = new TileItems.Crop(SpritePack.Crops.Sprites.CORN, 3, 5);
+	crop = new MapItems.TileItems.Crop(SpritePack.Crops.Sprites.CORN, 3, 5);
 	Map.tileItems.push(crop);
-	crop = new TileItems.Crop(SpritePack.Crops.Sprites.WHEAT, 2, 1);
+	crop = new MapItems.TileItems.Crop(SpritePack.Crops.Sprites.WHEAT, 2, 1);
 	Map.tileItems.push(crop);
 
 	//ajout de characters

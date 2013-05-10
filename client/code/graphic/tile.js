@@ -1,10 +1,9 @@
 MapItems.Tile = function (data) {
-
+	MapItem.call(this, null, data.position.col, data.position.line);
 	this.humidity = data.humidity;
 	this.fertility = data.fertility;
 	this.maturity = data.maturity;
 	this.sprite = {};
-	MapItem.call(this, null, data.position.col, data.position.line);
 	this.alpha = 0;
 	this.updateCoord();
 	this.informations = new TileItemInfos(this.x, this.y, [

@@ -21,7 +21,7 @@ var Map = {
 			this.tiles[i].load();
 		}
 		for (var i = 0; i < this.tileItems.length; i++) {
-			this.tileItems[i].loadInformations();
+			this.tileItems[i].load();
 		}
 	},
 	addPlayer: function (player) {
@@ -111,16 +111,16 @@ var Map = {
 			}
 		} else if (CE.displayType == CE.DisplayType.INFO_BUILDING) {
 			for (var i = 0; i < this.tileItems.length; i++) {
-				this.tileItems[i].drawTileItemInfo();
+				this.tileItems[i].drawInfo();
 			}
 			if (this.tileHighLighted.index > -1) {
-				this.tileItems[this.tileHighLighted.index].drawTileItemInfoDetailed();
+				this.tileItems[this.tileHighLighted.index].drawInfoDetailed();
 			}
 		}
 	},
 	drawTileItems: function () {
 		for (var i = 0; i < this.tileItems.length; i++) {
-			this.tileItems[i].drawItem();
+			this.tileItems[i].draw();
 		}
 	},
 	coordinatesFromMousePosition: function (x, y) {

@@ -57,7 +57,7 @@ Character.prototype = {
 	},
 	drawLoading: function () {
 	},
-	drawItem: function () {
+	draw: function () {
 		if (CE.displayType == CE.DisplayType.STANDARD) {
 			CE.canvas.map.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
 		} else {
@@ -99,11 +99,11 @@ Character.prototype = {
 			CE.canvas.map.context.strokeRect(this.imageLeft + 1, this.imageTop - 1, this.sprite.width - 2, this.sprite.height - 2);
 		}
 	},
-	loadInformations: function () {
+	load: function () {
 	},
-	drawTileItemInfo: function () {
+	drawInfo: function () {
 	},
-	drawTileItemInfoDetailed: function () {
+	drawInfoDetailed: function () {
 	},
 	getCol: function () {
 		return this.col;
