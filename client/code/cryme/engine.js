@@ -174,6 +174,7 @@ var CrymeEngine = {
 						CrymeEngine.camera.updateCamera();
 						//There is another render loop for when the map is loading
 						if (CrymeEngine.mapInvalidated || Map.transitionInformation.started) {
+							CrymeEngine.mapInvalidated = false;
 							CrymeEngine.Draw.Map();
 						}
 						CrymeEngine.Draw.Animation();

@@ -14,6 +14,7 @@ CrymeCanvas.prototype.resize = function (width, height) {
 	this.canvas.height = height;
 	//Reapply font after resizing, otherwise the canvas sets it to the default one
 	this.context.font = this.font;
+	CrymeEngine.mapInvalidated = true;
 };
 
 CrymeCanvas.prototype.clear = function () {

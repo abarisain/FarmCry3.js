@@ -94,8 +94,14 @@ var Map = {
 	},
 	drawMap: function () {
 		//Todo séparer l'update du draw
-		this.transitionInformation.updateProgress();
-		this.transitionInformationDetailed.updateProgress();
+		if (this.transitionInformation.started) {
+			this.transitionInformation.updateProgress();
+			CrymeEngine.mapInvalidated = true;
+		}
+		if (this.transitionInformationDetailed.started) {
+			this.transitionInformationDetailed.updateProgress();
+			CrymeEngine.mapInvalidated = true;
+		}
 		for (var i = 0; i < this.tiles.length; i++) {
 			this.tiles[i].draw();
 		}
@@ -150,6 +156,7 @@ var Map = {
 					this.tileHighLighted.index = i;
 					if (i != exHighlighted) {
 						this.transitionInformationDetailed.start(Transition.Type.FADE_IN, true);
+						CrymeEngine.mapInvalidated = true;
 					}
 					break;
 				}
@@ -162,6 +169,7 @@ var Map = {
 					this.tileHighLighted.index = i;
 					if (i != exHighlighted) {
 						this.transitionInformationDetailed.start(Transition.Type.FADE_IN, true);
+						CrymeEngine.mapInvalidated = true;
 					}
 					break;
 				}
