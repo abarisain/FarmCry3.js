@@ -6,7 +6,7 @@ MapItems.Tile = function (data) {
 	this.sprite = {};
 	this.alpha = 0;
 	this.updateCoord();
-	this.informations = new TileItemInfos(this.x, this.y, [
+	this.informations = new MapItems.TileItemInfos(this.x, this.y, [
 		new Diagram(Diagram.Color.BLUE, this.humidity * 10),
 		new Diagram(Diagram.Color.YELLOW, this.maturity * 10),
 		new Diagram(Diagram.Color.GREEN, this.fertility * 10)
@@ -28,10 +28,10 @@ MapItems.Tile.prototype.updateImage = function () {
 		}
 	}
 	else if (this.humidity < 0.5) {
-		this.sprite = SpritePack.Tiles.Sprites.GRASS_0;
+		this.sprite = SpritePack.Tiles.Sprites.GRASS_1;
 	}
 	else if (this.humidity < 0.55) {
-		this.sprite = SpritePack.Tiles.Sprites.GRASS_1;
+		this.sprite = SpritePack.Tiles.Sprites.GRASS_0;
 	}
 	else if (this.humidity < 0.6) {
 		this.sprite = SpritePack.Tiles.Sprites.GRASS_2;

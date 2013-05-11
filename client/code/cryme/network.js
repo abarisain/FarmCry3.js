@@ -64,47 +64,6 @@ var networkEngine = {
 		networkEngine.socket.emit(subsystem + "." + method, data, callback);
 	},
 	subsystems: {
-		player: {
-			events: {
-				connected: function (data) {
-					var tmpPlayer = new Farmer();
-					tmpPlayer.initFromFarmer(data.farmer);
-					GameState.addPlayer(tmpPlayer);
-				},
-				disconnected: function (data) {
-					GameState.removePlayer(data.nickname);
-				},
-				moved: function (data) {
-					var target = null;
-					if (data.nickname == GameState.player.nickname) {
-						target = Map.player;
-					} else {
-						for (var i = 0; i < GameState.players.length; i++) {
-							if (Map.players[i].nickname == this.nickname)
-								target = Map.players[i];
-						}
-					}
-					if (target != null) {
-						target.move(data.col, data.line);
-					}
-					target.invalidate();
-				}
-			}
-		},
-		game: {
-			events: {
-				initialData: function (data) {
-					//Initial data is received here
-					initialData = data;
-					networkEngine.onLoadingStarted();
-					initialDataLoaded = true;
-					Map.init(data);
-					CrymeEngine.init();
-					currentLoadingCount++;
-					console.log("Initial data ok");
-				}
-			}
-		},
 		chat: {
 			sendMessage: function (message) {
 				this.sendCommand("message", {message: message});

@@ -2,32 +2,37 @@ CrymeEngine.keyboard = {
 	showKeyMap: false,//pour afficher ou non la keyMap à l'écran
 	keyCount: -1,
 	Keys: {
-		ENTER: { value: 13, name: 'Enter' },
-		SPACE: { value: 32, name: 'Space' },
-		TAB: { value: 9, name: 'Tab' },
-		KEY_A: { value: 65, name: 'A' },
-		KEY_B: { value: 66, name: 'B' },
-		KEY_C: { value: 67, name: 'C' },
-		KEY_D: { value: 68, name: 'D' },
-		KEY_E: { value: 69, name: 'E' },
-		KEY_Q: { value: 81, name: 'Q' },
-		KEY_R: { value: 82, name: 'R' },
-		KEY_S: { value: 83, name: 'S' },
-		KEY_Z: { value: 90, name: 'Z' },
-		KEY_1: { value: 49, name: '&' },
-		KEY_2: { value: 50, name: 'é' },
-		KEY_3: { value: 51, name: '"' },
-		KEY_4: { value: 52, name: '\'' },
-		KEY_5: { value: 53, name: '(' }
+		ENTER: { code: 13, name: 'Enter' },
+		SPACE: { code: 32, name: 'Space' },
+		TAB: { code: 9, name: 'Tab' },
+		KEY_A: { code: 65, name: 'A' },
+		KEY_B: { code: 66, name: 'B' },
+		KEY_C: { code: 67, name: 'C' },
+		KEY_D: { code: 68, name: 'D' },
+		KEY_E: { code: 69, name: 'E' },
+		KEY_F: { code: 70, name: 'F' },
+		KEY_G: { code: 71, name: 'G' },
+		KEY_H: { code: 72, name: 'H' },
+		KEY_I: { code: 73, name: 'I' },
+		KEY_J: { code: 74, name: 'J' },
+		KEY_K: { code: 75, name: 'K' },
+		KEY_Q: { code: 81, name: 'Q' },
+		KEY_R: { code: 82, name: 'R' },
+		KEY_S: { code: 83, name: 'S' },
+		KEY_Z: { code: 90, name: 'Z' },
+		KEY_1: { code: 49, name: '&' },
+		KEY_2: { code: 50, name: 'é' },
+		KEY_3: { code: 51, name: '"' },
+		KEY_4: { code: 52, name: '\'' },
+		KEY_5: { code: 53, name: '(' }
 	},
 	Shortcuts: {
 		CHAT: null,
 		CHANGE_DISPLAY_TYPE: null,
-		MOVE_UP: null,
-		MOVE_DOWN: null,
-		MOVE_LEFT: null,
-		MOVE_RIGHT: null,
-		MOVE_MAP: null,
+		CROP_ADD_TOMATO: null,
+		CROP_ADD_WHEAT: null,
+		CROP_ADD_CORN: null,
+		CROP_HARVEST: null,
 		LAUNCH_BATTLE: null,
 		STOP_BATTLE: null,
 		SHOW_KEY_MAP: null,
@@ -40,13 +45,12 @@ CrymeEngine.keyboard = {
 	init: function () {
 		CE.keyboard.Shortcuts.CHAT = CrymeEngine.keyboard.Keys.ENTER;
 		CE.keyboard.Shortcuts.CHANGE_DISPLAY_TYPE = CE.keyboard.Keys.KEY_A;
+		CE.keyboard.Shortcuts.CROP_ADD_CORN = CE.keyboard.Keys.KEY_Q;
+		CE.keyboard.Shortcuts.CROP_ADD_TOMATO = CE.keyboard.Keys.KEY_S;
+		CE.keyboard.Shortcuts.CROP_ADD_WHEAT = CE.keyboard.Keys.KEY_D;
+		CE.keyboard.Shortcuts.CROP_HARVEST = CE.keyboard.Keys.KEY_Z;
 		CE.keyboard.Shortcuts.LAUNCH_BATTLE = CE.keyboard.Keys.KEY_E;
 		CE.keyboard.Shortcuts.STOP_BATTLE = CE.keyboard.Keys.KEY_R;
-		CE.keyboard.Shortcuts.MOVE_UP = CE.keyboard.Keys.KEY_Z;
-		CE.keyboard.Shortcuts.MOVE_DOWN = CE.keyboard.Keys.KEY_S;
-		CE.keyboard.Shortcuts.MOVE_LEFT = CE.keyboard.Keys.KEY_Q;
-		CE.keyboard.Shortcuts.MOVE_RIGHT = CE.keyboard.Keys.KEY_D;
-		CE.keyboard.Shortcuts.MOVE_MAP = CE.keyboard.Keys.SPACE;
 		CE.keyboard.Shortcuts.SHOW_KEY_MAP = CE.keyboard.Keys.TAB;
 		CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG = CE.keyboard.Keys.KEY_1;
 		CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ITEM = CE.keyboard.Keys.KEY_2;
@@ -65,52 +69,37 @@ CrymeEngine.keyboard = {
 		}
 		CE.hud.chat.append(messageData);
 		switch (event.keyCode) {
-			case CE.keyboard.Shortcuts.CHAT.value:
+			case CE.keyboard.Shortcuts.CHAT.code:
 				if (document.activeElement == CE.hud.chat.divs.input) {
 					CE.hud.chat.send();
 				} else {
 					CE.hud.chat.divs.input.focus();
 				}
 				break;
-			case CE.keyboard.Shortcuts.CHANGE_DISPLAY_TYPE.value:
+			case CE.keyboard.Shortcuts.CHANGE_DISPLAY_TYPE.code:
 				CE.displayType = (CE.displayType + 1) % 3;
 				if (CE.displayType != CE.DisplayType.STANDARD) {
 					Map.showMapInformations();
 				}
 				Map.tileHighLighted.index = -1;
 				break;
-			case CE.keyboard.Shortcuts.SHOW_KEY_MAP.value:
+			case CE.keyboard.Shortcuts.SHOW_KEY_MAP.code:
 				CE.keyboard.showKeyMap = !CE.keyboard.showKeyMap;
 				break;
-			case CE.keyboard.Shortcuts.MOVE_UP.value:
-				CE.camera.position.y += Options.Gameplay.mapSpeed;
-				break;
-			case CE.keyboard.Shortcuts.MOVE_DOWN.value:
-				CE.camera.position.y -= Options.Gameplay.mapSpeed;
-				break;
-			case CE.keyboard.Shortcuts.MOVE_LEFT.value:
-				CE.camera.position.x += Options.Gameplay.mapSpeed;
-				break;
-			case CE.keyboard.Shortcuts.MOVE_RIGHT.value:
-				CE.camera.position.x -= Options.Gameplay.mapSpeed;
-				break;
-			case CE.keyboard.Shortcuts.LAUNCH_BATTLE.value:
+			case CE.keyboard.Shortcuts.LAUNCH_BATTLE.code:
 				CE.gameState = CE.GameState.BATTLE;
 				CE.Battle.launchBattle();
 				CE.mapInvalidated = true;
 				break;
-			case CE.keyboard.Shortcuts.STOP_BATTLE.value:
+			case CE.keyboard.Shortcuts.STOP_BATTLE.code:
 				CE.gameState = CE.GameState.FARMING;
 				CE.mapInvalidated = true;
 				break;
-			case CE.keyboard.Shortcuts.MOVE_MAP.value:
-				//Todo ajouter une recuperation de la position de la souris
-				/*CrymeEngine.mousePosition.x = event.pageX - this.offsetLeft;
-				 CrymeEngine.mousePosition.y = event.pageY - this.offsetTop;
-				 CE.movingMap = true;*/
+			case CE.keyboard.Shortcuts.CROP_ADD_CORN.code:
+
 				break;
 			//graphic debug
-			case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG.value:
+			case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG.code:
 				Options.Debug.Graphic.enabled = !Options.Debug.Graphic.enabled;
 				var messageData = {
 					kind: CE.hud.chat.Kind.LOCAL,
@@ -118,13 +107,13 @@ CrymeEngine.keyboard = {
 				}
 				CE.hud.chat.append(messageData);
 				break;
-			case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ITEM.value:
+			case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ITEM.code:
 				Options.Debug.Graphic.item = !Options.Debug.Graphic.item;
 				break;
-			case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_MAP.value:
+			case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_MAP.code:
 				Options.Debug.Graphic.map = !Options.Debug.Graphic.map;
 				break;
-			case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ADVANCED.value:
+			case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ADVANCED.code:
 				Options.Debug.Graphic.advanced = !Options.Debug.Graphic.advanced;
 				var messageData = {
 					kind: CE.hud.chat.Kind.LOCAL,
@@ -132,7 +121,7 @@ CrymeEngine.keyboard = {
 				}
 				CE.hud.chat.append(messageData);
 				break;
-			case CE.keyboard.Shortcuts.CHANGE_GRAPHIC_DEBUG_ALPHA.value:
+			case CE.keyboard.Shortcuts.CHANGE_GRAPHIC_DEBUG_ALPHA.code:
 				Options.Debug.Graphic.globalAlpha = (Options.Debug.Graphic.globalAlpha + 0.25) % 1;
 				var messageData = {
 					kind: CE.hud.chat.Kind.LOCAL,
@@ -144,7 +133,7 @@ CrymeEngine.keyboard = {
 	},
 	keyReleased: function (event) {
 		switch (event.keyCode) {
-			case CE.keyboard.Shortcuts.MOVE_MAP.value:
+			case CE.keyboard.Shortcuts.MOVE_MAP.code:
 				CE.movingMap = false;
 				break;
 		}

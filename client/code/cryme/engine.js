@@ -46,6 +46,8 @@ var CrymeEngine = {
 		Loading: function () {
 			if (initialDataLoaded && currentLoadingCount >= totalLoadingCount) {
 				networkEngine.onLoadingFinished();
+				//indispensable pour créer la map
+				initSpriteEnums();
 				CreateMap();
 				window.requestAnimFrame(function () {
 					CrymeEngine.Draw.MapCreation(1, 1);
@@ -230,6 +232,7 @@ var CrymeEngine = {
 						if (CE.highlightedItem > -1) {
 							Map.mapItems[CE.highlightedItem].highlighted = false;
 							CE.highlightedItem = -1;
+							CrymeEngine.mapInvalidated = true;
 						}
 					}
 				}
@@ -251,25 +254,26 @@ var CrymeEngine = {
 
 		this.canvas.hud.canvas.onclick = function (event) {
 			if (loadingComplete) {
-				//pour du debug de position d'image
-				var x = event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x;
-				var y = event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y;
-				var coord = Map.coordinatesFromMousePosition(x, y);
-				var data = {col: 0, line: 0};
-				var moved = true;
-				if (coord.col > Map.player.col) {
-					data.col = 1;
-				} else if (coord.col < Map.player.col) {
-					data.col = -1;
-				} else if (coord.line > Map.player.line) {
-					data.line = 1;
-				} else if (coord.line < Map.player.line) {
-					data.line = -1;
-				} else {
-					moved = false;
-				}
-				if (moved) {
-					networkEngine.call('player', 'move', data);
+				if (!Options.Debug.Graphic.enabled) {
+					var x = event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x;
+					var y = event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y;
+					var coord = Map.coordinatesFromMousePosition(x, y);
+					var data = {col: 0, line: 0};
+					var moved = true;
+					if (coord.col > Map.player.col) {
+						data.col = 1;
+					} else if (coord.col < Map.player.col) {
+						data.col = -1;
+					} else if (coord.line > Map.player.line) {
+						data.line = 1;
+					} else if (coord.line < Map.player.line) {
+						data.line = -1;
+					} else {
+						moved = false;
+					}
+					if (moved) {
+						networkEngine.call('player', 'move', data);
+					}
 				}
 			}
 		}
@@ -293,6 +297,7 @@ var CrymeEngine = {
 					scaleFactor -= 0.25;
 				}
 			}
+			CrymeEngine.mapInvalidated = true;
 		};
 
 		window.onmouseup = function () {
@@ -300,6 +305,7 @@ var CrymeEngine = {
 			if (CE.highlightedItem > -1) {
 				Map.mapItems[CE.highlightedItem].highlighted = false;
 				CE.highlightedItem = -1;
+				CrymeEngine.mapInvalidated = true;
 			}
 		};
 
@@ -336,6 +342,7 @@ var CrymeEngine = {
 
 				CrymeEngine.mousePosition.x = event.pageX / scaleFactor - this.offsetLeft;
 				CrymeEngine.mousePosition.y = event.pageY / scaleFactor - this.offsetTop;
+				CrymeEngine.mapInvalidated = true;
 			}
 		};
 
@@ -358,22 +365,22 @@ function InitLoading() {
 //fonction pour placer des trucs sur la map pour test le rendu
 function CreateMap() {
 	//ajout de buildings
-	var building = new MapItems.TileItems.Building(SpritePack.Buildings.Sprites.HOME, 5, 13);
-	Map.mapItems.push(building);
-	building = new MapItems.TileItems.Building(SpritePack.Buildings.Sprites.HOME, 4, 7);
-	Map.mapItems.push(building);
-	building = new MapItems.TileItems.Building(SpritePack.Buildings.Sprites.BARN, 8, 9);
-	Map.mapItems.push(building);
-	building = new MapItems.TileItems.Building(SpritePack.Buildings.Sprites.BARN, 2, 12);
-	Map.mapItems.push(building);
+	/*var building = new MapItems.TileItems.Building(SpritePack.Buildings.Sprites.HOME, 5, 13);
+	 Map.mapItems.push(building);
+	 building = new MapItems.TileItems.Building(SpritePack.Buildings.Sprites.HOME, 4, 7);
+	 Map.mapItems.push(building);
+	 var building = new MapItems.TileItems.Building(MapItems.TileItems.Building.Type.BARN, 8, 9);
+	 Map.mapItems.push(building);
+	 building = new MapItems.TileItems.Building(MapItems.TileItems.Building.Type.BARN, 2, 12);
+	 Map.mapItems.push(building);
 
-	//ajout de crops
-	var crop = new MapItems.TileItems.Crop(SpritePack.Crops.Sprites.TOMATO, 1, 6);
-	Map.mapItems.push(crop);
-	crop = new MapItems.TileItems.Crop(SpritePack.Crops.Sprites.CORN, 3, 5);
-	Map.mapItems.push(crop);
-	crop = new MapItems.TileItems.Crop(SpritePack.Crops.Sprites.WHEAT, 2, 1);
-	Map.mapItems.push(crop);
+	 //ajout de crops
+	 var crop = new MapItems.TileItems.Crop(SpritePack.Crops.Sprites.TOMATO, 1, 6);
+	 Map.mapItems.push(crop);
+	 crop = new MapItems.TileItems.Crop(SpritePack.Crops.Sprites.CORN, 3, 5);
+	 Map.mapItems.push(crop);
+	 crop = new MapItems.TileItems.Crop(SpritePack.Crops.Sprites.WHEAT, 2, 1);
+	 Map.mapItems.push(crop);*/
 
 	//ajout de characters
 	/*var character = new TileItems.Character(0, 5, 5);
@@ -401,7 +408,7 @@ function CreateMap() {
 	Map.loadInformations();
 
 	//modification de la map
-	Map.changeTile(SpritePack.Tiles.Sprites.SOIL, 1, 6);//pour mettre de la terre sous les crops sous le cold storage
-	Map.changeTile(SpritePack.Tiles.Sprites.SOIL, 3, 5);
-	Map.changeTile(SpritePack.Tiles.Sprites.SOIL, 2, 1);
+	/*Map.changeTile(SpritePack.Tiles.Sprites.SOIL, 1, 6);//pour mettre de la terre sous les crops sous le cold storage
+	 Map.changeTile(SpritePack.Tiles.Sprites.SOIL, 3, 5);
+	 Map.changeTile(SpritePack.Tiles.Sprites.SOIL, 2, 1);*/
 }

@@ -24,17 +24,23 @@ SpriteSheet.prototype = {
 };
 
 var SpritePack = {
+	Battle: new SpriteSheet('src/battle/', false),
+	Background: new SpriteSheet('src/background/', false),
 	Buildings: new SpriteSheet('src/buildings/', true),
 	Characters: new SpriteSheet('src/character/', false),
 	Crops: new SpriteSheet('src/crops/', true),
-	Tiles: new SpriteSheet('src/tiles/', false),
-	Battle: new SpriteSheet('src/battle/', false),
-	Background: new SpriteSheet('src/background/', false)
+	Storages: new SpriteSheet('src/storages/', true),
+	Tiles: new SpriteSheet('src/tiles/', false)
+
 }
 
 function LoadSpritePack() {
-	SpritePack.Buildings.Sprites.HOME = new Sprite('home', 133, 275);
-	SpritePack.Buildings.Sprites.BARN = new Sprite('barn', 132, 142);
+	//SpritePack.Buildings.Sprites.HOME = new Sprite('home', 133, 275);
+	SpritePack.Buildings.Sprites.BARN = new Sprite('barn', 133, 106);
+
+	SpritePack.Storages.Sprites.BARREL_CORN = new Sprite('barrel_corn', 20, 38);
+	SpritePack.Storages.Sprites.BARREL_WHEAT = new Sprite('barrel_wheat', 20, 38);
+	SpritePack.Storages.Sprites.BARREL_TOMATO = new Sprite('barrel_tomato', 20, 38);
 
 	SpritePack.Characters.Sprites.SHADOW = new Sprite('shadow', 14, 12);
 	SpritePack.Characters.Sprites.FARMER = new Sprite('farmer', 13, 34);
@@ -84,4 +90,19 @@ function LoadSpritePack() {
 	for (var key in SpritePack) {
 		SpritePack[key].loadSprites();
 	}
+}
+
+//cette fonction permet de charger tous les enums qui contiennent des sprites, vu qu'il faut attendre de les avoir chargés
+function initSpriteEnums() {
+	MapItems.TileItems.Crop.Type.CORN.sprite = SpritePack.Crops.Sprites.CORN;
+	MapItems.TileItems.Crop.Type.CORN.storageSprite = SpritePack.Storages.Sprites.BARREL_CORN;
+
+	MapItems.TileItems.Crop.Type.TOMATO.sprite = SpritePack.Crops.Sprites.TOMATO;
+	MapItems.TileItems.Crop.Type.TOMATO.storageSprite = SpritePack.Storages.Sprites.BARREL_TOMATO;
+
+	MapItems.TileItems.Crop.Type.WHEAT.sprite = SpritePack.Crops.Sprites.WHEAT;
+	MapItems.TileItems.Crop.Type.WHEAT.storageSprite = SpritePack.Storages.Sprites.BARREL_WHEAT;
+
+	//SpritePack.Buildings.Type.HOME.sprite = SpritePack.Buildings.Sprites.HOME;
+	MapItems.TileItems.Building.Type.BARN.sprite = SpritePack.Buildings.Sprites.BARN;
 }

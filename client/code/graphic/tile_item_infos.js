@@ -2,21 +2,21 @@ var diagramSizeX = 50;
 var diagramSizeY = 60;
 var diagramDeltaY = 23;
 
-function TileItemInfos(x, y, diagrams) {
+MapItems.TileItemInfos = function (x, y, diagrams) {
 	this.diagrams = diagrams;//à partir de maintenant il s'agit de l'image et plus de l'index
 	this.y = y;
 	this.x = x;
 	this.count = diagrams.length;
 	for (var i = 0; i < this.count; i++) {
-		this.diagrams[i].x = this.x + TileItemInfos.Place[this.count - 1][i].x - diagramSizeX / 4;
-		this.diagrams[i].y = this.y + TileItemInfos.Place[this.count - 1][i].y - diagramSizeY / 4;
+		this.diagrams[i].x = this.x + MapItems.TileItemInfos.Place[this.count - 1][i].x - diagramSizeX / 4;
+		this.diagrams[i].y = this.y + MapItems.TileItemInfos.Place[this.count - 1][i].y - diagramSizeY / 4;
 		this.diagrams[i].detailPosition = Diagram.DetailPosition[i];
 	}
 
 }
 
 //contient les coordonnées disponibles pour placer plusieurs diagrammes sur une case
-TileItemInfos.Place = [
+MapItems.TileItemInfos.Place = [
 	[
 		{ x: 0, y: 0}
 	],
@@ -31,8 +31,8 @@ TileItemInfos.Place = [
 	]
 ];
 
-TileItemInfos.prototype = {
-	constructor: TileItemInfos,
+MapItems.TileItemInfos.prototype = {
+	constructor: MapItems.TileItemInfos,
 	//coordonnees du centre de dessin
 	drawInformations: function () {
 		for (var i = 0; i < this.count; i++) {

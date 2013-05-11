@@ -6,7 +6,7 @@ MapItems.TileItem = function (sprite, col, line) {
 		this.highlighted = false;//affiche un halo autour de l'élement
 		this.updateCoord();
 		this.updateImageCoord();
-		this.informations = new TileItemInfos(this.x, this.y, [
+		this.informations = new MapItems.TileItemInfos(this.x, this.y, [
 			new Diagram(Diagram.Color.YELLOW, this.x / 100),
 			new Diagram(Diagram.Color.BLUE, this.y / 100)
 		]);

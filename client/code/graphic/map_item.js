@@ -50,6 +50,7 @@ MapItem.prototype = {
 	drawLoading: function (progress) {
 	},
 	draw: function () {
+		this.sprite.draw(this.imageLeft, this.imageTop);
 	},
 	translateCoord: function (col, line) {
 		var x = (col + line) * (tileWidth / 2);

@@ -56,11 +56,13 @@ Sprite.prototype = {
 	},
 	//on dessine toujours un sprite sur la map, sauf exception
 	draw: function (x, y) {
-		this.currentFrame = (this.currentFrame + this.frameSpeed) % this.frameCount;
-		CE.canvas.map.context.drawImage(this.image, x - this.centerX, y - this.centerY);
+		if (CrymeEngine.displayType == CrymeEngine.DisplayType.STANDARD) {
+			CE.canvas.map.context.drawImage(this.image, x - this.centerX, y - this.centerY);
+		} else {
+			CE.canvas.map.context.drawImage(this.imageInfo, x - this.centerX, y - this.centerY);
+		}
 	},
 	drawOnAnimation: function (x, y) {
-		this.currentFrame = (this.currentFrame + this.frameSpeed) % this.frameCount;
 		CE.canvas.animation.context.drawImage(this.image, x - this.centerX, y - this.centerY);
 	}
 }
