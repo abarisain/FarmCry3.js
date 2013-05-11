@@ -13,8 +13,8 @@ CrymeEngine.hud = {
 		posText.horizontalMargin = 120;
 		posText.verticalMargin = 16;
 		posText.setTextFunction(function () {
-			return "x : " + CrymeEngine.camera.position.x + ", y : "
-				+ CrymeEngine.camera.position.y
+			return "x : " + CrymeEngine.mousePosition.x + ", y : "
+				+ CrymeEngine.mousePosition.y
 		});
 		lifebar.addChild(posText);
 		this.rootHudElement.addChild(lifebar);

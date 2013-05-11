@@ -28,30 +28,7 @@ var CrymeEngine = {
 		BATTLE: 1
 	},
 	gameState: 0,
-	camera: {
-		position: {
-			x: -1000,
-			y: -1000
-		},
-		moveCamera: function (x, y) {
-			this.position.x += x;
-			if (this.position.x > -Map.rect.x) {
-				this.position.x = -Map.rect.x;
-			}
-			if (this.position.x < -(Map.rect.x + Map.rect.dx - canvasWidth)) {
-				this.position.x = -(Map.rect.x + Map.rect.dx - canvasWidth);
-			}
-
-			this.position.y += y;
-			if (this.position.y > -Map.rect.y) {
-				this.position.y = -Map.rect.y;
-			}
-			if (this.position.y < -(Map.rect.y + Map.rect.dy - canvasHeight)) {
-				this.position.y = -(Map.rect.y + Map.rect.dy - canvasHeight);
-			}
-			CrymeEngine.mapInvalidated = true;
-		}
-	},
+	camera: new Camera(),
 	mousePosition: {
 		x: 0,
 		y: 0
@@ -99,6 +76,7 @@ var CrymeEngine = {
 				//Normal draw loop will now handle the rendering
 				loadingComplete = true;
 				CE.mapInvalidated = true;
+				CrymeEngine.camera.centerCamera(Map.player.x, Map.player.y);
 			}
 			else {
 				if (progress >= animationDuration * 2 || progress <= 0) {
@@ -112,7 +90,6 @@ var CrymeEngine = {
 		Map: function () {
 			CrymeEngine.canvas.map.clear();
 			CrymeEngine.canvas.map.context.save();
-			CrymeEngine.canvas.animation.clear();
 
 			if (CE.displayType != CE.DisplayType.STANDARD) {
 				CrymeEngine.canvas.map.context.fillStyle = "#ddd";
@@ -164,6 +141,16 @@ var CrymeEngine = {
 				CrymeEngine.canvas.debug.context.restore();
 			}
 		},
+		Animation: function () {
+			CrymeEngine.canvas.animation.clear();
+			CrymeEngine.canvas.animation.context.save();
+			CrymeEngine.canvas.animation.context.scale(scaleFactor, scaleFactor);
+			CrymeEngine.canvas.animation.context.translate(CrymeEngine.camera.position.x, CrymeEngine.camera.position.y);
+
+			Map.drawAnimation();
+
+			CrymeEngine.canvas.animation.context.restore();
+		},
 		Battle: function () {
 			CrymeEngine.canvas.map.clear();
 			CrymeEngine.canvas.hud.clear();
@@ -184,10 +171,12 @@ var CrymeEngine = {
 			if (!CrymeEngine.pauseRendering) {
 				if (loadingComplete) {
 					if (CrymeEngine.gameState == CE.GameState.FARMING) {
+						CrymeEngine.camera.updateCamera();
 						//There is another render loop for when the map is loading
 						if (CrymeEngine.mapInvalidated || Map.transitionInformation.started) {
 							CrymeEngine.Draw.Map();
 						}
+						CrymeEngine.Draw.Animation();
 						CrymeEngine.Draw.Hud();
 					} else if (CrymeEngine.gameState == CE.GameState.BATTLE) {
 						CrymeEngine.Draw.Battle();
@@ -262,16 +251,12 @@ var CrymeEngine = {
 		this.canvas.hud.canvas.onclick = function (event) {
 			if (loadingComplete) {
 				//pour du debug de position d'image
-				Map.player.moveToMousePosition(event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x, event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y);
+				var x = event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x;
+				var y = event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y;
+				Map.player.moveToMousePosition(x, y);
+				CrymeEngine.camera.centerCamera(Map.player.movement.finalPosition.x, Map.player.movement.finalPosition.y);
 			}
 		}
-
-		this.canvas.hud.canvas.ondblclick = function (event) {
-			if (loadingComplete) {
-				//pour du debug de position d'image
-				Map.player.moveToMousePosition(event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x, event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y);
-			}
-		};
 
 		window.onkeydown = function (event) {
 			CE.keyboard.keyPressed(event);
@@ -328,7 +313,7 @@ var CrymeEngine = {
 				CrymeEngine.mapInvalidated = true;
 			}
 
-			if (CE.highlightedItem > -1) {
+			if (CE.highlightedItem > -1 && Options.Debug.Graphic.enabled) {
 				Map.mapItems[CE.highlightedItem].sprite.centerX -= (event.pageX / scaleFactor - this.offsetLeft - CrymeEngine.mousePosition.x);
 				Map.mapItems[CE.highlightedItem].sprite.centerY -= (event.pageY / scaleFactor - this.offsetTop - CrymeEngine.mousePosition.y);
 				Map.mapItems[CE.highlightedItem].updateImageCoord();

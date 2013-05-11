@@ -14,7 +14,8 @@ Sprites.Animation.prototype.loadingEnded = function () {
 	this.updateWidthHeight();
 	this.frameWidth = this.width / this.frameCount;
 }
+//on dessine toujours une animation sur le canvas animation
 Sprites.Animation.prototype.draw = function (x, y) {
 	this.currentFrame = (this.currentFrame + this.frameSpeed) % this.frameCount;
-	CE.canvas.map.context.drawImage(this.image, Math.floor(this.currentFrame) * this.frameWidth, 0, this.frameWidth, this.height, x - this.centerX, y - this.centerY, this.frameWidth, this.height);
+	CE.canvas.animation.context.drawImage(this.image, Math.floor(this.currentFrame) * this.frameWidth, 0, this.frameWidth, this.height, x - this.centerX, y - this.centerY, this.frameWidth, this.height);
 };

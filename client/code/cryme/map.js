@@ -28,7 +28,6 @@ var Map = {
 		this.removePlayer(player.nickname);
 		var tmpPlayer = new MapItems.Character(player);
 		this.players.push(tmpPlayer);
-		this.mapItems.push(tmpPlayer);
 		if (player.constructor == PlayableFarmer)
 			this.player = tmpPlayer;
 	},
@@ -99,6 +98,11 @@ var Map = {
 		this.transitionInformationDetailed.updateProgress();
 		for (var i = 0; i < this.tiles.length; i++) {
 			this.tiles[i].draw();
+		}
+	},
+	drawAnimation: function () {
+		for (var i = 0; i < this.players.length; i++) {
+			this.players[i].draw();
 		}
 	},
 	drawMapInfos: function () {

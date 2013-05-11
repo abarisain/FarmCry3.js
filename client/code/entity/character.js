@@ -3,7 +3,7 @@ MapItems.Character = function (targetFarmer) {
 	this.farmer = targetFarmer;
 	this.updateCoord();
 	this.updateImageCoord();
-	this.movement = { sprite: {}, finalPosition: {x: 0, y: 0}, startPosition: {x: 0, y: 0}};
+	this.movement = { sprite: SpritePack.Characters.Sprites.ANIM_TOP_LEFT, finalPosition: {x: 0, y: 0}, startPosition: {x: 0, y: 0}};
 	this.movementTransition = new Transition(0, 1, 60, function () {
 	});
 };
@@ -44,13 +44,13 @@ MapItems.Character.prototype.draw = function () {
 		this.y = this.movement.startPosition.y + (this.movement.finalPosition.y - this.movement.startPosition.y) * this.movementTransition.progress;
 		this.updateImageCoord();
 		//je suis obligé d'attendre l'update de coordonnée en cas d'animation
-		SpritePack.Characters.Sprites.SHADOW.draw(this.x, this.y);
+		SpritePack.Characters.Sprites.SHADOW.drawOnAnimation(this.x, this.y);
 		SpritePack.Characters.Sprites.ANIM_AURA.draw(this.x, this.y);
 		this.movement.sprite.draw(this.x, this.y);
 	} else {
-		SpritePack.Characters.Sprites.SHADOW.draw(this.x, this.y);
+		SpritePack.Characters.Sprites.SHADOW.drawOnAnimation(this.x, this.y);
 		SpritePack.Characters.Sprites.ANIM_AURA.draw(this.x, this.y);
-		CE.canvas.map.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
+		CE.canvas.animation.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
 	}
 	if (Options.Debug.Graphic.enabled) {
 		CE.canvas.debug.context.fillStyle = "rgb(29, 82, 161)";
