@@ -243,7 +243,7 @@ var CrymeEngine = {
 				}
 				if (event.button == 0) {
 					//le clic gauche permet de sélectionner une case lorsqu'on est en mode informations
-					var coord = Map.coordinatesFromMousePosition(event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x, event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y);
+					//var coord = Map.coordinatesFromMousePosition(event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x, event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y);
 				}
 			}
 		};
@@ -254,7 +254,6 @@ var CrymeEngine = {
 				var x = event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x;
 				var y = event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y;
 				Map.player.moveToMousePosition(x, y);
-				CrymeEngine.camera.centerCamera(Map.player.movement.finalPosition.x, Map.player.movement.finalPosition.y);
 			}
 		}
 

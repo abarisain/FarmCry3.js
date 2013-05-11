@@ -1,5 +1,6 @@
 MapItems.Character = function (targetFarmer) {
 	MapItem.call(this, SpritePack.Characters.Sprites.FARMER, targetFarmer.position.col, targetFarmer.position.line);
+	this.isPlayer = targetFarmer.constructor == PlayableFarmer;
 	this.farmer = targetFarmer;
 	this.updateCoord();
 	this.updateImageCoord();
@@ -12,6 +13,7 @@ MapItems.Character.prototype = new MapItem();
 MapItems.Character.prototype.constructor = MapItems.Character;
 
 MapItems.Character.prototype.move = function (col, line) {
+	var moved = true;
 	if (col > this.col) {
 		this.movement.sprite = SpritePack.Characters.Sprites.ANIM_TOP_LEFT;
 		this.col++;
@@ -24,20 +26,26 @@ MapItems.Character.prototype.move = function (col, line) {
 	} else if (line < this.line) {
 		this.movement.sprite = SpritePack.Characters.Sprites.ANIM_TOP_RIGHT;
 		this.line--;
+	} else {
+		moved = false;
 	}
-	var messageData = {
-		kind: CE.hud.chat.Kind.LOCAL,
-		message: 'Moving ' + this.sprite.name + ' to : (' + this.col + ', ' + this.line + ')'
+	if (moved) {
+		var messageData = {
+			kind: CE.hud.chat.Kind.LOCAL,
+			message: 'Moving ' + this.sprite.name + ' to : (' + this.col + ', ' + this.line + ')'
+		}
+		CE.hud.chat.append(messageData);
+		this.movement.finalPosition = this.translateCoord(this.col, this.line);
+		this.movement.startPosition.x = this.x;
+		this.movement.startPosition.y = this.y;
+		if (this.isPlayer) {
+			CrymeEngine.camera.centerCamera(this.movement.finalPosition.x, this.movement.finalPosition.y);
+		}
+		this.movementTransition.start(Transition.Type.FADE_IN, true);
 	}
-	CE.hud.chat.append(messageData);
-	this.movement.finalPosition = this.translateCoord(this.col, this.line);
-	this.movement.startPosition.x = this.x;
-	this.movement.startPosition.y = this.y;
-	this.movementTransition.start(Transition.Type.FADE_IN, true);
 };
 
 MapItems.Character.prototype.draw = function () {
-
 	if (this.movementTransition.started) {
 		this.movementTransition.updateProgress();
 		this.x = this.movement.startPosition.x + (this.movement.finalPosition.x - this.movement.startPosition.x) * this.movementTransition.progress;
@@ -45,11 +53,15 @@ MapItems.Character.prototype.draw = function () {
 		this.updateImageCoord();
 		//je suis obligé d'attendre l'update de coordonnée en cas d'animation
 		SpritePack.Characters.Sprites.SHADOW.drawOnAnimation(this.x, this.y);
-		SpritePack.Characters.Sprites.ANIM_AURA.draw(this.x, this.y);
+		if (this.isPlayer) {
+			SpritePack.Characters.Sprites.ANIM_AURA.draw(this.x, this.y);
+		}
 		this.movement.sprite.draw(this.x, this.y);
 	} else {
 		SpritePack.Characters.Sprites.SHADOW.drawOnAnimation(this.x, this.y);
-		SpritePack.Characters.Sprites.ANIM_AURA.draw(this.x, this.y);
+		if (this.isPlayer) {
+			SpritePack.Characters.Sprites.ANIM_AURA.draw(this.x, this.y);
+		}
 		CE.canvas.animation.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
 	}
 	if (Options.Debug.Graphic.enabled) {
