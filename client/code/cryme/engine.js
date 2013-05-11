@@ -253,7 +253,23 @@ var CrymeEngine = {
 				//pour du debug de position d'image
 				var x = event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x;
 				var y = event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y;
-				Map.player.moveToMousePosition(x, y);
+				var coord = Map.coordinatesFromMousePosition(x, y);
+				var data = {col: 0, line: 0};
+				var moved = true;
+				if (coord.col > Map.player.col) {
+					data.col = 1;
+				} else if (coord.col < Map.player.col) {
+					data.col = -1;
+				} else if (coord.line > Map.player.line) {
+					data.line = 1;
+				} else if (coord.line < Map.player.line) {
+					data.line = -1;
+				} else {
+					moved = false;
+				}
+				if (moved) {
+					networkEngine.call('player', 'move', data);
+				}
 			}
 		}
 

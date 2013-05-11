@@ -30,11 +30,6 @@ MapItem.prototype = {
 	move: function (col, line) {
 		this.col = col;
 		this.line = line;
-		var messageData = {
-			kind: CE.hud.chat.Kind.LOCAL,
-			message: 'Moving ' + this.sprite.name + ' to : (' + col + ', ' + line + ')'
-		}
-		CE.hud.chat.append(messageData);
 		this.updateCoord();
 		this.updateImageCoord();
 	},

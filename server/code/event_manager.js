@@ -30,9 +30,9 @@ var EventManager = {
 				}
 				Chat.sendServerMessage(newConnection, "Welcome to FarmCry, " + farmer.nickname + " !");
 				Chat.broadcastServerMessage(farmer.nickname + " signed in");
-                NetworkEngine.clients.broadcast("player.connected", {
-                    farmer: farmer.getMinimalFarmer()
-                }, null, newConnection);
+				NetworkEngine.clients.broadcast("player.connected", {
+					farmer: farmer.getMinimalFarmer()
+				}, null, newConnection);
 			},
 			disconnected: function (farmer) {
 				if (farmer == null) {
@@ -50,9 +50,9 @@ var EventManager = {
 				if (!isGhost) {
 					farmer.logged_in = false;
 					Chat.broadcastServerMessage(farmer.nickname + " signed out");
-                    NetworkEngine.clients.broadcast("player.disconnected", {
-                        nickname: farmer.nickname
-                    });
+					NetworkEngine.clients.broadcast("player.disconnected", {
+						nickname: farmer.nickname
+					});
 				}
 			},
 			move: function (farmer, x, y) {
@@ -60,11 +60,13 @@ var EventManager = {
 				y = Math.floor(y);
 				var newX = farmer.last_pos.x + x;
 				var newY = farmer.last_pos.y + y;
-                //TODO : Re-enable this to disallow teleportation
+				//TODO : Re-enable this to disallow teleportation
 				/*if (x < -1 || x > 1 || y < -1 || y > 1 || newX > GameState.board.size.x || newY > GameState.board.size.y
-					|| newX < 0 || newY < 0) {
-					return false;
-				}*/
+				 || newX < 0 || newY < 0) {
+				 return false;
+				 }*/
+				farmer.last_pos.x = newX;
+				farmer.last_pos.y = newY;
 				//TODO : Send events only to people in the viewport
 				NetworkEngine.clients.broadcast("player.moved", {
 					nickname: farmer.nickname,

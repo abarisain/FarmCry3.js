@@ -30,11 +30,6 @@ MapItems.Character.prototype.move = function (col, line) {
 		moved = false;
 	}
 	if (moved) {
-		var messageData = {
-			kind: CE.hud.chat.Kind.LOCAL,
-			message: 'Moving ' + this.sprite.name + ' to : (' + this.col + ', ' + this.line + ')'
-		}
-		CE.hud.chat.append(messageData);
 		this.movement.finalPosition = this.translateCoord(this.col, this.line);
 		this.movement.startPosition.x = this.x;
 		this.movement.startPosition.y = this.y;

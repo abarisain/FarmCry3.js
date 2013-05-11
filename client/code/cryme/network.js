@@ -26,6 +26,14 @@ var networkEngine = {
 			Object.keys(networkEngine.subsystems).forEach(function (subsystem) {
 				Object.keys(networkEngine.subsystems[subsystem].events).forEach(function (_function) {
 					networkEngine.socket.on(subsystem + '.' + _function, function (data) {
+						//TODO a virer pour faire une version propre
+						var messageData = {
+							kind: CE.hud.chat.Kind.SERVER,
+							message: 'Received : ' + subsystem + ', ' + _function
+						}
+						CE.hud.chat.append(messageData);
+						console.log('Received : ' + subsystem + ', ' + _function);
+						console.debug(data);
 						networkEngine.subsystems[subsystem].events[_function](data);
 					});
 				});
@@ -69,7 +77,7 @@ var networkEngine = {
 				moved: function (data) {
 					var target = null;
 					if (data.nickname == GameState.player.nickname) {
-						target = GameState.player;
+						target = Map.player;
 					} else {
 						for (var i = 0; i < GameState.players.length; i++) {
 							if (Map.players[i].nickname == this.nickname)
@@ -77,8 +85,7 @@ var networkEngine = {
 						}
 					}
 					if (target != null) {
-						target.position.col = data.col;
-						target.position.col = data.line;
+						target.move(data.col, data.line);
 					}
 					target.invalidate();
 				}

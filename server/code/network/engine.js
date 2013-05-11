@@ -4,6 +4,7 @@ AuthModule = require('./modules/auth');
 MapModule = require('./modules/map');
 GameModule = require('./modules/game');
 ChatModule = require('./modules/chat');
+PlayerModule = require('./modules/player');
 EventManager = require('../event_manager');
 
 // Check modules/debug.js for an explanation of how modules work and should be written
@@ -75,8 +76,8 @@ var NetworkEngine = {
 		broadcast: function (event, data, require_auth, excluded_connection) {
 			var listLength = this.list.length;
 			for (var i = 0; i < listLength; i++) {
-                if(this.list[i] != excluded_connection)
-				    this.list[i].send(event, data, require_auth);
+				if (this.list[i] != excluded_connection)
+					this.list[i].send(event, data, require_auth);
 			}
 		}
 	},
@@ -85,7 +86,8 @@ var NetworkEngine = {
 		AuthModule,
 		MapModule,
 		GameModule,
-		ChatModule
+		ChatModule,
+		PlayerModule
 	]
 };
 
