@@ -196,6 +196,7 @@ var CrymeEngine = {
 		this.canvas.animation = new CrymeCanvas('#canvasAnimation');
 		this.canvas.hud = new CrymeCanvas('#canvasHud');
 		this.canvas.debug = new CrymeCanvas('#canvasDebug');
+		this.canvas.map.setFont("normal 12pt stanberry");
 		this.canvas.hud.setFont("bold 13pt stanberry,Calibri,Geneva,Arial");
 		this.canvas.resizeAll(canvasWidth, canvasHeight);
 

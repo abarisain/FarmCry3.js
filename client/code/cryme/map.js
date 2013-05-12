@@ -153,6 +153,9 @@ var Map = {
 		for (var i = 0; i < this.players.length; i++) {
 			this.players[i].draw();
 		}
+		for (var i = 0; i < this.mapItems.length; i++) {
+			this.mapItems[i].drawAnimation();
+		}
 	},
 	drawMapInfos: function () {
 		if (CE.displayType == CE.DisplayType.INFO_MAP) {

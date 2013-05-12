@@ -9,9 +9,9 @@ MapItems.Tile = function (data) {
 	this.alpha = 0;
 	this.updateCoord();
 	this.informations = new MapItems.TileItemInfos(this.x, this.y, [
-		new Diagram(Diagram.Color.BLUE, this.humidity * 10),
-		new Diagram(Diagram.Color.YELLOW, this.maturity * 10),
-		new Diagram(Diagram.Color.GREEN, this.fertility * 10)
+		new Diagram(Diagram.Color.BLUE, 'Humidity', this.humidity * 10)
+		//new Diagram(Diagram.Color.YELLOW, this.maturity * 10),
+		//new Diagram(Diagram.Color.GREEN, this.fertility * 10)
 	]);
 };
 

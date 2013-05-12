@@ -6,10 +6,7 @@ MapItems.TileItem = function (sprite, col, line) {
 		this.highlighted = false;//affiche un halo autour de l'élement
 		this.updateCoord();
 		this.updateImageCoord();
-		this.informations = new MapItems.TileItemInfos(this.x, this.y, [
-			new Diagram(Diagram.Color.YELLOW, this.x / 100),
-			new Diagram(Diagram.Color.BLUE, this.y / 100)
-		]);
+		this.informations = {};
 	}
 };
 
@@ -62,11 +59,19 @@ MapItems.TileItem.prototype.draw = function () {
 		CE.canvas.map.context.strokeRect(this.imageLeft + 1, this.imageTop - 1, this.sprite.width - 2, this.sprite.height - 2);
 	}
 };
+
+MapItems.TileItem.prototype.drawAnimation = function () {
+
+};
 MapItems.TileItem.prototype.load = function () {
-	this.informations.loadInformations();
+	if (this.informations != null) {
+		this.informations.loadInformations();
+	}
 };
 MapItems.TileItem.prototype.drawInfo = function () {
-	this.informations.drawInformations();
+	if (this.informations != null) {
+		this.informations.drawInformations();
+	}
 };
 MapItems.TileItem.prototype.drawInfoDetailed = function () {
 	this.informations.drawInformationDetailed();

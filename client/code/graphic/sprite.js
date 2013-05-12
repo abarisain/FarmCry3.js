@@ -63,6 +63,10 @@ Sprite.prototype = {
 		}
 	},
 	drawOnAnimation: function (x, y) {
-		CE.canvas.animation.context.drawImage(this.image, x - this.centerX, y - this.centerY);
+		if (CrymeEngine.displayType == CrymeEngine.DisplayType.STANDARD) {
+			CE.canvas.animation.context.drawImage(this.image, x - this.centerX, y - this.centerY);
+		} else {
+			CE.canvas.animation.context.drawImage(this.imageInfo, x - this.centerX, y - this.centerY);
+		}
 	}
 }

@@ -35,7 +35,9 @@ var SpritePack = {
 }
 
 function LoadSpritePack() {
-	SpritePack.Buildings.Sprites.BARN = new Sprite('barn', 133, 106);
+	SpritePack.Buildings.Sprites.BARN = new Sprite('barn', 50, 138);
+	SpritePack.Buildings.Sprites.BARN_ROOF = new Sprite('barn_roof', 47, 178);
+	SpritePack.Buildings.Sprites.SILO = new Sprite('silo', 133, 106);
 
 	SpritePack.Storages.Sprites.BARREL_CORN = new Sprite('barrel_corn', 20, 38);
 	SpritePack.Storages.Sprites.BARREL_WHEAT = new Sprite('barrel_wheat', 20, 38);
@@ -105,5 +107,5 @@ function initSpriteEnums() {
 	//SpritePack.Buildings.Type.HOME.sprite = SpritePack.Buildings.Sprites.HOME;
 	MapItems.TileItems.Building.Type.barn.sprite = SpritePack.Buildings.Sprites.BARN;
 	MapItems.TileItems.Building.Type.cold_storage.sprite = SpritePack.Buildings.Sprites.BARN;
-	MapItems.TileItems.Building.Type.silo.sprite = SpritePack.Buildings.Sprites.BARN;
+	MapItems.TileItems.Building.Type.silo.sprite = SpritePack.Buildings.Sprites.SILO;
 }
