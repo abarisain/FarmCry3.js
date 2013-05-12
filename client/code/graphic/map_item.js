@@ -49,8 +49,20 @@ MapItem.prototype = {
 	},
 	drawLoading: function (progress) {
 	},
-	draw: function () {
-		this.sprite.draw(this.imageLeft, this.imageTop);
+	draw: function (text) {
+		/*CE.canvas.map.context.globalAlpha = 0.5;
+		 this.sprite.draw(this.imageLeft, this.imageTop);
+		 CE.canvas.map.context.globalAlpha = 1;*/
+		if (Options.Debug.Graphic.enabled) {
+			if (Options.Debug.Graphic.item) {
+				CE.canvas.debug.context.globalAlpha = 0.5;
+				CE.canvas.debug.context.fillStyle = "#fff";
+				CE.canvas.debug.context.fillRect(this.imageLeft - 25, this.imageTop, 50, 1);
+				CE.canvas.debug.context.fillRect(this.imageLeft, this.imageTop - 19, 1, 38);
+				CE.canvas.debug.context.fillText(text, this.imageLeft, this.imageTop - 19);
+				CE.canvas.debug.context.globalAlpha = 1;
+			}
+		}
 	},
 	translateCoord: function (col, line) {
 		var x = (col + line) * (tileWidth / 2);

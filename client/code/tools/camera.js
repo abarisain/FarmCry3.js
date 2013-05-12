@@ -19,20 +19,22 @@ Camera.prototype = {
 	//delta x et y de deplacement de la caméra (utilisé pour le drag de caméra)
 	moveCamera: function (dx, dy) {
 		this.position.x += dx;
-		if (this.position.x > -Map.rect.x) {
-			this.position.x = -Map.rect.x;
-		}
-		if (this.position.x < -(Map.rect.x + Map.rect.dx - canvasWidth)) {
-			this.position.x = -(Map.rect.x + Map.rect.dx - canvasWidth);
+		this.position.y += dy;
+		if (!Options.Debug.Graphic.enabled) {
+			if (this.position.x > -Map.rect.x) {
+				this.position.x = -Map.rect.x;
+			}
+			if (this.position.x < -(Map.rect.x + Map.rect.dx - canvasWidth)) {
+				this.position.x = -(Map.rect.x + Map.rect.dx - canvasWidth);
+			}
+			if (this.position.y > -Map.rect.y) {
+				this.position.y = -Map.rect.y;
+			}
+			if (this.position.y < -(Map.rect.y + Map.rect.dy - canvasHeight)) {
+				this.position.y = -(Map.rect.y + Map.rect.dy - canvasHeight);
+			}
 		}
 
-		this.position.y += dy;
-		if (this.position.y > -Map.rect.y) {
-			this.position.y = -Map.rect.y;
-		}
-		if (this.position.y < -(Map.rect.y + Map.rect.dy - canvasHeight)) {
-			this.position.y = -(Map.rect.y + Map.rect.dy - canvasHeight);
-		}
 		CrymeEngine.mapInvalidated = true;
 	},
 	//x et y sont les coordonnées absolue de déplacement de la caméra
