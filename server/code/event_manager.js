@@ -61,10 +61,10 @@ var EventManager = {
 				var newX = farmer.last_pos.x + x;
 				var newY = farmer.last_pos.y + y;
 				//TODO : Re-enable this to disallow teleportation
-				/*if (x < -1 || x > 1 || y < -1 || y > 1 || newX > GameState.board.size.x || newY > GameState.board.size.y
-				 || newX < 0 || newY < 0) {
-				 return false;
-				 }*/
+				if (x < -1 || x > 1 || y < -1 || y > 1 || newX > GameState.board.size.x || newY > GameState.board.size.y
+					|| newX < 0 || newY < 0) {
+					return false;
+				}
 				farmer.last_pos.x = newX;
 				farmer.last_pos.y = newY;
 				//TODO : Send events only to people in the viewport

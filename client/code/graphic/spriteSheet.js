@@ -49,7 +49,7 @@ function LoadSpritePack() {
 	SpritePack.Characters.Sprites.ANIM_BOTTOM_LEFT = new Sprites.Animation('farmer_bottom_left', 10, 49, 23, 30);
 	SpritePack.Characters.Sprites.ANIM_BOTTOM_RIGHT = new Sprites.Animation('farmer_bottom_right', 30, 39, 23, 30);
 
-	SpritePack.Crops.Sprites.WHEAT = new Sprite('wheat', 111, 111);
+	SpritePack.Crops.Sprites.WHEAT = new Sprite('wheat', 112, 118);
 	SpritePack.Crops.Sprites.TOMATO = new Sprite('tomato', 125, 114);
 	SpritePack.Crops.Sprites.CORN = new Sprite('corn', 114, 88);
 
