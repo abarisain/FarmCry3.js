@@ -1,12 +1,13 @@
-MapItems.TileItems.Crop = function (sprite, col, line) {
-	MapItems.TileItem.call(this, sprite, col, line);
+MapItems.TileItems.Crop = function (type, col, line) {
+	this.type = type;
+	MapItems.TileItem.call(this, type.sprite, col, line);
 }
 
 MapItems.TileItems.Crop.prototype = new MapItems.TileItem();
 MapItems.TileItems.Crop.prototype.constructor = MapItems.TileItem.Crop;
 
 MapItems.TileItems.Crop.Type = {
-	CORN: { sprite: {}, storageSprite: {}},
-	WHEAT: { sprite: {}, storageSprite: {}},
-	TOMATO: { sprite: {}, storageSprite: {}}
+	corn: { codename: 'corn', sprite: {}, storageSprite: {}},
+	wheat: { codename: 'wheat', sprite: {}, storageSprite: {}},
+	tomato: { codename: 'tomato', sprite: {}, storageSprite: {}}
 }

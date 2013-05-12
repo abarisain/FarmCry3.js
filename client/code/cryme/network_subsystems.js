@@ -5,7 +5,10 @@ networkEngine.subsystems.player = {
 		},
 		//cropType doit être
 		buyCrop: function (cropType) {
-
+			networkEngine.call('player', 'buyCrop', {cropType: cropType});
+		},
+		harvestCrop: function () {
+			networkEngine.call('player', 'harvestCrop', {});
 		}
 	},
 	events: {
@@ -31,6 +34,12 @@ networkEngine.subsystems.player = {
 				target.move(data.col, data.line);
 			}
 			target.invalidate();
+		},
+		cropBought: function (data) {
+			Map.network.buyCrop(data.cropType, data.col, data.line);
+		},
+		cropHarvested: function (data) {
+			Map.network.harvestCrop(data.col, data.line);
 		}
 	}
 };

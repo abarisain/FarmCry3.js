@@ -35,7 +35,6 @@ var SpritePack = {
 }
 
 function LoadSpritePack() {
-	//SpritePack.Buildings.Sprites.HOME = new Sprite('home', 133, 275);
 	SpritePack.Buildings.Sprites.BARN = new Sprite('barn', 133, 106);
 
 	SpritePack.Storages.Sprites.BARREL_CORN = new Sprite('barrel_corn', 20, 38);
@@ -94,14 +93,14 @@ function LoadSpritePack() {
 
 //cette fonction permet de charger tous les enums qui contiennent des sprites, vu qu'il faut attendre de les avoir chargés
 function initSpriteEnums() {
-	MapItems.TileItems.Crop.Type.CORN.sprite = SpritePack.Crops.Sprites.CORN;
-	MapItems.TileItems.Crop.Type.CORN.storageSprite = SpritePack.Storages.Sprites.BARREL_CORN;
+	MapItems.TileItems.Crop.Type.corn.sprite = SpritePack.Crops.Sprites.CORN;
+	MapItems.TileItems.Crop.Type.corn.storageSprite = SpritePack.Storages.Sprites.BARREL_CORN;
 
-	MapItems.TileItems.Crop.Type.TOMATO.sprite = SpritePack.Crops.Sprites.TOMATO;
-	MapItems.TileItems.Crop.Type.TOMATO.storageSprite = SpritePack.Storages.Sprites.BARREL_TOMATO;
+	MapItems.TileItems.Crop.Type.tomato.sprite = SpritePack.Crops.Sprites.TOMATO;
+	MapItems.TileItems.Crop.Type.tomato.storageSprite = SpritePack.Storages.Sprites.BARREL_TOMATO;
 
-	MapItems.TileItems.Crop.Type.WHEAT.sprite = SpritePack.Crops.Sprites.WHEAT;
-	MapItems.TileItems.Crop.Type.WHEAT.storageSprite = SpritePack.Storages.Sprites.BARREL_WHEAT;
+	MapItems.TileItems.Crop.Type.wheat.sprite = SpritePack.Crops.Sprites.WHEAT;
+	MapItems.TileItems.Crop.Type.wheat.storageSprite = SpritePack.Storages.Sprites.BARREL_WHEAT;
 
 	//SpritePack.Buildings.Type.HOME.sprite = SpritePack.Buildings.Sprites.HOME;
 	MapItems.TileItems.Building.Type.BARN.sprite = SpritePack.Buildings.Sprites.BARN;

@@ -9,6 +9,23 @@ var Map = {
 	}),
 	transitionInformationDetailed: new Transition(0, 10, 10, function (transitionType) {
 	}),
+	network: {
+		buyCrop: function (type, col, line) {
+			var tile = Map.getTile(col, line);
+			tile.cropType = type;
+			tile.sprite = SpritePack.Tiles.Sprites.SOIL;
+			var crop = new MapItems.TileItems.Crop(MapItems.TileItems.Crop.Type[type], col, line);
+			Map.mapItems.push(crop);
+			CrymeEngine.mapInvalidated = true;
+		},
+		harvestCrop: function (col, line) {
+			var tile = Map.getTile(col, line);
+			tile.cropType = 'dummy';
+			tile.updateImage();
+			var crop = Map.removeMapItem(col, line);
+			//Map.mapItems.remove(crop);
+		}
+	},
 	init: function (data) {
 		this.loadTiles(data.tiles);
 		this.rect.x = -tileWidth / 2;
@@ -72,10 +89,28 @@ var Map = {
 			}
 		}
 	},
-	changeTile: function (sprite, col, line) {
+	getTile: function (col, line) {
 		for (var i = 0; i < this.tiles.length; i++) {
-			if (this.tiles[i].col == col && this.tiles[i].line == line) {
-				this.tiles[i].sprite = sprite;
+			if (this.tiles[i].match(col, line)) {
+				return this.tiles[i];
+				break;
+			}
+		}
+		return null;
+	},
+	getMapItem: function (col, line) {
+		for (var i = 0; i < this.mapItems.length; i++) {
+			if (this.mapItems[i].match(col, line)) {
+				return this.mapItems[i];
+				break;
+			}
+		}
+		return null;
+	},
+	removeMapItem: function (col, line) {
+		for (var i = 0; i < this.mapItems.length; i++) {
+			if (this.mapItems[i].match(col, line)) {
+				this.mapItems.remove(i);
 				break;
 			}
 		}

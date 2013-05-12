@@ -96,7 +96,16 @@ CrymeEngine.keyboard = {
 				CE.mapInvalidated = true;
 				break;
 			case CE.keyboard.Shortcuts.CROP_ADD_CORN.code:
-
+				networkEngine.subsystems.player.actions.buyCrop(MapItems.TileItems.Crop.Type.corn.codename);
+				break;
+			case CE.keyboard.Shortcuts.CROP_ADD_TOMATO.code:
+				networkEngine.subsystems.player.actions.buyCrop(MapItems.TileItems.Crop.Type.tomato.codename);
+				break;
+			case CE.keyboard.Shortcuts.CROP_ADD_WHEAT.code:
+				networkEngine.subsystems.player.actions.buyCrop(MapItems.TileItems.Crop.Type.wheat.codename);
+				break;
+			case CE.keyboard.Shortcuts.CROP_HARVEST.code:
+				networkEngine.subsystems.player.actions.harvestCrop();
 				break;
 			//graphic debug
 			case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG.code:
@@ -132,11 +141,8 @@ CrymeEngine.keyboard = {
 		}
 	},
 	keyReleased: function (event) {
-		switch (event.keyCode) {
-			case CE.keyboard.Shortcuts.MOVE_MAP.code:
-				CE.movingMap = false;
-				break;
-		}
+		/*switch (event.keyCode) {
+		 }*/
 	},
 	drawKeyMap: function () {
 		if (CE.keyboard.showKeyMap) {

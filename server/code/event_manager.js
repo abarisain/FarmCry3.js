@@ -74,6 +74,31 @@ var EventManager = {
 					line: farmer.last_pos.y
 				});
 				return true;
+			},
+			buyCrop: function (farmer, cropType) {
+				if (GameState.board.tiles[farmer.last_pos.x][farmer.last_pos.y].crop.codename == 'dummy') {
+					GameState.board.tiles[farmer.last_pos.x][farmer.last_pos.y].crop = Crop.Type[cropType];
+					NetworkEngine.clients.broadcast("player.cropBought", {
+						nickname: farmer.nickname,
+						cropType: cropType,
+						col: farmer.last_pos.x,
+						line: farmer.last_pos.y
+					});
+					return true;
+				}
+				return false;
+			},
+			harvestCrop: function (farmer) {
+				if (GameState.board.tiles[farmer.last_pos.x][farmer.last_pos.y].crop.codename != 'dummy') {
+					GameState.board.tiles[farmer.last_pos.x][farmer.last_pos.y].crop = new Crop();
+					NetworkEngine.clients.broadcast("player.cropHarvested", {
+						nickname: farmer.nickname,
+						col: farmer.last_pos.x,
+						line: farmer.last_pos.y
+					});
+					return true;
+				}
+				return false;
 			}
 		}
 	}

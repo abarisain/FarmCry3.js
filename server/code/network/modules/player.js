@@ -17,6 +17,16 @@ var NetworkModule = {
 			if (!EventManager.subsystems.player.move(connection.farmer, data.col, data.line)) {
 				connection.send("player.moveDenied", data);
 			}
+		},
+		buyCrop: function (connection, request, data, callback) {
+			if (!EventManager.subsystems.player.buyCrop(connection.farmer, data.cropType)) {
+				connection.send("player.buyCropDenied", data);
+			}
+		},
+		harvestCrop: function (connection, request, data, callback) {
+			if (!EventManager.subsystems.player.harvestCrop(connection.farmer)) {
+				connection.send("player.harvestCropDenied", data);
+			}
 		}
 	}
 };

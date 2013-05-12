@@ -3,6 +3,7 @@ MapItems.Tile = function (data) {
 	this.humidity = data.humidity;
 	this.fertility = data.fertility;
 	this.maturity = data.maturity;
+	this.cropType = data.crop;//version du serveur
 	this.sprite = {};
 	this.alpha = 0;
 	this.updateCoord();
@@ -91,6 +92,11 @@ MapItems.Tile.prototype.drawInfoDetailed = function () {
 };
 MapItems.Tile.prototype.load = function () {
 	this.updateImage();
+	if (this.cropType != 'dummy') {
+		this.sprite = SpritePack.Tiles.Sprites.SOIL;
+		var crop = new MapItems.TileItems.Crop(MapItems.TileItems.Crop.Type[this.cropType], this.col, this.line);
+		Map.mapItems.push(crop);
+	}
 	this.updateImageCoord();
 	this.informations.loadInformations();
 };

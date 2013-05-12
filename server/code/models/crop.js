@@ -17,37 +17,41 @@ function Crop(codename, name, maturation_time, productivity, storability, seed_p
 	this.seed_price = seed_price; //Seed price for one tile
 }
 
-Crop.getDefaultCrops = function () {
-	var crops = [];
-	crops.push(new Crop("tomatoes",
-		"Tomatoes",
+Crop.Type = {
+	tomato: new Crop("tomato",
+		"Tomato",
 		1000,
 		30,
 		2000,
-		100)
-	);
-	crops.push(new Crop("corn",
+		100),
+	corn: new Crop("tomato",
 		"Corn",
 		1800,
 		40,
 		3540,
-		200)
-	);
-	crops.push(new Crop("wheat",
+		200),
+	wheat: new Crop("wheat",
 		"Wheat",
 		1300,
 		30,
 		5800,
 		50)
-	);
-	crops.push(new Crop("weed",
-		"Weed",
-		900,
-		200,
-		4800,
-		800)
-	);
-	return crops;
+	//désolé mais j'ai pas du tout envie d'en faire plus que ce qui est dans le sujet de ce côté là
+	/*crops.push(new Crop("weed",
+	 "Weed",
+	 900,
+	 200,
+	 4800,
+	 800)
+	 );*/
 };
+
+Crop.getDefaultCrops = function () {
+	var crops = [];
+	for (var key in Crop.Type) {
+		crops.push(Crop.Type[key]);
+	}
+	return crops;
+}
 
 module.exports = Crop;

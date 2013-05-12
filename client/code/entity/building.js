@@ -2,9 +2,9 @@ MapItems.TileItems.Building = function (type, col, line) {
 	MapItems.TileItem.call(this, type.sprite, col, line);
 	this.type = type;
 	this.storages = [];
-	this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.CORN, this.type, 0, this.x, this.y));
-	this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.WHEAT, this.type, 1, this.x, this.y));
-	this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.TOMATO, this.type, 2, this.x, this.y));
+	this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.corn, this.type, 0, this.x, this.y));
+	this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.wheat, this.type, 1, this.x, this.y));
+	this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.tomato, this.type, 2, this.x, this.y));
 }
 
 MapItems.TileItems.Building.prototype = new MapItems.TileItem();
