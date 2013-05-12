@@ -15,19 +15,19 @@ var NetworkModule = {
 				}
 			}
 
-            var tmpFarmers = [];
-            for (var i = 0; i < GameState.farmers.length; i++) {
-                if(GameState.farmers[i].logged_in && GameState.farmers[i].nickname != connection.farmer.nickname)
-                    tmpFarmers.push(GameState.farmers[i].getMinimalFarmer());
-            }
+			var tmpFarmers = [];
+			for (var i = 0; i < GameState.farmers.length; i++) {
+				if (GameState.farmers[i].logged_in && GameState.farmers[i].nickname != connection.farmer.nickname)
+					tmpFarmers.push(GameState.farmers[i].getMinimalFarmer());
+			}
 
 			connection.send("game.initialData", {
 				tiles: tmpTiles,
-                player_farmer: connection.farmer.getSmallFarmer(),
-                online_farmers: tmpFarmers,
+				player_farmer: connection.farmer.getSmallFarmer(),
+				online_farmers: tmpFarmers,
 				weapons: GameState.settings.weapons,
 				crops: GameState.settings.crops,
-				storages: GameState.settings.storages
+				buildings: GameState.settings.buildings
 			});
 		}
 	}

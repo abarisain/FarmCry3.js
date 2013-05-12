@@ -365,10 +365,10 @@ function InitLoading() {
 //fonction pour placer des trucs sur la map pour test le rendu
 function CreateMap() {
 	//ajout de buildings
-	var building = new MapItems.TileItems.Building(MapItems.TileItems.Building.Type.BARN, 8, 9);
-	Map.mapItems.push(building);
-	building = new MapItems.TileItems.Building(MapItems.TileItems.Building.Type.BARN, 2, 12);
-	Map.mapItems.push(building);
+	/*var building = new MapItems.TileItems.Building(MapItems.TileItems.Building.Type.BARN, 8, 9);
+	 Map.mapItems.push(building);
+	 building = new MapItems.TileItems.Building(MapItems.TileItems.Building.Type.BARN, 2, 12);
+	 Map.mapItems.push(building);*/
 
 	//ajout de crops
 	/*var crop = new MapItems.TileItems.Crop(SpritePack.Crops.Sprites.TOMATO, 1, 6);

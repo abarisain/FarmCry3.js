@@ -24,6 +24,14 @@ var Map = {
 			tile.updateImage();
 			var crop = Map.removeMapItem(col, line);
 			//Map.mapItems.remove(crop);
+		},
+		buyBuilding: function (type, col, line) {
+			var building = new MapItems.TileItems.Building(MapItems.TileItems.Building.Type[type], col, line);
+			Map.mapItems.push(building);
+			CrymeEngine.mapInvalidated = true;
+		},
+		destroyBuilding: function (col, line) {
+			Map.removeMapItem(col, line);
 		}
 	},
 	init: function (data) {

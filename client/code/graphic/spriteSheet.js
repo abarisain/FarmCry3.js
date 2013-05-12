@@ -103,5 +103,7 @@ function initSpriteEnums() {
 	MapItems.TileItems.Crop.Type.wheat.storageSprite = SpritePack.Storages.Sprites.BARREL_WHEAT;
 
 	//SpritePack.Buildings.Type.HOME.sprite = SpritePack.Buildings.Sprites.HOME;
-	MapItems.TileItems.Building.Type.BARN.sprite = SpritePack.Buildings.Sprites.BARN;
+	MapItems.TileItems.Building.Type.barn.sprite = SpritePack.Buildings.Sprites.BARN;
+	MapItems.TileItems.Building.Type.cold_storage.sprite = SpritePack.Buildings.Sprites.BARN;
+	MapItems.TileItems.Building.Type.silo.sprite = SpritePack.Buildings.Sprites.BARN;
 }

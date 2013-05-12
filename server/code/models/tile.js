@@ -1,4 +1,5 @@
 Crop = require('./crop');
+Building = require('./building');
 Farmer = require('./farmer');
 
 function Tile() {
@@ -11,6 +12,7 @@ function Tile() {
 	this.fertility = 1;
 	this.max_fertility = 1;
 	this.crop = new Crop();
+	this.building = new Building();
 	this.maturity = 0;
 	//Health being a dynamic value, it's not implemented as a variable
 }
@@ -31,7 +33,6 @@ Tile.prototype = {
 
 		return 1; //Guaranteed random since 1801 !
 	},
-
 	getSmallTile: function () {
 		//Returns a small version of this tile (for network usage)
 		var tmpTile = new Tile();
@@ -42,6 +43,7 @@ Tile.prototype = {
 		tmpTile.fertility = this.fertility;
 		tmpTile.max_fertility = this.max_fertility;
 		tmpTile.crop = this.crop.codename;
+		tmpTile.building = this.building.codename;
 		tmpTile.owner = this.owner.nickname;
 		tmpTile.health = this.getHealth();
 		return tmpTile;

@@ -19,6 +19,12 @@ CrymeEngine.keyboard = {
 		KEY_Q: { code: 81, name: 'Q' },
 		KEY_R: { code: 82, name: 'R' },
 		KEY_S: { code: 83, name: 'S' },
+		KEY_T: { code: 84, name: 'T' },
+		KEY_U: { code: 85, name: 'U' },
+		KEY_V: { code: 86, name: 'V' },
+		KEY_W: { code: 87, name: 'W' },
+		KEY_X: { code: 88, name: 'X' },
+		KEY_Y: { code: 89, name: 'Y' },
 		KEY_Z: { code: 90, name: 'Z' },
 		KEY_1: { code: 49, name: '&' },
 		KEY_2: { code: 50, name: 'é' },
@@ -29,10 +35,14 @@ CrymeEngine.keyboard = {
 	Shortcuts: {
 		CHAT: null,
 		CHANGE_DISPLAY_TYPE: null,
-		CROP_ADD_TOMATO: null,
-		CROP_ADD_WHEAT: null,
-		CROP_ADD_CORN: null,
+		CROP_BUY_TOMATO: null,
+		CROP_BUY_WHEAT: null,
+		CROP_BUY_CORN: null,
 		CROP_HARVEST: null,
+		BUILDING_BUY_SILO: null,
+		BUILDING_BUY_BARN: null,
+		BUILDING_BUY_COLD_STORAGE: null,
+		BUILDING_DESTROY: null,
 		LAUNCH_BATTLE: null,
 		STOP_BATTLE: null,
 		SHOW_KEY_MAP: null,
@@ -45,10 +55,14 @@ CrymeEngine.keyboard = {
 	init: function () {
 		CE.keyboard.Shortcuts.CHAT = CrymeEngine.keyboard.Keys.ENTER;
 		CE.keyboard.Shortcuts.CHANGE_DISPLAY_TYPE = CE.keyboard.Keys.KEY_A;
-		CE.keyboard.Shortcuts.CROP_ADD_CORN = CE.keyboard.Keys.KEY_Q;
-		CE.keyboard.Shortcuts.CROP_ADD_TOMATO = CE.keyboard.Keys.KEY_S;
-		CE.keyboard.Shortcuts.CROP_ADD_WHEAT = CE.keyboard.Keys.KEY_D;
-		CE.keyboard.Shortcuts.CROP_HARVEST = CE.keyboard.Keys.KEY_Z;
+		CE.keyboard.Shortcuts.CROP_BUY_CORN = CE.keyboard.Keys.KEY_Q;
+		CE.keyboard.Shortcuts.CROP_BUY_TOMATO = CE.keyboard.Keys.KEY_S;
+		CE.keyboard.Shortcuts.CROP_BUY_WHEAT = CE.keyboard.Keys.KEY_D;
+		CE.keyboard.Shortcuts.CROP_HARVEST = CE.keyboard.Keys.KEY_F;
+		CE.keyboard.Shortcuts.BUILDING_BUY_SILO = CE.keyboard.Keys.KEY_W;
+		CE.keyboard.Shortcuts.BUILDING_BUY_BARN = CE.keyboard.Keys.KEY_X;
+		CE.keyboard.Shortcuts.BUILDING_BUY_COLD_STORAGE = CE.keyboard.Keys.KEY_C;
+		CE.keyboard.Shortcuts.BUILDING_DESTROY = CE.keyboard.Keys.KEY_V;
 		CE.keyboard.Shortcuts.LAUNCH_BATTLE = CE.keyboard.Keys.KEY_E;
 		CE.keyboard.Shortcuts.STOP_BATTLE = CE.keyboard.Keys.KEY_R;
 		CE.keyboard.Shortcuts.SHOW_KEY_MAP = CE.keyboard.Keys.TAB;
@@ -95,17 +109,29 @@ CrymeEngine.keyboard = {
 				CE.gameState = CE.GameState.FARMING;
 				CE.mapInvalidated = true;
 				break;
-			case CE.keyboard.Shortcuts.CROP_ADD_CORN.code:
+			case CE.keyboard.Shortcuts.CROP_BUY_CORN.code:
 				networkEngine.subsystems.player.actions.buyCrop(MapItems.TileItems.Crop.Type.corn.codename);
 				break;
-			case CE.keyboard.Shortcuts.CROP_ADD_TOMATO.code:
+			case CE.keyboard.Shortcuts.CROP_BUY_TOMATO.code:
 				networkEngine.subsystems.player.actions.buyCrop(MapItems.TileItems.Crop.Type.tomato.codename);
 				break;
-			case CE.keyboard.Shortcuts.CROP_ADD_WHEAT.code:
+			case CE.keyboard.Shortcuts.CROP_BUY_WHEAT.code:
 				networkEngine.subsystems.player.actions.buyCrop(MapItems.TileItems.Crop.Type.wheat.codename);
 				break;
 			case CE.keyboard.Shortcuts.CROP_HARVEST.code:
 				networkEngine.subsystems.player.actions.harvestCrop();
+				break;
+			case CE.keyboard.Shortcuts.BUILDING_BUY_BARN.code:
+				networkEngine.subsystems.player.actions.buyBuilding(MapItems.TileItems.Building.Type.barn.codename);
+				break;
+			case CE.keyboard.Shortcuts.BUILDING_BUY_COLD_STORAGE.code:
+				networkEngine.subsystems.player.actions.buyBuilding(MapItems.TileItems.Building.Type.cold_storage.codename);
+				break;
+			case CE.keyboard.Shortcuts.BUILDING_BUY_SILO.code:
+				networkEngine.subsystems.player.actions.buyBuilding(MapItems.TileItems.Building.Type.silo.codename);
+				break;
+			case CE.keyboard.Shortcuts.BUILDING_DESTROY.code:
+				networkEngine.subsystems.player.actions.destroyBuilding();
 				break;
 			//graphic debug
 			case CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG.code:

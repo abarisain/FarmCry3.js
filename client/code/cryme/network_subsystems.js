@@ -3,12 +3,19 @@ networkEngine.subsystems.player = {
 		move: function (col, line) {
 			networkEngine.call('player', 'move', {col: col, line: line});
 		},
-		//cropType doit être
+		//cropType doit être le codename correspondant au serveur
 		buyCrop: function (cropType) {
 			networkEngine.call('player', 'buyCrop', {cropType: cropType});
 		},
 		harvestCrop: function () {
 			networkEngine.call('player', 'harvestCrop', {});
+		},
+		//buildingType doit être le codename correspondant au serveur
+		buyBuilding: function (buildingType) {
+			networkEngine.call('player', 'buyBuilding', {buildingType: buildingType});
+		},
+		destroyBuilding: function () {
+			networkEngine.call('player', 'destroyBuilding', {});
 		}
 	},
 	events: {
@@ -40,6 +47,12 @@ networkEngine.subsystems.player = {
 		},
 		cropHarvested: function (data) {
 			Map.network.harvestCrop(data.col, data.line);
+		},
+		buildingBought: function (data) {
+			Map.network.buyBuilding(data.buildingType, data.col, data.line);
+		},
+		buildingDestroyed: function (data) {
+			Map.network.destroyBuilding(data.col, data.line);
 		}
 	}
 };

@@ -4,6 +4,7 @@ MapItems.Tile = function (data) {
 	this.fertility = data.fertility;
 	this.maturity = data.maturity;
 	this.cropType = data.crop;//version du serveur
+	this.buildingType = data.building;//version du serveur
 	this.sprite = {};
 	this.alpha = 0;
 	this.updateCoord();
@@ -96,6 +97,10 @@ MapItems.Tile.prototype.load = function () {
 		this.sprite = SpritePack.Tiles.Sprites.SOIL;
 		var crop = new MapItems.TileItems.Crop(MapItems.TileItems.Crop.Type[this.cropType], this.col, this.line);
 		Map.mapItems.push(crop);
+	}
+	if (this.buildingType != 'dummy') {
+		var building = new MapItems.TileItems.Building(MapItems.TileItems.Building.Type[this.buildingType], this.col, this.line);
+		Map.mapItems.push(building);
 	}
 	this.updateImageCoord();
 	this.informations.loadInformations();

@@ -1,6 +1,6 @@
 Weapon = require('./weapon');
 Crop = require('./crop');
-Storage = require('./storage');
+Building = require('./building');
 Tile = require('./tile');
 
 var GameState = {
@@ -14,7 +14,7 @@ var GameState = {
 		//If they break, THINGS WILL GO TO HELL SO BE CAREFUL FUTURE-ME !
 		weapons: Weapon.getDefaultWeapons(),
 		crops: Crop.getDefaultCrops(),
-		storages: Storage.getDefaultStorages()
+		buildings: Building.getDefaultBuildings()
 	},
 	board: {
 		size: {

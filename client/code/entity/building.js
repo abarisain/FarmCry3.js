@@ -19,7 +19,19 @@ MapItems.TileItems.Building.prototype.draw = function () {
 }
 
 MapItems.TileItems.Building.Type = {
-	BARN: { sprite: {}, positionAvailable: [
+	barn: { codename: 'barn', sprite: {}, positionAvailable: [
+		{x: 0, y: -45},
+		{x: 67, y: 0},
+		{x: 0, y: 45},
+		{x: -67, y: 0}
+	]},
+	silo: { codename: 'silo', sprite: {}, positionAvailable: [
+		{x: 0, y: -45},
+		{x: 67, y: 0},
+		{x: 0, y: 45},
+		{x: -67, y: 0}
+	]},
+	cold_storage: { codename: 'cold_storage', sprite: {}, positionAvailable: [
 		{x: 0, y: -45},
 		{x: 67, y: 0},
 		{x: 0, y: 45},

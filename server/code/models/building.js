@@ -1,10 +1,10 @@
-function Storage(codename, name, size, capacity, price, price_tick, stops_withering) {
+function Building(codename, name, size, capacity, price, price_tick, stops_withering) {
 	if (typeof(codename) === 'undefined') {
 		//Same philosophy as weapon's constructor
 		this.codename = "dummy";
 		this.name = "Dummy storage";
 		this.size = 1;
-		this.capacity = 100;
+		this.capacity = 50;//note this value correspond to a barrel
 		this.price = 100;
 		this.price_tick = 1;
 		this.stops_withering = false;
@@ -19,33 +19,36 @@ function Storage(codename, name, size, capacity, price, price_tick, stops_wither
 	this.stops_withering = stops_withering;
 }
 
-Storage.getDefaultStorages = function () {
-	var storages = [];
-	storages.push(new Storage("silo",
+Building.Type = {
+	silo: new Building("silo",
 		"Silo",
 		1,
-		200,
+		200,//4 barrels
 		300,
 		0,
-		false)
-	);
-	storages.push(new Storage("barn",
+		false),
+	barn: new Building("barn",
 		"Barn",
-		2,
-		450,
+		4,
+		900,//18 barrels
 		800,
 		0,
-		false)
-	);
-	storages.push(new Storage("cold",
+		false),
+	cold: new Building("cold",
 		"Cold Storage",
 		6,
-		2200,
+		1000,//20 barrels
 		1400,
 		3,
 		true)
-	);
-	return storages;
 };
 
-module.exports = Storage;
+Building.getDefaultBuildings = function () {
+	var crops = [];
+	for (var key in Building.Type) {
+		crops.push(Building.Type[key]);
+	}
+	return crops;
+}
+
+module.exports = Building;

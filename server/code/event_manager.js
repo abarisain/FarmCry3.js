@@ -99,6 +99,31 @@ var EventManager = {
 					return true;
 				}
 				return false;
+			},
+			buyBuilding: function (farmer, buildingType) {
+				if (GameState.board.tiles[farmer.last_pos.x][farmer.last_pos.y].building.codename == 'dummy') {
+					GameState.board.tiles[farmer.last_pos.x][farmer.last_pos.y].building = Building.Type[buildingType];
+					NetworkEngine.clients.broadcast("player.buildingBought", {
+						nickname: farmer.nickname,
+						buildingType: buildingType,
+						col: farmer.last_pos.x,
+						line: farmer.last_pos.y
+					});
+					return true;
+				}
+				return false;
+			},
+			destroyBuilding: function (farmer) {
+				if (GameState.board.tiles[farmer.last_pos.x][farmer.last_pos.y].building.codename != 'dummy') {
+					GameState.board.tiles[farmer.last_pos.x][farmer.last_pos.y].building = new Building();
+					NetworkEngine.clients.broadcast("player.buildingDestroyed", {
+						nickname: farmer.nickname,
+						col: farmer.last_pos.x,
+						line: farmer.last_pos.y
+					});
+					return true;
+				}
+				return false;
 			}
 		}
 	}
