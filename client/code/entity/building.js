@@ -25,6 +25,8 @@ MapItems.TileItems.Building.prototype.draw = function () {
 MapItems.TileItems.Building.prototype.drawAnimation = function () {
 	if (this.type == MapItems.TileItems.Building.Type.barn) {
 		SpritePack.Buildings.Sprites.BARN_ROOF.drawOnAnimation(this.x, this.y);
+	} else if (this.type == MapItems.TileItems.Building.Type.cold_storage) {
+		SpritePack.Buildings.Sprites.COLD_STORAGE_ROOF.drawOnAnimation(this.x, this.y);
 	}
 };
 
@@ -41,7 +43,7 @@ MapItems.TileItems.Building.Type = {
 		{x: 0, y: 45},
 		{x: -67, y: 0}
 	]},
-	cold_storage: { codename: 'cold_storage', sprite: {}, positionInfo: {x: tileWidth / 2, y: tileHeight / 2}, positionAvailable: [
+	cold_storage: { codename: 'cold_storage', sprite: {}, positionInfo: {x: tileWidth / 2, y: 0}, positionAvailable: [
 		{x: 0, y: -45},
 		{x: 67, y: 0},
 		{x: 0, y: 45},
