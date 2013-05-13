@@ -150,6 +150,7 @@ var Map = {
 		}
 	},
 	drawAnimation: function () {
+
 		for (var i = 0; i < this.players.length; i++) {
 			this.players[i].draw();
 		}

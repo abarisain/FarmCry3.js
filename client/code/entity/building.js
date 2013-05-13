@@ -35,8 +35,18 @@ MapItems.TileItems.Building.prototype.drawAnimation = function () {
 	}
 };
 
+MapItems.TileItems.Building.prototype.match = function (col, line) {
+	//TODO a remplacer par des conditions parce que là ça devient ridicule ^^
+	if (col >= this.col && col <= this.col + Math.ceil(this.type.size / 2 - 1) &&
+		line >= this.line && line <= this.line + (this.type.size + 1) % 2) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 MapItems.TileItems.Building.Type = {
-	barn: { codename: 'barn', sprite: {}, positionInfo: {x: tileWidth / 2, y: 0}, positionAvailable: [
+	barn: { codename: 'barn', size: 4, sprite: {}, positionInfo: {x: tileWidth / 2, y: 0}, positionAvailable: [
 		{x: 135, y: -46},//0
 		{x: 180, y: -36},
 		{x: 200, y: -8},
@@ -56,7 +66,7 @@ MapItems.TileItems.Building.Type = {
 		{x: 8, y: -14},
 		{x: 23, y: 50}
 	]},
-	cold_storage: { codename: 'cold_storage', sprite: {}, positionInfo: {x: tileWidth / 2, y: 0}, positionAvailable: [
+	cold_storage: { codename: 'cold_storage', size: 6, sprite: {}, positionInfo: {x: tileWidth / 2, y: 0}, positionAvailable: [
 		{x: 112, y: -126},//0
 		{x: 180, y: -79},
 		{x: 246, y: -32},
@@ -74,7 +84,7 @@ MapItems.TileItems.Building.Type = {
 		{x: 87, y: 80},
 		{x: 154, y: 128}//15
 	]},
-	silo: { codename: 'silo', sprite: {}, positionInfo: {x: 0, y: 0}, positionAvailable: [
+	silo: { codename: 'silo', size: 1, sprite: {}, positionInfo: {x: 0, y: 0}, positionAvailable: [
 		{x: 1, y: -47},
 		{x: 68, y: -1},
 		{x: 2, y: 46},

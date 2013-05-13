@@ -46,6 +46,9 @@ Diagram.prototype = {
 	},
 	//coordonnees du centre de dessin
 	drawItem: function () {
+		if (this.gradient == null) {
+			this.init();
+		}
 		var top = this.value;
 		if (Map.transitionInformation.started) {
 			top = this.value * Map.transitionInformation.percentage();

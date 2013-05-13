@@ -43,7 +43,7 @@ Options.Gameplay = {
 //graphic debug
 Options.Debug = {};
 Options.Debug.Graphic = {
-	enabled: true,//affiche le debug basique
+	enabled: false,//affiche le debug basique
 	map: false,//affiche les noms des tiles, ça arrache un peu les yeux
 	item: true,//affiche les noms des tilesItems
 	advanced: false,//switch la transparence des éléments
