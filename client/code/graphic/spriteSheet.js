@@ -46,7 +46,7 @@ function LoadSpritePack() {
 	SpritePack.Storages.Sprites.BARREL_WHEAT = new Sprite('barrel_wheat', 20, 38);
 
 	SpritePack.Storages.Sprites.BOX_CORN = new Sprite('box_corn', 25, 50);
-	SpritePack.Storages.Sprites.BOX_TOMATO = new Sprite('box_tomato', 23, 44);
+	SpritePack.Storages.Sprites.BOX_TOMATO = new Sprite('box_tomato', 24, 44);
 	SpritePack.Storages.Sprites.BOX_WHEAT = new Sprite('box_wheat', 24, 44);
 
 	SpritePack.Storages.Sprites.ICE_BOX_CORN = new Sprite('ice_box_corn', 24, 50);

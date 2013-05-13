@@ -2,8 +2,10 @@ MapItems.TileItems.Building = function (type, col, line) {
 	MapItems.TileItem.call(this, type.sprite, col, line);
 	this.type = type;
 	this.storages = [];
-	for (var i = 0; i < this.type.positionAvailable.length; i++) {
-		this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.corn, this.type, i, this.x, this.y));
+	for (var i = 0; (i + 1) * 3 < this.type.positionAvailable.length; i++) {
+		this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.corn, this.type, 3 * i, this.x, this.y));
+		this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.tomato, this.type, 3 * i + 1, this.x, this.y));
+		this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.wheat, this.type, 3 * i + 2, this.x, this.y));
 	}
 	/*this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.corn, this.type, 0, this.x, this.y));
 	 this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.wheat, this.type, 1, this.x, this.y));
@@ -35,42 +37,42 @@ MapItems.TileItems.Building.prototype.drawAnimation = function () {
 
 MapItems.TileItems.Building.Type = {
 	barn: { codename: 'barn', sprite: {}, positionInfo: {x: tileWidth / 2, y: 0}, positionAvailable: [
-		{x: 112, y: 45},
-		{x: 158, y: 46},
-		{x: 194, y: 27},
-		{x: 200, y: 8},
+		{x: 135, y: -46},//0
 		{x: 180, y: -36},
-		{x: 135, y: -48},
-		{x: 90, y: -36},
+		{x: 200, y: -8},
+		{x: 194, y: 27},
+		{x: 91, y: -35},
+		{x: 158, y: 46},//5
 		{x: 72, y: -7},
-		{x: 79, y: 29},
+		{x: 79, y: 28},
+		{x: 113, y: 45},
 		{x: 90, y: 90},
-		{x: 181, y: 90},
+		{x: 181, y: 90},//10
 		{x: 251, y: 48},
 		{x: 266, y: -16},
 		{x: 221, y: -72},
 		{x: 135, y: -94},
-		{x: 52, y: -71},
+		{x: 52, y: -71},//15
 		{x: 8, y: -14},
 		{x: 23, y: 50}
 	]},
 	cold_storage: { codename: 'cold_storage', sprite: {}, positionInfo: {x: tileWidth / 2, y: 0}, positionAvailable: [
-		{x: 112, y: -126},
+		{x: 112, y: -126},//0
 		{x: 180, y: -79},
 		{x: 246, y: -32},
 		{x: 314, y: 15},
 		{x: 59, y: -88},
-		{x: 125, y: -41},
+		{x: 125, y: -41},//5
 		{x: 192, y: 6},
 		{x: 261, y: 53},
 		{x: 6, y: -51},
 		{x: 73, y: -5},
-		{x: 140, y: 42},
-		{x: 207, y: 88},
+		{x: 140, y: 42},//10
+		{x: 207, y: 87},
 		{x: -47, y: -14},
 		{x: 20, y: 33},
 		{x: 87, y: 80},
-		{x: 154, y: 128}
+		{x: 154, y: 128}//15
 	]},
 	silo: { codename: 'silo', sprite: {}, positionInfo: {x: 0, y: 0}, positionAvailable: [
 		{x: 1, y: -47},
