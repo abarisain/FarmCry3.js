@@ -55,10 +55,22 @@ MapItems.TileItems.Building.Type = {
 		{x: 23, y: 50}
 	]},
 	cold_storage: { codename: 'cold_storage', sprite: {}, positionInfo: {x: tileWidth / 2, y: 0}, positionAvailable: [
-		{x: 0, y: -45},
-		{x: 67, y: 0},
-		{x: 0, y: 45},
-		{x: -67, y: 0}
+		{x: 112, y: -126},
+		{x: 180, y: -79},
+		{x: 246, y: -32},
+		{x: 314, y: 15},
+		{x: 59, y: -88},
+		{x: 125, y: -41},
+		{x: 192, y: 6},
+		{x: 261, y: 53},
+		{x: 6, y: -51},
+		{x: 73, y: -5},
+		{x: 140, y: 42},
+		{x: 207, y: 88},
+		{x: -47, y: -14},
+		{x: 20, y: 33},
+		{x: 87, y: 80},
+		{x: 154, y: 128}
 	]},
 	silo: { codename: 'silo', sprite: {}, positionInfo: {x: 0, y: 0}, positionAvailable: [
 		{x: 1, y: -47},
