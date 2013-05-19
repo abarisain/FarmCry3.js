@@ -29,7 +29,7 @@ Farmer.prototype = {
 		var tmpFarmer = this.getMinimalFarmer();
 		tmpFarmer.money = this.money;
 		tmpFarmer.weapons = [];
-		for (var weapon in tmpFarmer.weapons) {
+		for (var weapon in this.weapons) {
 			tmpFarmer.weapons.push(weapon.codename);
 		}
 		return tmpFarmer;
