@@ -76,8 +76,8 @@ var EventManager = {
 				return true;
 			},
 			buyCrop: function (farmer, cropType) {
-				if (GameState.board.tiles[farmer.last_pos.x][farmer.last_pos.y].crop.codename == 'dummy') {
-					GameState.board.tiles[farmer.last_pos.x][farmer.last_pos.y].crop = Crop.Type[cropType];
+				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop.codename == 'dummy') {
+					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop = Crop.Type[cropType];
 					NetworkEngine.clients.broadcast("player.cropBought", {
 						nickname: farmer.nickname,
 						cropType: cropType,
@@ -89,8 +89,8 @@ var EventManager = {
 				return false;
 			},
 			harvestCrop: function (farmer) {
-				if (GameState.board.tiles[farmer.last_pos.x][farmer.last_pos.y].crop.codename != 'dummy') {
-					GameState.board.tiles[farmer.last_pos.x][farmer.last_pos.y].crop = new Crop();
+				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop.codename != 'dummy') {
+					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop = new Crop();
 					NetworkEngine.clients.broadcast("player.cropHarvested", {
 						nickname: farmer.nickname,
 						col: farmer.last_pos.x,
@@ -101,8 +101,8 @@ var EventManager = {
 				return false;
 			},
 			buyBuilding: function (farmer, buildingType) {
-				if (GameState.board.tiles[farmer.last_pos.x][farmer.last_pos.y].building.codename == 'dummy') {
-					GameState.board.tiles[farmer.last_pos.x][farmer.last_pos.y].building = Building.Type[buildingType];
+				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building.codename == 'dummy') {
+					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building = Building.Type[buildingType];
 					NetworkEngine.clients.broadcast("player.buildingBought", {
 						nickname: farmer.nickname,
 						buildingType: buildingType,
@@ -114,8 +114,8 @@ var EventManager = {
 				return false;
 			},
 			destroyBuilding: function (farmer) {
-				if (GameState.board.tiles[farmer.last_pos.x][farmer.last_pos.y].building.codename != 'dummy') {
-					GameState.board.tiles[farmer.last_pos.x][farmer.last_pos.y].building = new Building();
+				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building.codename != 'dummy') {
+					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building = new Building();
 					NetworkEngine.clients.broadcast("player.buildingDestroyed", {
 						nickname: farmer.nickname,
 						col: farmer.last_pos.x,
