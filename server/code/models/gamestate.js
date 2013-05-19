@@ -6,6 +6,7 @@ Tile = require('./tile');
 var GameState = {
 	farmers: [],
 	paused: false,
+	lastPersistDate: 0,
 	settings: {
 		tickRate: 1000, //Time between ticks in mS
 		startMoney: 1000, //Still dollars
