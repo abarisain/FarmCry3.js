@@ -52,6 +52,8 @@ var initLogin = function () {
 		return true;
 	};
 
+
+    document.querySelector("#login_server").value = document.location;
 	//Check if local storage is supported
 	loginEmailField.focus();
 	if (supports_html5_storage()) {
