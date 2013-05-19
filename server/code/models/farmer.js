@@ -40,7 +40,27 @@ Farmer.prototype = {
         tmpFarmer.col = this.last_pos.x;
         tmpFarmer.line = this.last_pos.y;
         return tmpFarmer;
-    }
+    },
+	getPersistable: function () {
+		var tmpFarmer = {};
+		tmpFarmer.nickname = this.nickname;
+		tmpFarmer.email = this.email;
+		tmpFarmer.password = this.password;
+		tmpFarmer.last_pos_x = this.last_pos.x;
+		tmpFarmer.last_pos_y = this.last_pos.y;
+		tmpFarmer.money = this.money;
+		var tmpArray = [];
+		for (var weapon in this.weapons) {
+			tmpArray.push(weapon.codename);
+		}
+		tmpFarmer.weapons = JSON.stringify(tmpArray);
+		var tmpArray = [];
+		for (var farmer in this.allied_farmers) {
+			tmpArray.push(farmer.nickname);
+		}
+		tmpFarmer.allied_farmers = JSON.stringify(tmpArray);
+		return tmpFarmer;
+	}
 };
 
 module.exports = Farmer;
