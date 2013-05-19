@@ -47,6 +47,19 @@ Tile.prototype = {
 		tmpTile.owner = this.owner.nickname;
 		tmpTile.health = this.getHealth();
 		return tmpTile;
+	},
+	getPersistable: function () {
+		var tmpTile = {};
+		tmpTile.pos_x = this.position.x;
+		tmpTile.pos_y = this.position.y;
+		tmpTile.owner = this.owner.nickname;
+		tmpTile.humidity = this.humidity;
+		tmpTile.fertility = this.fertility;
+		tmpTile.max_fertility = this.max_fertility;
+		tmpTile.maturity = this.maturity;
+		tmpTile.crop = this.crop.codename;
+		tmpTile.building = this.building.codename;
+		return tmpTile;
 	}
 };
 
