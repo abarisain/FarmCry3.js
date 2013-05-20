@@ -1,7 +1,9 @@
+// Load all the models, fucking node-fibers and node.js screwing everything up
 Weapon = require('./weapon');
 Crop = require('./crop');
 Building = require('./building');
 Tile = require('./tile');
+Farmer = require('./farmer');
 
 var GameState = {
 	farmers: [],
@@ -137,6 +139,4 @@ var GameState = {
 	}
 };
 
-GameState.board.init();
-GameState.board.grow(8, 8);
 module.exports = GameState;

@@ -1,6 +1,3 @@
-Weapon = require('./weapon');
-GameState = require('./gamestate');
-
 //TODO: Well fuck, there is so much to do
 function Farmer(nickname, email, password) {
 	this.last_pos = {
@@ -20,7 +17,7 @@ function Farmer(nickname, email, password) {
 	this.nickname = nickname;
 	this.email = email;
 	this.password = password;
-	this.weapons = [ GameState.settings.weapons.fork ];
+	this.weapons = [ require('./gamestate').settings.weapons.fork ];
 }
 
 Farmer.prototype = {
