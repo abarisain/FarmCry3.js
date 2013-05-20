@@ -29,9 +29,9 @@ Farmer.prototype = {
 		var tmpFarmer = this.getMinimalFarmer();
 		tmpFarmer.money = this.money;
 		tmpFarmer.weapons = [];
-		for (var weapon in this.weapons) {
+		this.weapons.forEach(function(weapon) {
 			tmpFarmer.weapons.push(weapon.codename);
-		}
+		});
 		return tmpFarmer;
 	},
     getMinimalFarmer: function() {
@@ -50,14 +50,14 @@ Farmer.prototype = {
 		tmpFarmer.last_pos_y = this.last_pos.y;
 		tmpFarmer.money = this.money;
 		var tmpArray = [];
-		for (var weapon in this.weapons) {
+		this.weapons.forEach(function(weapon) {
 			tmpArray.push(weapon.codename);
-		}
+		});
 		tmpFarmer.weapons = JSON.stringify(tmpArray);
 		var tmpArray = [];
-		for (var farmer in this.allied_farmers) {
+		this.allied_farmers.forEach(function(farmer) {
 			tmpArray.push(farmer.nickname);
-		}
+		});
 		tmpFarmer.allied_farmers = JSON.stringify(tmpArray);
 		return tmpFarmer;
 	}
