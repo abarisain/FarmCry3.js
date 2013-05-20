@@ -39,8 +39,6 @@ var start_game = (function() {
 			PM.persist(GameState, PM.defaultPersistCallback);
 	}, 300000);
 
-
-
 	var express = require('express');
 	var app = express();
 	app.use(express.static(__dirname + '/../../client/code'));
