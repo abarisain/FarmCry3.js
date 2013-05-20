@@ -74,7 +74,7 @@ CrymeEngine.keyboard = {
 	},
 	keyPressed: function (event) {
 		//Special case, unless we are pressing enter, ignore everything while we're in the chat box
-		if (document.activeElement == CE.hud.chat.divs.input && event.keyCode != CE.keyboard.Shortcuts.CHAT) {
+		if (document.activeElement == CE.hud.chat.divs.input && event.keyCode != CE.keyboard.Shortcuts.CHAT.code) {
 			return true;
 		}
 		var messageData = {
