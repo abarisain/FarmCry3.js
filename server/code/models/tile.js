@@ -37,6 +37,8 @@ Tile.prototype = {
 		//Returns a small version of this tile (for network usage)
 		var tmpTile = new Tile();
 		//Copy basic values
+		tmpTile.position.x = undefined;
+		tmpTile.position.y = undefined;
 		tmpTile.position.col = this.position.x;
 		tmpTile.position.line = this.position.y;
 		tmpTile.humidity = this.humidity;
