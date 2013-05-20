@@ -24,7 +24,7 @@ Crop.Types = {
 		30,
 		2000,
 		100),
-	corn: new Crop("tomato",
+	corn: new Crop("corn",
 		"Corn",
 		1800,
 		40,
