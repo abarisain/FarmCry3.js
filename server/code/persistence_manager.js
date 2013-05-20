@@ -90,8 +90,8 @@ var PersistenceManager = {
 			this.client.get(this.keys.boardSizeX, flow.set(this.keys.boardSizeX));
 			this.client.get(this.keys.boardSizeY, flow.set(this.keys.boardSizeY));
 			this.client.get(this.keys.lastPersistDate, flow.set(this.keys.lastPersistDate));
-			this.client.keys(this.keys.boardTilesPrefix, flow.set('tilesKeys'));
-			this.client.keys(this.keys.farmersPrefix, flow.set('farmersKeys'));
+			this.client.keys(this.keys.boardTilesPrefix + "*", flow.set('tilesKeys'));
+			this.client.keys(this.keys.farmersPrefix + "*", flow.set('farmersKeys'));
 			gamestate.settings.tickRate = flow.get(this.keys.tickRate);
 			gamestate.settings.startMoney = flow.get(this.keys.startMoney);
 			gamestate.board.size.x = flow.get(this.keys.boardSizeX);
