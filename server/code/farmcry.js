@@ -64,10 +64,33 @@ var start_game = (function() {
 
 }).bind(this);
 
-// Load from redis if it's possible, otherwise start a new game and persist it.
-var PersistenceManager = require('./persistence_manager');
+var generate_new_initialdata = (function() {
+	console.log("Generating new game data");
 
-PersistenceManager.load(function(err, result) {
+	// Generate a 16x16 board
+	GameState.board.init();
+	GameState.board.grow(8, 8);
+
+	// Generate the default user accounts
+	var tmpFarmer = new Farmer("Arkanta", "dreamteam69@gmail.com", "prout");
+	tmpFarmer.money = 9001;
+	GameState.farmers.push(tmpFarmer);
+	tmpFarmer = new Farmer("Yaurthek", "yaurthek@gmail.com", "nightcore");
+	tmpFarmer.money = 9002;
+	GameState.farmers.push(tmpFarmer);
+	tmpFarmer = new Farmer("iPoi", "rouxguigui@gmail.com", "3D");
+	tmpFarmer.money = 9003;
+	GameState.farmers.push(tmpFarmer);
+	tmpFarmer = new Farmer("Kalahim", "kalahim69@gmail.com", "dieu");
+	tmpFarmer.money = 9004;
+	GameState.farmers.push(tmpFarmer);
+}).bind(this);
+
+// Load from redis if it's possible, otherwise start a new game and persist it.
+//var PersistenceManager = require('./persistence_manager');
+
+/*PersistenceManager.load(function(err, result) {
+	return;
 	//Workaround for asyncblock (bug?) behaviour where if an error is thrown in this callback,
 	//the callback will be called again with err set as the new error. This is horrible.
 	try {
@@ -78,25 +101,8 @@ PersistenceManager.load(function(err, result) {
 			if(err != null) {
 				console.log("Error while loading saved data : " + err);
 			}
-			console.log("Generating new game data");
 
-			// Generate a 16x16 board
-			GameState.board.init();
-			GameState.board.grow(8, 8);
-
-			// Generate the default user accounts
-			var tmpFarmer = new Farmer("Arkanta", "dreamteam69@gmail.com", "prout");
-			tmpFarmer.money = 9001;
-			GameState.farmers.push(tmpFarmer);
-			tmpFarmer = new Farmer("Yaurthek", "yaurthek@gmail.com", "nightcore");
-			tmpFarmer.money = 9002;
-			GameState.farmers.push(tmpFarmer);
-			tmpFarmer = new Farmer("iPoi", "rouxguigui@gmail.com", "3D");
-			tmpFarmer.money = 9003;
-			GameState.farmers.push(tmpFarmer);
-			tmpFarmer = new Farmer("Kalahim", "kalahim69@gmail.com", "dieu");
-			tmpFarmer.money = 9004;
-			GameState.farmers.push(tmpFarmer);
+			generate_new_initialdata();
 
 			// Save it
 			PersistenceManager.persist(PersistenceManager.defaultPersistCallback);
@@ -105,5 +111,7 @@ PersistenceManager.load(function(err, result) {
 	} catch (err2) {
 		console.log("Error while starting game : " + err2);
 	}
-});
+});*/
 
+generate_new_initialdata();
+start_game();
