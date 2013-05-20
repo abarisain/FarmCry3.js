@@ -45,7 +45,7 @@ var PersistenceManager = {
 			var startDate = Date.now();
 			this.client.flushdb(flow.add());
 			flow.wait();
-			this.client.set(this.keys.databaseVersion, t.databaseVersion, flow.add());
+			this.client.set(this.keys.databaseVersion, this.databaseVersion, flow.add());
 			this.client.set(this.keys.lastPersistDate, startDate, flow.add());
 			flow.wait();
 			gamestate.farmers.forEach((function(farmer) {
