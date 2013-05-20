@@ -13,9 +13,9 @@ var GameState = {
 		//Here are the reference instances of the objects
 		//If they are modified, everything using them will reflect the change
 		//If they break, THINGS WILL GO TO HELL SO BE CAREFUL FUTURE-ME !
-		weapons: Weapon.getDefaultWeapons(),
-		crops: Crop.getDefaultCrops(),
-		buildings: Building.getDefaultBuildings()
+		weapons: Weapon.Types,
+		crops: Crop.Types,
+		buildings: Building.Types
 	},
 	board: {
 		size: {

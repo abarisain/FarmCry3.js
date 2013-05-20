@@ -20,7 +20,7 @@ function Farmer(nickname, email, password) {
 	this.nickname = nickname;
 	this.email = email;
 	this.password = password;
-	this.weapons = [ GameState.settings.weapons[0] ];
+	this.weapons = [ GameState.settings.weapons.fork ];
 }
 
 Farmer.prototype = {

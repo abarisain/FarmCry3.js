@@ -17,7 +17,7 @@ function Crop(codename, name, maturation_time, productivity, storability, seed_p
 	this.seed_price = seed_price; //Seed price for one tile
 }
 
-Crop.Type = {
+Crop.Types = {
 	tomato: new Crop("tomato",
 		"Tomato",
 		1000,
@@ -45,13 +45,5 @@ Crop.Type = {
 	 800)
 	 );*/
 };
-
-Crop.getDefaultCrops = function () {
-	var crops = [];
-	for (var key in Crop.Type) {
-		crops.push(Crop.Type[key]);
-	}
-	return crops;
-}
 
 module.exports = Crop;

@@ -19,7 +19,7 @@ function Building(codename, name, size, capacity, price, price_tick, stops_withe
 	this.stops_withering = stops_withering;
 }
 
-Building.Type = {
+Building.Types = {
 	silo: new Building("silo",
 		"Silo",
 		1,
@@ -42,13 +42,5 @@ Building.Type = {
 		3,
 		true)
 };
-
-Building.getDefaultBuildings = function () {
-	var crops = [];
-	for (var key in Building.Type) {
-		crops.push(Building.Type[key]);
-	}
-	return crops;
-}
 
 module.exports = Building;
