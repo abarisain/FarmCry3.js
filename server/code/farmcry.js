@@ -67,37 +67,43 @@ var start_game = (function() {
 // Load from redis if it's possible, otherwise start a new game and persist it.
 var PersistenceManager = require('./persistence_manager');
 
-PersistenceManager.load(GameState, function(err, result) {
-	if(err == null && result) {
-		console.log("Saved game data loaded (database version " + PersistenceManager.databaseVersion
-			+ ", timestamp " + GameState.lastPersistDate + ")");
-	} else {
-		if(err != null) {
-			console.log("Error while loading saved data : " + err);
+PersistenceManager.load(function(err, result) {
+	//Workaround for asyncblock (bug?) behaviour where if an error is thrown in this callback,
+	//the callback will be called again with err set as the new error. This is horrible.
+	try {
+		if(err == null && result) {
+			console.log("Saved game data loaded (database version " + PersistenceManager.databaseVersion
+				+ ", timestamp " + GameState.lastPersistDate + ")");
+		} else {
+			if(err != null) {
+				console.log("Error while loading saved data : " + err);
+			}
+			console.log("Generating new game data");
+
+			// Generate a 16x16 board
+			GameState.board.init();
+			GameState.board.grow(8, 8);
+
+			// Generate the default user accounts
+			var tmpFarmer = new Farmer("Arkanta", "dreamteam69@gmail.com", "prout");
+			tmpFarmer.money = 9001;
+			GameState.farmers.push(tmpFarmer);
+			tmpFarmer = new Farmer("Yaurthek", "yaurthek@gmail.com", "nightcore");
+			tmpFarmer.money = 9002;
+			GameState.farmers.push(tmpFarmer);
+			tmpFarmer = new Farmer("iPoi", "rouxguigui@gmail.com", "3D");
+			tmpFarmer.money = 9003;
+			GameState.farmers.push(tmpFarmer);
+			tmpFarmer = new Farmer("Kalahim", "kalahim69@gmail.com", "dieu");
+			tmpFarmer.money = 9004;
+			GameState.farmers.push(tmpFarmer);
+
+			// Save it
+			PersistenceManager.persist(PersistenceManager.defaultPersistCallback);
 		}
-		console.log("Generating new game data");
-
-		// Generate a 16x16 board
-		GameState.board.init();
-		GameState.board.grow(8, 8);
-
-		// Generate the default user accounts
-		var tmpFarmer = new Farmer("Arkanta", "dreamteam69@gmail.com", "prout");
-		tmpFarmer.money = 9001;
-		GameState.farmers.push(tmpFarmer);
-		tmpFarmer = new Farmer("Yaurthek", "yaurthek@gmail.com", "nightcore");
-		tmpFarmer.money = 9002;
-		GameState.farmers.push(tmpFarmer);
-		tmpFarmer = new Farmer("iPoi", "rouxguigui@gmail.com", "3D");
-		tmpFarmer.money = 9003;
-		GameState.farmers.push(tmpFarmer);
-		tmpFarmer = new Farmer("Kalahim", "kalahim69@gmail.com", "dieu");
-		tmpFarmer.money = 9004;
-		GameState.farmers.push(tmpFarmer);
-
-		// Save it
-		PersistenceManager.persist(GameState, PersistenceManager.defaultPersistCallback);
+		start_game();
+	} catch (err2) {
+		console.log("Error while starting game : " + err2);
 	}
-	start_game();
 });
 
