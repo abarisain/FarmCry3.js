@@ -20,19 +20,19 @@ var redis = require("redis");
 var PersistenceManager = {
 	asyncblock: null,
 	keys: {
-		databaseVersion: "databaseVersion",
-		lastPersistDate: "lastPersistDate",
-		farmersPrefix: "farmer:",
-		settingsPrefix: "settings:",
-		tickRate: this.settingsPrefix + "tickRate",
-		startMoney: this.settingsPrefix + "startMoney",
-		weaponsPrefix: this.settingsPrefix + "weapon:",
-		cropPrefix: this.settingsPrefix + "crop:",
-		buildingsPrefix: this.settingsPrefix + "building:",
-		boardPrefix: "board:",
-		boardSizeX: this.boardPrefix + "size:x",
-		boardSizeY: this.boardPrefix + "size:y",
-		boardTilesPrefix: this.boardPrefix + "tile:"
+		databaseVersion: null,
+		lastPersistDate: null,
+		farmersPrefix: null,
+		settingsPrefix: null,
+		tickRate: null,
+		startMoney: null,
+		weaponsPrefix: null,
+		cropPrefix: null,
+		buildingsPrefix: null,
+		boardPrefix: null,
+		boardSizeX: null,
+		boardSizeY: null,
+		boardTilesPrefix: null,
 	},
 	databaseVersion: 1,
 	client: null,
@@ -41,32 +41,34 @@ var PersistenceManager = {
 	},
 	persist: function(gamestate, callback) {
 		var t = this;
-		this.asyncblock(function(flow) {
+		this.asyncblock((function(flow) {
 			console.log("PersistenceManager - Persisting gamestate");
 			var startDate = Date.now();
-			t.client.flushdb(flow.add());
+			this.client.flushdb(flow.add());
 			flow.wait();
-			t.client.set(t.keys.databaseVersion, t.databaseVersion, flow.add());
-			t.client.set(t.keys.lastPersistDate, startDate, flow.add());
+			this.client.set(t.keys.databaseVersion, t.databaseVersion, flow.add());
+			this.client.set(t.keys.lastPersistDate, startDate, flow.add());
 			flow.wait();
-			for(var farmer in gamestate.farmers) {
+			gamestate.farmers.forEach((function(farmer) {
 				// Key : farmer:<nickname>
-				t.client.hmset(t.keys.farmersPrefix + farmer.nickname, farmer.getPersistable(), flow.add());
-			}
-			for(var tile in gamestate.board.tiles) {
-				// Key : board:tile:<x>:<y>
-				t.client.hmset(t.keys.boardTilesPrefix + tile.position.x + ":" + tile.position.y, tile.getPersistable(), flow.add());
-			}
-			t.client.set(t.keys.tickRate, gamestate.settings.tickRate, flow.add());
-			t.client.set(t.keys.startMoney, gamestate.settings.startMoney, flow.add());
-			t.client.set(t.keys.boardSizeX, gamestate.board.size.x, flow.add());
-			t.client.set(t.keys.boardSizeY, gamestate.board.size.y, flow.add());
+				this.client.hmset(t.keys.farmersPrefix + farmer.nickname, farmer.getPersistable(), flow.add());
+			}).bind(this));
+			gamestate.board.tiles.forEach((function(tileLine) {
+				tileLine.forEach((function(tile) {
+					// Key : board:tile:<x>:<y>
+					this.client.hmset(t.keys.boardTilesPrefix + tile.position.x + ":" + tile.position.y, tile.getPersistable(), flow.add());
+				}).bind(this));
+			}).bind(this));
+			this.client.set(t.keys.tickRate, gamestate.settings.tickRate, flow.add());
+			this.client.set(t.keys.startMoney, gamestate.settings.startMoney, flow.add());
+			this.client.set(t.keys.boardSizeX, gamestate.board.size.x, flow.add());
+			this.client.set(t.keys.boardSizeY, gamestate.board.size.y, flow.add());
 			gamestate.lastPersistDate = startDate;
-			console.log("PersistenceManager - Persist done in " + Date.now() - startDate + " ms");
-		}, callback);
+			console.log("PersistenceManager - Persist done in " + (Date.now() - startDate) + " ms");
+		}).bind(this), callback);
 	},
 	load: function(gamestate, callback) {
-		this.asyncblock(function(flow) {
+		this.asyncblock((function(flow) {
 			console.log("PersistenceManager - Loading gamestate");
 			var startDate = Date.now();
 			// This syntax allows me to get the database value in a synchronous way
@@ -80,11 +82,27 @@ var PersistenceManager = {
 				console.log("PersistenceManager - Loading gamestate failed. Stored db ver = " + dbPersistedVer + ", current is " +  + ".");
 				return false;
 			}
-			console.log("PersistenceManager - Loading done in " + Date.now() - startDate + " ms");
+			console.log("PersistenceManager - Loading done in " + (Date.now() - startDate) + " ms");
 			return true;
-		}, callback);
+		}).bind(this), callback);
 	}
 };
+
+// Populate keys here. We can't do this before because some values depend on others.
+PersistenceManager.keys.databaseVersion= "databaseVersion";
+PersistenceManager.keys.lastPersistDate = "lastPersistDate";
+PersistenceManager.keys.farmersPrefix = "farmer:";
+PersistenceManager.keys.settingsPrefix = "settings:";
+PersistenceManager.keys.tickRate = PersistenceManager.keys.settingsPrefix + "tickRate";
+PersistenceManager.keys.startMoney = PersistenceManager.keys.settingsPrefix + "startMoney";
+PersistenceManager.keys.weaponsPrefix = PersistenceManager.keys.settingsPrefix + "weapon:";
+PersistenceManager.keys.cropPrefix = PersistenceManager.keys.settingsPrefix + "crop:";
+PersistenceManager.keys.buildingsPrefix = PersistenceManager.keys.settingsPrefix + "building:";
+PersistenceManager.keys.boardPrefix = "board:";
+PersistenceManager.keys.boardSizeX = PersistenceManager.keys.boardPrefix + "size:x";
+PersistenceManager.keys.boardSizeY = PersistenceManager.keys.boardPrefix + "size:y";
+PersistenceManager.keys.boardTilesPrefix = PersistenceManager.keys.boardPrefix + "tile:";
+
 
 // Synchronous node.js, deal with it.
 PersistenceManager.asyncblock = require('asyncblock');
