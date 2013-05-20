@@ -36,7 +36,7 @@ var start_game = (function() {
 	// Setup auto-persistence every 5 minutes
 	GameState.autoPersisterId = setInterval(function() {
 		if(!GameState.pauseAutoPersistence)
-			PM.persist(GameState, PM.defaultPersistCallback);
+			PM.persist(PM.defaultPersistCallback);
 	}, 300000);
 
 	var express = require('express');
