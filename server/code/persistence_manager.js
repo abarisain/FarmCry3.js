@@ -41,6 +41,11 @@ var PersistenceManager = {
 	onError: function(err) {
 		console.log("Redis error : " + err);
 	},
+	defaultPersistCallback: function(err) {
+		if(err != null) {
+			console.log("PersistenceManager - Error while persisting : " + err);
+		}
+	},
 	persist: function(gamestate, callback) {
 		this.asyncblock((function(flow) {
 			console.log("PersistenceManager - Persisting gamestate");
@@ -66,7 +71,7 @@ var PersistenceManager = {
 			this.client.set(this.keys.boardSizeY, gamestate.board.size.y, flow.add());
 			flow.wait();
 			gamestate.lastPersistDate = startDate;
-			console.log("PersistenceManager - Persist done in " + (Date.now() - startDate) + " ms");
+			console.log("PersistenceManager - Persist done in " + (Date.now() - startDate) + " ms, at " + startDate);
 			return true;
 		}).bind(this), callback);
 	},
@@ -174,7 +179,7 @@ var PersistenceManager = {
 };
 
 // Populate keys here. We can't do this before because some values depend on others.
-PersistenceManager.keys.databaseVersion= "databaseVersion";
+PersistenceManager.keys.databaseVersion = "databaseVersion";
 PersistenceManager.keys.lastPersistDate = "lastPersistDate";
 PersistenceManager.keys.farmersPrefix = "farmer:";
 PersistenceManager.keys.settingsPrefix = "settings:";

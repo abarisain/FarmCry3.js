@@ -5,6 +5,8 @@ Tile = require('./tile');
 
 var GameState = {
 	farmers: [],
+	autoPersisterId: null,
+	pauseAutoPersistence: false,
 	paused: false,
 	lastPersistDate: 0,
 	settings: {
@@ -137,5 +139,4 @@ var GameState = {
 
 GameState.board.init();
 GameState.board.grow(8, 8);
-GameState.board.print();
 module.exports = GameState;
