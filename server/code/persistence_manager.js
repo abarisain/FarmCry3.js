@@ -98,11 +98,11 @@ var PersistenceManager = {
 			this.client.get(this.keys.lastPersistDate, flow.set(this.keys.lastPersistDate));
 			this.client.keys(this.keys.boardTilesPrefix + "*", flow.set('tilesKeys'));
 			this.client.keys(this.keys.farmersPrefix + "*", flow.set('farmersKeys'));
-			GameState.settings.tickRate = flow.get(this.keys.tickRate);
-			GameState.settings.startMoney = flow.get(this.keys.startMoney);
-			GameState.board.size.x = flow.get(this.keys.boardSizeX);
-			GameState.board.size.y = flow.get(this.keys.boardSizeY);
-			GameState.lastPersistDate = flow.get(this.keys.lastPersistDate);
+			GameState.settings.tickRate = parseInt(flow.get(this.keys.tickRate));
+			GameState.settings.startMoney = parseInt(flow.get(this.keys.startMoney));
+			GameState.board.size.x = parseInt(flow.get(this.keys.boardSizeX));
+			GameState.board.size.y = parseInt(flow.get(this.keys.boardSizeY));
+			GameState.lastPersistDate = parseInt(flow.get(this.keys.lastPersistDate));
 			var farmersKeys = flow.get('farmersKeys');
 			var tilesKeys = flow.get('tilesKeys');
 			farmersKeys.forEach((function(key) {
@@ -131,9 +131,9 @@ var PersistenceManager = {
 				var tmpFarmer = farmers[farmer.nickname];
 				tmpFarmer.email = farmer.email;
 				tmpFarmer.password = farmer.password;
-				tmpFarmer.last_pos.x = farmer.last_pos_x;
-				tmpFarmer.last_pos.y = farmer.last_pos_y;
-				tmpFarmer.money = farmer.money;
+				tmpFarmer.last_pos.x = parseInt(farmer.last_pos_x);
+				tmpFarmer.last_pos.y = parseInt(farmer.last_pos_y);
+				tmpFarmer.money = parseInt(farmer.money);
 				tmpFarmer.weapons = [];
 				JSON.parse(farmer.weapons).forEach((function(key) {
 					// We consider that the database is consistent and the stored weapons still exist.
@@ -153,12 +153,12 @@ var PersistenceManager = {
 			for(var key in dbTiles) {
 				var tile = dbTiles[key];
 				var tmpTile = new Tile();
-				tmpTile.position.x = tile.pos_x;
-				tmpTile.position.y = tile.pos_y;
-				tmpTile.humidity = tile.humidity;
-				tmpTile.fertility = tile.fertility;
-				tmpTile.max_fertility = tile.max_fertility;
-				tmpTile.maturity = tile.maturity;
+				tmpTile.position.x = parseInt(tile.pos_x);
+				tmpTile.position.y = parseInt(tile.pos_y);
+				tmpTile.humidity = parseFloat(tile.humidity);
+				tmpTile.fertility = parseFloat(tile.fertility);
+				tmpTile.max_fertility = parseFloat(tile.max_fertility);
+				tmpTile.maturity = parseFloat(tile.maturity);
 				if(tile.owner != "dummy") {
 					// We consider that the database is consistent bla bla
 					tmpTile.owner = farmers[tile.owner];
