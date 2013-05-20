@@ -62,8 +62,8 @@ var PersistenceManager = {
 			}).bind(this));
 			GameState.board.tiles.forEach((function(tileLine) {
 				tileLine.forEach((function(tile) {
-					// Key : board:tile:<x>:<y>
-					this.client.hmset(this.keys.boardTilesPrefix + tile.position.x + ":" + tile.position.y, tile.getPersistable(), flow.add());
+					// Key : board:tile:<y>:<x>
+					this.client.hmset(this.keys.boardTilesPrefix + tile.position.y + ":" + tile.position.x, tile.getPersistable(), flow.add());
 				}).bind(this));
 			}).bind(this));
 			this.client.set(this.keys.tickRate, GameState.settings.tickRate, flow.add());
