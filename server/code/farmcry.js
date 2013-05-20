@@ -17,10 +17,12 @@ Array.prototype.removeItemAtIndex = function (index) {
 };
 
 String.prototype.beginsWith = function (string) {
-    return(this.indexOf(string) === 0);
+	return(this.indexOf(string) === 0);
 };
 
-var GameState = require('./models/gamestate');
+PM = require('./persistence_manager');
+GameState = require('./models/gamestate');
+NetworkEngine = require('./network/engine');
 
 var start_game = (function() {
 	// Show the map in the console, because it looks greaaaaat.
@@ -34,10 +36,10 @@ var start_game = (function() {
 	// Setup auto-persistence every 5 minutes
 	GameState.autoPersisterId = setInterval(function() {
 		if(!GameState.pauseAutoPersistence)
-			PersistenceManager.persist(GameState, PersistenceManager.defaultPersistCallback);
+			PM.persist(GameState, PM.defaultPersistCallback);
 	}, 300000);
 
-	var NetworkEngine = require('./network/engine');
+
 
 	var express = require('express');
 	var app = express();
@@ -61,17 +63,16 @@ var start_game = (function() {
 		//TODO : Oh, also don't forget to code an event manager
 		NetworkEngine.clients.add(socket);
 	});
-
 }).bind(this);
 
 var generate_new_initialdata = (function() {
-	console.log("Generating new game data");
 
-	// Generate a 16x16 board
+	// Create the 16x16 map
+
 	GameState.board.init();
 	GameState.board.grow(8, 8);
 
-	// Generate the default user accounts
+	// Create the users
 	var tmpFarmer = new Farmer("Arkanta", "dreamteam69@gmail.com", "prout");
 	tmpFarmer.money = 9001;
 	GameState.farmers.push(tmpFarmer);
@@ -84,18 +85,15 @@ var generate_new_initialdata = (function() {
 	tmpFarmer = new Farmer("Kalahim", "kalahim69@gmail.com", "dieu");
 	tmpFarmer.money = 9004;
 	GameState.farmers.push(tmpFarmer);
+
 }).bind(this);
 
-// Load from redis if it's possible, otherwise start a new game and persist it.
-//var PersistenceManager = require('./persistence_manager');
-
-/*PersistenceManager.load(function(err, result) {
-	return;
+PM.load(function(err, result) {
 	//Workaround for asyncblock (bug?) behaviour where if an error is thrown in this callback,
 	//the callback will be called again with err set as the new error. This is horrible.
 	try {
 		if(err == null && result) {
-			console.log("Saved game data loaded (database version " + PersistenceManager.databaseVersion
+			console.log("Saved game data loaded (database version " + PM.databaseVersion
 				+ ", timestamp " + GameState.lastPersistDate + ")");
 		} else {
 			if(err != null) {
@@ -105,13 +103,11 @@ var generate_new_initialdata = (function() {
 			generate_new_initialdata();
 
 			// Save it
-			PersistenceManager.persist(PersistenceManager.defaultPersistCallback);
+			PM.persist(PM.defaultPersistCallback);
 		}
 		start_game();
 	} catch (err2) {
 		console.log("Error while starting game : " + err2);
+		console.log(err2.stack);
 	}
-});*/
-
-generate_new_initialdata();
-start_game();
+});
