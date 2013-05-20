@@ -21,7 +21,18 @@ var PersistenceManager = {
 	asyncblock: null,
 	keys: {
 		databaseVersion: "databaseVersion",
-		lastPersistDate: "lastPersistDate"
+		lastPersistDate: "lastPersistDate",
+		farmersPrefix: "farmer:",
+		settingsPrefix: "settings:",
+		tickRate: this.settingsPrefix + "tickRate",
+		startMoney: this.settingsPrefix + "startMoney",
+		weaponsPrefix: this.settingsPrefix + "weapon:",
+		cropPrefix: this.settingsPrefix + "crop:",
+		buildingsPrefix: this.settingsPrefix + "building:",
+		boardPrefix: "board:",
+		boardSizeX: this.boardPrefix + "size:x",
+		boardSizeY: this.boardPrefix + "size:y",
+		boardTilesPrefix: this.boardPrefix + "tile:"
 	},
 	databaseVersion: 1,
 	client: null,
@@ -29,14 +40,27 @@ var PersistenceManager = {
 		console.log("Redis error : " + err);
 	},
 	persist: function(gamestate, callback) {
+		var t = this;
 		this.asyncblock(function(flow) {
 			console.log("PersistenceManager - Persisting gamestate");
 			var startDate = Date.now();
-			this.client.flushdb(flow.add());
+			t.client.flushdb(flow.add());
 			flow.wait();
-			this.client.set(this.keys.databaseVersion, this.databaseVersion, flow.add());
-			this.client.set(this.keys.lastPersistDate, startDate, flow.add());
+			t.client.set(t.keys.databaseVersion, t.databaseVersion, flow.add());
+			t.client.set(t.keys.lastPersistDate, startDate, flow.add());
 			flow.wait();
+			for(var farmer in gamestate.farmers) {
+				// Key : farmer:<nickname>
+				t.client.hmset(t.keys.farmersPrefix + farmer.nickname, farmer.getPersistable(), flow.add());
+			}
+			for(var tile in gamestate.board.tiles) {
+				// Key : board:tile:<x>:<y>
+				t.client.hmset(t.keys.boardTilesPrefix + tile.position.x + ":" + tile.position.y, tile.getPersistable(), flow.add());
+			}
+			t.client.set(t.keys.tickRate, gamestate.settings.tickRate, flow.add());
+			t.client.set(t.keys.startMoney, gamestate.settings.startMoney, flow.add());
+			t.client.set(t.keys.boardSizeX, gamestate.board.size.x, flow.add());
+			t.client.set(t.keys.boardSizeY, gamestate.board.size.y, flow.add());
 			gamestate.lastPersistDate = startDate;
 			console.log("PersistenceManager - Persist done in " + Date.now() - startDate + " ms");
 		}, callback);
@@ -64,7 +88,10 @@ var PersistenceManager = {
 
 // Synchronous node.js, deal with it.
 PersistenceManager.asyncblock = require('asyncblock');
-PersistenceManager.client = redis.createClient();
+PersistenceManager.asyncblock(function(flow) {
+	PersistenceManager.client = redis.createClient(flow.add());
+	flow.wait();
+});
 PersistenceManager.client.on("error", PersistenceManager.onError);
 
 module.exports = PersistenceManager;
