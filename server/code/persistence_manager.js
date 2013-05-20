@@ -40,29 +40,28 @@ var PersistenceManager = {
 		console.log("Redis error : " + err);
 	},
 	persist: function(gamestate, callback) {
-		var t = this;
 		this.asyncblock((function(flow) {
 			console.log("PersistenceManager - Persisting gamestate");
 			var startDate = Date.now();
 			this.client.flushdb(flow.add());
 			flow.wait();
-			this.client.set(t.keys.databaseVersion, t.databaseVersion, flow.add());
-			this.client.set(t.keys.lastPersistDate, startDate, flow.add());
+			this.client.set(this.keys.databaseVersion, t.databaseVersion, flow.add());
+			this.client.set(this.keys.lastPersistDate, startDate, flow.add());
 			flow.wait();
 			gamestate.farmers.forEach((function(farmer) {
 				// Key : farmer:<nickname>
-				this.client.hmset(t.keys.farmersPrefix + farmer.nickname, farmer.getPersistable(), flow.add());
+				this.client.hmset(this.keys.farmersPrefix + farmer.nickname, farmer.getPersistable(), flow.add());
 			}).bind(this));
 			gamestate.board.tiles.forEach((function(tileLine) {
 				tileLine.forEach((function(tile) {
 					// Key : board:tile:<x>:<y>
-					this.client.hmset(t.keys.boardTilesPrefix + tile.position.x + ":" + tile.position.y, tile.getPersistable(), flow.add());
+					this.client.hmset(this.keys.boardTilesPrefix + tile.position.x + ":" + tile.position.y, tile.getPersistable(), flow.add());
 				}).bind(this));
 			}).bind(this));
-			this.client.set(t.keys.tickRate, gamestate.settings.tickRate, flow.add());
-			this.client.set(t.keys.startMoney, gamestate.settings.startMoney, flow.add());
-			this.client.set(t.keys.boardSizeX, gamestate.board.size.x, flow.add());
-			this.client.set(t.keys.boardSizeY, gamestate.board.size.y, flow.add());
+			this.client.set(this.keys.tickRate, gamestate.settings.tickRate, flow.add());
+			this.client.set(this.keys.startMoney, gamestate.settings.startMoney, flow.add());
+			this.client.set(this.keys.boardSizeX, gamestate.board.size.x, flow.add());
+			this.client.set(this.keys.boardSizeY, gamestate.board.size.y, flow.add());
 			flow.wait();
 			gamestate.lastPersistDate = startDate;
 			console.log("PersistenceManager - Persist done in " + (Date.now() - startDate) + " ms");
