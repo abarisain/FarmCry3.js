@@ -61,6 +61,12 @@ tmpFarmer = new Farmer("Kalahim", "kalahim69@gmail.com", "dieu");
 tmpFarmer.money = 9004;
 GameState.farmers.push(tmpFarmer);
 
-require('./persistence_manager').persist(GameState, function(result) {
+require('./persistence_manager').persist(GameState, function(err, result) {
 	console.log("Persist : " + result);
 });
+
+/*
+ require('./persistence_manager').load(GameState, function(err, result) {
+ console.log("Persist : " + result);
+ });
+ */
