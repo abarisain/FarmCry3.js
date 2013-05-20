@@ -18,6 +18,7 @@
 var redis = require("redis");
 var Farmer = require('./models/farmer');
 var Tile = require('./models/tile');
+var GameState = require('./models/gamestate');
 
 var PersistenceManager = {
 	asyncblock: null,
@@ -46,7 +47,7 @@ var PersistenceManager = {
 			console.log("PersistenceManager - Error while persisting : " + err);
 		}
 	},
-	persist: function(gamestate, callback) {
+	persist: function(callback) {
 		this.asyncblock((function(flow) {
 			console.log("PersistenceManager - Persisting gamestate");
 			var startDate = Date.now();
@@ -55,27 +56,27 @@ var PersistenceManager = {
 			this.client.set(this.keys.databaseVersion, this.databaseVersion, flow.add());
 			this.client.set(this.keys.lastPersistDate, startDate, flow.add());
 			flow.wait();
-			gamestate.farmers.forEach((function(farmer) {
+			GameState.farmers.forEach((function(farmer) {
 				// Key : farmer:<nickname>
 				this.client.hmset(this.keys.farmersPrefix + farmer.nickname, farmer.getPersistable(), flow.add());
 			}).bind(this));
-			gamestate.board.tiles.forEach((function(tileLine) {
+			GameState.board.tiles.forEach((function(tileLine) {
 				tileLine.forEach((function(tile) {
 					// Key : board:tile:<x>:<y>
 					this.client.hmset(this.keys.boardTilesPrefix + tile.position.x + ":" + tile.position.y, tile.getPersistable(), flow.add());
 				}).bind(this));
 			}).bind(this));
-			this.client.set(this.keys.tickRate, gamestate.settings.tickRate, flow.add());
-			this.client.set(this.keys.startMoney, gamestate.settings.startMoney, flow.add());
-			this.client.set(this.keys.boardSizeX, gamestate.board.size.x, flow.add());
-			this.client.set(this.keys.boardSizeY, gamestate.board.size.y, flow.add());
+			this.client.set(this.keys.tickRate, GameState.settings.tickRate, flow.add());
+			this.client.set(this.keys.startMoney, GameState.settings.startMoney, flow.add());
+			this.client.set(this.keys.boardSizeX, GameState.board.size.x, flow.add());
+			this.client.set(this.keys.boardSizeY, GameState.board.size.y, flow.add());
 			flow.wait();
-			gamestate.lastPersistDate = startDate;
+			GameState.lastPersistDate = startDate;
 			console.log("PersistenceManager - Persist done in " + (Date.now() - startDate) + " ms, at " + startDate);
 			return true;
 		}).bind(this), callback);
 	},
-	load: function(gamestate, callback) {
+	load: function(callback) {
 		this.asyncblock((function(flow) {
 			console.log("PersistenceManager - Loading gamestate");
 			var startDate = Date.now();
@@ -97,10 +98,11 @@ var PersistenceManager = {
 			this.client.get(this.keys.lastPersistDate, flow.set(this.keys.lastPersistDate));
 			this.client.keys(this.keys.boardTilesPrefix + "*", flow.set('tilesKeys'));
 			this.client.keys(this.keys.farmersPrefix + "*", flow.set('farmersKeys'));
-			gamestate.settings.tickRate = flow.get(this.keys.tickRate);
-			gamestate.settings.startMoney = flow.get(this.keys.startMoney);
-			gamestate.board.size.x = flow.get(this.keys.boardSizeX);
-			gamestate.board.size.y = flow.get(this.keys.boardSizeY);
+			GameState.settings.tickRate = flow.get(this.keys.tickRate);
+			GameState.settings.startMoney = flow.get(this.keys.startMoney);
+			GameState.board.size.x = flow.get(this.keys.boardSizeX);
+			GameState.board.size.y = flow.get(this.keys.boardSizeY);
+			GameState.lastPersistDate = flow.get(this.keys.lastPersistDate);
 			var farmersKeys = flow.get('farmersKeys');
 			var tilesKeys = flow.get('tilesKeys');
 			farmersKeys.forEach((function(key) {
@@ -113,7 +115,7 @@ var PersistenceManager = {
 			var dbTiles = flow.wait();
 
 			var farmers = {};
-			gamestate.farmers = [];
+			GameState.farmers = [];
 			// Do this once, we'll loop again after that.
 			// Otherwise we won't be able to populate allied_farmers correctly !
 			for(var key in dbFarmers) {
@@ -121,7 +123,7 @@ var PersistenceManager = {
 				var tmpFarmer = new Farmer();
 				tmpFarmer.nickname = farmer.nickname;
 				farmers[farmer.nickname] = tmpFarmer;
-				gamestate.farmers.push(tmpFarmer);
+				GameState.farmers.push(tmpFarmer);
 			}
 
 			for(var key in dbFarmers) {
@@ -135,7 +137,7 @@ var PersistenceManager = {
 				tmpFarmer.weapons = [];
 				JSON.parse(farmer.weapons).forEach((function(key) {
 					// We consider that the database is consistent and the stored weapons still exist.
-					tmpFarmer.weapons.push(gamestate.settings.weapons[key]);
+					tmpFarmer.weapons.push(GameState.settings.weapons[key]);
 				}).bind(this));
 				tmpFarmer.allied_farmers = [];
 				JSON.parse(farmer.allied_farmers).forEach((function(key) {
@@ -144,9 +146,9 @@ var PersistenceManager = {
 				}).bind(this));
 			}
 
-			gamestate.board.tiles = [];
-			for(y = 0; y < gamestate.board.size.y; y++) {
-				gamestate.board.tiles[y] = [];
+			GameState.board.tiles = [];
+			for(y = 0; y < GameState.board.size.y; y++) {
+				GameState.board.tiles[y] = [];
 			}
 			for(var key in dbTiles) {
 				var tile = dbTiles[key];
@@ -163,13 +165,13 @@ var PersistenceManager = {
 				}
 				if(tile.crop != "dummy") {
 					// We consider that bla bla bla
-					tmpTile.crop = gamestate.settings.crops[tile.crop];
+					tmpTile.crop = GameState.settings.crops[tile.crop];
 				}
 				if(tile.building != "dummy") {
 					// Oh come on you should know the deal by now
-					tmpTile.building = gamestate.settings.buildings[tile.building];
+					tmpTile.building = GameState.settings.buildings[tile.building];
 				}
-				gamestate.board.tiles[tmpTile.position.y][tmpTile.position.x];
+				GameState.board.tiles[tmpTile.position.y][tmpTile.position.x] = tmpTile;
 			}
 
 			console.log("PersistenceManager - Loading done in " + (Date.now() - startDate) + " ms");
