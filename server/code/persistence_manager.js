@@ -65,6 +65,7 @@ var PersistenceManager = {
 			this.client.set(t.keys.boardSizeY, gamestate.board.size.y, flow.add());
 			gamestate.lastPersistDate = startDate;
 			console.log("PersistenceManager - Persist done in " + (Date.now() - startDate) + " ms");
+			return true;
 		}).bind(this), callback);
 	},
 	load: function(gamestate, callback) {
