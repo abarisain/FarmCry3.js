@@ -30,7 +30,7 @@
  * Always require on top of the file (no "var X = require('foo').bar;")
  */
 
-Error = require('../error.js');
+FCError = require('../fcerror.js');
 
 var NetworkModule = {
 	// Prefix for the module in the socket event.
@@ -51,7 +51,7 @@ var NetworkModule = {
 		},
 		error: function (connection, request, data, callback) {
 			//This function always sends an error, echoing the "message" variable sent by the client
-			callback(new Error(Error.Codes.DEBUG_TEST_ERROR, "Debug test error, message : " + data.message));
+			callback(new FCError(FCError.Codes.DEBUG_TEST_ERROR, "Debug test error, message : " + data.message));
 		}
 	}
 };

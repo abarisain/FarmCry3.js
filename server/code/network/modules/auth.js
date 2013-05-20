@@ -1,4 +1,4 @@
-Error = require('../error.js');
+FCError = require('../fcerror.js');
 GameState = require('../../models/gamestate');
 EventManager = require('../../event_manager');
 
@@ -7,7 +7,7 @@ var NetworkModule = {
 	functions: {
 		login: function (connection, request, data, callback) {
 			if (typeof data.email == 'undefined' || typeof data.password == 'undefined') {
-				callback(new Error(Error.Codes.BAD_REQUEST, null, request, data));
+				callback(new FCError(FCError.Codes.BAD_REQUEST, null, request, data));
 				return;
 			}
 			var farmersCount = GameState.farmers.length;

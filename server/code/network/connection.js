@@ -1,4 +1,3 @@
-Error = require('./error');
 
 function NetworkConnection(socket) {
 	if (typeof socket == 'undefined')

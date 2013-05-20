@@ -1,4 +1,3 @@
-Error = require('../error.js');
 GameState = require('../../models/gamestate');
 EventManager = require('../../event_manager');
 
