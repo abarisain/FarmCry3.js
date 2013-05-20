@@ -88,10 +88,7 @@ var PersistenceManager = {
 
 // Synchronous node.js, deal with it.
 PersistenceManager.asyncblock = require('asyncblock');
-PersistenceManager.asyncblock(function(flow) {
-	PersistenceManager.client = redis.createClient(flow.add());
-	flow.wait();
-});
+PersistenceManager.client = redis.createClient();
 PersistenceManager.client.on("error", PersistenceManager.onError);
 
 module.exports = PersistenceManager;
