@@ -1,8 +1,16 @@
 GameState = require('../../models/gamestate');
+Chat = require('./chat');
 
 var NetworkModule = {
 	name: "game",
 	functions: {
+		// Persist the GameState to the database
+		save: function (connection, request, data, callback) {
+			//WARNING : Debug/admin function
+			Chat.broadcastServerMessage(connection.farmer.nickname + " forced GameState persist");
+			var PM = require('../../persistence_manager');
+			PM.persist(PM.defaultPersistCallback);
+		},
 		getInitialData: function (connection, request, data, callback) {
 			var tmpTiles = [];
 			for (var y = 0; y < GameState.board.size.y; y++) {
