@@ -12,6 +12,7 @@ var NetworkModule = {
 			}
 			var farmersCount = GameState.farmers.length;
 			var currentFarmer;
+			data.email = data.email.toLowerCase();
 			for (var i = 0; i < farmersCount; i++) {
 				currentFarmer = GameState.farmers[i];
 				if (data.email == currentFarmer.email) {
