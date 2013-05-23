@@ -29,7 +29,7 @@ var NetworkModule = {
 				}
 			}
 			//Login failed if this code is reached
-			callback(new Error(Error.Codes.BAD_LOGIN));
+			callback(new FCError(FCError.Codes.BAD_LOGIN));
 		}
 	}
 };
