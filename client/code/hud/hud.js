@@ -157,6 +157,12 @@ CrymeEngine.hud.chat = {
 				break;
 			case this.Kind.PLAYER:
 				classText = "player";
+				// Easter eeeeeg
+				if(messageData.player == "Kalahim") {
+					var tmpImg = document.createElement("img");
+					tmpImg.setAttribute("src", "src/hud/admin.gif");
+					tmpDiv.appendChild(tmpImg);
+				}
 				messagePrefix += "<" + messageData.player + "> ";
 				break;
 		}
