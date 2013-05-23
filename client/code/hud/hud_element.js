@@ -151,3 +151,4 @@ HudElement.Anchors = {
 	BOTTOM_CENTER: 9
 };
 
+HudElements = {};
