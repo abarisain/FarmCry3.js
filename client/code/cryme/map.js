@@ -49,6 +49,14 @@ var Map = {
 			this.mapItems[i].load();
 		}
 	},
+	refreshMapVisibility: function () {//appelé quand la caméra bouge pour optimiser
+		for (var i = 0; i < this.tiles.length; i++) {
+			this.tiles[i].checkVisibility();
+		}
+		for (var i = 0; i < this.mapItems.length; i++) {
+			this.mapItems[i].checkVisibility();
+		}
+	},
 	addPlayer: function (player) {
 		this.removePlayer(player.nickname);
 		var tmpPlayer = new MapItems.Character(player);

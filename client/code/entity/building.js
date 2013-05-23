@@ -21,17 +21,21 @@ MapItems.TileItems.Building.prototype.constructor = MapItems.TileItems.Building;
 MapItems.TileItems.Building.prototype.drawParent = MapItems.TileItems.Building.prototype.draw;
 
 MapItems.TileItems.Building.prototype.draw = function () {
-	this.drawParent();
-	for (var i = 0; i < this.storages.length; i++) {
-		this.storages[i].draw(i);
+	if (this.visible) {
+		this.drawParent();
+		for (var i = 0; i < this.storages.length; i++) {
+			this.storages[i].draw(i);
+		}
 	}
 };
 
 MapItems.TileItems.Building.prototype.drawAnimation = function () {
-	if (this.type == MapItems.TileItems.Building.Type.barn) {
-		SpritePack.Buildings.Sprites.BARN_ROOF.drawOnAnimation(this.x, this.y);
-	} else if (this.type == MapItems.TileItems.Building.Type.cold_storage) {
-		SpritePack.Buildings.Sprites.COLD_STORAGE_ROOF.drawOnAnimation(this.x, this.y);
+	if (this.visible) {
+		if (this.type == MapItems.TileItems.Building.Type.barn) {
+			SpritePack.Buildings.Sprites.BARN_ROOF.drawOnAnimation(this.x, this.y);
+		} else if (this.type == MapItems.TileItems.Building.Type.cold_storage) {
+			SpritePack.Buildings.Sprites.COLD_STORAGE_ROOF.drawOnAnimation(this.x, this.y);
+		}
 	}
 };
 
