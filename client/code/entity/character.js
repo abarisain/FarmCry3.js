@@ -41,57 +41,59 @@ MapItems.Character.prototype.move = function (col, line) {
 };
 
 MapItems.Character.prototype.draw = function () {
-	if (this.movementTransition.started) {
-		this.movementTransition.updateProgress();
-		this.x = this.movement.startPosition.x + (this.movement.finalPosition.x - this.movement.startPosition.x) * this.movementTransition.progress;
-		this.y = this.movement.startPosition.y + (this.movement.finalPosition.y - this.movement.startPosition.y) * this.movementTransition.progress;
-		this.updateImageCoord();
-		//je suis obligé d'attendre l'update de coordonnée en cas d'animation
-		SpritePack.Characters.Sprites.SHADOW.drawOnAnimation(this.x, this.y);
-		if (this.isPlayer) {
-			SpritePack.Characters.Sprites.ANIM_AURA.draw(this.x, this.y);
+	if (this.visible) {
+		if (this.movementTransition.started) {
+			this.movementTransition.updateProgress();
+			this.x = this.movement.startPosition.x + (this.movement.finalPosition.x - this.movement.startPosition.x) * this.movementTransition.progress;
+			this.y = this.movement.startPosition.y + (this.movement.finalPosition.y - this.movement.startPosition.y) * this.movementTransition.progress;
+			this.updateImageCoord();
+			//je suis obligé d'attendre l'update de coordonnée en cas d'animation
+			SpritePack.Characters.Sprites.SHADOW.drawOnAnimation(this.x, this.y);
+			if (this.isPlayer) {
+				SpritePack.Characters.Sprites.ANIM_AURA.draw(this.x, this.y);
+			}
+			this.movement.sprite.draw(this.x, this.y);
+		} else {
+			SpritePack.Characters.Sprites.SHADOW.drawOnAnimation(this.x, this.y);
+			if (this.isPlayer) {
+				SpritePack.Characters.Sprites.ANIM_AURA.draw(this.x, this.y);
+			}
+			CE.canvas.animation.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
 		}
-		this.movement.sprite.draw(this.x, this.y);
-	} else {
-		SpritePack.Characters.Sprites.SHADOW.drawOnAnimation(this.x, this.y);
-		if (this.isPlayer) {
-			SpritePack.Characters.Sprites.ANIM_AURA.draw(this.x, this.y);
+		if (Options.Debug.Graphic.enabled) {
+			CE.canvas.debug.context.fillStyle = "rgb(29, 82, 161)";
+			CE.canvas.debug.context.fillRect(this.x - Options.Debug.Graphic.dotSize / 2, this.y - Options.Debug.Graphic.dotSize / 10, Options.Debug.Graphic.dotSize, Options.Debug.Graphic.dotSize / 5);
+			CE.canvas.debug.context.fillRect(this.x - Options.Debug.Graphic.dotSize / 10, this.y - Options.Debug.Graphic.dotSize / 2, Options.Debug.Graphic.dotSize / 5, Options.Debug.Graphic.dotSize);
+
+			if (Options.Debug.Graphic.item) {
+				CE.canvas.debug.context.fillRect(this.imageLeft, this.imageTop, Options.Debug.Graphic.dotSize / 2, Options.Debug.Graphic.dotSize / 2);
+
+				CE.canvas.debug.context.beginPath();
+				CE.canvas.debug.context.moveTo(this.imageLeft, this.imageTop);
+				CE.canvas.debug.context.lineTo(this.x, this.y);
+				CE.canvas.debug.context.lineWidth = 2;
+				CE.canvas.debug.context.strokeStyle = 'rgba(29, 82, 161, 1)';
+				CE.canvas.debug.context.stroke();
+
+
+				CE.canvas.debug.context.fillStyle = "rgba(29, 82, 161, 0.8)";
+				CE.canvas.debug.context.fillRect(this.imageLeft + Options.Debug.Graphic.dotSize / 2, this.imageTop - 4, 100, 19);
+				CE.canvas.debug.context.fillStyle = "#fff";
+				CE.canvas.debug.context.fillText(this.sprite.name + ' : ' + this.col + ',' + this.line, this.imageLeft + Options.Debug.Graphic.dotSize / 2 + 5, this.imageTop + 10);
+			}
+
+			if (this.highlighted) {
+				CE.canvas.debug.context.fillStyle = "rgba(29, 82, 161, 0.8)";
+				CE.canvas.debug.context.fillRect(this.x + 5, this.y - 18, 140, 19);
+				CE.canvas.debug.context.fillStyle = "#fff";
+				CE.canvas.debug.context.fillText('center : ' + Math.floor(this.sprite.centerX) + ',' + Math.floor(this.sprite.centerY), this.x + 10, this.y - 4);
+			}
 		}
-		CE.canvas.animation.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
-	}
-	if (Options.Debug.Graphic.enabled) {
-		CE.canvas.debug.context.fillStyle = "rgb(29, 82, 161)";
-		CE.canvas.debug.context.fillRect(this.x - Options.Debug.Graphic.dotSize / 2, this.y - Options.Debug.Graphic.dotSize / 10, Options.Debug.Graphic.dotSize, Options.Debug.Graphic.dotSize / 5);
-		CE.canvas.debug.context.fillRect(this.x - Options.Debug.Graphic.dotSize / 10, this.y - Options.Debug.Graphic.dotSize / 2, Options.Debug.Graphic.dotSize / 5, Options.Debug.Graphic.dotSize);
-
-		if (Options.Debug.Graphic.item) {
-			CE.canvas.debug.context.fillRect(this.imageLeft, this.imageTop, Options.Debug.Graphic.dotSize / 2, Options.Debug.Graphic.dotSize / 2);
-
-			CE.canvas.debug.context.beginPath();
-			CE.canvas.debug.context.moveTo(this.imageLeft, this.imageTop);
-			CE.canvas.debug.context.lineTo(this.x, this.y);
-			CE.canvas.debug.context.lineWidth = 2;
-			CE.canvas.debug.context.strokeStyle = 'rgba(29, 82, 161, 1)';
-			CE.canvas.debug.context.stroke();
-
-
-			CE.canvas.debug.context.fillStyle = "rgba(29, 82, 161, 0.8)";
-			CE.canvas.debug.context.fillRect(this.imageLeft + Options.Debug.Graphic.dotSize / 2, this.imageTop - 4, 100, 19);
-			CE.canvas.debug.context.fillStyle = "#fff";
-			CE.canvas.debug.context.fillText(this.sprite.name + ' : ' + this.col + ',' + this.line, this.imageLeft + Options.Debug.Graphic.dotSize / 2 + 5, this.imageTop + 10);
-		}
-
+		//ces informations sont indispensables
 		if (this.highlighted) {
-			CE.canvas.debug.context.fillStyle = "rgba(29, 82, 161, 0.8)";
-			CE.canvas.debug.context.fillRect(this.x + 5, this.y - 18, 140, 19);
-			CE.canvas.debug.context.fillStyle = "#fff";
-			CE.canvas.debug.context.fillText('center : ' + Math.floor(this.sprite.centerX) + ',' + Math.floor(this.sprite.centerY), this.x + 10, this.y - 4);
+			CE.canvas.map.context.lineWidth = 2;
+			CE.canvas.map.context.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+			CE.canvas.map.context.strokeRect(this.imageLeft + 1, this.imageTop - 1, this.sprite.width - 2, this.sprite.height - 2);
 		}
-	}
-	//ces informations sont indispensables
-	if (this.highlighted) {
-		CE.canvas.map.context.lineWidth = 2;
-		CE.canvas.map.context.strokeStyle = 'rgba(255, 255, 255, 0.5)';
-		CE.canvas.map.context.strokeRect(this.imageLeft + 1, this.imageTop - 1, this.sprite.width - 2, this.sprite.height - 2);
 	}
 };

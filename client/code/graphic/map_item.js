@@ -10,10 +10,20 @@ function MapItem(sprite, col, line) {
 	this.imageTop = 0;
 	this.imageRight = 0;
 	this.imageBottom = 0;
+	this.visible = true;//cette variable est modifié à chaque déplacement de la caméra pour optimiser le rendu
 }
 
 MapItem.prototype = {
 	constructor: MapItem,
+	checkVisibility: function () {//détermine si l'élement doit être dessiné par rapport à la prochaine position de la caméra
+		this.visible = false;
+		if (this.x >= CE.camera.rectVisibility.x
+			&& this.x <= CE.camera.rectVisibility.x + CE.camera.rectVisibility.width) {
+			if (this.y >= CE.camera.rectVisibility.y && this.y <= CE.camera.rectVisibility.y + CE.camera.rectVisibility.height) {
+				this.visible = true;
+			}
+		}
+	},
 	mouseIntersect: function (x, y) {
 		if (x > this.imageLeft && x < this.imageRight
 			&& y > this.imageTop && y < this.imageBottom) {
@@ -50,15 +60,17 @@ MapItem.prototype = {
 	drawLoading: function (progress) {
 	},
 	draw: function (text) {
-		this.sprite.draw(this.imageLeft, this.imageTop);
-		if (Options.Debug.Graphic.enabled) {
-			if (Options.Debug.Graphic.item) {
-				CE.canvas.debug.context.globalAlpha = 0.5;
-				CE.canvas.debug.context.fillStyle = "#fff";
-				CE.canvas.debug.context.fillRect(this.imageLeft - 25, this.imageTop, 50, 1);
-				CE.canvas.debug.context.fillRect(this.imageLeft, this.imageTop - 19, 1, 38);
-				CE.canvas.debug.context.fillText(text, this.imageLeft, this.imageTop - 19);
-				CE.canvas.debug.context.globalAlpha = 1;
+		if (this.visible) {
+			this.sprite.draw(this.imageLeft, this.imageTop);
+			if (Options.Debug.Graphic.enabled) {
+				if (Options.Debug.Graphic.item) {
+					CE.canvas.debug.context.globalAlpha = 0.5;
+					CE.canvas.debug.context.fillStyle = "#fff";
+					CE.canvas.debug.context.fillRect(this.imageLeft - 25, this.imageTop, 50, 1);
+					CE.canvas.debug.context.fillRect(this.imageLeft, this.imageTop - 19, 1, 38);
+					CE.canvas.debug.context.fillText(text, this.imageLeft, this.imageTop - 19);
+					CE.canvas.debug.context.globalAlpha = 1;
+				}
 			}
 		}
 	},

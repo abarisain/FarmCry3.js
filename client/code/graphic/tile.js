@@ -61,35 +61,41 @@ MapItems.Tile.prototype.drawLoading = function (progress) {
 };
 //attention a bien se préoccuper du context avant, ici je m'en occupe pas
 MapItems.Tile.prototype.draw = function () {
-	if (CE.displayType == CE.DisplayType.STANDARD) {
-		CrymeEngine.canvas.map.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
-	} else {
-		CrymeEngine.canvas.map.context.drawImage(SpritePack.Tiles.Sprites.WHITE.image, this.imageLeft, this.imageTop);
-	}
-	if (Options.Debug.Graphic.enabled) {
-		if (Options.Debug.Graphic.map) {
-			CE.canvas.debug.context.fillStyle = "#fff";
-			CE.canvas.debug.context.fillRect(this.x, this.y, Options.Debug.Graphic.dotSize / 2, Options.Debug.Graphic.dotSize / 2);
-			CE.canvas.debug.context.fillRect(Math.ceil(this.x - tileWidth / 2), this.y, 5, 1);
-			CE.canvas.debug.context.fillRect(Math.ceil(this.x - tileWidth / 2), this.y - 4, 1, 9);
-			CE.canvas.debug.context.fillRect(Math.ceil(this.x + tileWidth / 2) - 1, this.y - 4, 1, 9);
-			CE.canvas.debug.context.fillRect(Math.ceil(this.x + tileWidth / 2) - 5, this.y, 5, 1);
-			CE.canvas.debug.context.fillStyle = "rgba(255, 255, 255, 0.5)";
-			CE.canvas.debug.context.fillRect(this.x + Options.Debug.Graphic.dotSize / 2, this.y - 4, 100, 19);
-			CE.canvas.debug.context.fillStyle = "#000";
-			CE.canvas.debug.context.fillText(this.sprite.name + ' : ' + this.col + ',' + this.line, this.x + Options.Debug.Graphic.dotSize / 2 + 5, this.y + 10);
+	if (this.visible) {
+		if (CE.displayType == CE.DisplayType.STANDARD) {
+			CrymeEngine.canvas.map.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
+		} else {
+			CrymeEngine.canvas.map.context.drawImage(SpritePack.Tiles.Sprites.WHITE.image, this.imageLeft, this.imageTop);
 		}
-		else {
-			CE.canvas.debug.context.fillStyle = "#fff";
-			CE.canvas.debug.context.fillText('(' + this.col + ',' + this.line + ')', this.x, this.y);
+		if (Options.Debug.Graphic.enabled) {
+			if (Options.Debug.Graphic.map) {
+				CE.canvas.debug.context.fillStyle = "#fff";
+				CE.canvas.debug.context.fillRect(this.x, this.y, Options.Debug.Graphic.dotSize / 2, Options.Debug.Graphic.dotSize / 2);
+				CE.canvas.debug.context.fillRect(Math.ceil(this.x - tileWidth / 2), this.y, 5, 1);
+				CE.canvas.debug.context.fillRect(Math.ceil(this.x - tileWidth / 2), this.y - 4, 1, 9);
+				CE.canvas.debug.context.fillRect(Math.ceil(this.x + tileWidth / 2) - 1, this.y - 4, 1, 9);
+				CE.canvas.debug.context.fillRect(Math.ceil(this.x + tileWidth / 2) - 5, this.y, 5, 1);
+				CE.canvas.debug.context.fillStyle = "rgba(255, 255, 255, 0.5)";
+				CE.canvas.debug.context.fillRect(this.x + Options.Debug.Graphic.dotSize / 2, this.y - 4, 100, 19);
+				CE.canvas.debug.context.fillStyle = "#000";
+				CE.canvas.debug.context.fillText(this.sprite.name + ' : ' + this.col + ',' + this.line, this.x + Options.Debug.Graphic.dotSize / 2 + 5, this.y + 10);
+			}
+			else {
+				CE.canvas.debug.context.fillStyle = "#fff";
+				CE.canvas.debug.context.fillText('(' + this.col + ',' + this.line + ')', this.x, this.y);
+			}
 		}
 	}
 };
 MapItems.Tile.prototype.drawInfo = function () {
-	this.informations.drawInformations();
+	if (this.visible) {
+		this.informations.drawInformations();
+	}
 };
 MapItems.Tile.prototype.drawInfoDetailed = function () {
-	this.informations.drawInformationDetailed();
+	if (this.visible) {
+		this.informations.drawInformationDetailed();
+	}
 };
 MapItems.Tile.prototype.load = function () {
 	this.updateImage();
