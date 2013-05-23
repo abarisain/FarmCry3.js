@@ -50,9 +50,7 @@ MapItem.prototype = {
 	drawLoading: function (progress) {
 	},
 	draw: function (text) {
-		CE.canvas.map.context.globalAlpha = 0.9;
 		this.sprite.draw(this.imageLeft, this.imageTop);
-		CE.canvas.map.context.globalAlpha = 1;
 		if (Options.Debug.Graphic.enabled) {
 			if (Options.Debug.Graphic.item) {
 				CE.canvas.debug.context.globalAlpha = 0.5;
