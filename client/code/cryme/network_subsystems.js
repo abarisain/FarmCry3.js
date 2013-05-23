@@ -32,8 +32,8 @@ networkEngine.subsystems.player = {
 			if (data.nickname == GameState.player.nickname) {
 				target = Map.player;
 			} else {
-				for (var i = 0; i < GameState.players.length; i++) {
-					if (Map.players[i].nickname == this.nickname)
+				for (var i = 0; i < Map.players.length; i++) {
+					if (Map.players[i].farmer.nickname == data.nickname)
 						target = Map.players[i];
 				}
 			}
