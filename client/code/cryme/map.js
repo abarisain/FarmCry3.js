@@ -66,7 +66,7 @@ var Map = {
 			}
 			break;
 		}
-		var count = this.players.length;
+		var count = this.mapItems.length;
 		for (var i = count - 1; i >= 0; i--) {
 			if (this.mapItems[i].constructor == Farmer && this.mapItems[i].farmer.nickname == nickname) {
 				this.mapItems.removeItemAtIndex(i);
