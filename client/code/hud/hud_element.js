@@ -24,7 +24,7 @@ function HudElement(name, image, width, height, verticalMargin, horizontalMargin
 		bottom_height: 0
 	}
 	this.clickable = typeof clickable == 'undefined' ? true : clickable;
-	this.targetCanvas = CrymeEngine.canvas.hud.context;
+	this.targetCanvas = null;
 
 	this.onClick = function (x, y) {
 		//Override this for custom click behaviour.
@@ -38,6 +38,8 @@ HudElement.prototype = {
 	//attention a bien se préoccuper du context avant, ici je m'en occupe pas
 	draw: function () {
 		if (this.visible) {
+			if(this.targetCanvas == null) // We can't do that in the constructor
+				this.targetCanvas = CrymeEngine.canvas.hud.context;
 			if (this.image != null) {
 				this.targetCanvas.globalAlpha = this.opacity;
 				if(!this.ninepatch.enabled) {
