@@ -12,7 +12,7 @@ HudElements.Book = function () {
 	this.rightPage.anchor = HudElement.Anchors.CENTER_RIGHT;
 	this.addChild(this.leftPage);
 	this.addChild(this.rightPage);
-	var tmpCloseBtn = new HudElements.Button(37, 37, 15, -15, " ", HudElement.Anchors.TOP_RIGHT);
+	var tmpCloseBtn = new HudElements.Button(37, 37, 15, -15, null, HudElement.Anchors.TOP_RIGHT);
 	tmpCloseBtn.ninepatch.enabled = false;
 	tmpCloseBtn.image = "button_close";
 	tmpCloseBtn.onClick = (function() {
