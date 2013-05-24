@@ -4,7 +4,7 @@
 HudElements.Text = function (text, anchor, color, font) {
 	HudElement.call(this, "Text", null);
 	this.anchor = anchor || this.anchor;
-	this._text = text || "Text Element";
+	this._text = text || null;
 	this._textFunction = null;
 	this._color = color || "#6f440d";
 	this._font = font || "bold 13pt stanberry,Calibri,Geneva,Arial";
@@ -25,6 +25,8 @@ HudElements.Text.prototype.updateWithTextFunction = function () {
 	}
 }
 HudElements.Text.prototype.draw = function () {
+	if(this._text == null && this._textFunction == null)
+		return;
 	//No need to call base since there is no background image or children
 	this.setupCanvas();
 	//If no text function, this function does nothing.
