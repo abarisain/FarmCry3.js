@@ -39,7 +39,7 @@ HudElements.List.prototype.draw = function () {
 			drawcacheContext.fillStyle = this.separator.color;
 			this.layout.parent = new HudElement();
 			this.layout.parentList = this;
-			this.layout.setTargetCanvas(drawcacheContext);
+			this.layout.targetCanvas = drawcacheContext;
 			this.layout.anchor = HudElement.Anchors.TOP_LEFT;
 			this.layout.width = this.width;
 			this.layout.verticalMargin = 0;
@@ -51,11 +51,13 @@ HudElements.List.prototype.draw = function () {
 					this.layout.verticalMargin++;
 				}
 				this.layout.computeLayout();
-				this.dataBinder(this.layout, i, data[i]);
+				this.dataBinder(this.layout, i, this.data[i]);
 				this.layout.draw();
 			}
 		}
-		this.targetCanvas.drawImage(this._drawcache, 0, this._verticalScrollOffset, this.width, this.height, this._x, this._y);
+		if(this.targetCanvas == null) // We can't do that in the constructor
+			this.targetCanvas = CrymeEngine.canvas.hud.context;
+		this.targetCanvas.drawImage(this._drawcache, 0, this._verticalScrollOffset, this.width, this.height, this._x, this._y, this.width, this.height);
 	}
 };
 
