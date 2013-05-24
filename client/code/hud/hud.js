@@ -3,7 +3,11 @@ CrymeEngine.hud = {
 		life: null,
 		time: null,
 		popup: null,
-		inventory: null
+		inventory: null,
+		button_red: null,
+		button_green: null,
+		button_blue: null,
+		button_close: null
 	},
 	init: function () {
 		this.rootHudElement.resize();
