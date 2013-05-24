@@ -69,7 +69,8 @@ function LoadSpritePack() {
 	SpritePack.Tiles.Sprites.GRASS_1 = new Sprite('grass_1');
 	SpritePack.Tiles.Sprites.GRASS_2 = new Sprite('grass_2');
 	SpritePack.Tiles.Sprites.GRASS_3 = new Sprite('grass_3');
-	SpritePack.Tiles.Sprites.ROCK = new Sprite('rock');
+	SpritePack.Tiles.Sprites.ROCK_0 = new Sprite('rock_0');
+	SpritePack.Tiles.Sprites.ROCK_1 = new Sprite('rock_1');
 	SpritePack.Tiles.Sprites.LEAVE = new Sprite('leave');
 	SpritePack.Tiles.Sprites.SOIL = new Sprite('soil');
 	SpritePack.Tiles.Sprites.WATER_0 = new Sprite('water_0');
