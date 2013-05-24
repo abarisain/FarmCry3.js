@@ -16,6 +16,13 @@ function HudElement(name, image, width, height, verticalMargin, horizontalMargin
 	this.disabled = false;
 	this.children = [];
 	this.parent = null;
+	this.ninepatch = {
+		enabled: false,
+		left_width: 0,
+		right_width: 0,
+		top_height: 0,
+		bottom_height: 0
+	}
 	this.clickable = typeof clickable == 'undefined' ? true : clickable;
 
 	this.onClick = function (x, y) {
@@ -32,7 +39,48 @@ HudElement.prototype = {
 		if (this.visible) {
 			if (this.image != null) {
 				CrymeEngine.canvas.hud.context.globalAlpha = this.opacity;
-				CrymeEngine.canvas.hud.context.drawImage(CrymeEngine.hud.textures[this.image].image, this._x, this._y);
+				if(this.ninepatch.enabled) {
+					CrymeEngine.canvas.hud.context.drawImage(CrymeEngine.hud.textures[this.image].image, this._x, this._y);
+				} else {
+					var tmpImage = CrymeEngine.hud.textures[this.image];
+					//Top left
+					CE.canvas.hud.context.drawImage(tmpImage.image,
+						0, 0,
+						this.ninepatch.left_width, this.ninepatch.top_height,
+						this._x, this._y,
+						this.ninepatch.left_width, this.ninepatch.top_height);
+					//Top right
+					CE.canvas.hud.context.drawImage(tmpImage.image,
+						tmpImage.width - this.ninepatch.right_width, 0,
+						this.ninepatch.right_width, this.ninepatch.top_height,
+						this._x + this.width - this.ninepatch.right_width, this._y,
+						this.ninepatch.right_width, this.ninepatch.top_height);
+					//Bottom left
+					CE.canvas.hud.context.drawImage(tmpImage.image,
+						0, tmpImage.height - this.ninepatch.bottom_height,
+						this.ninepatch.left_width, this.ninepatch.bottom_height,
+						this._x, this._y + this.height - this.ninepatch.bottom_height,
+						this.ninepatch.left_width, this.ninepatch.bottom_height);
+					//Bottom right
+					CE.canvas.hud.context.drawImage(tmpImage.image,
+						tmpImage.width - this.ninepatch.right_width, tmpImage.height - this.ninepatch.bottom_height,
+						this.ninepatch.right_width, this.ninepatch.bottom_height,
+						this._x + this.width - this.ninepatch.right_width, this._y + this.height - this.ninepatch.bottom_height,
+						this.ninepatch.right_width, this.ninepatch.bottom_height);
+					//Top middle
+					CE.canvas.hud.context.drawImage(tmpImage.image,
+						this.ninepatch.left_width + 1, 0,
+						tmpImage.width - this.ninepatch.left_width - this.ninepatch.right_width, this.ninepatch.top_height,
+						this._x + this.ninepatch.left_width, this._y,
+						this.width - this.ninepatch.left_width - this.ninepatch.right_width, this.ninepatch.top_height);
+					//Bottom middle
+					CE.canvas.hud.context.drawImage(tmpImage.image,
+						this.ninepatch.left_width + 1, tmpImage.height - this.ninepatch.bottom_height,
+						tmpImage.width - this.ninepatch.left_width - this.ninepatch.right_width, this.ninepatch.bottom_height,
+						this._x + this.ninepatch.left_width, this._y + this.height - this.ninepatch.bottom_height,
+						this.width - this.ninepatch.left_width - this.ninepatch.right_width, this.ninepatch.bottom_height);
+
+				}
 				CrymeEngine.canvas.hud.context.globalAlpha = 1;
 			}
 			var childrenCount = this.children.length;
