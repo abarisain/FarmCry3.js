@@ -24,6 +24,7 @@ function HudElement(name, image, width, height, verticalMargin, horizontalMargin
 		bottom_height: 0
 	}
 	this.clickable = typeof clickable == 'undefined' ? true : clickable;
+	this.targetCanvas = null;
 
 	this.onClick = function (x, y) {
 		//Override this for custom click behaviour.
@@ -37,69 +38,71 @@ HudElement.prototype = {
 	//attention a bien se préoccuper du context avant, ici je m'en occupe pas
 	draw: function () {
 		if (this.visible) {
+			if(this.targetCanvas == null) // We can't do that in the constructor
+				this.targetCanvas = CrymeEngine.canvas.hud.context;
 			if (this.image != null) {
-				CrymeEngine.canvas.hud.context.globalAlpha = this.opacity;
+				this.targetCanvas.globalAlpha = this.opacity;
 				if(!this.ninepatch.enabled) {
-					CrymeEngine.canvas.hud.context.drawImage(CrymeEngine.hud.textures[this.image].image, this._x, this._y);
+					this.targetCanvas.drawImage(CrymeEngine.hud.textures[this.image].image, this._x, this._y);
 				} else {
 					var tmpImage = CrymeEngine.hud.textures[this.image];
 					//Top left
-					CE.canvas.hud.context.drawImage(tmpImage.image,
+					this.targetCanvas.drawImage(tmpImage.image,
 						0, 0,
 						this.ninepatch.left_width, this.ninepatch.top_height,
 						this._x, this._y,
 						this.ninepatch.left_width, this.ninepatch.top_height);
 					//Top right
-					CE.canvas.hud.context.drawImage(tmpImage.image,
+					this.targetCanvas.drawImage(tmpImage.image,
 						tmpImage.width - this.ninepatch.right_width, 0,
 						this.ninepatch.right_width, this.ninepatch.top_height,
 						this._x + this.width - this.ninepatch.right_width, this._y,
 						this.ninepatch.right_width, this.ninepatch.top_height);
 					//Bottom left
-					CE.canvas.hud.context.drawImage(tmpImage.image,
+					this.targetCanvas.drawImage(tmpImage.image,
 						0, tmpImage.height - this.ninepatch.bottom_height,
 						this.ninepatch.left_width, this.ninepatch.bottom_height,
 						this._x, this._y + this.height - this.ninepatch.bottom_height,
 						this.ninepatch.left_width, this.ninepatch.bottom_height);
 					//Bottom right
-					CE.canvas.hud.context.drawImage(tmpImage.image,
+					this.targetCanvas.drawImage(tmpImage.image,
 						tmpImage.width - this.ninepatch.right_width, tmpImage.height - this.ninepatch.bottom_height,
 						this.ninepatch.right_width, this.ninepatch.bottom_height,
 						this._x + this.width - this.ninepatch.right_width, this._y + this.height - this.ninepatch.bottom_height,
 						this.ninepatch.right_width, this.ninepatch.bottom_height);
 					//Top middle
-					CE.canvas.hud.context.drawImage(tmpImage.image,
+					this.targetCanvas.drawImage(tmpImage.image,
 						this.ninepatch.left_width + 1, 0,
 						tmpImage.width - this.ninepatch.left_width - this.ninepatch.right_width, this.ninepatch.top_height,
 						this._x + this.ninepatch.left_width, this._y,
 						this.width - this.ninepatch.left_width - this.ninepatch.right_width, this.ninepatch.top_height);
 					//Bottom middle
-					CE.canvas.hud.context.drawImage(tmpImage.image,
+					this.targetCanvas.drawImage(tmpImage.image,
 						this.ninepatch.left_width + 1, tmpImage.height - this.ninepatch.bottom_height,
 						tmpImage.width - this.ninepatch.left_width - this.ninepatch.right_width, this.ninepatch.bottom_height,
 						this._x + this.ninepatch.left_width, this._y + this.height - this.ninepatch.bottom_height,
 						this.width - this.ninepatch.left_width - this.ninepatch.right_width, this.ninepatch.bottom_height);
 					//Middle
-					CE.canvas.hud.context.drawImage(tmpImage.image,
+					this.targetCanvas.drawImage(tmpImage.image,
 						this.ninepatch.left_width + 1, this.ninepatch.top_height + 1,
 						tmpImage.width - this.ninepatch.left_width - this.ninepatch.right_width,
 						tmpImage.height - this.ninepatch.top_height - this.ninepatch.bottom_height,
 						this._x + this.ninepatch.left_width, this._y + this.ninepatch.top_height,
 						this.width - this.ninepatch.left_width - this.ninepatch.right_width, this.height - this.ninepatch.top_height - this.ninepatch.bottom_height);
 					//Middle left
-					CE.canvas.hud.context.drawImage(tmpImage.image,
+					this.targetCanvas.drawImage(tmpImage.image,
 						0, this.ninepatch.top_height + 1,
 						this.ninepatch.left_width, tmpImage.height - this.ninepatch.top_height - this.ninepatch.bottom_height,
 						this._x, this._y + this.ninepatch.top_height,
 						this.ninepatch.left_width, this.height - this.ninepatch.top_height - this.ninepatch.bottom_height);
 					//Middle right
-					CE.canvas.hud.context.drawImage(tmpImage.image,
+					this.targetCanvas.drawImage(tmpImage.image,
 						tmpImage.width - this.ninepatch.right_width, this.ninepatch.top_height + 1,
 						this.ninepatch.right_width, tmpImage.height - this.ninepatch.top_height - this.ninepatch.bottom_height,
 						this._x + this.width - this.ninepatch.right_width, this._y + this.ninepatch.top_height,
 						this.ninepatch.right_width, this.height - this.ninepatch.top_height - this.ninepatch.bottom_height);
 				}
-				CrymeEngine.canvas.hud.context.globalAlpha = 1;
+				this.targetCanvas.globalAlpha = 1;
 			}
 			var childrenCount = this.children.length;
 			for (var i = 0; i < childrenCount; i++) {
@@ -107,13 +110,20 @@ HudElement.prototype = {
 			}
 		}
 	},
+	setTargetCanvas: function(context) {
+		this.targetCanvas = context;
+		var childrenCount = this.children.length;
+		for (var i = 0; i < childrenCount; i++) {
+			this.children[i].setTargetCanvas(context);
+		}
+	},
 	resize: function (width, height) {
 		if (width < 1 || height < 1) {
 			console.log("Invalid resize for HudElement '" + this.name + "'");
 			return;
 		}
-		this.width = width;
-		this.height = height;
+		this.width = width || this.width;
+		this.height = height || this.height;
 		this.computeLayout();
 	},
 	/*
@@ -178,7 +188,7 @@ HudElement.prototype = {
 		return x >= this._x && x < (this._x + this.width) && y >= this._y && y < (this._y + this.height);
 	},
 	/*
-	 Return true if you handled the click and want to consume the event
+	 The event is always consumed if you are in a window
 	 Once you are in this function, you can safely assume that the user clicked inside your view
 	 */
 	baseOnClick: function (x, y) {
@@ -186,14 +196,15 @@ HudElement.prototype = {
 		var child;
 		for (var i = 0; i < childrenCount; i++) {
 			child = this.children[i];
-			if (child.visible && child.clickable && child.isPointInBounds(x, y) && child.onClick(x, y)) {
+			if (child.visible && child.clickable && child.isPointInBounds(x, y)) {
 				//STOP ! HAMMERTIME (I mean that the even has been consumed by a children, so we propagate this)
 				//Don't propagate if onClick returned false, for obvious reasons
+				child.onClick(x, y)
 				return true;
 			}
 		}
-		//Nothing happened
-		return false;
+		// Don't catch the click if we are the root element
+		return this != CE.hud.rootHudElement;
 	},
 	addChild: function (hudElement) { //Override this if you want your view not to be able to have children (poor view)
 		hudElement.parent = this;

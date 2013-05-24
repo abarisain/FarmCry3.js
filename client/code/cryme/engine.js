@@ -212,7 +212,9 @@ var CrymeEngine = {
 		this.canvas.hud.canvas.onmousedown = function (event) {
 			if (loadingComplete) {
 				if (event.button == 0) {
-					CE.hud.onClick(event.pageX, event.pageY);
+					// If the hud has handled the event, forget it
+					if(CE.hud.onClick(event.pageX, event.pageY))
+						return;
 
 					//pour du debug de position d'image
 					CrymeEngine.mousePosition.x = event.pageX / scaleFactor - this.offsetLeft;
@@ -236,6 +238,28 @@ var CrymeEngine = {
 							CrymeEngine.mapInvalidated = true;
 						}
 					}
+
+					if (!Options.Debug.Graphic.enabled) {
+						var x = event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x;
+						var y = event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y;
+						var coord = Map.coordinatesFromMousePosition(x, y);
+						var data = {col: 0, line: 0};
+						var moved = true;
+						if (coord.col > Map.player.col) {
+							data.col = 1;
+						} else if (coord.col < Map.player.col) {
+							data.col = -1;
+						} else if (coord.line > Map.player.line) {
+							data.line = 1;
+						} else if (coord.line < Map.player.line) {
+							data.line = -1;
+						} else {
+							moved = false;
+						}
+						if (moved) {
+							networkEngine.call('player', 'move', data);
+						}
+					}
 				}
 				if (event.button == 2) {
 					//le clic droit sers a bouger la map, et le gauche a agir
@@ -246,36 +270,12 @@ var CrymeEngine = {
 					//activation du deplacement de la map
 					CrymeEngine.movingMap = true;
 				}
-				if (event.button == 0) {
-					//le clic gauche permet de sélectionner une case lorsqu'on est en mode informations
-					//var coord = Map.coordinatesFromMousePosition(event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x, event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y);
-				}
 			}
 		};
 
 		this.canvas.hud.canvas.onclick = function (event) {
 			if (loadingComplete) {
-				if (!Options.Debug.Graphic.enabled) {
-					var x = event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x;
-					var y = event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y;
-					var coord = Map.coordinatesFromMousePosition(x, y);
-					var data = {col: 0, line: 0};
-					var moved = true;
-					if (coord.col > Map.player.col) {
-						data.col = 1;
-					} else if (coord.col < Map.player.col) {
-						data.col = -1;
-					} else if (coord.line > Map.player.line) {
-						data.line = 1;
-					} else if (coord.line < Map.player.line) {
-						data.line = -1;
-					} else {
-						moved = false;
-					}
-					if (moved) {
-						networkEngine.call('player', 'move', data);
-					}
-				}
+
 			}
 		}
 
