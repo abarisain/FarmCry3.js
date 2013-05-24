@@ -178,7 +178,7 @@ HudElement.prototype = {
 		return x >= this._x && x < (this._x + this.width) && y >= this._y && y < (this._y + this.height);
 	},
 	/*
-	 Return true if you handled the click and want to consume the event
+	 The event is always consumed if you are in a window
 	 Once you are in this function, you can safely assume that the user clicked inside your view
 	 */
 	baseOnClick: function (x, y) {
@@ -186,14 +186,15 @@ HudElement.prototype = {
 		var child;
 		for (var i = 0; i < childrenCount; i++) {
 			child = this.children[i];
-			if (child.visible && child.clickable && child.isPointInBounds(x, y) && child.onClick(x, y)) {
+			if (child.visible && child.clickable && child.isPointInBounds(x, y)) {
 				//STOP ! HAMMERTIME (I mean that the even has been consumed by a children, so we propagate this)
 				//Don't propagate if onClick returned false, for obvious reasons
+				child.onClick(x, y)
 				return true;
 			}
 		}
-		//Nothing happened
-		return false;
+		// Don't catch the click if we are the root element
+		return this != CE.hud.rootHudElement;
 	},
 	addChild: function (hudElement) { //Override this if you want your view not to be able to have children (poor view)
 		hudElement.parent = this;

@@ -10,10 +10,15 @@ CrymeEngine.hud = {
 		button_close: null,
 		book: null
 	},
+	panels: {
+		lifebar: null,
+		tray: null,
+		market: null
+	},
 	init: function () {
 		this.rootHudElement.resize();
 		//Lifebar
-		var lifebar = new HudElement("lifebar", "life", 317, 124, 0, 0, HudElement.Anchors.TOP_LEFT, false);
+		CE.hud.lifebar = new HudElement("lifebar", "life", 317, 124, 0, 0, HudElement.Anchors.TOP_LEFT, false);
 		var posText = new HudElements.Text("position_text");
 		posText.horizontalMargin = 120;
 		posText.verticalMargin = 16;
@@ -21,11 +26,11 @@ CrymeEngine.hud = {
 			return "x : " + CrymeEngine.mousePosition.x + ", y : "
 				+ CrymeEngine.mousePosition.y
 		});
-		lifebar.addChild(posText);
-		this.rootHudElement.addChild(lifebar);
+		CE.hud.lifebar.addChild(posText);
+		this.rootHudElement.addChild(CE.hud.lifebar);
 
 		//Time and notifications (tray)
-		var tray = new HudElement("tray", "time", 159, 61, 0, 0, HudElement.Anchors.TOP_RIGHT, true);
+		CE.hud.tray = new HudElement("tray", "time", 159, 61, 0, 0, HudElement.Anchors.TOP_RIGHT, true);
 		var timeText = new HudElements.Text("time_text");
 		timeText.horizontalMargin = -20;
 		timeText.verticalMargin = 18;
@@ -34,12 +39,17 @@ CrymeEngine.hud = {
 			var currentTime = new Date();
 			return currentTime.getHours() + ':' + currentTime.getSeconds();
 		});
-		tray.addChild(timeText);
-		this.rootHudElement.addChild(tray);
+		CE.hud.tray.addChild(timeText);
+		this.rootHudElement.addChild(CE.hud.tray);
 
 		var marketButton = new HudElements.Button(100, 50, 150, 0, "Market", HudElement.Anchors.TOP_LEFT, "#fff");
 		marketButton.onClick = (function() {
-			this.rootHudElement.addChild(new HudElements.Book());
+			if(CE.hud.market == null) {
+				CE.hud.market = new HudElements.Book();
+				this.rootHudElement.addChild(CE.hud.market);
+			} else {
+				CE.hud.market.visible = true;
+			}
 		}).bind(this);
 		this.rootHudElement.addChild(marketButton);
 
@@ -49,7 +59,6 @@ CrymeEngine.hud = {
 			CE.gameState = CE.GameState.BATTLE;
 			CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_FORK);
 			CE.mapInvalidated = true;
-			return true;
 		}
 		this.rootHudElement.addChild(forkButton);
 
@@ -58,7 +67,6 @@ CrymeEngine.hud = {
 			CE.gameState = CE.GameState.BATTLE;
 			CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_FLAMETHROWER);
 			CE.mapInvalidated = true;
-			return true;
 		}
 		this.rootHudElement.addChild(flamethrowerButton);
 
@@ -67,7 +75,6 @@ CrymeEngine.hud = {
 			CE.gameState = CE.GameState.BATTLE;
 			CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_AK);
 			CE.mapInvalidated = true;
-			return true;
 		}
 		this.rootHudElement.addChild(akButton);
 	},
@@ -91,7 +98,7 @@ CrymeEngine.hud = {
 		}
 	},
 	onClick: function (x, y) {
-		CrymeEngine.hud.rootHudElement.onClick(x, y);
+		return CrymeEngine.hud.rootHudElement.onClick(x, y);
 	},
 	rootHudElement: new HudElements.Root()
 };
