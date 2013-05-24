@@ -43,7 +43,9 @@ CrymeEngine.keyboard = {
 		BUILDING_BUY_BARN: null,
 		BUILDING_BUY_COLD_STORAGE: null,
 		BUILDING_DESTROY: null,
-		LAUNCH_BATTLE: null,
+		ATTACK_FORK: null,
+		ATTACK_FLAMETHROWER: null,
+		ATTACK_AK: null,
 		STOP_BATTLE: null,
 		SHOW_KEY_MAP: null,
 		SHOW_GRAPHIC_DEBUG: null,
@@ -54,7 +56,7 @@ CrymeEngine.keyboard = {
 	},
 	init: function () {
 		CE.keyboard.Shortcuts.CHAT = CrymeEngine.keyboard.Keys.ENTER;
-		CE.keyboard.Shortcuts.CHANGE_DISPLAY_TYPE = CE.keyboard.Keys.KEY_A;
+		CE.keyboard.Shortcuts.CHANGE_DISPLAY_TYPE = CE.keyboard.Keys.KEY_R;
 		CE.keyboard.Shortcuts.CROP_BUY_CORN = CE.keyboard.Keys.KEY_Q;
 		CE.keyboard.Shortcuts.CROP_BUY_TOMATO = CE.keyboard.Keys.KEY_S;
 		CE.keyboard.Shortcuts.CROP_BUY_WHEAT = CE.keyboard.Keys.KEY_D;
@@ -63,8 +65,10 @@ CrymeEngine.keyboard = {
 		CE.keyboard.Shortcuts.BUILDING_BUY_BARN = CE.keyboard.Keys.KEY_X;
 		CE.keyboard.Shortcuts.BUILDING_BUY_COLD_STORAGE = CE.keyboard.Keys.KEY_C;
 		CE.keyboard.Shortcuts.BUILDING_DESTROY = CE.keyboard.Keys.KEY_V;
-		CE.keyboard.Shortcuts.LAUNCH_BATTLE = CE.keyboard.Keys.KEY_E;
-		CE.keyboard.Shortcuts.STOP_BATTLE = CE.keyboard.Keys.KEY_R;
+		CE.keyboard.Shortcuts.ATTACK_FORK = CE.keyboard.Keys.KEY_A;
+		CE.keyboard.Shortcuts.ATTACK_FLAMETHROWER = CE.keyboard.Keys.KEY_Z;
+		CE.keyboard.Shortcuts.ATTACK_AK = CE.keyboard.Keys.KEY_E;
+		CE.keyboard.Shortcuts.STOP_BATTLE = CE.keyboard.Keys.KEY_T;
 		CE.keyboard.Shortcuts.SHOW_KEY_MAP = CE.keyboard.Keys.TAB;
 		CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG = CE.keyboard.Keys.KEY_1;
 		CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ITEM = CE.keyboard.Keys.KEY_2;
@@ -100,9 +104,19 @@ CrymeEngine.keyboard = {
 			case CE.keyboard.Shortcuts.SHOW_KEY_MAP.code:
 				CE.keyboard.showKeyMap = !CE.keyboard.showKeyMap;
 				break;
-			case CE.keyboard.Shortcuts.LAUNCH_BATTLE.code:
+			case CE.keyboard.Shortcuts.ATTACK_FORK.code:
 				CE.gameState = CE.GameState.BATTLE;
-				CE.Battle.launchBattle();
+				CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_FORK);
+				CE.mapInvalidated = true;
+				break;
+			case CE.keyboard.Shortcuts.ATTACK_FLAMETHROWER.code:
+				CE.gameState = CE.GameState.BATTLE;
+				CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_FLAMETHROWER);
+				CE.mapInvalidated = true;
+				break;
+			case CE.keyboard.Shortcuts.ATTACK_AK.code:
+				CE.gameState = CE.GameState.BATTLE;
+				CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_AK);
 				CE.mapInvalidated = true;
 				break;
 			case CE.keyboard.Shortcuts.STOP_BATTLE.code:

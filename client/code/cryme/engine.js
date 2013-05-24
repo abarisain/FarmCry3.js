@@ -311,8 +311,6 @@ var CrymeEngine = {
 			//Doesn't work yet
 			canvasWidth = window.innerWidth;
 			canvasHeight = window.innerHeight;
-			CE.camera.rectVisibility.width = canvasWidth;
-			CE.camera.rectVisibility.height = canvasHeight;
 			CrymeEngine.canvas.resizeAll(canvasWidth, canvasHeight);
 			audioPlayer.style.top = (canvasHeight - 30) + 'px';
 			CrymeEngine.hud.rootHudElement.resize();

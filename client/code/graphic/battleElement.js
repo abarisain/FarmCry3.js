@@ -74,6 +74,28 @@ Battle.Button.prototype.drawBackground = function () {
 	CE.canvas.animation.context.drawImage(this.background.image, -this.background.centerX, -this.background.centerY);
 }
 
+Battle.Weapon = function (sprite, x, y) {
+	Battle.Element.call(this, sprite, x, y);
+	this.lightning = SpritePack.Battle.Sprites.LIGHTNING;
+	this.light = SpritePack.Battle.Sprites.LIGHT;
+}
+
+Battle.Weapon.prototype = new Battle.Element();
+Battle.Weapon.prototype.constructor = Battle.Weapon;
+Battle.Weapon.prototype.draw = function () {
+	this.initContext();
+	CE.canvas.animation.context.globalAlpha = CE.Battle.weaponTransition.progress * CE.Battle.breathTransition.progress;
+	CE.canvas.animation.context.drawImage(this.lightning.image, -this.lightning.centerX, -this.lightning.centerY);
+	CE.canvas.animation.context.globalAlpha = 1;
+	CE.canvas.animation.context.translate(-100 * (1 - CE.Battle.auraTransition.progress), -100 * (1 - CE.Battle.auraTransition.progress));
+	this.drawElement();
+	CE.canvas.animation.context.translate(100 * (1 - CE.Battle.auraTransition.progress), 100 * (1 - CE.Battle.auraTransition.progress));
+	CE.canvas.animation.context.globalAlpha = CE.Battle.weaponTransition.progress * CE.Battle.breathTransition.progress;
+	CE.canvas.animation.context.drawImage(this.lightning.image, -this.lightning.centerX, -this.lightning.centerY);
+	CE.canvas.animation.context.globalAlpha = 1;
+	this.restoreContext();
+}
+
 Battle.Avatar = function (x, y) {
 	Battle.Element.call(this, SpritePack.Battle.Sprites.AVATAR, x, y);
 	this.aura = SpritePack.Battle.Sprites.AURA;
