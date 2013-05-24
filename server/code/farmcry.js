@@ -10,7 +10,9 @@ Array.prototype.remove = function (from, to) {
 	return this.push.apply(this, rest);
 };
 Array.prototype.removeItem = function (element) {
-	this.splice(this.indexOf(element), 1);
+	var index = this.indexOf(element);
+	if(index != -1)
+		this.splice(index, 1);
 };
 Array.prototype.removeItemAtIndex = function (index) {
 	this.splice(index, 1);
