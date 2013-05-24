@@ -39,7 +39,7 @@ HudElement.prototype = {
 		if (this.visible) {
 			if (this.image != null) {
 				CrymeEngine.canvas.hud.context.globalAlpha = this.opacity;
-				if(this.ninepatch.enabled) {
+				if(!this.ninepatch.enabled) {
 					CrymeEngine.canvas.hud.context.drawImage(CrymeEngine.hud.textures[this.image].image, this._x, this._y);
 				} else {
 					var tmpImage = CrymeEngine.hud.textures[this.image];
