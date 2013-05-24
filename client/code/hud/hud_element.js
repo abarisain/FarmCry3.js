@@ -79,7 +79,25 @@ HudElement.prototype = {
 						tmpImage.width - this.ninepatch.left_width - this.ninepatch.right_width, this.ninepatch.bottom_height,
 						this._x + this.ninepatch.left_width, this._y + this.height - this.ninepatch.bottom_height,
 						this.width - this.ninepatch.left_width - this.ninepatch.right_width, this.ninepatch.bottom_height);
-
+					//Middle
+					CE.canvas.hud.context.drawImage(tmpImage.image,
+						this.ninepatch.left_width + 1, this.ninepatch.top_height + 1,
+						tmpImage.width - this.ninepatch.left_width - this.ninepatch.right_width,
+						tmpImage.height - this.ninepatch.top_height - this.ninepatch.bottom_height,
+						this._x + this.ninepatch.left_width, this._y + this.ninepatch.top_height,
+						this.width - this.ninepatch.left_width - this.ninepatch.right_width, this.height - this.ninepatch.top_height - this.ninepatch.bottom_height);
+					//Middle left
+					CE.canvas.hud.context.drawImage(tmpImage.image,
+						0, this.ninepatch.top_height + 1,
+						this.ninepatch.left_width, tmpImage.height - this.ninepatch.top_height - this.ninepatch.bottom_height,
+						this._x, this._y + this.ninepatch.top_height,
+						this.ninepatch.left_width, this.height - this.ninepatch.top_height - this.ninepatch.bottom_height);
+					//Middle right
+					CE.canvas.hud.context.drawImage(tmpImage.image,
+						tmpImage.width - this.ninepatch.right_width, this.ninepatch.top_height + 1,
+						this.ninepatch.right_width, tmpImage.height - this.ninepatch.top_height - this.ninepatch.bottom_height,
+						this._x + this.width - this.ninepatch.right_width, this._y + this.ninepatch.top_height,
+						this.ninepatch.right_width, this.height - this.ninepatch.top_height - this.ninepatch.bottom_height);
 				}
 				CrymeEngine.canvas.hud.context.globalAlpha = 1;
 			}

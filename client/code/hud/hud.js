@@ -35,6 +35,16 @@ CrymeEngine.hud = {
 		});
 		tray.addChild(timeText);
 		this.rootHudElement.addChild(tray);
+
+		var bite = new HudElement("penis", "button_red", 159, 61, 0, 0, HudElement.Anchors.CENTER, true);
+		bite.ninepatch = {
+			enabled: true,
+			left_width: 16,
+			right_width: 16,
+			top_height: 16,
+			bottom_height: 16
+		}
+		this.rootHudElement.addChild(bite);
 	},
 	loadTextures: function () {
 		var textureList = Object.keys(this.textures);
