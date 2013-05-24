@@ -1,12 +1,14 @@
 /*
  Button HUD element
  */
-HudElements.Button = function (width, height, text, anchor, color, font) {
+HudElements.Button = function (width, height, verticalMargin, horizontalMargin, text, anchor, color, font) {
 	HudElement.call(this, "Button", null);
 	this.anchor = anchor || this.anchor;
 	this.image = "button_red";
 	this.width = width || 32;
 	this.height = height || 32;
+	this.verticalMargin = verticalMargin || 0;
+	this.horizontalMargin = horizontalMargin || 0;
 	this.ninepatch = {
 		enabled: true,
 		left_width: 16,
