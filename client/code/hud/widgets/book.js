@@ -7,8 +7,8 @@ HudElements.Book = function () {
 	this.width = 978;
 	this.height = 602;
 	this.anchor = HudElement.Anchors.CENTER;
-	var tmpCloseBtn = new HudElements.Button(37, 37, 30, 30, "", HudElement.Anchors.TOP_RIGHT);
-	tmpCloseBtn.image = "button_stop";
+	var tmpCloseBtn = new HudElements.Button(37, 37, 15, -15, " ", HudElement.Anchors.TOP_RIGHT);
+	tmpCloseBtn.image = "button_close";
 	tmpCloseBtn.onClick = (function() {
 		this.visible = false;
 	}).bind(this);

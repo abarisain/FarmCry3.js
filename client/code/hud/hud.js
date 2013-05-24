@@ -7,7 +7,6 @@ CrymeEngine.hud = {
 		button_red: null,
 		button_green: null,
 		button_blue: null,
-		button_close: null
 		button_close: null,
 		book: null
 	},
@@ -39,10 +38,9 @@ CrymeEngine.hud = {
 		this.rootHudElement.addChild(tray);
 
 		var marketButton = new HudElements.Button(100, 50, 150, 0, "Market", HudElement.Anchors.TOP_LEFT, "#fff");
-		marketButton.onClick = function () {
-			alert("Market ! Not implemented yet. :-(");
-			return true;
-		}
+		marketButton.onClick = (function() {
+			this.rootHudElement.addChild(new HudElements.Book());
+		}).bind(this);
 		this.rootHudElement.addChild(marketButton);
 
 		/* Boutons de test pour la version iPad	*/
