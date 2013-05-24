@@ -1,7 +1,7 @@
 /*
  List HUD elements
  */
-HudElements.List = function (width, height, verticalMargin, horizontalMargin, data, layout, dataBinder) {
+HudElements.List = function (width, height, verticalMargin, horizontalMargin, anchor, data, layout, dataBinder) {
 	HudElement.call(this, "List", null);
 	this.image = null;
 	this.width = width;
@@ -10,6 +10,7 @@ HudElements.List = function (width, height, verticalMargin, horizontalMargin, da
 	this.horizontalMargin = horizontalMargin;
 	this.data = data || [];
 	this.layout = layout;
+	this.anchor = anchor || this.anchor;
 	this.dataBinder = dataBinder;
 	this.separator = {
 		enabled: true,
@@ -50,7 +51,7 @@ HudElements.List.prototype.draw = function () {
 					this.layout.verticalMargin++;
 				}
 				this.layout.computeLayout();
-				this.dataBinder(this.layout, data[i]);
+				this.dataBinder(this.layout, i, data[i]);
 				this.layout.draw();
 			}
 		}
