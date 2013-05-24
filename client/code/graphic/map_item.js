@@ -22,13 +22,15 @@ MapItem.prototype = {
 			&& this.imageBottom >= -CE.camera.position.y
 			&& this.imageTop <= -CE.camera.position.y + canvasHeight) {
 			this.visible = true;
+			return true;
 		} else if (this.imageRight >= -CE.camera.movement.finalPosition.x
 			&& this.imageLeft <= -CE.camera.movement.finalPosition.x + canvasWidth
 			&& this.imageBottom >= -CE.camera.movement.finalPosition.y
 			&& this.imageTop <= -CE.camera.movement.finalPosition.y + canvasHeight) {
 			this.visible = true;
+			return true;
 		}
-
+		return false;
 	},
 	mouseIntersect: function (x, y) {
 		if (x > this.imageLeft && x < this.imageRight

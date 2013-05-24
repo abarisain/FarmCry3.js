@@ -1,5 +1,6 @@
 var Map = {
 	tiles: [],
+	tilesVisibles: [],//tableau contenant les tiles visibles. Pour optimiser le rendu et les calculs
 	player: null,//le character du joueur
 	players: [],//tous les joueurs y compris le notre
 	mapItems: [],//contient à la fois les buildings, les crops de la map, et tous les personnages de la map
@@ -50,8 +51,11 @@ var Map = {
 		}
 	},
 	refreshMapVisibility: function () {//appelé quand la caméra bouge pour optimiser
+		this.tilesVisibles = [];
 		for (var i = 0; i < this.tiles.length; i++) {
-			this.tiles[i].checkVisibility();
+			if (this.tiles[i].checkVisibility()) {
+				this.tilesVisibles.push(this.tiles[i]);
+			}
 		}
 		for (var i = 0; i < this.mapItems.length; i++) {
 			this.mapItems[i].checkVisibility();
@@ -153,19 +157,17 @@ var Map = {
 			this.transitionInformationDetailed.updateProgress();
 			CrymeEngine.mapInvalidated = true;
 		}
-		for (var i = 0; i < this.tiles.length; i++) {
-			this.tiles[i].draw();
+		for (var i = 0; i < this.tilesVisibles.length; i++) {
+			this.tilesVisibles[i].draw();
 		}
-	},
-	drawTileItems: function () {
 		for (var i = 0; i < this.mapItems.length; i++) {
 			this.mapItems[i].draw();
 		}
 	},
 	drawMapInfos: function () {
 		if (CE.displayType == CE.DisplayType.INFO_MAP) {
-			for (var i = 0; i < this.tiles.length; i++) {
-				this.tiles[i].drawInfo();
+			for (var i = 0; i < this.tilesVisibles.length; i++) {
+				this.tilesVisibles[i].drawInfo();
 			}
 			if (this.tileHighLighted.index > -1) {
 				this.tiles[this.tileHighLighted.index].drawInfoDetailed();

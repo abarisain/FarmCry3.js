@@ -127,11 +127,8 @@ var CrymeEngine = {
 			//couleur par defaut
 			CrymeEngine.canvas.map.context.fillStyle = "#fff";
 
-			//dessin du terrain
+			//dessin de la map (tiles et mapitems)
 			Map.drawMap();
-
-			//dessin des bâtiments
-			Map.drawTileItems();
 
 			if (CE.displayType != CE.DisplayType.STANDARD) {
 				//dessin du terrain
