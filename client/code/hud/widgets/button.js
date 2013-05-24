@@ -17,6 +17,7 @@ HudElements.Button = function (width, height, verticalMargin, horizontalMargin, 
 		bottom_height: 16
 	}
 	this._text = new HudElements.Text(text, HudElement.Anchors.CENTER, color, font);
+	this.addChild(this._text);
 }
 
 HudElements.Button.prototype = new HudElement();
