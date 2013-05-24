@@ -10,9 +10,7 @@ MapItems.Tile = function (data) {
 	this.infoColor = new ColorHelper(255, 255, 255);
 	this.updateCoord();
 	this.informations = new MapItems.TileItemInfos(this.x, this.y, [
-		new Diagram(Diagram.Color.BLUE, 'Humidity', this.humidity * 10)
-		//new Diagram(Diagram.Color.YELLOW, this.maturity * 10),
-		//new Diagram(Diagram.Color.GREEN, this.fertility * 10)
+		new Diagram(Diagram.Color.GREEN, 'Fertility', this.fertility * 10)
 	]);
 };
 
@@ -54,7 +52,7 @@ MapItems.Tile.prototype.updateImage = function () {
 	this.updateInfoColor();
 };
 MapItems.Tile.prototype.updateInfoColor = function () {
-	this.infoColor.createColorFactor(ColorHelper.Templates.WHITE, ColorHelper.Templates.BLUE, this.humidity);
+	this.infoColor.createColorFactor(ColorHelper.Templates.WHITE, ColorHelper.Templates.ORANGE, this.humidity);
 };
 MapItems.Tile.prototype.drawLoading = function (progress) {
 	if (this.alpha < 1) {
@@ -70,6 +68,9 @@ MapItems.Tile.prototype.draw = function () {
 		if (CE.displayType == CE.DisplayType.STANDARD) {
 			CrymeEngine.canvas.map.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
 		} else {
+			//attention ici l'échelle du canvas est modifié depuis la map
+			//CE.canvas.map.context.scale(1, 0.8);
+			CE.canvas.map.context.globalAlpha = 1;
 			CE.canvas.map.context.fillStyle = this.infoColor.rgb;
 			CE.canvas.map.context.beginPath();
 			CE.canvas.map.context.moveTo(this.x, this.y + tileHeight / 2 - borderSize);
@@ -77,6 +78,22 @@ MapItems.Tile.prototype.draw = function () {
 			CE.canvas.map.context.lineTo(this.x, this.y - tileHeight / 2 + borderSize);
 			CE.canvas.map.context.lineTo(this.x + tileWidth / 2 - borderSize, this.y);
 			CE.canvas.map.context.fill();
+			/*CE.canvas.map.context.globalAlpha = 1;
+			 CE.canvas.map.context.globalCompositeOperation = "source-over";
+			 CE.canvas.map.context.fillStyle = ColorHelper.Templates.ORANGE.rgb;
+			 CE.canvas.map.context.scale(1, 0.8);
+			 CE.canvas.map.context.globalAlpha = 1;
+			 CE.canvas.map.context.beginPath();
+			 CE.canvas.map.context.arc(this.x, this.y * 1/0.8, 150 * this.humidity, 0, Math.PI * 2, true);
+			 CE.canvas.map.context.fill();*/
+			/*CE.canvas.map.context.beginPath();
+			 CE.canvas.map.context.globalAlpha = 0.4;
+
+			 CE.canvas.map.context.arc(this.x, this.y * 1/0.8, 200 * this.humidity, 0, Math.PI * 2, true);
+			 CE.canvas.map.context.fill();*/
+			//CE.canvas.map.context.globalCompositeOperation = "source-over";
+			//CE.canvas.map.context.scale(1, 1/0.8);
+
 		}
 		if (Options.Debug.Graphic.enabled) {
 			if (Options.Debug.Graphic.map) {

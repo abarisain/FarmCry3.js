@@ -148,6 +148,8 @@ var CrymeEngine = {
 
 			Map.drawAnimation();
 
+			CE.Weather.draw();
+
 			CrymeEngine.canvas.animation.context.restore();
 		},
 		Battle: function () {
@@ -313,6 +315,7 @@ var CrymeEngine = {
 			canvasWidth = window.innerWidth;
 			canvasHeight = window.innerHeight;
 			CrymeEngine.canvas.resizeAll(canvasWidth, canvasHeight);
+			Map.refreshMapVisibility();
 			audioPlayer.style.top = (canvasHeight - 30) + 'px';
 			CrymeEngine.hud.rootHudElement.resize();
 		};
@@ -363,32 +366,6 @@ function InitLoading() {
 
 //fonction pour placer des trucs sur la map pour test le rendu
 function CreateMap() {
-	//ajout de buildings
-	/*var building = new MapItems.TileItems.Building(MapItems.TileItems.Building.Type.BARN, 8, 9);
-	 Map.mapItems.push(building);
-	 building = new MapItems.TileItems.Building(MapItems.TileItems.Building.Type.BARN, 2, 12);
-	 Map.mapItems.push(building);*/
-
-	//ajout de crops
-	/*var crop = new MapItems.TileItems.Crop(SpritePack.Crops.Sprites.TOMATO, 1, 6);
-	 Map.mapItems.push(crop);
-	 crop = new MapItems.TileItems.Crop(SpritePack.Crops.Sprites.CORN, 3, 5);
-	 Map.mapItems.push(crop);
-	 crop = new MapItems.TileItems.Crop(SpritePack.Crops.Sprites.WHEAT, 2, 1);
-	 Map.mapItems.push(crop);*/
-
-	//ajout de characters
-	/*var character = new TileItems.Character(0, 5, 5);
-	 Map.players.push(character);
-	 Map.player = character;//pour pouvoir gerer le joueur facilement
-	 Map.tileItems.push(character);//pour gérer les personnages comme n'importe quel autre item, du moins pour le moment
-	 var character = new TileItems.Character(1, 12, 7);
-	 Map.players.push(character);
-	 Map.tileItems.push(character);
-	 var character = new TileItems.Character(1, 2, 3);
-	 Map.players.push(character);
-	 Map.tileItems.push(character);*/
-
 	var tmpFarmer;
 	for (var i = 0; i < initialData.online_farmers.length; i++) {
 		tmpFarmer = new Farmer();
@@ -401,9 +378,6 @@ function CreateMap() {
 	Map.addPlayer(tmpFarmer);
 
 	Map.loadInformations();
+	CE.Weather.init();
 
-	//modification de la map
-	/*Map.changeTile(SpritePack.Tiles.Sprites.SOIL, 1, 6);//pour mettre de la terre sous les crops sous le cold storage
-	 Map.changeTile(SpritePack.Tiles.Sprites.SOIL, 3, 5);
-	 Map.changeTile(SpritePack.Tiles.Sprites.SOIL, 2, 1);*/
 }
