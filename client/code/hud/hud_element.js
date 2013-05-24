@@ -186,7 +186,7 @@ HudElement.prototype = {
 		var child;
 		for (var i = 0; i < childrenCount; i++) {
 			child = this.children[i];
-			if (child.clickable && child.isPointInBounds(x, y) && child.onClick(x, y)) {
+			if (child.visible && child.clickable && child.isPointInBounds(x, y) && child.onClick(x, y)) {
 				//STOP ! HAMMERTIME (I mean that the even has been consumed by a children, so we propagate this)
 				//Don't propagate if onClick returned false, for obvious reasons
 				return true;
