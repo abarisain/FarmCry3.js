@@ -55,5 +55,5 @@ HudElements.CloseButton = function (verticalMargin, horizontalMargin, anchor) {
 	this.ninepatch.enabled = false;
 }
 
-HudElements.CloseButton.prototype = HudElements.Button;
+HudElements.CloseButton.prototype = new HudElements.Button();
 HudElements.CloseButton.prototype.constructor = HudElements.CloseButton;
