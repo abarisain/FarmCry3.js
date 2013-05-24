@@ -120,8 +120,8 @@ HudElement.prototype = {
 			console.log("Invalid resize for HudElement '" + this.name + "'");
 			return;
 		}
-		this.width = width;
-		this.height = height;
+		this.width = width || this.width;
+		this.height = height || this.height;
 		this.computeLayout();
 	},
 	/*
