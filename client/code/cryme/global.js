@@ -11,6 +11,8 @@ var colSize = 16;
 
 var scaleFactor = 1;
 
+var borderSize = 0.3;//taille des bordures dans la vue d'informations pour les tiles
+
 //liste des emetteurs de particules
 var particleEmitters;
 

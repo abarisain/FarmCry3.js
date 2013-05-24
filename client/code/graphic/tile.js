@@ -7,6 +7,7 @@ MapItems.Tile = function (data) {
 	this.buildingType = data.building;//version du serveur
 	this.sprite = {};
 	this.alpha = 0;
+	this.infoColor = new ColorHelper(255, 255, 255);
 	this.updateCoord();
 	this.informations = new MapItems.TileItemInfos(this.x, this.y, [
 		new Diagram(Diagram.Color.BLUE, 'Humidity', this.humidity * 10)
@@ -20,7 +21,7 @@ MapItems.Tile.prototype.constructor = MapItems.Tile;
 MapItems.Tile.prototype.updateImage = function () {
 	if (this.humidity < 0.3) {
 		if (this.fertility < 0.2) {
-			this.sprite = SpritePack.Tiles.Sprites.ROCK;
+			this.sprite = SpritePack.Tiles.Sprites.ROCK_0;
 		}
 		else if (this.fertility < 0.5) {
 			this.sprite = SpritePack.Tiles.Sprites.LEAVE;
@@ -50,6 +51,10 @@ MapItems.Tile.prototype.updateImage = function () {
 	else {
 		this.sprite = SpritePack.Tiles.Sprites.WATER_2;
 	}
+	this.updateInfoColor();
+};
+MapItems.Tile.prototype.updateInfoColor = function () {
+	this.infoColor.createColorFactor(ColorHelper.Templates.WHITE, ColorHelper.Templates.BLUE, this.humidity);
 };
 MapItems.Tile.prototype.drawLoading = function (progress) {
 	if (this.alpha < 1) {
@@ -65,7 +70,13 @@ MapItems.Tile.prototype.draw = function () {
 		if (CE.displayType == CE.DisplayType.STANDARD) {
 			CrymeEngine.canvas.map.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
 		} else {
-			CrymeEngine.canvas.map.context.drawImage(SpritePack.Tiles.Sprites.WHITE.image, this.imageLeft, this.imageTop);
+			CE.canvas.map.context.fillStyle = this.infoColor.rgb;
+			CE.canvas.map.context.beginPath();
+			CE.canvas.map.context.moveTo(this.x, this.y + tileHeight / 2 - borderSize);
+			CE.canvas.map.context.lineTo(this.x - tileWidth / 2 + borderSize, this.y);
+			CE.canvas.map.context.lineTo(this.x, this.y - tileHeight / 2 + borderSize);
+			CE.canvas.map.context.lineTo(this.x + tileWidth / 2 - borderSize, this.y);
+			CE.canvas.map.context.fill();
 		}
 		if (Options.Debug.Graphic.enabled) {
 			if (Options.Debug.Graphic.map) {

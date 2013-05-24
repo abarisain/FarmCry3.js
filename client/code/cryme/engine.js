@@ -94,7 +94,7 @@ var CrymeEngine = {
 			CrymeEngine.canvas.map.context.save();
 
 			if (CE.displayType != CE.DisplayType.STANDARD) {
-				CrymeEngine.canvas.map.context.fillStyle = "#ddd";
+				CrymeEngine.canvas.map.context.fillStyle = "#fff";
 				CrymeEngine.canvas.map.context.fillRect(0, 0, canvasWidth, canvasHeight);
 			}
 
@@ -198,6 +198,7 @@ var CrymeEngine = {
 		this.canvas.resizeAll(canvasWidth, canvasHeight);
 
 		CE.keyboard.init();
+		ColorHelper.init();
 
 		var audioPlayer = document.getElementById('audioPlayer');
 		audioPlayer.style.top = (canvasHeight - 30) + 'px';
