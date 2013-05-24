@@ -29,6 +29,7 @@ var SpritePack = {
 	Buildings: new SpriteSheet('src/buildings/', true),
 	Characters: new SpriteSheet('src/character/', false),
 	Crops: new SpriteSheet('src/crops/', true),
+	Effects: new SpriteSheet('src/effects/', false),
 	Storages: new SpriteSheet('src/storages/', true),
 	Tiles: new SpriteSheet('src/tiles/', false)
 
@@ -77,6 +78,8 @@ function LoadSpritePack() {
 	SpritePack.Tiles.Sprites.WATER_1 = new Sprite('water_1');
 	SpritePack.Tiles.Sprites.WATER_2 = new Sprite('water_2');
 	SpritePack.Tiles.Sprites.WHITE = new Sprite('white');
+
+	SpritePack.Effects.Sprites.CLOUD = new Sprite('cloud', 545, 427);
 
 	SpritePack.Battle.Sprites.BACKGROUND = new Sprite('background', 0, 0);
 	SpritePack.Battle.Sprites.ACTION = new Sprite('action', 42, 40);

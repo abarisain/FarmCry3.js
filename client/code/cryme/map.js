@@ -60,6 +60,7 @@ var Map = {
 		for (var i = 0; i < this.mapItems.length; i++) {
 			this.mapItems[i].checkVisibility();
 		}
+		CE.Weather.refreshWeatherVisibility();
 	},
 	addPlayer: function (player) {
 		this.removePlayer(player.nickname);
