@@ -1,6 +1,5 @@
 function Camera() {
-	this.position = {x: -1000, y: -1000};
-	this.rectVisibility = { x: this.position.x, y: this.position.y, width: canvasWidth, height: canvasHeight };
+	this.position = {x: -1000, y: -1000 };
 	this.movement = { finalPosition: { x: 0, y: 0}, startPosition: { x: 0, y: 0}};
 	this.movementTransition = new Transition(0, 1, 80, function () {
 	});
@@ -35,8 +34,6 @@ Camera.prototype = {
 				this.position.y = -(Map.rect.y + Map.rect.dy - canvasHeight);
 			}
 		}
-		this.rectVisibility.x = -this.position.x;
-		this.rectVisibility.y = -this.position.y;
 		Map.refreshMapVisibility();
 		CrymeEngine.mapInvalidated = true;
 	},
@@ -60,8 +57,6 @@ Camera.prototype = {
 		if (this.movement.finalPosition.y < -(Map.rect.y + Map.rect.dy - canvasHeight)) {
 			this.movement.finalPosition.y = -(Map.rect.y + Map.rect.dy - canvasHeight);
 		}
-		this.rectVisibility.x = -this.movement.finalPosition.x;
-		this.rectVisibility.y = -this.movement.finalPosition.y;
 		Map.refreshMapVisibility();
 		this.movementTransition.start(Transition.Type.FADE_IN, true);
 	}
