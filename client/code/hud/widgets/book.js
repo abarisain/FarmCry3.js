@@ -47,7 +47,7 @@ HudElements.BookPage = function () {
 	HudElement.call(this, "BookPage", null);
 	this.image = null;
 	this.width = 470;
-	this.height = 540;
+	this.height = 520;
 	this.anchor = HudElement.Anchors.BOTTOM_LEFT;
 	this.title = " ";
 }
