@@ -37,10 +37,39 @@ CrymeEngine.hud = {
 		this.rootHudElement.addChild(tray);
 
 		var marketButton = new HudElements.Button(100, 50, 150, 0, "Market", HudElement.Anchors.TOP_LEFT, "#fff");
-		marketButton.onClick = function() {
+		marketButton.onClick = function () {
 			alert("Market ! Not implemented yet. :-(");
+			return true;
 		}
 		this.rootHudElement.addChild(marketButton);
+
+		/* Boutons de test pour la version iPad	*/
+		var forkButton = new HudElements.Button(100, 50, -10, -10, "Fork", HudElement.Anchors.BOTTOM_RIGHT, "#fff");
+		forkButton.onClick = function () {
+			CE.gameState = CE.GameState.BATTLE;
+			CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_FORK);
+			CE.mapInvalidated = true;
+			return true;
+		}
+		this.rootHudElement.addChild(forkButton);
+
+		var flamethrowerButton = new HudElements.Button(100, 50, -10, -110, "Burner", HudElement.Anchors.BOTTOM_RIGHT, "#fff");
+		flamethrowerButton.onClick = function () {
+			CE.gameState = CE.GameState.BATTLE;
+			CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_FLAMETHROWER);
+			CE.mapInvalidated = true;
+			return true;
+		}
+		this.rootHudElement.addChild(flamethrowerButton);
+
+		var akButton = new HudElements.Button(100, 50, -10, -210, "AK 47", HudElement.Anchors.BOTTOM_RIGHT, "#fff");
+		akButton.onClick = function () {
+			CE.gameState = CE.GameState.BATTLE;
+			CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_AK);
+			CE.mapInvalidated = true;
+			return true;
+		}
+		this.rootHudElement.addChild(akButton);
 	},
 	loadTextures: function () {
 		var textureList = Object.keys(this.textures);
@@ -169,7 +198,7 @@ CrymeEngine.hud.chat = {
 			case this.Kind.PLAYER:
 				classText = "player";
 				// Easter eeeeeg
-				if(messageData.player == "Kalahim") {
+				if (messageData.player == "Kalahim") {
 					var tmpImg = document.createElement("img");
 					tmpImg.setAttribute("src", "src/hud/admin.gif");
 					tmpDiv.appendChild(tmpImg);
