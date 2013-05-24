@@ -17,6 +17,8 @@ HudElements.Button = function (width, height, verticalMargin, horizontalMargin, 
 		bottom_height: 16
 	}
 	this._text = new HudElements.Text(text, HudElement.Anchors.CENTER, color, font);
+	// Default button style makes text not exactly centered it in
+	this._text.verticalMargin = -3;
 	this.addChild(this._text);
 }
 
