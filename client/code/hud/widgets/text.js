@@ -11,6 +11,8 @@ HudElements.Text = function (text, anchor, color, font) {
 	this._enableAutoSizing = true;
 	//By default, you cannot click on text
 	this.clickable = false;
+	if(this._textFunction == null && this._text != null)
+		this.autoResize();
 }
 
 HudElements.Text.prototype = new HudElement();
