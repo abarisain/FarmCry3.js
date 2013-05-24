@@ -38,22 +38,3 @@ HudElements.Button.prototype.setText = function (text) {
 HudElements.Button.prototype.setTextFunction = function (func) {
 	this._text.setTextFunction(func);
 }
-
-/*
- Special buttons, since I don't have a style system =°
- */
-
-HudElements.CloseButton = function (verticalMargin, horizontalMargin, anchor) {
-	HudElements.Button.call(this);
-	this.name = "Close Button";
-	this.image = "button_close";
-	this.height = 37;
-	this.width = 37;
-	this.verticalMargin = verticalMargin;
-	this.horizontalMargin = horizontalMargin;
-	this.anchor = anchor;
-	this.ninepatch.enabled = false;
-}
-
-HudElements.CloseButton.prototype = new HudElements.Button();
-HudElements.CloseButton.prototype.constructor = HudElements.CloseButton;
