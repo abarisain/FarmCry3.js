@@ -49,7 +49,7 @@ HudElements.BookPage = function () {
 	this.width = 470;
 	this.height = 540;
 	this.anchor = HudElement.Anchors.BOTTOM_LEFT;
-	this.title = "";
+	this.title = " ";
 }
 
 HudElements.BookPage.prototype = new HudElement();
