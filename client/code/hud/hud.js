@@ -35,6 +35,12 @@ CrymeEngine.hud = {
 		});
 		tray.addChild(timeText);
 		this.rootHudElement.addChild(tray);
+
+		var marketButton = new HudElements.Button(100, 50, 150, 0, "Market", HudElement.Anchors.TOP_LEFT, "#fff");
+		marketButton.onClick = function() {
+			alert("Market ! Not implemented yet. :-(");
+		}
+		this.rootHudElement.addChild(marketButton);
 	},
 	loadTextures: function () {
 		var textureList = Object.keys(this.textures);
