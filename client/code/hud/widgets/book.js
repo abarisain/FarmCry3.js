@@ -9,7 +9,7 @@ HudElements.Book = function () {
 	this.anchor = HudElement.Anchors.CENTER;
 	this.leftPage = new HudElements.BookPage();
 	this.rightPage = new HudElements.BookPage();
-	this.rightPage.anchor = HudElement.Anchors.CENTER_RIGHT;
+	this.rightPage.anchor = HudElement.Anchors.BOTTOM_RIGHT;
 	this.addChild(this.leftPage);
 	this.addChild(this.rightPage);
 	var tmpCloseBtn = new HudElements.Button(37, 37, 15, -15, null, HudElement.Anchors.TOP_RIGHT);
@@ -19,6 +19,20 @@ HudElements.Book = function () {
 	tmpCloseBtn.onClick = (function() {
 		this.visible = false;
 	}).bind(this);
+	var tmpLeftTitle = new HudElements.Text();
+	tmpLeftTitle.setTextFunction((function() {
+		return this.title;
+	}).bind(this.leftPage));
+	tmpLeftTitle.verticalMargin = 22;
+	tmpLeftTitle.horizontalMargin = 27;
+	var tmpRightTitle = new HudElements.Text();
+	tmpRightTitle.setTextFunction((function() {
+		return this.title;
+	}).bind(this.rightPage));
+	tmpRightTitle.verticalMargin = 22;
+	tmpRightTitle.horizontalMargin = 517;
+	this.addChild(tmpLeftTitle);
+	this.addChild(tmpRightTitle);
 	this.addChild(tmpCloseBtn);
 }
 
@@ -29,8 +43,9 @@ HudElements.BookPage = function () {
 	HudElement.call(this, "BookPage", null);
 	this.image = null;
 	this.width = 490;
-	this.height = 602;
-	this.anchor = HudElement.Anchors.CENTER;
+	this.height = 557;
+	this.anchor = HudElement.Anchors.BOTTOM_LEFT;
+	this.title = "cacaca";
 }
 
 HudElements.BookPage.prototype = new HudElement();
