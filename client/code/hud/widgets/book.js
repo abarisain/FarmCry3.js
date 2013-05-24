@@ -8,11 +8,11 @@ HudElements.Book = function () {
 	this.height = 602;
 	this.anchor = HudElement.Anchors.CENTER;
 	this.leftPage = new HudElements.BookPage();
-	this.leftPage.verticalMargin = 40;
+	this.leftPage.verticalMargin = -40;
 	this.leftPage.horizontalMargin = 12;
 	this.rightPage = new HudElements.BookPage();
-	this.leftPage.verticalMargin = 40;
-	this.leftPage.horizontalMargin = 12;
+	this.rightPage.verticalMargin = -40;
+	this.rightPage.horizontalMargin = -12;
 	this.rightPage.anchor = HudElement.Anchors.BOTTOM_RIGHT;
 	this.addChild(this.leftPage);
 	this.addChild(this.rightPage);
