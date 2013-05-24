@@ -201,10 +201,16 @@ HudElement.prototype = {
 		hudElement.onAttached();
 		this.children.push(hudElement);
 	},
+	removeChild: function (hudElement) {
+		this.children.removeItem(hudElement);
+		hudElement.onDetached();
+	},
 	removeAllChildren: function () {
 		this.children.length = 0; //ECMAScript specification : all elements with index >= .length are deleted.
 	},
 	onAttached: function () {
+	},
+	onDetached: function () {
 	}
 };
 
