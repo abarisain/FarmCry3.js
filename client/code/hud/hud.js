@@ -39,6 +39,7 @@ CrymeEngine.hud = {
 		textureList.forEach(function (textureName) {
 			var texture = new Texture(textureName, 'src/hud/' + textureName + '.png');
 			texture.image.onload = function () {
+				texture.updateWidthHeight();
 				currentLoadingCount++;
 			};
 			CrymeEngine.hud.textures[textureName] = texture;
