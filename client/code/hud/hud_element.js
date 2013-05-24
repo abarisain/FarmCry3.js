@@ -198,10 +198,13 @@ HudElement.prototype = {
 	addChild: function (hudElement) { //Override this if you want your view not to be able to have children (poor view)
 		hudElement.parent = this;
 		hudElement.computeLayout();
+		hudElement.onAttached();
 		this.children.push(hudElement);
 	},
 	removeAllChildren: function () {
 		this.children.length = 0; //ECMAScript specification : all elements with index >= .length are deleted.
+	},
+	onAttached: function () {
 	}
 };
 
