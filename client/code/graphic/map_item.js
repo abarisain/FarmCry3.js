@@ -17,12 +17,18 @@ MapItem.prototype = {
 	constructor: MapItem,
 	checkVisibility: function () {//détermine si l'élement doit être dessiné par rapport à la prochaine position de la caméra
 		this.visible = false;
-		if (this.x >= CE.camera.rectVisibility.x
-			&& this.x <= CE.camera.rectVisibility.x + CE.camera.rectVisibility.width) {
-			if (this.y >= CE.camera.rectVisibility.y && this.y <= CE.camera.rectVisibility.y + CE.camera.rectVisibility.height) {
-				this.visible = true;
-			}
+		if (this.imageRight >= -CE.camera.position.x
+			&& this.imageLeft <= -CE.camera.position.x + canvasWidth
+			&& this.imageBottom >= -CE.camera.position.y
+			&& this.imageTop <= -CE.camera.position.y + canvasHeight) {
+			this.visible = true;
+		} else if (this.imageRight >= -CE.camera.movement.finalPosition.x
+			&& this.imageLeft <= -CE.camera.movement.finalPosition.x + canvasWidth
+			&& this.imageBottom >= -CE.camera.movement.finalPosition.y
+			&& this.imageTop <= -CE.camera.movement.finalPosition.y + canvasHeight) {
+			this.visible = true;
 		}
+
 	},
 	mouseIntersect: function (x, y) {
 		if (x > this.imageLeft && x < this.imageRight

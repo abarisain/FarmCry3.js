@@ -157,13 +157,9 @@ var Map = {
 			this.tiles[i].draw();
 		}
 	},
-	drawAnimation: function () {
-
-		for (var i = 0; i < this.players.length; i++) {
-			this.players[i].draw();
-		}
+	drawTileItems: function () {
 		for (var i = 0; i < this.mapItems.length; i++) {
-			this.mapItems[i].drawAnimation();
+			this.mapItems[i].draw();
 		}
 	},
 	drawMapInfos: function () {
@@ -183,9 +179,12 @@ var Map = {
 			}
 		}
 	},
-	drawTileItems: function () {
+	drawAnimation: function () {
+		for (var i = 0; i < this.players.length; i++) {
+			this.players[i].draw();
+		}
 		for (var i = 0; i < this.mapItems.length; i++) {
-			this.mapItems[i].draw();
+			this.mapItems[i].drawAnimation();
 		}
 	},
 	coordinatesFromMousePosition: function (x, y) {
