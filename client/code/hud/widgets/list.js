@@ -36,19 +36,21 @@ HudElements.List.prototype.draw = function () {
 			this._drawcache.width = this.width;
 			this._drawcache.height = this._internalHeight;
 			var drawcacheContext = this._drawcache.getContext('2d');
-			drawcacheContext.fillStyle = this.separator.color;
 			this.layout.parent = new HudElement();
 			this.layout.parentList = this;
-			this.layout.targetCanvas = drawcacheContext;
+			this.layout.setTargetCanvas(drawcacheContext);
 			this.layout.anchor = HudElement.Anchors.TOP_LEFT;
 			this.layout.width = this.width;
 			this.layout.verticalMargin = 0;
 			this.layout.horizontalMargin = 0;
 			for(var i = 0; i < elementCount; i++) {
-				this.layout.verticalMargin += this.layout.height;
-				if(this.separator.enabled) {
-					drawcacheContext.fillRect(0, this.layout.verticalMargin, this.width, 1);
-					this.layout.verticalMargin++;
+				if(i > 0) {
+					this.layout.verticalMargin += this.layout.height;
+					if(this.separator.enabled) {
+						drawcacheContext.fillStyle = this.separator.color;
+						drawcacheContext.fillRect(0, this.layout.verticalMargin, this.width, 1);
+						this.layout.verticalMargin++;
+					}
 				}
 				this.layout.computeLayout();
 				this.dataBinder(this.layout, i, this.data[i]);

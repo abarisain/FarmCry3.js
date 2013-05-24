@@ -33,12 +33,14 @@ HudElements.Text.prototype.draw = function () {
 	this.setupCanvas();
 	//If no text function, this function does nothing.
 	this.updateWithTextFunction();
-	CrymeEngine.canvas.hud.context.fillText(this._text, this._x, this._y + this.height, this.width);
+	this.targetCanvas.fillText(this._text, this._x, this._y + this.height, this.width);
 }
 HudElements.Text.prototype.setupCanvas = function () {
+	if(this.targetCanvas == null) // We can't do that in the constructor
+		this.targetCanvas = CrymeEngine.canvas.hud.context;
 	//No need to use setFont because we will reapply the font on draw anyway
-	CrymeEngine.canvas.hud.context.font = this._font;
-	CrymeEngine.canvas.hud.context.fillStyle = this._color;
+	this.targetCanvas.font = this._font;
+	this.targetCanvas.fillStyle = this._color;
 }
 
 HudElements.Text.prototype.onAttached = function () {
@@ -54,9 +56,9 @@ HudElements.Text.prototype.resize = function (width, height) {
 HudElements.Text.prototype.autoResize = function () {
 	if (this._enableAutoSizing) {
 		this.setupCanvas();
-		var textWidth = CrymeEngine.canvas.hud.context.measureText(this._text).width;
+		var textWidth = this.targetCanvas.measureText(this._text).width;
 		//An acceptable approximate of text height is the width of the capital M. Then add some safety extra pixels.
-		var textHeight = CrymeEngine.canvas.hud.context.measureText("M").width + 2;
+		var textHeight = this.targetCanvas.measureText("M").width + 2;
 		HudElement.prototype.resize.call(this, textWidth, textHeight);
 	}
 }
