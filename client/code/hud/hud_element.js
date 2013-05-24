@@ -24,6 +24,7 @@ function HudElement(name, image, width, height, verticalMargin, horizontalMargin
 		bottom_height: 0
 	}
 	this.clickable = typeof clickable == 'undefined' ? true : clickable;
+	this.targetCanvas = CrymeEngine.canvas.hud.context;
 
 	this.onClick = function (x, y) {
 		//Override this for custom click behaviour.
@@ -38,73 +39,80 @@ HudElement.prototype = {
 	draw: function () {
 		if (this.visible) {
 			if (this.image != null) {
-				CrymeEngine.canvas.hud.context.globalAlpha = this.opacity;
+				this.targetCanvas.globalAlpha = this.opacity;
 				if(!this.ninepatch.enabled) {
-					CrymeEngine.canvas.hud.context.drawImage(CrymeEngine.hud.textures[this.image].image, this._x, this._y);
+					this.targetCanvas.drawImage(CrymeEngine.hud.textures[this.image].image, this._x, this._y);
 				} else {
 					var tmpImage = CrymeEngine.hud.textures[this.image];
 					//Top left
-					CE.canvas.hud.context.drawImage(tmpImage.image,
+					this.targetCanvas.drawImage(tmpImage.image,
 						0, 0,
 						this.ninepatch.left_width, this.ninepatch.top_height,
 						this._x, this._y,
 						this.ninepatch.left_width, this.ninepatch.top_height);
 					//Top right
-					CE.canvas.hud.context.drawImage(tmpImage.image,
+					this.targetCanvas.drawImage(tmpImage.image,
 						tmpImage.width - this.ninepatch.right_width, 0,
 						this.ninepatch.right_width, this.ninepatch.top_height,
 						this._x + this.width - this.ninepatch.right_width, this._y,
 						this.ninepatch.right_width, this.ninepatch.top_height);
 					//Bottom left
-					CE.canvas.hud.context.drawImage(tmpImage.image,
+					this.targetCanvas.drawImage(tmpImage.image,
 						0, tmpImage.height - this.ninepatch.bottom_height,
 						this.ninepatch.left_width, this.ninepatch.bottom_height,
 						this._x, this._y + this.height - this.ninepatch.bottom_height,
 						this.ninepatch.left_width, this.ninepatch.bottom_height);
 					//Bottom right
-					CE.canvas.hud.context.drawImage(tmpImage.image,
+					this.targetCanvas.drawImage(tmpImage.image,
 						tmpImage.width - this.ninepatch.right_width, tmpImage.height - this.ninepatch.bottom_height,
 						this.ninepatch.right_width, this.ninepatch.bottom_height,
 						this._x + this.width - this.ninepatch.right_width, this._y + this.height - this.ninepatch.bottom_height,
 						this.ninepatch.right_width, this.ninepatch.bottom_height);
 					//Top middle
-					CE.canvas.hud.context.drawImage(tmpImage.image,
+					this.targetCanvas.drawImage(tmpImage.image,
 						this.ninepatch.left_width + 1, 0,
 						tmpImage.width - this.ninepatch.left_width - this.ninepatch.right_width, this.ninepatch.top_height,
 						this._x + this.ninepatch.left_width, this._y,
 						this.width - this.ninepatch.left_width - this.ninepatch.right_width, this.ninepatch.top_height);
 					//Bottom middle
-					CE.canvas.hud.context.drawImage(tmpImage.image,
+					this.targetCanvas.drawImage(tmpImage.image,
 						this.ninepatch.left_width + 1, tmpImage.height - this.ninepatch.bottom_height,
 						tmpImage.width - this.ninepatch.left_width - this.ninepatch.right_width, this.ninepatch.bottom_height,
 						this._x + this.ninepatch.left_width, this._y + this.height - this.ninepatch.bottom_height,
 						this.width - this.ninepatch.left_width - this.ninepatch.right_width, this.ninepatch.bottom_height);
 					//Middle
-					CE.canvas.hud.context.drawImage(tmpImage.image,
+					this.targetCanvas.drawImage(tmpImage.image,
 						this.ninepatch.left_width + 1, this.ninepatch.top_height + 1,
 						tmpImage.width - this.ninepatch.left_width - this.ninepatch.right_width,
 						tmpImage.height - this.ninepatch.top_height - this.ninepatch.bottom_height,
 						this._x + this.ninepatch.left_width, this._y + this.ninepatch.top_height,
 						this.width - this.ninepatch.left_width - this.ninepatch.right_width, this.height - this.ninepatch.top_height - this.ninepatch.bottom_height);
 					//Middle left
-					CE.canvas.hud.context.drawImage(tmpImage.image,
+					this.targetCanvas.drawImage(tmpImage.image,
 						0, this.ninepatch.top_height + 1,
 						this.ninepatch.left_width, tmpImage.height - this.ninepatch.top_height - this.ninepatch.bottom_height,
 						this._x, this._y + this.ninepatch.top_height,
 						this.ninepatch.left_width, this.height - this.ninepatch.top_height - this.ninepatch.bottom_height);
 					//Middle right
-					CE.canvas.hud.context.drawImage(tmpImage.image,
+					this.targetCanvas.drawImage(tmpImage.image,
 						tmpImage.width - this.ninepatch.right_width, this.ninepatch.top_height + 1,
 						this.ninepatch.right_width, tmpImage.height - this.ninepatch.top_height - this.ninepatch.bottom_height,
 						this._x + this.width - this.ninepatch.right_width, this._y + this.ninepatch.top_height,
 						this.ninepatch.right_width, this.height - this.ninepatch.top_height - this.ninepatch.bottom_height);
 				}
-				CrymeEngine.canvas.hud.context.globalAlpha = 1;
+				this.targetCanvas.globalAlpha = 1;
 			}
 			var childrenCount = this.children.length;
 			for (var i = 0; i < childrenCount; i++) {
 				this.children[i].draw();
 			}
+		}
+	},
+	setTargetCanvas: function(context) {
+		this.targetCanvas = context;
+		var childrenCount = this.children.length;
+		for (var i = 0; i < childrenCount; i++) {
+			this.children[i].setTargetCanvas(context);
 		}
 	},
 	resize: function (width, height) {
