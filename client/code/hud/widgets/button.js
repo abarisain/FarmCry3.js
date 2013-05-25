@@ -38,3 +38,20 @@ HudElements.Button.prototype.setText = function (text) {
 HudElements.Button.prototype.setTextFunction = function (func) {
 	this._text.setTextFunction(func);
 }
+
+HudElements.Button.Premade = {
+	close: function (verticalMargin, horizontalMargin, anchor) {
+		var tmpBtn = new HudElements.Button(37, 37, verticalMargin, horizontalMargin, null, anchor);
+		tmpBtn.ninepatch.enabled = false;
+		tmpBtn.image = "button_close";
+		tmpBtn.removeAllChildren();
+		return tmpBtn;
+	},
+	delete: function (verticalMargin, horizontalMargin, anchor) {
+		var tmpBtn = new HudElements.Button(37, 37, verticalMargin, horizontalMargin, null, anchor);
+		tmpBtn.ninepatch.enabled = false;
+		tmpBtn.image = "button_delete";
+		tmpBtn.removeAllChildren();
+		return tmpBtn;
+	}
+}

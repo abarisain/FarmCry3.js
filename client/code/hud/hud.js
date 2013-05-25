@@ -8,6 +8,7 @@ CrymeEngine.hud = {
 		button_green: null,
 		button_blue: null,
 		button_close: null,
+		button_delete: null,
 		book: null
 	},
 	panels: {
