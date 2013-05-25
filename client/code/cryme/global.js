@@ -11,7 +11,7 @@ var colSize = 16;
 
 var scaleFactor = 1;
 
-var borderSize = 0.3;//taille des bordures dans la vue d'informations pour les tiles
+var borderSize = 0;//taille des bordures dans la vue d'informations pour les tiles
 
 //liste des emetteurs de particules
 var particleEmitters;
@@ -70,7 +70,7 @@ Array.prototype.remove = function (from, to) {
 };
 Array.prototype.removeItem = function (element) {
 	var index = this.indexOf(element);
-	if(index != -1)
+	if (index != -1)
 		this.splice(index, 1);
 };
 Array.prototype.removeItemAtIndex = function (index) {
