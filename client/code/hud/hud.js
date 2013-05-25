@@ -43,8 +43,8 @@ CrymeEngine.hud = {
 		this.rootHudElement.addChild(CE.hud.tray);
 
 		var marketButton = new HudElements.Button(100, 50, 150, 0, "Market", HudElement.Anchors.TOP_LEFT, "#fff");
-		marketButton.onClick = (function() {
-			if(CE.hud.market == null) {
+		marketButton.onClick = (function () {
+			if (CE.hud.market == null) {
 				CE.hud.market = new HudElements.Book();
 				var tmpLayout = new HudElement("listlayout", null, 470, 200);
 				tmpLayout.text = new HudElements.Text("placeholder");
@@ -52,12 +52,14 @@ CrymeEngine.hud = {
 				tmpLayout.text.horizontalMargin = 10;
 				tmpLayout.addChild(tmpLayout.text);
 				var tmpBtn = new HudElements.Button(100, 50, 100, 0, "Market", HudElement.Anchors.TOP_LEFT, "#fff");
-				tmpBtn.onClick = function(x, y, index, item) {
+				tmpBtn.onClick = function (x, y, index, item) {
 					alert(index);
 				};
 				tmpLayout.addChild(tmpBtn);
 				var tmpList = new HudElements.List(470, 520, 0, 0, HudElement.Anchors.TOP_LEFT, ["caca", "caco", "cacao", "michel", "jean"], tmpLayout,
-					function(layout, index, item) { layout.text.setText(item); });
+					function (layout, index, item) {
+						layout.text.setText(item);
+					});
 				CE.hud.market.leftPage.addChild(tmpList);
 				this.rootHudElement.addChild(CE.hud.market);
 				CE.tmpListe = tmpList;
@@ -91,6 +93,18 @@ CrymeEngine.hud = {
 			CE.mapInvalidated = true;
 		}
 		this.rootHudElement.addChild(akButton);
+
+		var tornadoButton = new HudElements.Button(100, 50, -10, -310, "Tornado", HudElement.Anchors.BOTTOM_RIGHT, "#fff");
+		tornadoButton.onClick = function () {
+			CE.Weather.addTornado(Map.player.col, Map.player.line);
+		}
+		this.rootHudElement.addChild(tornadoButton);
+
+		var rainButton = new HudElements.Button(100, 50, -10, -410, "Rain", HudElement.Anchors.BOTTOM_RIGHT, "#fff");
+		rainButton.onClick = function () {
+			CE.Weather.startRain();
+		}
+		this.rootHudElement.addChild(rainButton);
 	},
 	loadTextures: function () {
 		var textureList = Object.keys(this.textures);
