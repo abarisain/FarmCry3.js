@@ -32,6 +32,13 @@ function HudElement(name, image, width, height, verticalMargin, horizontalMargin
 		//Return true if you handled the click and want to consume the event
 		return this.baseOnClick(x, y, data1, data2);
 	}
+
+	this.onOutsideClick = function (x, y, data1, data2) {
+		//Override this for custom ouside click behaviour (only works if you are modal).
+		return this.baseOnOutsideClick(x, y, data1, data2);
+	}
+
+	this.modal = false; // A modal item will prevent the game for getting clicks outside it. Books, popups are modal.
 }
 
 HudElement.prototype = {
@@ -198,17 +205,43 @@ HudElement.prototype = {
 	baseOnClick: function (x, y, data1, data2) {
 		var childrenCount = this.children.length;
 		var child;
+		var modalIndex = -1;
+		// Check for the topmost modal item index.
 		for (var i = 0; i < childrenCount; i++) {
 			child = this.children[i];
-			if (child.visible && child.clickable && child.isPointInBounds(x, y)) {
-				//STOP ! HAMMERTIME (I mean that the even has been consumed by a children, so we propagate this)
-				//Don't propagate if onClick returned false, for obvious reasons
-				child.onClick(x, y, data1, data2);
-				return true;
+			if (child.visible && child.modal) {
+				modalIndex = i;
+				// Don't break, that way we find the topmost
+			}
+		}
+		// Only send the event to the modal item if there is one
+		if(modalIndex >= 0) {
+			child = this.children[modalIndex];
+			if(child.clickable) { // Visibility has already been checked
+				if(child.isPointInBounds(x, y)) {
+					child.onClick(x, y, data1, data2);
+				} else {
+					child.onOutsideClick(x, y, data1, data2);
+				}
+			}
+			return true; // Consume whatever happened
+		} else {
+			// If there is no modal item, do a "classic" propagation
+			for (var i = 0; i < childrenCount; i++) {
+				child = this.children[i];
+				if (child.visible && child.clickable && child.isPointInBounds(x, y)) {
+					//STOP ! HAMMERTIME (I mean that the even has been consumed by a children, so we propagate this)
+					//Don't propagate if onClick returned false, for obvious reasons
+					child.onClick(x, y, data1, data2);
+					return true;
+				}
 			}
 		}
 		// Don't catch the click if we are the root element
 		return this != CE.hud.rootHudElement;
+	},
+	baseOnOutsideClick: function (x, y, data1, data2) {
+		// No base action, only here for easy overriding
 	},
 	addChild: function (hudElement) { //Override this if you want your view not to be able to have children (poor view)
 		hudElement.parent = this;

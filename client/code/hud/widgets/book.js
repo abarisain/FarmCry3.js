@@ -7,6 +7,7 @@ HudElements.Book = function () {
 	this.width = 978;
 	this.height = 602;
 	this.anchor = HudElement.Anchors.CENTER;
+	this.modal = true;
 	this.leftPage = new HudElements.BookPage();
 	this.leftPage.verticalMargin = -40;
 	this.leftPage.horizontalMargin = 12;
