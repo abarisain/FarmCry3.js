@@ -69,15 +69,15 @@ MapItems.Tile.prototype.draw = function () {
 			CrymeEngine.canvas.map.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
 		} else {
 			CE.canvas.map.context.globalAlpha = 1;
-			CE.canvas.map.context.fillStyle = '#fff';//this.infoColor.rgb;Je trouve ça plus joli avec du orange
+			CE.canvas.map.context.fillStyle = this.infoColor.rgb;
 			CE.canvas.map.context.strokeStyle = '#f0f0f0';
-			CE.canvas.map.context.lineWidth = 1;
+			//CE.canvas.map.context.lineWidth = 1;
 			CE.canvas.map.context.beginPath();
 			CE.canvas.map.context.moveTo(this.x, this.y + tileHeight / 2 - borderSize);
 			CE.canvas.map.context.lineTo(this.x - tileWidth / 2 + borderSize, this.y);
 			CE.canvas.map.context.lineTo(this.x, this.y - tileHeight / 2 + borderSize);
 			CE.canvas.map.context.lineTo(this.x + tileWidth / 2 - borderSize, this.y);
-			CE.canvas.map.context.stroke();
+			CE.canvas.map.context.fill();
 		}
 		if (Options.Debug.Graphic.enabled) {
 			if (Options.Debug.Graphic.map) {

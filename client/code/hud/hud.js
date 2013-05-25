@@ -98,6 +98,17 @@ CrymeEngine.hud = {
 			CE.Weather.startRain();
 		}
 		this.rootHudElement.addChild(rainButton);
+
+		var displayButton = new HudElements.Button(150, 50, 10, -160, "Switch view", HudElement.Anchors.TOP_RIGHT, "#fff");
+		displayButton.onClick = function () {
+			CE.displayType = (CE.displayType + 1) % 3;
+			if (CE.displayType != CE.DisplayType.STANDARD) {
+				Map.showMapInformations();
+			}
+			Map.tileHighLighted.index = -1;
+			CE.mapInvalidated = true;
+		}
+		this.rootHudElement.addChild(displayButton);
 	},
 	loadTextures: function () {
 		var textureList = Object.keys(this.textures);
