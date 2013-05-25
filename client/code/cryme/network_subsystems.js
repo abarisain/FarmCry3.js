@@ -63,6 +63,9 @@ networkEngine.subsystems.game = {
 			initialData = data;
 			networkEngine.onLoadingStarted();
 			initialDataLoaded = true;
+			GameState.buildings = data.buildings;
+			GameState.crops = data.crops;
+			GameState.weapons = data.weapons;
 			Map.init(data);
 			CrymeEngine.init();
 			currentLoadingCount++;

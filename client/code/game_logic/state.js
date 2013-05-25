@@ -1,6 +1,9 @@
 GameState = {
     player: null,
     online_players: [],
+	crops: {},
+	buildings: {},
+	weapons: {},
     addPlayer: function(player) {
         this.removePlayer(player.nickname);
         this.online_players.push(player);
