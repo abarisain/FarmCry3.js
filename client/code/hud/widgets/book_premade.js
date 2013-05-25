@@ -19,5 +19,21 @@ HudElements.Book.Premade.Market = function () {
 	);
 	book.leftPage.title = "Buildings";
 	book.leftPage.addChild(buildingsList);
+
+	var tmpCropsData = [];
+	for(var key in GameState.crops) {
+		tmpCropsData.push(GameState.crops[key]);
+	}
+	var cropsList = new HudElements.List(470, 520, 0, 0, HudElement.Anchors.TOP_LEFT,
+		tmpCropsData,
+		HudElements.List.PremadeLayouts.marketItem("cropMarketListItemLayout", 75),
+		function (layout, index, item) {
+			layout.viewbag.name.setText(item.name);
+			layout.viewbag.price.setText(item.seed_price);
+		}
+	);
+	book.rightPage.title = "Crops";
+	book.rightPage.addChild(cropsList);
+
 	return book;
 };
