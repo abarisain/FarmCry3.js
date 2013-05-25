@@ -108,9 +108,9 @@ HudElements.List.prototype.scrollTo = function (position) {
 		this._verticalScrollOffset = 0;
 	// Don't allow to scroll too far
 	this._verticalScrollOffset = Math.min(this._verticalScrollOffset, this._internalHeight - this.height);
-	var maxScrollbarHeight = this.height - 160;
-	this.scrollbar.height = maxScrollbarHeight * (this.height /this._internalHeight);
-	this.scrollbar.verticalMargin = (this._verticalScrollOffset) * (this.height / this._internalHeight) + 40;
+	var maxScrollbarHeight = this.height - 76;
+	this.scrollbar.height = maxScrollbarHeight * (this.height / this._internalHeight);
+	this.scrollbar.verticalMargin = maxScrollbarHeight * (this._verticalScrollOffset / this._internalHeight) + 38;
 	this.scrollbar.computeLayout();
 
 };
