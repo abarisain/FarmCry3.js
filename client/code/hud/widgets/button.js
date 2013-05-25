@@ -40,8 +40,15 @@ HudElements.Button.prototype.setTextFunction = function (func) {
 }
 
 HudElements.Button.Premade = {
+	buy: function (verticalMargin, horizontalMargin, anchor) {
+		var tmpBtn = new HudElements.Button(41, 39, verticalMargin, horizontalMargin, null, anchor);
+		tmpBtn.ninepatch.enabled = false;
+		tmpBtn.image = "button_buy";
+		tmpBtn.removeAllChildren();
+		return tmpBtn;
+	},
 	close: function (verticalMargin, horizontalMargin, anchor) {
-		var tmpBtn = new HudElements.Button(37, 37, verticalMargin, horizontalMargin, null, anchor);
+		var tmpBtn = new HudElements.Button(41, 39, verticalMargin, horizontalMargin, null, anchor);
 		tmpBtn.ninepatch.enabled = false;
 		tmpBtn.image = "button_close";
 		tmpBtn.removeAllChildren();
