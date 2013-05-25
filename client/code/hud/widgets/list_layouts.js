@@ -18,9 +18,6 @@ HudElements.List.PremadeLayouts.marketItem = function (name, height) {
 	tmpLayout.viewbag.price.horizontalMargin = 300;
 
 	tmpLayout.viewbag.delete = HudElements.Button.Premade.delete(0, -15, HudElement.Anchors.CENTER_RIGHT);
-	tmpLayout.viewbag.delete.onClick = function (x, y, index, item) {
-		alert(index);
-	};
 
 	tmpLayout.addChild(tmpLayout.viewbag.icon);
 	tmpLayout.addChild(tmpLayout.viewbag.name);
@@ -75,9 +72,6 @@ HudElements.List.PremadeLayouts.buildingMarketItem = function (name) {
 	tmpLayout.viewbag.price.horizontalMargin = -60;
 
 	tmpLayout.viewbag.buy = HudElements.Button.Premade.buy(-10, -10, HudElement.Anchors.BOTTOM_RIGHT);
-	tmpLayout.viewbag.buy.onClick = function (x, y, index, item) {
-		alert(index);
-	};
 
 	tmpLayout.addChild(tmpLayout.viewbag.icon);
 	tmpLayout.addChild(tmpLayout.viewbag.price);
