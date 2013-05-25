@@ -1,5 +1,6 @@
 MapItems.Tornado = function (col, line) {
 	MapItem.call(this, SpritePack.Effects.Sprites.TORNADO, col, line);
+	this.sprite.scale = 2;
 	this.updateCoord();
 	this.updateImageCoord();
 	this.movement = { finalPosition: { x: 0, y: 0}, startPosition: { x: 0, y: 0}};
@@ -37,7 +38,7 @@ MapItems.Tornado.prototype.update = function () {
 MapItems.Tornado.prototype.draw = function () {
 	if (this.visible) {
 		CE.canvas.animation.context.globalAlpha = this.transition.progress;
-		CE.canvas.animation.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
+		this.sprite.draw(this.x, this.y);
 	}
 };
 

@@ -2,6 +2,7 @@ var Sprites = {};
 
 function Sprite(name, centerX, centerY, textureInfo, extension) {
 	this.name = name;
+	this.scale = 1;
 	if (centerX === undefined || centerX === null) {
 		this.centerX = tileWidth / 2;
 		this.centerY = tileHeight / 2;
@@ -56,17 +57,33 @@ Sprite.prototype = {
 	},
 	//on dessine toujours un sprite sur la map, sauf exception
 	draw: function (x, y) {
-		if (CrymeEngine.displayType == CrymeEngine.DisplayType.STANDARD) {
-			CE.canvas.map.context.drawImage(this.image, x - this.centerX, y - this.centerY);
+		if (this.scale == 1) {
+			if (CrymeEngine.displayType == CrymeEngine.DisplayType.STANDARD) {
+				CE.canvas.map.context.drawImage(this.image, x - this.centerX, y - this.centerY);
+			} else {
+				CE.canvas.map.context.drawImage(this.imageInfo, x - this.centerX, y - this.centerY);
+			}
 		} else {
-			CE.canvas.map.context.drawImage(this.imageInfo, x - this.centerX, y - this.centerY);
+			if (CrymeEngine.displayType == CrymeEngine.DisplayType.STANDARD) {
+				CE.canvas.map.context.drawImage(this.image, x - this.centerX * this.scale, y - this.centerY * this.scale, this.width * this.scale, this.height * this.scale);
+			} else {
+				CE.canvas.map.context.drawImage(this.imageInfo, x - this.centerX * this.scale, y - this.centerY * this.scale, this.width * this.scale, this.height * this.scale);
+			}
 		}
 	},
 	drawOnAnimation: function (x, y) {
-		if (CrymeEngine.displayType == CrymeEngine.DisplayType.STANDARD) {
-			CE.canvas.animation.context.drawImage(this.image, x - this.centerX, y - this.centerY);
+		if (this.scale == 1) {
+			if (CrymeEngine.displayType == CrymeEngine.DisplayType.STANDARD) {
+				CE.canvas.animation.context.drawImage(this.image, x - this.centerX, y - this.centerY);
+			} else {
+				CE.canvas.animation.context.drawImage(this.imageInfo, x - this.centerX, y - this.centerY);
+			}
 		} else {
-			CE.canvas.animation.context.drawImage(this.imageInfo, x - this.centerX, y - this.centerY);
+			if (CrymeEngine.displayType == CrymeEngine.DisplayType.STANDARD) {
+				CE.canvas.animation.context.drawImage(this.image, x - this.centerX * this.scale, y - this.centerY * this.scale, this.width * this.scale, this.height * this.scale);
+			} else {
+				CE.canvas.animation.context.drawImage(this.imageInfo, x - this.centerX * this.scale, y - this.centerY * this.scale, this.width * this.scale, this.height * this.scale);
+			}
 		}
 	}
 }

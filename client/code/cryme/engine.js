@@ -147,8 +147,9 @@ var CrymeEngine = {
 			CrymeEngine.canvas.animation.context.translate(CrymeEngine.camera.position.x, CrymeEngine.camera.position.y);
 
 			Map.drawAnimation();
-
-			CE.Weather.draw();
+			if (CE.displayType == CE.DisplayType.STANDARD) {
+				CE.Weather.draw();
+			}
 
 			CrymeEngine.canvas.animation.context.restore();
 		},
@@ -169,24 +170,34 @@ var CrymeEngine = {
 			CE.keyboard.drawKeyMap();
 		},
 		MainLoop: function () {
+			if (CrymeEngine.gameState == CE.GameState.FARMING) {
+				CrymeEngine.camera.updateCamera();
+				//There is another render loop for when the map is loading
+				if (CrymeEngine.mapInvalidated || Map.transitionInformation.started) {
+					CrymeEngine.mapInvalidated = false;
+					CrymeEngine.Draw.Map();
+				}
+				CrymeEngine.Draw.Animation();
+				CrymeEngine.Draw.Hud();
+			} else if (CrymeEngine.gameState == CE.GameState.BATTLE) {
+				CrymeEngine.Draw.Battle();
+			}
+		}
+	},
+	Update: {
+		Animation: function () {
+			CE.Weather.update();
+		},
+		MainLoop: function () {
 			if (!CrymeEngine.pauseRendering) {
 				if (loadingComplete) {
-					if (CrymeEngine.gameState == CE.GameState.FARMING) {
-						CrymeEngine.camera.updateCamera();
-						//There is another render loop for when the map is loading
-						if (CrymeEngine.mapInvalidated || Map.transitionInformation.started) {
-							CrymeEngine.mapInvalidated = false;
-							CrymeEngine.Draw.Map();
-						}
-						CrymeEngine.Draw.Animation();
-						CrymeEngine.Draw.Hud();
-					} else if (CrymeEngine.gameState == CE.GameState.BATTLE) {
-						CrymeEngine.Draw.Battle();
-					}
+					CE.Update.Animation();
+
+					CE.Draw.MainLoop();
 				}
 			}
 			window.requestAnimFrame(function () {
-				CrymeEngine.Draw.MainLoop();
+				CrymeEngine.Update.MainLoop();
 			});
 		}
 	},
@@ -208,7 +219,7 @@ var CrymeEngine = {
 			if (loadingComplete) {
 				if (event.button == 0) {
 					// If the hud has handled the event, forget it
-					if(CE.hud.onClick(event.pageX, event.pageY))
+					if (CE.hud.onClick(event.pageX, event.pageY))
 						return;
 
 					//pour du debug de position d'image
@@ -344,7 +355,7 @@ var CrymeEngine = {
 
 		//Start the main drawing loop.
 		CrymeEngine.Draw.Loading();
-		CrymeEngine.Draw.MainLoop();
+		CrymeEngine.Update.MainLoop();
 
 		CrymeEngine.hud.init();
 		InitLoading();

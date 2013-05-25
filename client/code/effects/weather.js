@@ -59,7 +59,6 @@ CrymeEngine.Weather = {
 		}
 	},
 	draw: function () {
-		this.update();
 		for (var i = 0; i < this.effects.length; i++) {
 			this.effects[i].draw();
 		}
