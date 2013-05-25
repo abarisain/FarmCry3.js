@@ -57,7 +57,7 @@ HudElements.List.prototype.draw = function () {
 			}
 			this.scrollTo(0);
 			this._drawcache = document.createElement('canvas');
-			this._drawcache.width = this.width;
+			this._drawcache.width = this.width - this._marginRight;
 			this._drawcache.height = this._internalHeight;
 			var drawcacheContext = this._drawcache.getContext('2d');
 			this.layout.parent = new HudElement();
@@ -76,8 +76,8 @@ HudElements.List.prototype.draw = function () {
 						this.layout.verticalMargin++;
 					}
 				}
-				this.layout.computeLayout();
 				this.dataBinder(this.layout, i, this.data[i]);
+				this.layout.computeLayout();
 				this.layout.draw();
 			}
 			// For click hitbox detection
@@ -86,7 +86,10 @@ HudElements.List.prototype.draw = function () {
 		}
 		if(this.targetCanvas == null) // We can't do that in the constructor
 			this.targetCanvas = CrymeEngine.canvas.hud.context;
-		this.targetCanvas.drawImage(this._drawcache, 0, this._verticalScrollOffset, this.width, this.height, this._x, this._y, this.width, this.height);
+		this.targetCanvas.drawImage(this._drawcache, 0, this._verticalScrollOffset,
+			this.width - this._marginRight, this.height,
+			this._x, this._y,
+			this.width - this._marginRight, this.height);
 
 		var childrenCount = this.children.length;
 		for (var i = 0; i < childrenCount; i++) {

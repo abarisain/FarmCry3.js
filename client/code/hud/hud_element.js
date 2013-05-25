@@ -180,6 +180,9 @@ HudElement.prototype = {
 				break;
 		}
 
+		this._x = Math.ceil(this._x);
+		this._y = Math.ceil(this._y);
+
 		var childrenCount = this.children.length;
 		for (var i = 0; i < childrenCount; i++) {
 			this.children[i].computeLayout();
