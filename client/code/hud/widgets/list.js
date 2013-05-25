@@ -16,9 +16,20 @@ HudElements.List = function (width, height, verticalMargin, horizontalMargin, an
 		enabled: true,
 		color: "#d1c8a8"
 	}
+	this._marginRight = 40;
 	this._drawcache = null;
 	this._internalHeight = height;
 	this._verticalScrollOffset = 0;
+	this.upButton = new HudElements.Button(38, 38, 0, 0, "^", HudElement.Anchors.TOP_RIGHT, "#fff");
+	this.upButton.onClick = (function () {
+		this.scroll(-120);
+	}).bind(this);
+	HudElement.prototype.addChild.call(this, this.upButton);
+	this.downButton = new HudElements.Button(38, 38, 0, 0, "v", HudElement.Anchors.BOTTOM_RIGHT, "#fff");
+	this.downButton.onClick = (function () {
+		this.scroll(120);
+	}).bind(this);
+	HudElement.prototype.addChild.call(this, this.downButton);
 }
 
 HudElements.List.prototype = new HudElement();
@@ -32,6 +43,13 @@ HudElements.List.prototype.draw = function () {
 			if(this.separator.enabled)
 				this._internalHeight += (elementCount - 1); // Separators are 1 px tall
 			this._internalHeight = Math.max(this._internalHeight, this.height);
+			if(this._internalHeight > this.height) {
+				this.upButton.visible = true;
+				this.downButton.visible = true;
+			} else {
+				this.upButton.visible = false;
+				this.downButton.visible = false;
+			}
 			this._drawcache = document.createElement('canvas');
 			this._drawcache.width = this.width;
 			this._drawcache.height = this._internalHeight;
@@ -40,7 +58,7 @@ HudElements.List.prototype.draw = function () {
 			this.layout.parentList = this;
 			this.layout.setTargetCanvas(drawcacheContext);
 			this.layout.anchor = HudElement.Anchors.TOP_LEFT;
-			this.layout.width = this.width;
+			this.layout.width = this.width - this._marginRight;
 			this.layout.verticalMargin = 0;
 			this.layout.horizontalMargin = 0;
 			for(var i = 0; i < elementCount; i++) {
@@ -48,7 +66,7 @@ HudElements.List.prototype.draw = function () {
 					this.layout.verticalMargin += this.layout.height;
 					if(this.separator.enabled) {
 						drawcacheContext.fillStyle = this.separator.color;
-						drawcacheContext.fillRect(0, this.layout.verticalMargin, this.width, 1);
+						drawcacheContext.fillRect(0, this.layout.verticalMargin, this.width - this._marginRight, 1);
 						this.layout.verticalMargin++;
 					}
 				}
@@ -63,6 +81,11 @@ HudElements.List.prototype.draw = function () {
 		if(this.targetCanvas == null) // We can't do that in the constructor
 			this.targetCanvas = CrymeEngine.canvas.hud.context;
 		this.targetCanvas.drawImage(this._drawcache, 0, this._verticalScrollOffset, this.width, this.height, this._x, this._y, this.width, this.height);
+
+		var childrenCount = this.children.length;
+		for (var i = 0; i < childrenCount; i++) {
+			this.children[i].draw();
+		}
 	}
 };
 
@@ -115,17 +138,21 @@ HudElements.List.prototype.indexForRelativeMouseCoordinates = function (x, y) {
 }
 
 HudElements.List.prototype.baseOnClick = function (x, y) {
-	// Make the mouse coordinates relative
-	x -= this._x;
-	y -= this._y;
-	var itemIndex = this.indexForRelativeMouseCoordinates(x,y);
-	y += this._verticalScrollOffset;
-	y -= itemIndex * this.layout.height;
-	if (this.separator.enabled)
-		y -= itemIndex;
-	// If you are in a list, onClick gets a 3rd argument (which is the current item position) !
-	// And a 4th (current item) !
-	this.layout.onClick(x, y, itemIndex, this.data[itemIndex]);
+	if ( (x - this._x) > this.width - this._marginRight) {
+		HudElement.prototype.baseOnClick.call(this, x, y);
+	} else {
+		// Make the mouse coordinates relative
+		x -= this._x;
+		y -= this._y;
+		var itemIndex = this.indexForRelativeMouseCoordinates(x,y);
+		y += this._verticalScrollOffset;
+		y -= itemIndex * this.layout.height;
+		if (this.separator.enabled)
+			y -= itemIndex;
+		// If you are in a list, onClick gets a 3rd argument (which is the current item position) !
+		// And a 4th (current item) !
+		this.layout.onClick(x, y, itemIndex, this.data[itemIndex]);
+	}
 }
 
 /*
