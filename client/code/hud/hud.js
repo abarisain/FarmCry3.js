@@ -62,7 +62,6 @@ CrymeEngine.hud = {
 					});
 				CE.hud.market.leftPage.addChild(tmpList);
 				this.rootHudElement.addChild(CE.hud.market);
-				CE.tmpListe = tmpList;
 			} else {
 				CE.hud.market.visible = true;
 			}
