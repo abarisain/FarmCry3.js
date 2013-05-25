@@ -199,7 +199,7 @@ HudElement.prototype = {
 			if (child.visible && child.clickable && child.isPointInBounds(x, y)) {
 				//STOP ! HAMMERTIME (I mean that the even has been consumed by a children, so we propagate this)
 				//Don't propagate if onClick returned false, for obvious reasons
-				child.onClick(x, y, data1, data2)
+				child.onClick(x, y, data1, data2);
 				return true;
 			}
 		}
