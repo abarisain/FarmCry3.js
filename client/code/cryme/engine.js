@@ -202,11 +202,6 @@ var CrymeEngine = {
 		CE.keyboard.init();
 		ColorHelper.init();
 
-		var audioPlayer = document.getElementById('audioPlayer');
-		audioPlayer.style.top = (canvasHeight - 30) + 'px';
-		if (Options.Sound.music) {
-			audioPlayer.play();
-		}
 		//Bind events
 
 		this.canvas.hud.canvas.onmousedown = function (event) {
