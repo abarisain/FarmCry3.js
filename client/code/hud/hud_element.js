@@ -16,6 +16,7 @@ function HudElement(name, image, width, height, verticalMargin, horizontalMargin
 	this.disabled = false;
 	this.children = [];
 	this.parent = null;
+	this.viewbag = {}; // Use this to maintain readable references to your children
 	this.ninepatch = {
 		enabled: false,
 		left_width: 0,
