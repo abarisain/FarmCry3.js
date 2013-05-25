@@ -56,6 +56,9 @@ HudElements.List.prototype.draw = function () {
 				this.dataBinder(this.layout, i, this.data[i]);
 				this.layout.draw();
 			}
+			// For click hitbox detection
+			this.layout.verticalMargin = 0;
+			this.layout.computeLayout();
 		}
 		if(this.targetCanvas == null) // We can't do that in the constructor
 			this.targetCanvas = CrymeEngine.canvas.hud.context;
