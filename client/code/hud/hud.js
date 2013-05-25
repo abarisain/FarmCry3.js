@@ -5,6 +5,7 @@ CrymeEngine.hud = {
 		popup: null,
 		inventory: null,
 		button_red: null,
+		button_gray: null,
 		button_green: null,
 		button_blue: null,
 		button_buy: null,

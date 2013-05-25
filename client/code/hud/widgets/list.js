@@ -22,16 +22,22 @@ HudElements.List = function (width, height, verticalMargin, horizontalMargin, an
 	this._internalHeight = height;
 	this._verticalScrollOffset = 0;
 	this.upButton = new HudElements.Button(38, 38, 0, 0, "Λ", HudElement.Anchors.TOP_RIGHT, "#fff");
+	this.upButton.image = "button_gray";
+	this.upButton.opacity = 0.2;
 	this.upButton.onClick = (function () {
 		this.scroll(-this.scrollStep);
 	}).bind(this);
 	HudElement.prototype.addChild.call(this, this.upButton);
 	this.downButton = new HudElements.Button(38, 38, 0, 0, "V", HudElement.Anchors.BOTTOM_RIGHT, "#fff");
+	this.downButton.image = "button_gray";
+	this.downButton.opacity = 0.2;
 	this.downButton.onClick = (function () {
 		this.scroll(this.scrollStep);
 	}).bind(this);
 	HudElement.prototype.addChild.call(this, this.downButton);
 	this.scrollbar = new HudElements.Button(38, this.height - 80, 40, 0, "", HudElement.Anchors.TOP_RIGHT, "#fff");
+	this.scrollbar.image = "button_gray";
+	this.scrollbar.opacity = 0.2;
 	HudElement.prototype.addChild.call(this, this.scrollbar);
 }
 
