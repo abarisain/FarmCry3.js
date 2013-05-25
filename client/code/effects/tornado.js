@@ -37,7 +37,7 @@ MapItems.Tornado.prototype.update = function () {
 MapItems.Tornado.prototype.draw = function () {
 	if (this.visible) {
 		CE.canvas.animation.context.globalAlpha = this.transition.progress;
-		CE.canvas.animation.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
+		this.sprite.draw(this.x, this.y);
 	}
 };
 
