@@ -16,18 +16,19 @@ HudElements.List = function (width, height, verticalMargin, horizontalMargin, an
 		enabled: true,
 		color: "#d1c8a8"
 	}
+	this.scrollStep = 120;
 	this._marginRight = 40;
 	this._drawcache = null;
 	this._internalHeight = height;
 	this._verticalScrollOffset = 0;
 	this.upButton = new HudElements.Button(38, 38, 0, 0, "Λ", HudElement.Anchors.TOP_RIGHT, "#fff");
 	this.upButton.onClick = (function () {
-		this.scroll(-120);
+		this.scroll(-this.scrollStep);
 	}).bind(this);
 	HudElement.prototype.addChild.call(this, this.upButton);
 	this.downButton = new HudElements.Button(38, 38, 0, 0, "V", HudElement.Anchors.BOTTOM_RIGHT, "#fff");
 	this.downButton.onClick = (function () {
-		this.scroll(120);
+		this.scroll(this.scrollStep);
 	}).bind(this);
 	HudElement.prototype.addChild.call(this, this.downButton);
 	this.scrollbar = new HudElements.Button(38, this.height - 80, 40, 0, "", HudElement.Anchors.TOP_RIGHT, "#fff");
