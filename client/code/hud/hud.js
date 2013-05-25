@@ -14,6 +14,9 @@ CrymeEngine.hud = {
 		market_barn: null,
 		market_silo: null,
 		market_cold_storage: null,
+		market_corn: null,
+		market_tomato: null,
+		market_wheat: null,
 		book: null
 	},
 	panels: {

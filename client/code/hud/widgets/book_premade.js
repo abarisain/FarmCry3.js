@@ -36,11 +36,20 @@ HudElements.Book.Premade.Market = function () {
 	for(var key in GameState.crops) {
 		tmpCropsData.push(GameState.crops[key]);
 	}
+	var cropsLayout = HudElements.List.PremadeLayouts.cropMarketItem(null);
+	cropsLayout.viewbag.buy.onClick = function (x, y, index, item) {
+		networkEngine.subsystems.player.actions.buyCrop(item.codename);
+		CE.hud.market.close();
+	};
 	var cropsList = new HudElements.List(470, 520, 0, 0, HudElement.Anchors.TOP_LEFT,
 		tmpCropsData,
-		HudElements.List.PremadeLayouts.marketItem("cropMarketListItemLayout", 75),
+		cropsLayout,
 		function (layout, index, item) {
-			layout.viewbag.name.setText(item.name);
+			layout.viewbag.icon.image = "market_" + item.codename;
+			// I know that ticks aren't seconds, but we can't use that ...
+			layout.viewbag.maturation.setText(item.maturation_time + " s");
+			layout.viewbag.production.setText(item.productivity);
+			layout.viewbag.storability.setText(item.storability + " s");
 			layout.viewbag.price.setText(item.seed_price);
 		}
 	);
