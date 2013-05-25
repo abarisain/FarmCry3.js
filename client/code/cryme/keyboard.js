@@ -16,6 +16,11 @@ CrymeEngine.keyboard = {
 		KEY_I: { code: 73, name: 'I' },
 		KEY_J: { code: 74, name: 'J' },
 		KEY_K: { code: 75, name: 'K' },
+		KEY_L: { code: 75, name: 'L' },
+		KEY_M: { code: 75, name: 'M' },
+		KEY_N: { code: 75, name: 'N' },
+		KEY_O: { code: 75, name: 'O' },
+		KEY_P: { code: 75, name: 'P' },
 		KEY_Q: { code: 81, name: 'Q' },
 		KEY_R: { code: 82, name: 'R' },
 		KEY_S: { code: 83, name: 'S' },
@@ -68,6 +73,8 @@ CrymeEngine.keyboard = {
 		CE.keyboard.Shortcuts.ATTACK_FORK = CE.keyboard.Keys.KEY_A;
 		CE.keyboard.Shortcuts.ATTACK_FLAMETHROWER = CE.keyboard.Keys.KEY_Z;
 		CE.keyboard.Shortcuts.ATTACK_AK = CE.keyboard.Keys.KEY_E;
+		CE.keyboard.Shortcuts.NATURAL_RAIN = CE.keyboard.Keys.KEY_I;
+		CE.keyboard.Shortcuts.NATURAL_TORNADO = CE.keyboard.Keys.KEY_J;
 		CE.keyboard.Shortcuts.STOP_BATTLE = CE.keyboard.Keys.KEY_T;
 		CE.keyboard.Shortcuts.SHOW_KEY_MAP = CE.keyboard.Keys.TAB;
 		CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG = CE.keyboard.Keys.KEY_1;
@@ -103,6 +110,10 @@ CrymeEngine.keyboard = {
 				break;
 			case CE.keyboard.Shortcuts.SHOW_KEY_MAP.code:
 				CE.keyboard.showKeyMap = !CE.keyboard.showKeyMap;
+				break;
+			case CE.keyboard.Shortcuts.NATURAL_TORNADO.code:
+				CE.Weather.addTornado(Map.player.col, Map.player.line);
+				CE.mapInvalidated = true;
 				break;
 			case CE.keyboard.Shortcuts.ATTACK_FORK.code:
 				CE.gameState = CE.GameState.BATTLE;
