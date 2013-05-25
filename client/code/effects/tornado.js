@@ -1,5 +1,6 @@
 MapItems.Tornado = function (col, line) {
 	MapItem.call(this, SpritePack.Effects.Sprites.TORNADO, col, line);
+	this.sprite.scale = 2;
 	this.updateCoord();
 	this.updateImageCoord();
 	this.movement = { finalPosition: { x: 0, y: 0}, startPosition: { x: 0, y: 0}};
