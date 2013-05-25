@@ -113,7 +113,9 @@ CrymeEngine.keyboard = {
 				break;
 			case CE.keyboard.Shortcuts.NATURAL_TORNADO.code:
 				CE.Weather.addTornado(Map.player.col, Map.player.line);
-				CE.mapInvalidated = true;
+				break;
+			case CE.keyboard.Shortcuts.NATURAL_RAIN.code:
+				CE.Weather.startRain();
 				break;
 			case CE.keyboard.Shortcuts.ATTACK_FORK.code:
 				CE.gameState = CE.GameState.BATTLE;
