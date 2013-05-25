@@ -26,10 +26,10 @@ function HudElement(name, image, width, height, verticalMargin, horizontalMargin
 	this.clickable = typeof clickable == 'undefined' ? true : clickable;
 	this.targetCanvas = null;
 
-	this.onClick = function (x, y) {
+	this.onClick = function (x, y, data1, data2) {
 		//Override this for custom click behaviour.
 		//Return true if you handled the click and want to consume the event
-		return this.baseOnClick(x, y);
+		return this.baseOnClick(x, y, data1, data2);
 	}
 }
 
@@ -191,7 +191,7 @@ HudElement.prototype = {
 	 The event is always consumed if you are in a window
 	 Once you are in this function, you can safely assume that the user clicked inside your view
 	 */
-	baseOnClick: function (x, y) {
+	baseOnClick: function (x, y, data1, data2) {
 		var childrenCount = this.children.length;
 		var child;
 		for (var i = 0; i < childrenCount; i++) {
@@ -199,7 +199,7 @@ HudElement.prototype = {
 			if (child.visible && child.clickable && child.isPointInBounds(x, y)) {
 				//STOP ! HAMMERTIME (I mean that the even has been consumed by a children, so we propagate this)
 				//Don't propagate if onClick returned false, for obvious reasons
-				child.onClick(x, y)
+				child.onClick(x, y, data1, data2)
 				return true;
 			}
 		}
