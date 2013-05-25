@@ -46,7 +46,21 @@ CrymeEngine.hud = {
 		marketButton.onClick = (function() {
 			if(CE.hud.market == null) {
 				CE.hud.market = new HudElements.Book();
+				var tmpLayout = new HudElement("listlayout", null, 470, 200);
+				tmpLayout.text = new HudElements.Text("placeholder");
+				tmpLayout.text.verticalMargin = 10;
+				tmpLayout.text.horizontalMargin = 10;
+				tmpLayout.addChild(tmpLayout.text);
+				var tmpBtn = new HudElements.Button(100, 50, 100, 0, "Market", HudElement.Anchors.TOP_LEFT, "#fff");
+				tmpBtn.onClick = function(x, y, index, item) {
+					alert(index);
+				};
+				tmpLayout.addChild(tmpBtn);
+				var tmpList = new HudElements.List(470, 520, 0, 0, HudElement.Anchors.TOP_LEFT, ["caca", "caco", "cacao", "michel", "jean"], tmpLayout,
+					function(layout, index, item) { layout.text.setText(item); });
+				CE.hud.market.leftPage.addChild(tmpList);
 				this.rootHudElement.addChild(CE.hud.market);
+				CE.tmpListe = tmpList;
 			} else {
 				CE.hud.market.visible = true;
 			}

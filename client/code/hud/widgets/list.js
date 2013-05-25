@@ -30,6 +30,8 @@ HudElements.List = function (width, height, verticalMargin, horizontalMargin, an
 		this.scroll(120);
 	}).bind(this);
 	HudElement.prototype.addChild.call(this, this.downButton);
+	this.scrollbar = new HudElements.Button(38, this.height - 80, 40, 0, "", HudElement.Anchors.TOP_RIGHT, "#fff");
+	HudElement.prototype.addChild.call(this, this.scrollbar);
 }
 
 HudElements.List.prototype = new HudElement();
@@ -46,10 +48,13 @@ HudElements.List.prototype.draw = function () {
 			if(this._internalHeight > this.height) {
 				this.upButton.visible = true;
 				this.downButton.visible = true;
+				this.scrollbar.visible = true;
 			} else {
 				this.upButton.visible = false;
 				this.downButton.visible = false;
+				this.scrollbar.visible = false;
 			}
+			this.scrollTo(0);
 			this._drawcache = document.createElement('canvas');
 			this._drawcache.width = this.width;
 			this._drawcache.height = this._internalHeight;
@@ -99,6 +104,11 @@ HudElements.List.prototype.scrollTo = function (position) {
 		this._verticalScrollOffset = 0;
 	// Don't allow to scroll too far
 	this._verticalScrollOffset = Math.min(this._verticalScrollOffset, this._internalHeight - this.height);
+	var maxScrollbarHeight = this.height - 160;
+	this.scrollbar.height = maxScrollbarHeight * (this.height /this._internalHeight);
+	this.scrollbar.verticalMargin = (this._verticalScrollOffset) * (this.height / this._internalHeight) + 40;
+	this.scrollbar.computeLayout();
+
 };
 
 HudElements.List.prototype.setData = function (data) {
