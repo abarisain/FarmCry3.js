@@ -18,7 +18,7 @@ HudElements.Book.Premade.Market = function () {
 		networkEngine.subsystems.player.actions.buyBuilding(item.codename);
 		CE.hud.market.close();
 	};
-	var buildingsList = new HudElements.List(470, 520, 0, 0, HudElement.Anchors.TOP_LEFT,
+	var buildingsList = new HudElements.List(470, 510, 0, 0, HudElement.Anchors.TOP_LEFT,
 		tmpBuildingsData,
 		buildingsLayout,
 		function (layout, index, item) {
@@ -41,7 +41,7 @@ HudElements.Book.Premade.Market = function () {
 		networkEngine.subsystems.player.actions.buyCrop(item.codename);
 		CE.hud.market.close();
 	};
-	var cropsList = new HudElements.List(470, 520, 0, 0, HudElement.Anchors.TOP_LEFT,
+	var cropsList = new HudElements.List(470, 510, 0, 0, HudElement.Anchors.TOP_LEFT,
 		tmpCropsData,
 		cropsLayout,
 		function (layout, index, item) {
