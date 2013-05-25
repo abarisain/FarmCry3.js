@@ -311,7 +311,6 @@ var CrymeEngine = {
 			canvasHeight = window.innerHeight;
 			CrymeEngine.canvas.resizeAll(canvasWidth, canvasHeight);
 			Map.refreshMapVisibility();
-			audioPlayer.style.top = (canvasHeight - 30) + 'px';
 			CrymeEngine.hud.rootHudElement.resize();
 		};
 
