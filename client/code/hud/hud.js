@@ -7,8 +7,12 @@ CrymeEngine.hud = {
 		button_red: null,
 		button_green: null,
 		button_blue: null,
+		button_buy: null,
 		button_close: null,
 		button_delete: null,
+		market_barn: null,
+		market_silo: null,
+		market_cold_storage: null,
 		book: null
 	},
 	panels: {

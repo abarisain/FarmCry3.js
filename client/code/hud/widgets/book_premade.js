@@ -11,9 +11,12 @@ HudElements.Book.Premade.Market = function () {
 	}
 	var buildingsList = new HudElements.List(470, 520, 0, 0, HudElement.Anchors.TOP_LEFT,
 		tmpBuildingsData,
-		HudElements.List.PremadeLayouts.marketItem("buildingMarketListItemLayout", 75),
+		HudElements.List.PremadeLayouts.buildingMarketItem(null),
 		function (layout, index, item) {
-			layout.viewbag.name.setText(item.name);
+			layout.viewbag.icon.image = "market_" + item.codename;
+			layout.viewbag.capacity.setText(item.capacity);
+			layout.viewbag.withering.setText(item.stops_withering ? "Yes" : "No");
+			layout.viewbag.maintenance.setText(item.price_tick == 0 ? "None" : (item.price_tick + " per second"));
 			layout.viewbag.price.setText(item.price);
 		}
 	);
