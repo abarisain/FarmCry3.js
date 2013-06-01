@@ -68,6 +68,18 @@ body {
 	height: 100%;
 }
 
+a {
+	text-align: center;
+	padding-top: 10px;
+	display: block;
+	color: #555;
+	font-size: 13px;
+}
+
+a:hover {
+	color: #777;
+}
+
 .topLeft {
 	position: fixed;
 	left: 0;
@@ -85,7 +97,8 @@ body {
 
 /* Login */
 
-#login {
+#login,
+#register {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -97,7 +110,8 @@ body {
 	min-height: 700px;
 }
 
-#login_game_title {
+#login_game_title,
+#register_game_title {
 	text-align: center;
 	position: absolute;
 	top: 5%;
@@ -105,8 +119,9 @@ body {
 	margin-left: -183px; /*Image is 367x107*/
 }
 
-#login_panel {
-	height: 370px;
+#login_panel,
+#register_panel {
+	height: 400px;
 	width: 400px;
 	position: absolute;
 	top: 50%;
@@ -116,24 +131,28 @@ body {
 	box-shadow: 0 0 80px #222;
 }
 
-#login_panel input[type="text"] {
+#login_panel input[type="text"],
+#register_panel input[type="text"] {
 	margin-left: 10px;
 	width: 320px;
 }
 
-#login_panel input[type="checkbox"] {
+#login_panel input[type="checkbox"],
+#register_panel input[type="checkbox"] {
 	margin-top: 15px;
 	margin-bottom: 15px;
 	margin-left: 10px;
 }
 
-.login_field_text {
+.login_field_text,
+.register_field_text {
 	margin-left: 12px;
 	padding-top: 8px;
 	padding-bottom: 8px;
 }
 
-#login_connect_button {
+#login_connect_button,
+#register_connect_button {
 	margin-left: 25px;
 	margin-top: 10px;
 	padding: 10px 100px 10px;
