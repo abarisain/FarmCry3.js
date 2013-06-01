@@ -59,8 +59,16 @@ Tile.prototype = {
 		tmpTile.fertility = this.fertility;
 		tmpTile.max_fertility = this.max_fertility;
 		tmpTile.maturity = this.maturity;
-		tmpTile.crop = this.crop;
-		tmpTile.building = this.building;
+		if(this.crop === undefined) {
+			tmpTile.crop = "dummy";
+		} else {
+			tmpTile.crop = this.crop;
+		}
+		if(this.building === undefined) {
+			tmpTile.building = "dummy";
+		} else {
+			tmpTile.building = this.building;
+		}
 		return tmpTile;
 	}
 };
