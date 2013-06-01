@@ -1,6 +1,7 @@
 MapItems.TileItems.Crop = function (data, col, line) {
 	this.type = MapItems.TileItems.Crop.Type[data.codename];
 	MapItems.TileItem.call(this, this.type.sprite, col, line);
+	this.data = data;
 	this.informations = new MapItems.TileItemInfos(this.x, this.y);
 }
 
@@ -11,10 +12,10 @@ MapItems.TileItems.Crop.prototype.showInformation = function () {
 	this.informations.visible = true;
 	switch (CE.filterType) {
 		case CE.FilterType.HEALTH:
-			this.informations.value = 10;
+			this.informations.value = this.data.storage.health;
 			break;
 		case CE.FilterType.MATURITY:
-			this.informations.value = 20;
+			this.informations.value = this.data.storage.maturity;
 			break;
 		default:
 			this.informations.visible = false;

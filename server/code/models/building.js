@@ -4,10 +4,11 @@ function Building(codename, name, size, capacity, price, price_tick, stops_withe
 		this.codename = "dummy";
 		this.name = "Dummy storage";
 		this.size = 1;
-		this.capacity = 50;//note this value correspond to a barrel
+		this.capacity = 0;//note this value correspond to a barrel
 		this.price = 100;
 		this.price_tick = 1;
 		this.stops_withering = false;
+		this.storages = [];
 		return;
 	}
 	this.codename = codename;
@@ -17,27 +18,29 @@ function Building(codename, name, size, capacity, price, price_tick, stops_withe
 	this.price = price; //Build price
 	this.price_tick = price_tick; //Maintenance per tick if not empty
 	this.stops_withering = stops_withering;
+	this.storages = [];//List of every storage stocked inside the building
+	//the thing is every crop contain in fact a storage, and when we harvest it, we just get the storage
 }
 
 Building.Types = {
 	silo: new Building("silo",
 		"Silo",
 		1,
-		200,//4 barrels
+		4,//4 barrels
 		300,
 		0,
 		false),
 	barn: new Building("barn",
 		"Barn",
 		4,
-		900,//18 barrels
+		18,//18 barrels
 		800,
 		0,
 		false),
 	cold_storage: new Building("cold_storage",
 		"Cold Storage",
 		6,
-		1000,//20 barrels
+		20,//20 barrels
 		1400,
 		3,
 		true)

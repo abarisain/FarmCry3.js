@@ -23,7 +23,7 @@ MapItems.TileItems.Building.prototype.showInformation = function () {
 			this.informations.value = 0;
 			break;
 		case CE.FilterType.STORAGE_AVAILABLE:
-			this.informations.value = this.data.capacity / 50;
+			this.informations.value = this.data.capacity;
 			break;
 		case CE.FilterType.STORAGE_USED:
 			this.informations.value = this.data.size;

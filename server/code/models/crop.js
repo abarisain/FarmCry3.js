@@ -1,3 +1,5 @@
+Storage = require('./storage');
+
 function Crop(codename, name, maturation_time, productivity, storability, seed_price) {
 	if (typeof(codename) === 'undefined') {
 		//Same philosophy as weapon's constructor
@@ -7,6 +9,7 @@ function Crop(codename, name, maturation_time, productivity, storability, seed_p
 		this.productivity = 30;
 		this.storability = 3600;
 		this.seed_price = 100;
+		this.storage = undefined;
 		return;
 	}
 	this.codename = codename;
@@ -15,6 +18,7 @@ function Crop(codename, name, maturation_time, productivity, storability, seed_p
 	this.productivity = productivity; //Harvest per tile at 100% health
 	this.storability = storability; //Amount of ticks that the crop can be stored without withering
 	this.seed_price = seed_price; //Seed price for one tile
+	this.storage = new Storage(codename, 0, 0);//The storage contains every data related to the current state of the crop
 }
 
 Crop.Types = {

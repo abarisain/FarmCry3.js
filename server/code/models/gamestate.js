@@ -1,5 +1,6 @@
 // Load all the models, fucking node-fibers and node.js screwing everything up
 Weapon = require('./weapon');
+Storage = require('./storage');
 Crop = require('./crop');
 Building = require('./building');
 Tile = require('./tile');
