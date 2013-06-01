@@ -66,7 +66,7 @@ var Map = {
 		this.removePlayer(player.nickname);
 		var tmpPlayer = new MapItems.Character(player);
 		this.players.push(tmpPlayer);
-		if (player.constructor == PlayableFarmer)
+		if (player.constructor == LogicItems.PlayableFarmer)
 			this.player = tmpPlayer;
 	},
 	removePlayer: function (nickname) {
@@ -81,7 +81,7 @@ var Map = {
 		}
 		var count = this.mapItems.length;
 		for (var i = count - 1; i >= 0; i--) {
-			if (this.mapItems[i].constructor == Farmer && this.mapItems[i].farmer.nickname == nickname) {
+			if (this.mapItems[i].constructor == LogicItems.Farmer && this.mapItems[i].farmer.nickname == nickname) {
 				this.mapItems.removeItemAtIndex(i);
 			}
 			break;

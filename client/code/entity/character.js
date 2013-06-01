@@ -1,6 +1,6 @@
 MapItems.Character = function (targetFarmer) {
 	MapItem.call(this, SpritePack.Characters.Sprites.FARMER, targetFarmer.position.col, targetFarmer.position.line);
-	this.isPlayer = targetFarmer.constructor == PlayableFarmer;
+	this.isPlayer = targetFarmer.constructor == LogicItems.PlayableFarmer;
 	this.farmer = targetFarmer;
 	this.updateCoord();
 	this.updateImageCoord();

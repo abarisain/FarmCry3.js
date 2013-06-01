@@ -76,7 +76,7 @@ var EventManager = {
 				return true;
 			},
 			buyCrop: function (farmer, cropType) {
-				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop.codename == 'dummy') {
+				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop == undefined) {
 					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop = GameState.settings.crops[cropType];
 					NetworkEngine.clients.broadcast("player.cropBought", {
 						nickname: farmer.nickname,
@@ -89,7 +89,7 @@ var EventManager = {
 				return false;
 			},
 			harvestCrop: function (farmer) {
-				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop.codename != 'dummy') {
+				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop != undefined) {
 					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop = new Crop();
 					NetworkEngine.clients.broadcast("player.cropHarvested", {
 						nickname: farmer.nickname,
@@ -101,7 +101,7 @@ var EventManager = {
 				return false;
 			},
 			buyBuilding: function (farmer, buildingType) {
-				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building.codename == 'dummy') {
+				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building == undefined) {
 					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building = GameState.settings.buildings[buildingType];
 					NetworkEngine.clients.broadcast("player.buildingBought", {
 						nickname: farmer.nickname,
@@ -114,7 +114,7 @@ var EventManager = {
 				return false;
 			},
 			destroyBuilding: function (farmer) {
-				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building.codename != 'dummy') {
+				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building != undefined) {
 					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building = new Building();
 					NetworkEngine.clients.broadcast("player.buildingDestroyed", {
 						nickname: farmer.nickname,

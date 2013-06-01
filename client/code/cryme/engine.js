@@ -373,11 +373,11 @@ function InitLoading() {
 function CreateMap() {
 	var tmpFarmer;
 	for (var i = 0; i < initialData.online_farmers.length; i++) {
-		tmpFarmer = new Farmer();
+		tmpFarmer = new LogicItems.Farmer();
 		tmpFarmer.initFromFarmer(initialData.online_farmers[i]);
 		GameState.addPlayer(tmpFarmer);
 	}
-	tmpFarmer = new PlayableFarmer();
+	tmpFarmer = new LogicItems.PlayableFarmer();
 	tmpFarmer.initFromFarmer(initialData.player_farmer);
 	GameState.player = tmpFarmer;
 	Map.addPlayer(tmpFarmer);

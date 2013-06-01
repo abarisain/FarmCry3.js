@@ -7,9 +7,6 @@ MapItems.TileItems.Building = function (type, col, line) {
 		this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.tomato, this.type, 3 * i + 1, this.x, this.y));
 		this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.wheat, this.type, 3 * i + 2, this.x, this.y));
 	}
-	/*this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.corn, this.type, 0, this.x, this.y));
-	 this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.wheat, this.type, 1, this.x, this.y));
-	 this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.tomato, this.type, 2, this.x, this.y));*/
 
 	this.informations = new MapItems.TileItemInfos(this.x + this.type.positionInfo.x, this.y + this.type.positionInfo.y, [
 		new Diagram(Diagram.Color.GREEN, 'Capacity', this.x / 100)

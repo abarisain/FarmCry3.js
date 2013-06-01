@@ -11,8 +11,8 @@ function Tile() {
 	this.humidity = 1; // 0 to 1
 	this.fertility = 1;
 	this.max_fertility = 1;
-	this.crop = new Crop();
-	this.building = new Building();
+	this.crop = undefined;
+	this.building = undefined;
 	this.maturity = 0;
 	//Health being a dynamic value, it's not implemented as a variable
 }
@@ -44,8 +44,8 @@ Tile.prototype = {
 		tmpTile.humidity = this.humidity;
 		tmpTile.fertility = this.fertility;
 		tmpTile.max_fertility = this.max_fertility;
-		tmpTile.crop = this.crop.codename;
-		tmpTile.building = this.building.codename;
+		tmpTile.crop = this.crop;
+		tmpTile.building = this.building;
 		tmpTile.owner = this.owner.nickname;
 		tmpTile.health = this.getHealth();
 		return tmpTile;
@@ -59,8 +59,8 @@ Tile.prototype = {
 		tmpTile.fertility = this.fertility;
 		tmpTile.max_fertility = this.max_fertility;
 		tmpTile.maturity = this.maturity;
-		tmpTile.crop = this.crop.codename;
-		tmpTile.building = this.building.codename;
+		tmpTile.crop = this.crop;
+		tmpTile.building = this.building;
 		return tmpTile;
 	}
 };
