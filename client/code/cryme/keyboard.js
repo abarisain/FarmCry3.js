@@ -40,6 +40,7 @@ CrymeEngine.keyboard = {
 	Shortcuts: {
 		CHAT: null,
 		CHANGE_DISPLAY_TYPE: null,
+		CHANGE_FILTER_TYPE: null,
 		CROP_BUY_TOMATO: null,
 		CROP_BUY_WHEAT: null,
 		CROP_BUY_CORN: null,
@@ -62,6 +63,7 @@ CrymeEngine.keyboard = {
 	init: function () {
 		CE.keyboard.Shortcuts.CHAT = CrymeEngine.keyboard.Keys.ENTER;
 		CE.keyboard.Shortcuts.CHANGE_DISPLAY_TYPE = CE.keyboard.Keys.KEY_R;
+		CE.keyboard.Shortcuts.CHANGE_FILTER_TYPE = CE.keyboard.Keys.KEY_T;
 		CE.keyboard.Shortcuts.CROP_BUY_CORN = CE.keyboard.Keys.KEY_Q;
 		CE.keyboard.Shortcuts.CROP_BUY_TOMATO = CE.keyboard.Keys.KEY_S;
 		CE.keyboard.Shortcuts.CROP_BUY_WHEAT = CE.keyboard.Keys.KEY_D;
@@ -75,7 +77,7 @@ CrymeEngine.keyboard = {
 		CE.keyboard.Shortcuts.ATTACK_AK = CE.keyboard.Keys.KEY_E;
 		CE.keyboard.Shortcuts.NATURAL_RAIN = CE.keyboard.Keys.KEY_I;
 		CE.keyboard.Shortcuts.NATURAL_TORNADO = CE.keyboard.Keys.KEY_J;
-		CE.keyboard.Shortcuts.STOP_BATTLE = CE.keyboard.Keys.KEY_T;
+		CE.keyboard.Shortcuts.STOP_BATTLE = CE.keyboard.Keys.KEY_P;
 		CE.keyboard.Shortcuts.SHOW_KEY_MAP = CE.keyboard.Keys.TAB;
 		CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG = CE.keyboard.Keys.KEY_1;
 		CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ITEM = CE.keyboard.Keys.KEY_2;
@@ -102,11 +104,24 @@ CrymeEngine.keyboard = {
 				}
 				break;
 			case CE.keyboard.Shortcuts.CHANGE_DISPLAY_TYPE.code:
-				CE.displayType = (CE.displayType + 1) % 3;
+				CE.displayType = (CE.displayType + 1) % 2;
 				if (CE.displayType != CE.DisplayType.STANDARD) {
 					Map.showMapInformations();
 				}
 				Map.tileHighLighted.index = -1;
+				break;
+			case CE.keyboard.Shortcuts.CHANGE_FILTER_TYPE.code:
+				var index = (CE.filterType.index + 1);
+				CE.filterType = CE.FilterType.HUMIDITY;//pour être sur d'avoir un filtre
+				for (var key in CE.FilterType) {
+					if (CE.FilterType[key].index == index) {
+						CE.filterType = CE.FilterType[key];
+						break;
+					}
+				}
+				Map.tileHighLighted.index = -1;
+				Map.showMapInformations();
+				CE.mapInvalidated = true;
 				break;
 			case CE.keyboard.Shortcuts.SHOW_KEY_MAP.code:
 				CE.keyboard.showKeyMap = !CE.keyboard.showKeyMap;

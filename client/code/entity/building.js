@@ -1,6 +1,7 @@
-MapItems.TileItems.Building = function (type, col, line) {
-	MapItems.TileItem.call(this, type.sprite, col, line);
-	this.type = type;
+MapItems.TileItems.Building = function (data, col, line) {
+	this.type = MapItems.TileItems.Building.Type[data.codename];
+	MapItems.TileItem.call(this, this.type.sprite, col, line);
+	this.data = data;
 	this.storages = [];
 	for (var i = 0; (i + 1) * 3 < this.type.positionAvailable.length; i++) {
 		this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.corn, this.type, 3 * i, this.x, this.y));
@@ -8,14 +9,31 @@ MapItems.TileItems.Building = function (type, col, line) {
 		this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.wheat, this.type, 3 * i + 2, this.x, this.y));
 	}
 
-	this.informations = new MapItems.TileItemInfos(this.x + this.type.positionInfo.x, this.y + this.type.positionInfo.y, [
-		new Diagram(Diagram.Color.GREEN, 'Capacity', this.x / 100)
-	]);
+	this.informations = new MapItems.TileItemInfos(this.x + this.type.positionInfo.x, this.y + this.type.positionInfo.y);
 }
 
 MapItems.TileItems.Building.prototype = new MapItems.TileItem();
 MapItems.TileItems.Building.prototype.constructor = MapItems.TileItems.Building;
 MapItems.TileItems.Building.prototype.drawParent = MapItems.TileItems.Building.prototype.draw;
+
+MapItems.TileItems.Building.prototype.showInformation = function () {
+	this.informations.visible = true;
+	switch (CE.filterType) {
+		case CE.FilterType.HEALTH:
+			this.informations.value = 0;
+			break;
+		case CE.FilterType.STORAGE_AVAILABLE:
+			this.informations.value = this.data.capacity / 50;
+			break;
+		case CE.FilterType.STORAGE_USED:
+			this.informations.value = this.data.size;
+			break;
+		default:
+			this.informations.visible = false;
+			break;
+	}
+	this.informations.loadInformations();
+};
 
 MapItems.TileItems.Building.prototype.draw = function () {
 	if (this.visible) {

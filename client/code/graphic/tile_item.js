@@ -17,6 +17,8 @@ MapItems.TileItem.prototype.drawLoading = function (progress) {
 	CE.canvas.map.context.drawImage(this.sprite.image, this.imageLeft,
 		this.imageTop - this.col * tileHeight * (1 - progress / (animationDuration / 2)));
 };
+MapItems.TileItem.prototype.showInformation = function () {
+};
 MapItems.TileItem.prototype.draw = function () {
 	if (this.visible) {
 		if (CE.displayType == CE.DisplayType.STANDARD) {

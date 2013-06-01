@@ -1,14 +1,27 @@
-MapItems.TileItems.Crop = function (type, col, line) {
-	this.type = type;
-	MapItems.TileItem.call(this, type.sprite, col, line);
-
-	this.informations = new MapItems.TileItemInfos(this.x, this.y, [
-		new Diagram(Diagram.Color.YELLOW, 'Maturity', this.x / 100)
-	]);
+MapItems.TileItems.Crop = function (data, col, line) {
+	this.type = MapItems.TileItems.Crop.Type[data.codename];
+	MapItems.TileItem.call(this, this.type.sprite, col, line);
+	this.informations = new MapItems.TileItemInfos(this.x, this.y);
 }
 
 MapItems.TileItems.Crop.prototype = new MapItems.TileItem();
 MapItems.TileItems.Crop.prototype.constructor = MapItems.TileItem.Crop;
+
+MapItems.TileItems.Crop.prototype.showInformation = function () {
+	this.informations.visible = true;
+	switch (CE.filterType) {
+		case CE.FilterType.HEALTH:
+			this.informations.value = 10;
+			break;
+		case CE.FilterType.MATURITY:
+			this.informations.value = 20;
+			break;
+		default:
+			this.informations.visible = false;
+			break;
+	}
+	this.informations.loadInformations();
+};
 
 MapItems.TileItems.Crop.Type = {
 	corn: { codename: 'corn', sprite: {}, spriteBarrel: {}, spriteBox: {}, spriteIceBox: {}},

@@ -1,50 +1,58 @@
 MapItems.Tile = function (data) {
 	MapItem.call(this, null, data.position.col, data.position.line);
 	this.data = data;
-	this.humidity = data.humidity;
-	this.fertility = data.fertility;
-	this.maturity = data.maturity;
 	this.crop = {};//GRAPHIC
 	this.building = {};//GRAPHIC
 	this.sprite = {};
 	this.alpha = 0;
 	this.infoColor = new ColorHelper(255, 255, 255);
 	this.updateCoord();
-	this.informations = new MapItems.TileItemInfos(this.x, this.y, [
-		new Diagram(Diagram.Color.GREEN, 'Fertility', this.fertility * 10)
-	]);
+	this.informations = new MapItems.TileItemInfos(this.x, this.y);
 };
 
 MapItems.Tile.prototype = new MapItem();
 MapItems.Tile.prototype.constructor = MapItems.Tile;
+
+MapItems.Tile.prototype.showInformation = function () {
+	switch (CE.filterType) {
+		case CE.FilterType.HUMIDITY:
+			this.informations.value = this.data.humidity * 100;
+			break;
+		case CE.FilterType.FERTILITY:
+			this.informations.value = this.data.fertility * 100;
+			break;
+	}
+	this.informations.loadInformations();
+};
+
 MapItems.Tile.prototype.updateImage = function () {
-	if (this.humidity < 0.3) {
-		if (this.fertility < 0.2) {
+	if (this.data.humidity < 0.3) {
+		if (this.data.fertility < 0.2) {
 			this.sprite = SpritePack.Tiles.Sprites.ROCK_0;
 		}
-		else if (this.fertility < 0.5) {
+		else if (this.data.fertility < 0.5) {
 			this.sprite = SpritePack.Tiles.Sprites.LEAVE;
 		}
 		else {
 			this.sprite = SpritePack.Tiles.Sprites.SOIL;
 		}
 	}
-	else if (this.humidity < 0.5) {
+	else if (this.data.humidity < 0.5) {
 		this.sprite = SpritePack.Tiles.Sprites.GRASS_1;
 	}
-	else if (this.humidity < 0.55) {
+	else if (this.data.humidity < 0.55) {
 		this.sprite = SpritePack.Tiles.Sprites.GRASS_0;
 	}
-	else if (this.humidity < 0.6) {
+	else if (this.data.humidity < 0.6) {
 		this.sprite = SpritePack.Tiles.Sprites.GRASS_2;
 	}
-	else if (this.humidity < 0.7) {
+	else if (this.data.humidity < 0.7) {
 		this.sprite = SpritePack.Tiles.Sprites.GRASS_3;
 	}
-	else if (this.humidity < 0.8) {
+	else if (this.data.humidity < 0.8) {
 		this.sprite = SpritePack.Tiles.Sprites.WATER_0;
 	}
-	else if (this.humidity < 0.9) {
+	else if (this.data.humidity < 0.9) {
 		this.sprite = SpritePack.Tiles.Sprites.WATER_1;
 	}
 	else {
@@ -53,7 +61,7 @@ MapItems.Tile.prototype.updateImage = function () {
 	this.updateInfoColor();
 };
 MapItems.Tile.prototype.updateInfoColor = function () {
-	this.infoColor.createColorFactor(ColorHelper.Templates.WHITE, ColorHelper.Templates.ORANGE, this.humidity);
+	this.infoColor.createColorFactor(ColorHelper.Templates.WHITE, ColorHelper.Templates.ORANGE, this.data.humidity);
 };
 MapItems.Tile.prototype.drawLoading = function (progress) {
 	if (this.alpha < 1) {
@@ -114,11 +122,11 @@ MapItems.Tile.prototype.load = function () {
 	this.updateImage();
 	if (this.data.crop != undefined) {
 		this.sprite = SpritePack.Tiles.Sprites.SOIL;
-		this.crop = new MapItems.TileItems.Crop(MapItems.TileItems.Crop.Type[this.data.crop.codename], this.col, this.line);
+		this.crop = new MapItems.TileItems.Crop(this.data.crop, this.col, this.line);
 		Map.mapItems.push(this.crop);
 	}
 	if (this.data.building != undefined) {
-		this.building = new MapItems.TileItems.Building(MapItems.TileItems.Building.Type[this.data.building.codename], this.col, this.line);
+		this.building = new MapItems.TileItems.Building(this.data.building, this.col, this.line);
 		Map.mapItems.push(this.building);
 	}
 	this.updateImageCoord();

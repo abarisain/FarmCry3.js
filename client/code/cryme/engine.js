@@ -17,12 +17,21 @@ var CrymeEngine = {
 	mapInvalidated: false, //If this is true, the map will be redrawn
 	highlightedItem: -1,//index de l'item selectionne
 	hudElements: [],
-	DisplayType: {
+	DisplayType: {//Selection du type de display
 		STANDARD: 0,
-		INFO_MAP: 1,
-		INFO_BUILDING: 2
+		INFORMATION: 1
 	},
 	displayType: 0,
+	FilterType: {//Filter to display informations
+		OWNER: {index: 0, name: 'Owner', tiles: true, mapItems: false, color: ColorHelper.Color.RED},
+		HUMIDITY: {index: 1, name: 'Humidity', tiles: true, mapItems: false, color: ColorHelper.Color.BLUE},
+		FERTILITY: {index: 2, name: 'Fertility', tiles: true, mapItems: false, color: ColorHelper.Color.GREEN},
+		MATURITY: {index: 3, name: 'Maturity', tiles: false, mapItems: true, color: ColorHelper.Color.YELLOW},
+		HEALTH: {index: 4, name: 'Health', tiles: false, mapItems: true, color: ColorHelper.Color.WHITE},
+		STORAGE_AVAILABLE: {index: 5, name: 'Space available', tiles: false, mapItems: true, color: ColorHelper.Color.BROWN},
+		STORAGE_USED: {index: 6, name: 'Space used', tiles: false, mapItems: true, color: ColorHelper.Color.VIOLET}
+	},
+	filterType: undefined,
 	GameState: {
 		FARMING: 0,
 		BATTLE: 1
@@ -371,6 +380,7 @@ function InitLoading() {
 
 //fonction pour placer des trucs sur la map pour test le rendu
 function CreateMap() {
+	CE.filterType = CE.FilterType.HUMIDITY;
 	var tmpFarmer;
 	for (var i = 0; i < initialData.online_farmers.length; i++) {
 		tmpFarmer = new LogicItems.Farmer();

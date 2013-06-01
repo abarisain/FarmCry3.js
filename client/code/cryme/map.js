@@ -166,14 +166,14 @@ var Map = {
 		}
 	},
 	drawMapInfos: function () {
-		if (CE.displayType == CE.DisplayType.INFO_MAP) {
+		if (CE.filterType.tiles) {//pour savoir si on doit afficher les informations des tiles
 			for (var i = 0; i < this.tilesVisibles.length; i++) {
 				this.tilesVisibles[i].drawInfo();
 			}
 			if (this.tileHighLighted.index > -1) {
 				this.tiles[this.tileHighLighted.index].drawInfoDetailed();
 			}
-		} else if (CE.displayType == CE.DisplayType.INFO_BUILDING) {
+		} else if (CE.filterType.mapItems) {
 			for (var i = 0; i < this.mapItems.length; i++) {
 				this.mapItems[i].drawInfo();
 			}
@@ -199,13 +199,23 @@ var Map = {
 		};
 	},
 	showMapInformations: function () {
+		if (CE.filterType.tiles) {
+			for (var i = 0; i < this.tiles.length; i++) {
+				this.tiles[i].showInformation();
+			}
+		}
+		if (CE.filterType.mapItems) {
+			for (var i = 0; i < this.mapItems.length; i++) {
+				this.mapItems[i].showInformation();
+			}
+		}
 		this.transitionInformation.start(Transition.Type.FADE_IN, true);
 	},
 	highlightTile: function (x, y) {
 		var exHighlighted = this.tileHighLighted.index;
 		this.tileHighLighted.index = -1;
 		var coord = Map.coordinatesFromMousePosition(x, y);
-		if (CE.displayType == CE.DisplayType.INFO_MAP) {
+		if (CE.filterType.tiles) {
 			for (var i = 0; i < this.tiles.length; i++) {
 				if (this.tiles[i].match(coord.col, coord.line)) {
 					this.tileHighLighted.col = coord.col;
@@ -218,7 +228,8 @@ var Map = {
 					break;
 				}
 			}
-		} else {
+		}
+		if (CE.filterType.mapItems) {
 			for (var i = 0; i < this.mapItems.length; i++) {
 				if (this.mapItems[i].match(coord.col, coord.line)) {
 					this.tileHighLighted.col = coord.col;

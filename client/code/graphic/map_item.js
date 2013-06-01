@@ -15,6 +15,9 @@ function MapItem(sprite, col, line) {
 
 MapItem.prototype = {
 	constructor: MapItem,
+	showInformation: function () {
+		this.visible = false;//on est pas censé passer ici
+	},
 	checkVisibility: function () {//détermine si l'élement doit être dessiné par rapport à la prochaine position de la caméra
 		this.visible = true;
 		//en fait il faut partir du principe qu'on est visible, et de voir si vraiment on apparaît nulle part
