@@ -11,6 +11,13 @@ CrymeEngine.hud = {
 		button_buy: null,
 		button_close: null,
 		button_delete: null,
+		button_switch_display: null,
+		filter_owner: null,
+		filter_humidity: null,
+		filter_fertility: null,
+		filter_maturity: null,
+		filter_health: null,
+		filter_storage: null,
 		market_barn: null,
 		market_silo: null,
 		market_cold_storage: null,
@@ -62,30 +69,61 @@ CrymeEngine.hud = {
 		}).bind(this);
 		this.rootHudElement.addChild(marketButton);
 
+
+		/*			UI pour les filtres		*/
+		var switchDisplayButton = new HudElement("switchDisplay", "button_switch_display", 92, 92, -10, -10, HudElement.Anchors.BOTTOM_RIGHT, true);
+		switchDisplayButton.onClick = function () {
+			CE.displayType = CE.DisplayType.STANDARD;
+			Map.tileHighLighted.index = -1;
+			CE.mapInvalidated = true;
+		}
+		this.rootHudElement.addChild(switchDisplayButton);
+
+		var filter = new HudElement("filterOwner", "filter_owner", 32, 32, -17, -112, HudElement.Anchors.BOTTOM_RIGHT, true);
+		filter.onClick = function () {
+			CE.Event.changeFilterType(CE.FilterType.OWNER);
+		}
+		this.rootHudElement.addChild(filter);
+
+		filter = new HudElement("filterHumidity", "filter_humidity", 32, 32, -50, -117, HudElement.Anchors.BOTTOM_RIGHT, true);
+		filter.onClick = function () {
+			CE.Event.changeFilterType(CE.FilterType.HUMIDITY);
+		}
+		this.rootHudElement.addChild(filter);
+
+		filter = new HudElement("filterFertility", "filter_fertility", 32, 32, -83, -107, HudElement.Anchors.BOTTOM_RIGHT, true);
+		filter.onClick = function () {
+			CE.Event.changeFilterType(CE.FilterType.FERTILITY);
+		}
+		this.rootHudElement.addChild(filter);
+
+		filter = new HudElement("filterMaturity", "filter_maturity", 32, 32, -107, -83, HudElement.Anchors.BOTTOM_RIGHT, true);
+		filter.onClick = function () {
+			CE.Event.changeFilterType(CE.FilterType.MATURITY);
+		}
+		this.rootHudElement.addChild(filter);
+
+		filter = new HudElement("filterHealth", "filter_health", 32, 32, -113, -50, HudElement.Anchors.BOTTOM_RIGHT, true);
+		filter.onClick = function () {
+			CE.Event.changeFilterType(CE.FilterType.HEALTH);
+		}
+		this.rootHudElement.addChild(filter);
+
+		filter = new HudElement("filterStorage", "filter_storage", 32, 32, -104, -17, HudElement.Anchors.BOTTOM_RIGHT, true);
+		filter.onClick = function () {
+			CE.Event.changeFilterType(CE.FilterType.STORAGE_AVAILABLE);
+		}
+		this.rootHudElement.addChild(filter);
+
+
 		/* Boutons de test pour la version iPad	*/
-		var forkButton = new HudElements.Button(100, 50, -10, -10, "Fork", HudElement.Anchors.BOTTOM_RIGHT, "#fff");
+		var forkButton = new HudElements.Button(100, 50, -10, -210, "Fork", HudElement.Anchors.BOTTOM_RIGHT, "#fff");
 		forkButton.onClick = function () {
 			CE.gameState = CE.GameState.BATTLE;
 			CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_FORK);
 			CE.mapInvalidated = true;
 		}
 		this.rootHudElement.addChild(forkButton);
-
-		var flamethrowerButton = new HudElements.Button(100, 50, -10, -110, "Burner", HudElement.Anchors.BOTTOM_RIGHT, "#fff");
-		flamethrowerButton.onClick = function () {
-			CE.gameState = CE.GameState.BATTLE;
-			CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_FLAMETHROWER);
-			CE.mapInvalidated = true;
-		}
-		this.rootHudElement.addChild(flamethrowerButton);
-
-		var akButton = new HudElements.Button(100, 50, -10, -210, "AK 47", HudElement.Anchors.BOTTOM_RIGHT, "#fff");
-		akButton.onClick = function () {
-			CE.gameState = CE.GameState.BATTLE;
-			CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_AK);
-			CE.mapInvalidated = true;
-		}
-		this.rootHudElement.addChild(akButton);
 
 		var tornadoButton = new HudElements.Button(100, 50, -10, -310, "Tornado", HudElement.Anchors.BOTTOM_RIGHT, "#fff");
 		tornadoButton.onClick = function () {
@@ -98,17 +136,6 @@ CrymeEngine.hud = {
 			CE.Weather.startRain();
 		}
 		this.rootHudElement.addChild(rainButton);
-
-		var displayButton = new HudElements.Button(150, 50, 10, -160, "Switch view", HudElement.Anchors.TOP_RIGHT, "#fff");
-		displayButton.onClick = function () {
-			CE.displayType = (CE.displayType + 1) % 3;
-			if (CE.displayType != CE.DisplayType.STANDARD) {
-				Map.showMapInformations();
-			}
-			Map.tileHighLighted.index = -1;
-			CE.mapInvalidated = true;
-		}
-		this.rootHudElement.addChild(displayButton);
 	},
 	loadTextures: function () {
 		var textureList = Object.keys(this.textures);

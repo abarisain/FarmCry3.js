@@ -25,7 +25,7 @@ var CrymeEngine = {
 	//TODO ptet faire une classe pour gérer ça correctement parce que finalement ça devient le bordel
 	//Je sais que j'aurai passé beaucoup de temps sur cette partie, mais ça peut être vraiment super pratique pour l'utilisateur
 	FilterType: {//Filter to display informations
-		OWNER: {index: 0, name: 'Owner', tiles: true, tileBorders: false, mapItems: false, color: ColorHelper.Color.RED},
+		OWNER: {index: 0, name: 'Owner', tiles: false, tileBorders: false, mapItems: false, color: ColorHelper.Color.RED},
 		HUMIDITY: {index: 1, name: 'Humidity', tiles: true, tileBorders: true, mapItems: false, color: ColorHelper.Color.BLUE},
 		FERTILITY: {index: 2, name: 'Fertility', tiles: true, tileBorders: false, mapItems: false, color: ColorHelper.Color.GREEN},
 		MATURITY: {index: 3, name: 'Maturity', tiles: false, tileBorders: true, mapItems: true, color: ColorHelper.Color.YELLOW},
@@ -212,6 +212,15 @@ var CrymeEngine = {
 			});
 		}
 	},
+	Event: {
+		changeFilterType: function (filterType) {
+			CE.displayType = CE.DisplayType.INFORMATION;
+			CE.filterType = filterType;
+			Map.tileHighLighted.index = -1;
+			Map.showMapInformations();
+			CE.mapInvalidated = true;
+		}
+	},
 	init: function () {
 		this.canvas.map = new CrymeCanvas('#canvas');
 		this.canvas.animation = new CrymeCanvas('#canvasAnimation');
@@ -307,15 +316,17 @@ var CrymeEngine = {
 		};
 
 		this.canvas.hud.canvas.onmousewheel = function (evt) {
-			if (evt.wheelDeltaY > 0) {
-				scaleFactor += 0.25;
-			}
-			else {
-				if (scaleFactor > 0.25) {
-					scaleFactor -= 0.25;
+			if (Options.Debug.Graphic.enabled) {
+				if (evt.wheelDeltaY > 0) {
+					scaleFactor += 0.25;
 				}
+				else {
+					if (scaleFactor > 0.25) {
+						scaleFactor -= 0.25;
+					}
+				}
+				CrymeEngine.mapInvalidated = true;
 			}
-			CrymeEngine.mapInvalidated = true;
 		};
 
 		window.onmouseup = function () {

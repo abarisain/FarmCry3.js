@@ -15,6 +15,15 @@ MapItems.Tile.prototype.constructor = MapItems.Tile;
 
 MapItems.Tile.prototype.showInformation = function () {
 	switch (CE.filterType) {
+		case CE.FilterType.OWNER:
+			if (this.data.humidity > 0.6) {
+				this.infoColor.copyColor(ColorHelper.Templates.RED);
+			} else if (this.data.humidity > 0.4) {
+				this.infoColor.copyColor(ColorHelper.Templates.ORANGE);
+			} else {
+				this.infoColor.copyColor(ColorHelper.Templates.WHITE);
+			}
+			break;
 		case CE.FilterType.HUMIDITY:
 			this.informations.value = this.data.humidity * 100;
 			break;

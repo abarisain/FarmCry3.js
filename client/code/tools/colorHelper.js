@@ -31,7 +31,8 @@ ColorHelper.Templates = {
 	WHITE: {},
 	BLUE: {},
 	ORANGE: {},
-	RED: {}
+	RED: {},
+	GREEN: {}
 };
 
 ColorHelper.Color = {
@@ -62,5 +63,6 @@ ColorHelper.init = function () {
 	this.Templates.WHITE = new ColorHelper(255, 255, 255);
 	this.Templates.BLUE = new ColorHelper(61, 194, 255);
 	this.Templates.ORANGE = new ColorHelper(255, 212, 128);
-	this.Templates.RED = new ColorHelper(255, 128, 128);
+	this.Templates.RED = new ColorHelper(205, 79, 79);
+	this.Templates.GREEN = new ColorHelper(183, 235, 91);
 }
