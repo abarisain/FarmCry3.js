@@ -22,14 +22,16 @@ var CrymeEngine = {
 		INFORMATION: 1
 	},
 	displayType: 0,
+	//TODO ptet faire une classe pour gérer ça correctement parce que finalement ça devient le bordel
+	//Je sais que j'aurai passé beaucoup de temps sur cette partie, mais ça peut être vraiment super pratique pour l'utilisateur
 	FilterType: {//Filter to display informations
-		OWNER: {index: 0, name: 'Owner', tiles: true, mapItems: false, color: ColorHelper.Color.RED},
-		HUMIDITY: {index: 1, name: 'Humidity', tiles: true, mapItems: false, color: ColorHelper.Color.BLUE},
-		FERTILITY: {index: 2, name: 'Fertility', tiles: true, mapItems: false, color: ColorHelper.Color.GREEN},
-		MATURITY: {index: 3, name: 'Maturity', tiles: false, mapItems: true, color: ColorHelper.Color.YELLOW},
-		HEALTH: {index: 4, name: 'Health', tiles: false, mapItems: true, color: ColorHelper.Color.WHITE},
-		STORAGE_AVAILABLE: {index: 5, name: 'Space available', tiles: false, mapItems: true, color: ColorHelper.Color.BROWN},
-		STORAGE_USED: {index: 6, name: 'Space used', tiles: false, mapItems: true, color: ColorHelper.Color.VIOLET}
+		OWNER: {index: 0, name: 'Owner', tiles: true, tileBorders: false, mapItems: false, color: ColorHelper.Color.RED},
+		HUMIDITY: {index: 1, name: 'Humidity', tiles: true, tileBorders: true, mapItems: false, color: ColorHelper.Color.BLUE},
+		FERTILITY: {index: 2, name: 'Fertility', tiles: true, tileBorders: false, mapItems: false, color: ColorHelper.Color.GREEN},
+		MATURITY: {index: 3, name: 'Maturity', tiles: false, tileBorders: true, mapItems: true, color: ColorHelper.Color.YELLOW},
+		HEALTH: {index: 4, name: 'Health', tiles: false, tileBorders: false, mapItems: true, color: ColorHelper.Color.WHITE},
+		STORAGE_AVAILABLE: {index: 5, name: 'Space available', tiles: false, tileBorders: true, mapItems: true, color: ColorHelper.Color.BROWN},
+		STORAGE_USED: {index: 6, name: 'Space used', tiles: false, tileBorders: true, mapItems: true, color: ColorHelper.Color.VIOLET}
 	},
 	filterType: undefined,
 	GameState: {

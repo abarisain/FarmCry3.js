@@ -18,8 +18,12 @@ MapItems.Tile.prototype.showInformation = function () {
 		case CE.FilterType.HUMIDITY:
 			this.informations.value = this.data.humidity * 100;
 			break;
+		case CE.FilterType.HEALTH:
+			this.infoColor.createColorFactor(ColorHelper.Templates.WHITE, ColorHelper.Templates.BLUE, this.data.humidity);
+			break;
 		case CE.FilterType.FERTILITY:
 			this.informations.value = this.data.fertility * 100;
+			this.infoColor.createColorFactor(ColorHelper.Templates.WHITE, ColorHelper.Templates.BLUE, this.data.humidity);
 			break;
 	}
 	this.informations.loadInformations();
@@ -58,11 +62,8 @@ MapItems.Tile.prototype.updateImage = function () {
 	else {
 		this.sprite = SpritePack.Tiles.Sprites.WATER_2;
 	}
-	this.updateInfoColor();
 };
-MapItems.Tile.prototype.updateInfoColor = function () {
-	this.infoColor.createColorFactor(ColorHelper.Templates.WHITE, ColorHelper.Templates.ORANGE, this.data.humidity);
-};
+
 MapItems.Tile.prototype.drawLoading = function (progress) {
 	if (this.alpha < 1) {
 		this.alpha += 0.1;
@@ -78,15 +79,24 @@ MapItems.Tile.prototype.draw = function () {
 			CrymeEngine.canvas.map.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
 		} else {
 			CE.canvas.map.context.globalAlpha = 1;
-			CE.canvas.map.context.fillStyle = this.infoColor.rgb;
-			CE.canvas.map.context.strokeStyle = '#f0f0f0';
-			//CE.canvas.map.context.lineWidth = 1;
-			CE.canvas.map.context.beginPath();
-			CE.canvas.map.context.moveTo(this.x, this.y + tileHeight / 2 - borderSize);
-			CE.canvas.map.context.lineTo(this.x - tileWidth / 2 + borderSize, this.y);
-			CE.canvas.map.context.lineTo(this.x, this.y - tileHeight / 2 + borderSize);
-			CE.canvas.map.context.lineTo(this.x + tileWidth / 2 - borderSize, this.y);
-			CE.canvas.map.context.fill();
+			if (CE.filterType.tileBorders) {
+				CE.canvas.map.context.strokeStyle = '#f0f0f0';
+				CE.canvas.map.context.lineWidth = 1;
+				CE.canvas.map.context.beginPath();
+				CE.canvas.map.context.moveTo(this.x, this.y + tileHeight / 2 - borderSize);
+				CE.canvas.map.context.lineTo(this.x - tileWidth / 2 + borderSize, this.y);
+				CE.canvas.map.context.lineTo(this.x, this.y - tileHeight / 2 + borderSize);
+				CE.canvas.map.context.lineTo(this.x + tileWidth / 2 - borderSize, this.y);
+				CE.canvas.map.context.stroke();
+			} else {
+				CE.canvas.map.context.fillStyle = this.infoColor.rgb;
+				CE.canvas.map.context.beginPath();
+				CE.canvas.map.context.moveTo(this.x, this.y + tileHeight / 2 - borderSize);
+				CE.canvas.map.context.lineTo(this.x - tileWidth / 2 + borderSize, this.y);
+				CE.canvas.map.context.lineTo(this.x, this.y - tileHeight / 2 + borderSize);
+				CE.canvas.map.context.lineTo(this.x + tileWidth / 2 - borderSize, this.y);
+				CE.canvas.map.context.fill();
+			}
 		}
 		if (Options.Debug.Graphic.enabled) {
 			if (Options.Debug.Graphic.map) {

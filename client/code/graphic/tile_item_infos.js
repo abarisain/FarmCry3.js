@@ -58,7 +58,7 @@ MapItems.TileItemInfos.prototype = {
 			if (Map.transitionInformationDetailed.started) {
 				CE.canvas.map.context.globalAlpha = Map.transitionInformationDetailed.progress / 10;
 			}
-			CE.canvas.map.context.translate(this.x + diagramSizeX / 2 + 2, this.y - (this.value) - (diagramDeltaY / 2));//deplacement du context pour le degrade
+			CE.canvas.map.context.translate(this.x + diagramSizeX / 2 + 2, this.y - (this.value / 2) - (diagramDeltaY));//deplacement du context pour le degrade
 			CE.canvas.map.context.fillStyle = this.gradient;
 			CE.canvas.map.context.fillRect(0, 0, diagramDetailWidth, 22);
 			CE.canvas.map.context.strokeStyle = this.color.border;
@@ -67,7 +67,7 @@ MapItems.TileItemInfos.prototype = {
 			CE.canvas.map.context.strokeRect(0, 0, diagramDetailWidth, 22);
 			CE.canvas.map.context.fillStyle = this.color.textColor;
 			CE.canvas.map.context.fillText(CE.filterType.name + ' ' + Math.floor(this.value) + '%', 10, 17);
-			CE.canvas.map.context.translate(-(this.x + diagramSizeX / 2 + 2), -(this.y - (this.value) - (diagramDeltaY / 2)));//remise en place du context
+			CE.canvas.map.context.translate(-(this.x + diagramSizeX / 2 + 2), -(this.y - (this.value / 2) - (diagramDeltaY)));//remise en place du context
 			if (Map.transitionInformationDetailed.started) {
 				CE.canvas.map.context.globalAlpha = 1;
 			}

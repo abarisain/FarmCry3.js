@@ -199,10 +199,8 @@ var Map = {
 		};
 	},
 	showMapInformations: function () {
-		if (CE.filterType.tiles) {
-			for (var i = 0; i < this.tiles.length; i++) {
-				this.tiles[i].showInformation();
-			}
+		for (var i = 0; i < this.tiles.length; i++) {
+			this.tiles[i].showInformation();//obligatoire pour la couleur de fond
 		}
 		if (CE.filterType.mapItems) {
 			for (var i = 0; i < this.mapItems.length; i++) {

@@ -13,12 +13,17 @@ ColorHelper.prototype = {
 	updateRGB: function () {
 		this.rgb = 'rgb(' + this.r + ', ' + this.g + ', ' + this.b + ')';
 	},
+	copyColor: function (color) {
+		this.r = color.r;
+		this.g = color.g;
+		this.b = color.b;
+		this.rgb = color.rgb;
+	},
 	createColorFactor: function (color, secondColor, colorFactor) {
 		this.r = Math.floor(color.r * (1 - colorFactor) + secondColor.r * (colorFactor));
 		this.g = Math.floor(color.g * (1 - colorFactor) + secondColor.g * (colorFactor));
 		this.b = Math.floor(color.b * (1 - colorFactor) + secondColor.b * (colorFactor));
 		this.updateRGB();
-		return this.rgb;
 	}
 };
 
