@@ -79,12 +79,30 @@ var EventManager = {
 				});
 				return true;
 			},
+			addMoney: function (farmer, amount) {
+				farmer.money += amount;
+				return true;
+			},
+			substractMoney: function (farmer, amount) {
+				if(farmer.money < amount)
+					return false;
+				farmer.money -= amount;
+				return true;
+			},
 			buyCrop: function (farmer, cropType) {
 				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop == undefined) {
-					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop = GameState.settings.crops[cropType];
+					var cropInfo = GameState.settings.crops[cropType];
+					if(!this.substractMoney(farmer, cropInfo.seed_price)) {
+						NetworkEngine.clients.broadcast("game.error", {
+							title: null,
+							message: "You do not have enough money for this seed !"
+						});
+						return false;
+					}
+					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop = cropInfo;
 					NetworkEngine.clients.broadcast("player.cropBought", {
 						nickname: farmer.nickname,
-						cropType: cropType,
+						cropType: cropInfo.codename,
 						col: farmer.last_pos.x,
 						line: farmer.last_pos.y
 					});
@@ -94,7 +112,7 @@ var EventManager = {
 			},
 			harvestCrop: function (farmer) {
 				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop != undefined) {
-					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop = new Crop();
+					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop = undefined;
 					NetworkEngine.clients.broadcast("player.cropHarvested", {
 						nickname: farmer.nickname,
 						col: farmer.last_pos.x,
@@ -106,6 +124,15 @@ var EventManager = {
 			},
 			buyBuilding: function (farmer, buildingType) {
 				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building == undefined) {
+					var buildingInfo = GameState.settings.buildings[buildingType];
+					if(!this.substractMoney(farmer, buildingInfo.price)) {
+						NetworkEngine.clients.broadcast("game.error", {
+							title: null,
+							message: "You do not have enough money for this building !"
+						});
+						return false;
+					}
+					farmer.money -= buildingInfo.price;
 					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building = GameState.settings.buildings[buildingType];
 					NetworkEngine.clients.broadcast("player.buildingBought", {
 						nickname: farmer.nickname,
@@ -119,7 +146,7 @@ var EventManager = {
 			},
 			destroyBuilding: function (farmer) {
 				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building != undefined) {
-					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building = new Building();
+					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building = undefined;
 					NetworkEngine.clients.broadcast("player.buildingDestroyed", {
 						nickname: farmer.nickname,
 						col: farmer.last_pos.x,
