@@ -11,6 +11,17 @@ var NetworkModule = {
 			var PM = require('../../persistence_manager');
 			PM.persist(PM.defaultPersistCallback);
 		},
+		updateMap: function () {
+
+			/*connection.send("game.initialData", {
+			 tiles: tmpTiles,
+			 player_farmer: connection.farmer.getSmallFarmer(),
+			 online_farmers: tmpFarmers,
+			 weapons: GameState.settings.weapons,//I'm going to use this later
+			 crops: GameState.settings.crops,//TODO implement the use of these values in the client market
+			 buildings: GameState.settings.buildings
+			 });*/
+		},
 		getInitialData: function (connection, request, data, callback) {
 			var tmpTiles = [];
 			for (var y = 0; y < GameState.board.size.y; y++) {
@@ -32,8 +43,8 @@ var NetworkModule = {
 				tiles: tmpTiles,
 				player_farmer: connection.farmer.getSmallFarmer(),
 				online_farmers: tmpFarmers,
-				weapons: GameState.settings.weapons,
-				crops: GameState.settings.crops,
+				weapons: GameState.settings.weapons,//I'm going to use this later
+				crops: GameState.settings.crops,//TODO implement the use of these values in the client market
 				buildings: GameState.settings.buildings
 			});
 		}

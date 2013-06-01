@@ -15,6 +15,7 @@ var GameState = {
 	settings: {
 		tickRate: 1000, //Time between ticks in mS
 		startMoney: 1000, //Still dollars
+		playerRefreshDelay: 1500,//Time in ms before the refresh of a player
 		//Here are the reference instances of the objects
 		//If they are modified, everything using them will reflect the change
 		//If they break, THINGS WILL GO TO HELL SO BE CAREFUL FUTURE-ME !
