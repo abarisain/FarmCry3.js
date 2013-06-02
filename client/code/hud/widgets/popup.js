@@ -66,20 +66,16 @@ HudElements.Popup = function (title, text) {
 	this.modal = true;
 	this.clickable = true;
 	this.width = 400;
-	this.height = 350;
+	this.height = 180;
 	this._title = title || "Alert";
 	this._text = text || "";
 
 	this.ninepatch = {
-		enabled: false,
+		enabled: true,
 		left_width: 22,
 		right_width: 22,
 		top_height: 68,
 		bottom_height: 21
-	}
-
-	this.close = function () {
-		this.baseClose();
 	}
 
 	var tmpCloseBtn = HudElements.Button.Premade.close(15, -15, HudElement.Anchors.TOP_RIGHT);
@@ -91,23 +87,25 @@ HudElements.Popup = function (title, text) {
 	tmpTitle.setTextFunction((function() {
 		return this._title;
 	}).bind(this));
-	tmpTitle.verticalMargin = 16;
+	tmpTitle.verticalMargin = 22;
 	tmpTitle.horizontalMargin = 0;
 	tmpTitle.anchor = HudElement.Anchors.TOP_CENTER;
 
 	var tmpText = new HudElements.Text();
+	tmpText.anchor = HudElement.Anchors.TOP_LEFT;
 	tmpText.setText(this._text);
-	tmpText.verticalMargin = 0;
+	tmpText.verticalMargin = 65;
 	tmpText.horizontalMargin = 32;
 	this.addChild(tmpText);
 	tmpText.enableAutoSizing(false);
+	tmpText.wrap = true;
 	tmpText.width = 330;
 
-	var tmpOkBtn = new HudElements.Button(100, 32, -46, 0, "OK", HudElement.Anchors.BOTTOM_CENTER, "#fff");
+	var tmpOkBtn = new HudElements.Button(120, 40, -46, 0, "OK", HudElement.Anchors.BOTTOM_CENTER, "#fff");
 	tmpOkBtn.onClick = (function() {
 		this.close();
 	}).bind(this);
-	tmpOkBtn.verticalMargin = -46;
+	tmpOkBtn.verticalMargin = -14;
 
 	this.addChild(tmpCloseBtn);
 	this.addChild(tmpTitle);
