@@ -288,13 +288,19 @@ var CrymeEngine = {
 					}
 				}
 				if (event.button == 2) {
-					//le clic droit sers a bouger la map, et le gauche a agir
-					//positionnement de la souris
-					CrymeEngine.mousePosition.x = event.pageX - this.offsetLeft;
-					CrymeEngine.mousePosition.y = event.pageY - this.offsetTop;
+					if (Options.Debug.Graphic.enabled) {
+						//en mode debug
+						//le clic droit sers a bouger la map, et le gauche a agir
+						//positionnement de la souris
+						CrymeEngine.mousePosition.x = event.pageX - this.offsetLeft;
+						CrymeEngine.mousePosition.y = event.pageY - this.offsetTop;
 
-					//activation du deplacement de la map
-					CrymeEngine.movingMap = true;
+						//activation du deplacement de la map
+						CrymeEngine.movingMap = true;
+					} else {
+						//sans le mode debug, le clic droit arrose
+						Map.player.waters();
+					}
 				}
 			}
 		};
