@@ -36,6 +36,7 @@ NetworkConnection.prototype = {
 			console.log("Not sending message to unauthenticated user");
 			return;
 		}
+
 		this.socket.emit(event, data);
 	},
 	sendError: function (error) {

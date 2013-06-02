@@ -24,7 +24,8 @@ CrymeEngine.hud = {
 		market_corn: null,
 		market_tomato: null,
 		market_wheat: null,
-		book: null
+		book: null,
+		coin: null
 	},
 	panels: {
 		lifebar: null,
@@ -35,12 +36,14 @@ CrymeEngine.hud = {
 		this.rootHudElement.resize();
 		//Lifebar
 		CE.hud.lifebar = new HudElement("lifebar", "life", 317, 124, 0, 0, HudElement.Anchors.TOP_LEFT, false);
+		CE.hud.lifebar.addChild(new HudElement("money_icon", "coin", 20, 23, 16, 120, HudElement.Anchors.TOP_LEFT, false));
 		var posText = new HudElements.Text("position_text");
-		posText.horizontalMargin = 120;
+		posText.horizontalMargin = 145;
 		posText.verticalMargin = 16;
 		posText.setTextFunction(function () {
-			return "x : " + CrymeEngine.mousePosition.x + ", y : "
-				+ CrymeEngine.mousePosition.y
+			if(GameState.player == null)
+				return 0;
+			return GameState.player.money;
 		});
 		CE.hud.lifebar.addChild(posText);
 		this.rootHudElement.addChild(CE.hud.lifebar);
