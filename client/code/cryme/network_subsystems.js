@@ -53,6 +53,10 @@ networkEngine.subsystems.player = {
 		},
 		buildingDestroyed: function (data) {
 			Map.network.destroyBuilding(data.col, data.line);
+		},
+		moneyUpdated: function (data) {
+			if(GameState.player != null)
+				GameState.player.money = data.money;
 		}
 	}
 };
