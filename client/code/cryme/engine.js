@@ -141,11 +141,6 @@ var CrymeEngine = {
 			//dessin de la map (tiles et mapitems)
 			Map.drawMap();
 
-			if (CE.displayType != CE.DisplayType.STANDARD) {
-				//dessin du terrain
-				Map.drawMapInfos();
-			}
-
 			CrymeEngine.canvas.map.context.restore();
 			if (Options.Debug.Graphic.enabled) {
 				CrymeEngine.canvas.debug.context.restore();
@@ -163,6 +158,17 @@ var CrymeEngine = {
 			}
 
 			CrymeEngine.canvas.animation.context.restore();
+		},
+		Information: function () {
+			CrymeEngine.canvas.information.clear();
+			if (CE.displayType != CE.DisplayType.STANDARD) {
+				CrymeEngine.canvas.information.context.save();
+				CrymeEngine.canvas.information.context.scale(scaleFactor, scaleFactor);
+				CrymeEngine.canvas.information.context.translate(CrymeEngine.camera.position.x, CrymeEngine.camera.position.y);
+
+				Map.drawMapInfos();
+				CrymeEngine.canvas.information.context.restore();
+			}
 		},
 		Battle: function () {
 			CrymeEngine.canvas.map.clear();
@@ -184,11 +190,12 @@ var CrymeEngine = {
 			if (CrymeEngine.gameState == CE.GameState.FARMING) {
 				CrymeEngine.camera.updateCamera();
 				//There is another render loop for when the map is loading
-				if (CrymeEngine.mapInvalidated || Map.transitionInformation.started) {
+				if (CrymeEngine.mapInvalidated) {
 					CrymeEngine.mapInvalidated = false;
 					CrymeEngine.Draw.Map();
 				}
 				CrymeEngine.Draw.Animation();
+				CrymeEngine.Draw.Information();
 				CrymeEngine.Draw.Hud();
 			} else if (CrymeEngine.gameState == CE.GameState.BATTLE) {
 				CrymeEngine.Draw.Battle();
@@ -224,6 +231,7 @@ var CrymeEngine = {
 	init: function () {
 		this.canvas.map = new CrymeCanvas('#canvas');
 		this.canvas.animation = new CrymeCanvas('#canvasAnimation');
+		this.canvas.information = new CrymeCanvas('#canvasInformation');
 		this.canvas.hud = new CrymeCanvas('#canvasHud');
 		this.canvas.debug = new CrymeCanvas('#canvasDebug');
 		this.canvas.map.setFont("normal 12pt stanberry");
