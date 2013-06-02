@@ -251,6 +251,16 @@ HudElement.prototype = {
 		if(this != CE.hud.rootHudElement)
 			this.parent.removeChild(this);
 	},
+	onEscapeKeyPressed: function () {
+		if(this.modal) {
+			this.close();
+		} else {
+			var childrenCount = this.children.length;
+			for (var i = 0; i < childrenCount; i++) {
+				this.children[i].onEscapeKeyPressed();
+			}
+		}
+	},
 	addChild: function (hudElement) { //Override this if you want your view not to be able to have children (poor view)
 		hudElement.parent = this;
 		hudElement.computeLayout();

@@ -4,6 +4,7 @@ CrymeEngine.keyboard = {
 	Keys: {
 		ENTER: { code: 13, name: 'Enter' },
 		SPACE: { code: 32, name: 'Space' },
+		ESCAPE: { code: 27, name: 'Escape' },
 		TAB: { code: 9, name: 'Tab' },
 		KEY_A: { code: 65, name: 'A' },
 		KEY_B: { code: 66, name: 'B' },
@@ -96,6 +97,10 @@ CrymeEngine.keyboard = {
 		}
 		CE.hud.chat.append(messageData);
 		switch (event.keyCode) {
+			case CE.keyboard.Keys.ESCAPE.code:
+				if(CE.hud.rootHudElement != null)
+					CE.hud.rootHudElement.onEscapeKeyPressed();
+				break;
 			case CE.keyboard.Shortcuts.CHAT.code:
 				if (document.activeElement == CE.hud.chat.divs.input) {
 					CE.hud.chat.send();
