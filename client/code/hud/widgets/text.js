@@ -9,6 +9,7 @@ HudElements.Text = function (text, anchor, color, font) {
 	this._color = color || "#6f440d";
 	this._font = font || "bold 13pt stanberry,Calibri,Geneva,Arial";
 	this._enableAutoSizing = true;
+	this.wrap = false; // Automatically wrap text
 	//By default, you cannot click on text
 	this.clickable = false;
 	if(this._textFunction == null && this._text != null)
@@ -33,7 +34,28 @@ HudElements.Text.prototype.draw = function () {
 	this.setupCanvas();
 	//If no text function, this function does nothing.
 	this.updateWithTextFunction();
-	this.targetCanvas.fillText(this._text, this._x, this._y + this.height, this.width);
+	// Note that text wrapping just overdraws, there is no height recalculation
+	if(this.wrap) {
+		var words = this._text.split(' ');
+		var line = '';
+		var yOffset = 0;
+		for(var n = 0; n < words.length; n++) {
+			var testLine = line + words[n] + ' ';
+			var metrics = this.targetCanvas.measureText(testLine);
+			var testWidth = metrics.width;
+			if(testWidth > this.width) {
+				this.targetCanvas.fillText(line, this._x, this._y + yOffset);
+				line = words[n] + ' ';
+				yOffset += this.height;
+			}
+			else {
+				line = testLine;
+			}
+		}
+		this.targetCanvas.fillText(line, this._x, this._y + yOffset);
+	} else {
+		this.targetCanvas.fillText(this._text, this._x, this._y + this.height, this.width);
+	}
 }
 HudElements.Text.prototype.setupCanvas = function () {
 	if(this.targetCanvas == null) // We can't do that in the constructor
