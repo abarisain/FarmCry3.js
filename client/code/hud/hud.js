@@ -12,7 +12,7 @@ CrymeEngine.hud = {
 		button_buy: null,
 		button_close: null,
 		button_delete: null,
-		button_switch_display: null,
+		filter_disabled: null,
 		filter_owner: null,
 		filter_humidity: null,
 		filter_fertility: null,
