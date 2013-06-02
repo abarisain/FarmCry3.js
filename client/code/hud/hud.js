@@ -42,7 +42,7 @@ CrymeEngine.hud = {
 		posText.horizontalMargin = 145;
 		posText.verticalMargin = 16;
 		posText.setTextFunction(function () {
-			if(GameState.player == null)
+			if (GameState.player == null)
 				return 0;
 			return GameState.player.money;
 		});
@@ -75,13 +75,13 @@ CrymeEngine.hud = {
 
 
 		/*			UI pour les filtres		*/
-		var switchDisplayButton = new HudElement("switchDisplay", "button_switch_display", 92, 92, -10, -10, HudElement.Anchors.BOTTOM_RIGHT, true);
-		switchDisplayButton.onClick = function () {
+		var filter = new HudElement("filterDisabled", "filter_disabled", 92, 92, -5, -10, HudElement.Anchors.BOTTOM_RIGHT, true);
+		filter.onClick = function () {
 			CE.displayType = CE.DisplayType.STANDARD;
 			Map.tileHighLighted.index = -1;
 			CE.mapInvalidated = true;
 		}
-		this.rootHudElement.addChild(switchDisplayButton);
+		this.rootHudElement.addChild(filter);
 
 		var filter = new HudElement("filterOwner", "filter_owner", 32, 32, -17, -112, HudElement.Anchors.BOTTOM_RIGHT, true);
 		filter.onClick = function () {
