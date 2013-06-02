@@ -74,6 +74,13 @@ networkEngine.subsystems.game = {
 			CrymeEngine.init();
 			currentLoadingCount++;
 			console.log("Initial data ok");
+		},
+		error: function (data) {
+			if(data.title == null)
+				data.title = "Error"
+			if(data.message == null)
+				data.message = "Unknown error"
+			CE.hud.rootHudElement.addChild(new HudElements.FullscreenPopup(data.title, data.message));
 		}
 	}
 };
