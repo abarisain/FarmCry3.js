@@ -81,12 +81,18 @@ var EventManager = {
 			},
 			addMoney: function (farmer, amount) {
 				farmer.money += amount;
+				NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.moneyUpdated", {
+					money: farmer.money
+				});
 				return true;
 			},
 			substractMoney: function (farmer, amount) {
 				if(farmer.money < amount)
 					return false;
 				farmer.money -= amount;
+				NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.moneyUpdated", {
+					money: farmer.money
+				});
 				return true;
 			},
 			buyCrop: function (farmer, cropType) {
