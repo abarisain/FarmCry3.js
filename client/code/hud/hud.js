@@ -3,6 +3,7 @@ CrymeEngine.hud = {
 		life: null,
 		time: null,
 		popup: null,
+		popup_important: null,
 		inventory: null,
 		button_red: null,
 		button_gray: null,
