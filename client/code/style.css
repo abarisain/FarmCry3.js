@@ -72,11 +72,6 @@ body {
     overflow: hidden;
 }
 
-body > div {
-    height:     100%;
-    overflow:   scroll;
-}
-
 a {
 	text-align: center;
 	padding-top: 10px;
