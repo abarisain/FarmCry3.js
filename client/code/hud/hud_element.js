@@ -39,6 +39,10 @@ function HudElement(name, image, width, height, verticalMargin, horizontalMargin
 	}
 
 	this.modal = false; // A modal item will prevent the game for getting clicks outside it. Books, popups are modal.
+
+	this.close = function () {
+		this.baseClose();
+	}
 }
 
 HudElement.prototype = {
@@ -242,6 +246,10 @@ HudElement.prototype = {
 	},
 	baseOnOutsideClick: function (x, y, data1, data2) {
 		// No base action, only here for easy overriding
+	},
+	baseClose: function () {
+		if(this != CE.hud.rootHudElement)
+			this.parent.removeChild(this);
 	},
 	addChild: function (hudElement) { //Override this if you want your view not to be able to have children (poor view)
 		hudElement.parent = this;

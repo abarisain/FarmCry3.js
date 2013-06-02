@@ -10,10 +10,6 @@ HudElements.FullscreenPopup = function (title, text) {
 	this.modal = true;
 	this.clickable = true;
 
-	this.close = function () {
-		this.baseClose();
-	}
-
 	this.popup = new HudElements.Popup(title, text);
 	this.popup.modal = true;
 	this.popup.onOutsideClick = (function () {
@@ -49,10 +45,6 @@ HudElements.FullscreenPopup.prototype.computeLayout = function () {
 	this.height = this.parent.height;
 	this.width = this.parent.width;
 	HudElement.prototype.computeLayout.call(this);
-}
-
-HudElements.FullscreenPopup.prototype.baseClose = function () {
-	this.parent.removeChild(this);
 }
 
 /*
@@ -114,7 +106,3 @@ HudElements.Popup = function (title, text) {
 
 HudElements.Popup.prototype = new HudElement();
 HudElements.Popup.prototype.constructor = HudElements.FullscreenPopup;
-
-HudElements.Popup.prototype.baseClose = function () {
-	this.parent.removeChild(this);
-}

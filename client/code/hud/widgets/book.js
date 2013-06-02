@@ -36,18 +36,10 @@ HudElements.Book = function () {
 	this.addChild(tmpLeftTitle);
 	this.addChild(tmpRightTitle);
 	this.addChild(tmpCloseBtn);
-
-	this.close = function () {
-		this.baseClose();
-	}
 }
 
 HudElements.Book.prototype = new HudElement();
 HudElements.Book.prototype.constructor = HudElements.Book;
-
-HudElements.Book.prototype.baseClose = function () {
-	this.parent.removeChild(this);
-}
 
 /*
  Book page
