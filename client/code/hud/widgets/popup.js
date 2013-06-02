@@ -103,7 +103,7 @@ HudElements.Popup = function (title, text) {
 	tmpText.enableAutoSizing(false);
 	tmpText.width = 330;
 
-	var tmpOkBtn = HudElements.Button(100, 32, -46, 0, "OK", HudElement.Anchors.BOTTOM_CENTER, "white");
+	var tmpOkBtn = new HudElements.Button(100, 32, -46, 0, "OK", HudElement.Anchors.BOTTOM_CENTER, "#fff");
 	tmpOkBtn.onClick = (function() {
 		this.close();
 	}).bind(this);
