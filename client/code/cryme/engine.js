@@ -322,7 +322,9 @@ var CrymeEngine = {
 		};
 
 		this.canvas.hud.canvas.onmousewheel = function (evt) {
-			if (Options.Debug.Graphic.enabled) {
+			if (!Options.Debug.Graphic.enabled) {
+				CE.hud.rootHudElement.onScroll(evt.pageX, evt.pageY, evt.wheelDeltaY);
+			} else {
 				if (evt.wheelDeltaY > 0) {
 					scaleFactor += 0.25;
 				}

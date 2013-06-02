@@ -175,6 +175,14 @@ HudElements.List.prototype.baseOnClick = function (x, y) {
 	}
 }
 
+HudElements.List.prototype.onScroll = function (x, y, delta) {
+	if(delta < 0) {
+		this.scroll(this.scrollStep);
+	} else {
+		this.scroll(-this.scrollStep);
+	}
+}
+
 /*
  Text cannot have any children
  */

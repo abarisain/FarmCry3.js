@@ -25,6 +25,7 @@ function HudElement(name, image, width, height, verticalMargin, horizontalMargin
 		bottom_height: 0
 	}
 	this.clickable = typeof clickable == 'undefined' ? true : clickable;
+	this.scrollable = true;
 	this.targetCanvas = null;
 
 	this.onClick = function (x, y, data1, data2) {
@@ -258,6 +259,17 @@ HudElement.prototype = {
 			var childrenCount = this.children.length;
 			for (var i = 0; i < childrenCount; i++) {
 				this.children[i].onEscapeKeyPressed();
+			}
+		}
+	},
+	onScroll: function (x, y, delta) {
+		// If delta < 0 : scroll up, otherwise down
+		var childrenCount = this.children.length;
+		var child;
+		for (var i = 0; i < childrenCount; i++) {
+			child = this.children[i];
+			if (child.visible && child.scrollable && child.isPointInBounds(x, y)) {
+				child.onScroll(x, y, delta);
 			}
 		}
 	},
