@@ -30,6 +30,8 @@ ParticlesEmitter.prototype = {
 		this.started = true;
 		this.lifetime = this.lifetimeMax;
 	},
+	endEvent: function () {
+	},
 	update: function () {
 		if (this.started) {
 			if (this.amount < this.amountMax) {
@@ -49,14 +51,15 @@ ParticlesEmitter.prototype = {
 
 				}
 			}
-			if (this.particles.length == 0 && this.amount == this.amountMax) {
+			if (this.particles.length == 0 && this.amount >= this.amountMax) {
 				this.started = false;
+				this.endEvent();
 				return false;
 			}
 			for (i = 0; i < this.particles.length; i++) {
 				if (!this.particles[i].update())//if particle is dead
 				{
-					//todo
+					this.particles.removeItemAtIndex(i);//enfin on supprime les particules haha
 				}
 			}
 			return true;
@@ -64,10 +67,10 @@ ParticlesEmitter.prototype = {
 			return true;
 		}
 	},
-	draw: function () {
+	draw: function (maxAlpha) {
 		CE.canvas.animation.context.translate(this.x, this.y);
 		for (var i = 0; i < this.particles.length; i++) {
-			this.particles[i].draw(this.sprite);
+			this.particles[i].draw(this.sprite, maxAlpha);
 		}
 		CE.canvas.animation.context.translate(-this.x, -this.y);
 	}
@@ -82,6 +85,7 @@ function Particle(scatteringX, scatteringY, speed, scale, scaleDelta, angle, ang
 	this.speedY = Math.sin(this.angle) * speed;
 	this.lifetime = lifetime;
 	this.alpha = 1;
+	this.apparitionAlpha = 0;
 }
 
 Particle.prototype = {
@@ -89,16 +93,25 @@ Particle.prototype = {
 		this.lifetime--;
 		this.x += this.speedX;
 		this.y += this.speedY;
-		if (this.lifetime < 10) {
+		if (this.apparitionAlpha < 1) {
+			this.apparitionAlpha += 0.05;
+			this.alpha = this.apparitionAlpha;
+		} else if (this.lifetime < 10) {
 			this.alpha = this.lifetime / 10;
+		} else {
+			this.alpha = 1;
 		}
 		if (this.lifetime <= 0) {
 			return false;
 		}
 		return true;
 	},
-	draw: function (sprite) {
-		CE.canvas.animation.context.globalAlpha = this.alpha;
+	draw: function (sprite, maxAlpha) {
+		if (maxAlpha != undefined) {
+			CE.canvas.animation.context.globalAlpha = Math.min(this.alpha, maxAlpha);
+		} else {
+			CE.canvas.animation.context.globalAlpha = this.alpha;
+		}
 		CE.canvas.animation.context.drawImage(sprite.image, this.x - sprite.centerX * this.scale, this.y - sprite.centerY * this.scale, sprite.width * this.scale, sprite.height * this.scale);
 	}
 };

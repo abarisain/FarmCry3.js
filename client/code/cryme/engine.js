@@ -276,19 +276,26 @@ var CrymeEngine = {
 					if (!Options.Debug.Graphic.enabled) {
 						var x = event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x;
 						var y = event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y;
-						var coord = Map.coordinatesFromMousePosition(x, y);
+						var coord = Map.getPlayerCoordinate(x, y);
 						var data = {col: 0, line: 0};
 						var moved = true;
-						if (coord.col > Map.player.col) {
-							data.col = 1;
-						} else if (coord.col < Map.player.col) {
-							data.col = -1;
-						} else if (coord.line > Map.player.line) {
-							data.line = 1;
-						} else if (coord.line < Map.player.line) {
-							data.line = -1;
+						coord.col -= Map.player.col;
+						coord.line -= Map.player.line;
+						if (coord.building) {
+							//Vieux hack de merde pour forcer le joueur a entrer dans un building, part 2
+							data.col = coord.col;
+							data.line = coord.line;
 						} else {
-							moved = false;
+							var delta = {col: coord.col / Math.abs(coord.col), line: coord.line / Math.abs(coord.line)};//delta entre -1 et 1
+							if (delta.col == 0 && delta.line == 0) {
+								moved = false;
+							} else {
+								if (Math.abs(coord.col) > Math.abs(coord.line)) {
+									data.col = delta.col;
+								} else {
+									data.line = delta.line;
+								}
+							}
 						}
 						if (moved) {
 							networkEngine.call('player', 'move', data);
@@ -312,12 +319,6 @@ var CrymeEngine = {
 				}
 			}
 		};
-
-		this.canvas.hud.canvas.onclick = function (event) {
-			if (loadingComplete) {
-
-			}
-		}
 
 		window.onkeydown = function (event) {
 			CE.keyboard.keyPressed(event);

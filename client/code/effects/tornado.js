@@ -6,12 +6,12 @@ MapItems.Tornado = function (col, line) {
 	this.movement = { finalPosition: { x: 0, y: 0}, startPosition: { x: 0, y: 0}};
 	this.transition = new Transition(0, 1, 60, function () {
 	});
-	this.transition.start(Transition.Type.FADE_IN);
+	this.transition.start(Transition.Direction.IN);
 	var tornado = this;//variable moche pour la fonction suivante
 	this.movementTransition = new Transition(0, 1, 1200, function () {
 		CE.Weather.removeTornado(tornado);
 	})
-	this.movementTransition.start(Transition.Type.FADE_IN);
+	this.movementTransition.start(Transition.Direction.IN);
 }
 
 MapItems.Tornado.prototype = new MapItem();

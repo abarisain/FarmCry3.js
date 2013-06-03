@@ -20,13 +20,13 @@ MapItems.Character.prototype.constructor = MapItems.Character;
 
 MapItems.Character.prototype.waters = function () {
 	if (!this.transitions.fertilizes.started) {
-		this.transitions.waters.start(Transition.Type.FADE_IN, true);
+		this.transitions.waters.start(Transition.Direction.IN, true);
 	}
 }
 
 MapItems.Character.prototype.fertilizes = function () {
 	if (!this.transitions.waters.started) {
-		this.transitions.fertilizes.start(Transition.Type.FADE_IN, true);
+		this.transitions.fertilizes.start(Transition.Direction.IN, true);
 	}
 }
 
@@ -34,27 +34,25 @@ MapItems.Character.prototype.move = function (col, line) {
 	var moved = true;
 	if (col > this.col) {
 		this.movement.sprite = SpritePack.Characters.Sprites.ANIM_TOP_LEFT;
-		this.col++;
 	} else if (col < this.col) {
 		this.movement.sprite = SpritePack.Characters.Sprites.ANIM_BOTTOM_RIGHT;
-		this.col--;
 	} else if (line > this.line) {
 		this.movement.sprite = SpritePack.Characters.Sprites.ANIM_BOTTOM_LEFT;
-		this.line++;
 	} else if (line < this.line) {
 		this.movement.sprite = SpritePack.Characters.Sprites.ANIM_TOP_RIGHT;
-		this.line--;
 	} else {
 		moved = false;
 	}
 	if (moved) {
+		this.col = col;//j'ai confiance en mon serveur
+		this.line = line;//le serveur est mon maître, et je lui dois obéissance
 		this.movement.finalPosition = this.translateCoord(this.col, this.line);
 		this.movement.startPosition.x = this.x;
 		this.movement.startPosition.y = this.y;
 		if (this.isPlayer) {
 			CrymeEngine.camera.centerCamera(this.movement.finalPosition.x, this.movement.finalPosition.y);
 		}
-		this.transitions.movement.start(Transition.Type.FADE_IN, true);
+		this.transitions.movement.start(Transition.Direction.IN, true);
 	}
 };
 

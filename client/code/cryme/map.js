@@ -207,7 +207,7 @@ var Map = {
 				this.mapItems[i].showInformation();
 			}
 		}
-		this.transitionInformation.start(Transition.Type.FADE_IN, true);
+		this.transitionInformation.start(Transition.Direction.IN, true);
 	},
 	highlightTile: function (x, y) {
 		var exHighlighted = this.tileHighLighted.index;
@@ -220,7 +220,7 @@ var Map = {
 					this.tileHighLighted.line = coord.line;
 					this.tileHighLighted.index = i;
 					if (i != exHighlighted) {
-						this.transitionInformationDetailed.start(Transition.Type.FADE_IN, true);
+						this.transitionInformationDetailed.start(Transition.Direction.IN, true);
 						CrymeEngine.mapInvalidated = true;
 					}
 					break;
@@ -234,12 +234,22 @@ var Map = {
 					this.tileHighLighted.line = coord.line;
 					this.tileHighLighted.index = i;
 					if (i != exHighlighted) {
-						this.transitionInformationDetailed.start(Transition.Type.FADE_IN, true);
+						this.transitionInformationDetailed.start(Transition.Direction.IN, true);
 						CrymeEngine.mapInvalidated = true;
 					}
 					break;
 				}
 			}
 		}
+	},
+	//Vieux hack de merde pour forcer le joueur a pop au dessus d'un bâtiment si il est dessus
+	getPlayerCoordinate: function (x, y) {
+		var coord = Map.coordinatesFromMousePosition(x, y)
+		for (var i = 0; i < this.mapItems.length; i++) {
+			if (this.mapItems[i].match(coord.col, coord.line)) {
+				return { col: this.mapItems[i].col, line: this.mapItems[i].line, building: true };
+			}
+		}
+		return { col: coord.col, line: coord.line, building: false };
 	}
 };

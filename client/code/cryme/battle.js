@@ -10,19 +10,19 @@ CrymeEngine.Battle = {
 		this.background = SpritePack.Battle.Sprites.BACKGROUND;
 		this.breathTransition = new Transition(0.9, 1.1, 30, function () {
 		});
-		this.breathTransition.loop = true;
-		this.breathTransition.start(Transition.Type.FADE_IN);
+		this.breathTransition.loopType = Transition.LoopType.BOUNCE;
+		this.breathTransition.start(Transition.Direction.IN);
 		this.auraTransition = new Transition(0, 1, 300, function () {
 			CE.gameState = CE.GameState.FARMING;
 			CE.mapInvalidated = true;
 		});
-		this.auraTransition.start(Transition.Type.FADE_IN);
+		this.auraTransition.start(Transition.Direction.IN);
 		this.playerTransition = new Transition(1, 2, 10, function () {
-			CE.Battle.weaponTransition.start(Transition.Type.FADE_IN, true);
+			CE.Battle.weaponTransition.start(Transition.Direction.IN, true);
 		});
-		this.playerTransition.start(Transition.Type.FADE_OUT, true);
+		this.playerTransition.start(Transition.Direction.OUT, true);
 		this.weaponTransition = new Transition(0, 1, 15, function () {
-			CE.Battle.weaponTransition.start(Transition.Type.FADE_OUT);
+			CE.Battle.weaponTransition.start(Transition.Direction.OUT);
 		});
 		this.elements = [];
 		for (var i = 0; i < 4; i++) {

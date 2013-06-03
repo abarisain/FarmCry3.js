@@ -83,7 +83,7 @@ function LoadSpritePack() {
 
 	SpritePack.Effects.Sprites.CLOUD = new Sprite('cloud', 545, 427);
 	SpritePack.Effects.Sprites.TORNADO = new Sprites.Animation('tornado_animated', 150, 420, 23, 46);
-	SpritePack.Effects.Sprites.RAIN = new Sprite('rain', 120, 138);
+	SpritePack.Effects.Sprites.RAIN = new Sprite('rain', 256, 256);
 
 	SpritePack.Battle.Sprites.BACKGROUND = new Sprite('background', 0, 0);
 	SpritePack.Battle.Sprites.ACTION = new Sprite('action', 42, 40);
