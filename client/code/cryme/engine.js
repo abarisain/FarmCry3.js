@@ -279,16 +279,17 @@ var CrymeEngine = {
 						var coord = Map.coordinatesFromMousePosition(x, y);
 						var data = {col: 0, line: 0};
 						var moved = true;
-						if (coord.col > Map.player.col) {
-							data.col = 1;
-						} else if (coord.col < Map.player.col) {
-							data.col = -1;
-						} else if (coord.line > Map.player.line) {
-							data.line = 1;
-						} else if (coord.line < Map.player.line) {
-							data.line = -1;
-						} else {
+						coord.col -= Map.player.col;
+						coord.line -= Map.player.line;
+						var delta = {col: coord.col / Math.abs(coord.col), line: coord.line / Math.abs(coord.line)};//delta entre -1 et 1
+						if (delta.col == 0 && delta.line == 0) {
 							moved = false;
+						} else {
+							if (Math.abs(coord.col) > Math.abs(coord.line)) {
+								data.col = delta.col;
+							} else {
+								data.line = delta.line;
+							}
 						}
 						if (moved) {
 							networkEngine.call('player', 'move', data);
@@ -312,12 +313,6 @@ var CrymeEngine = {
 				}
 			}
 		};
-
-		this.canvas.hud.canvas.onclick = function (event) {
-			if (loadingComplete) {
-
-			}
-		}
 
 		window.onkeydown = function (event) {
 			CE.keyboard.keyPressed(event);

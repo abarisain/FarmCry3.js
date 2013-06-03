@@ -65,7 +65,7 @@ var EventManager = {
 				var newX = farmer.last_pos.x + x;
 				var newY = farmer.last_pos.y + y;
 				//TODO : Re-enable this to disallow teleportation
-				if (x < -1 || x > 1 || y < -1 || y > 1 || newX >= GameState.board.size.x || newY >= GameState.board.size.y
+				if (/*x < -1 || x > 1 || y < -1 || y > 1 || */newX >= GameState.board.size.x || newY >= GameState.board.size.y
 					|| newX < 0 || newY < 0) {
 					return false;
 				}
@@ -87,7 +87,7 @@ var EventManager = {
 				return true;
 			},
 			substractMoney: function (farmer, amount) {
-				if(farmer.money < amount)
+				if (farmer.money < amount)
 					return false;
 				farmer.money -= amount;
 				NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.moneyUpdated", {
@@ -98,7 +98,7 @@ var EventManager = {
 			buyCrop: function (farmer, cropType) {
 				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop == undefined) {
 					var cropInfo = GameState.settings.crops[cropType];
-					if(!this.substractMoney(farmer, cropInfo.seed_price)) {
+					if (!this.substractMoney(farmer, cropInfo.seed_price)) {
 						NetworkEngine.clients.broadcast("game.error", {
 							title: null,
 							message: "You do not have enough money for this seed !"
@@ -131,7 +131,7 @@ var EventManager = {
 			buyBuilding: function (farmer, buildingType) {
 				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building == undefined) {
 					var buildingInfo = GameState.settings.buildings[buildingType];
-					if(!this.substractMoney(farmer, buildingInfo.price)) {
+					if (!this.substractMoney(farmer, buildingInfo.price)) {
 						NetworkEngine.clients.broadcast("game.error", {
 							title: null,
 							message: "You do not have enough money for this building !"
