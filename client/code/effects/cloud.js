@@ -2,8 +2,9 @@ MapItems.Cloud = function (col, line) {
 	MapItem.call(this, SpritePack.Effects.Sprites.CLOUD, col, line);
 	this.updateCoord();
 	this.updateImageCoord();
-	this.emitterRain = new ParticlesEmitter(SpritePack.Effects.Sprites.RAIN, this.x, this.y - 1000, 0.05, 20, 20);
-	this.emitterRain.scatteringX = 300;
+	this.emitterRain = new ParticlesEmitter(SpritePack.Effects.Sprites.RAIN, this.x, this.y - 1000, 0.01, 10, 20);
+	this.emitterRain.scale = 2;
+	this.emitterRain.scatteringX = 20;
 	this.movement = { finalPosition: { x: 0, y: 0}, startPosition: { x: 0, y: 0}};
 	this.alpha = 0.6 * Math.random() + 0.4;
 	var cloud = this;

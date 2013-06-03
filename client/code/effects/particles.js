@@ -15,6 +15,8 @@ function ParticlesEmitter(sprite, x, y, growth, amountMax, lifetime) {
 	this.angle = 0;//l'angle dans lequel il faut balancer les particules en radian (au centre du delta d'angle)
 	this.angleDelta = 0;//le total d'angle dans lequel on peut balancer des particules en radian
 	this.speed = 0;
+	this.scale = 1;//taille de reference des elements
+	this.scaleDelta = 0;//delta de taille pour chaque element
 }
 
 ParticlesEmitter.prototype = {
@@ -34,13 +36,13 @@ ParticlesEmitter.prototype = {
 				var newParticleCount = Math.min(this.amountMax - this.amount, this.growth);
 				if (this.growth >= 1) {
 					for (var i = 0; i < newParticleCount; i++) {
-						var particle = new Particle(this.scatteringX, this.scatteringY, this.speed, this.angle, this.angleDelta, this.lifetime);
+						var particle = new Particle(this.scatteringX, this.scatteringY, this.speed, this.scale, this.scaleDelta, this.angle, this.angleDelta, this.lifetime);
 						this.particles.push(particle);
 						this.amount++;
 					}
 				} else {
 					if (Math.floor(this.amount + this.growth) > Math.floor(this.amount)) {
-						var particle = new Particle(this.scatteringX, this.scatteringY, this.speed, this.angle, this.angleDelta, this.lifetime);
+						var particle = new Particle(this.scatteringX, this.scatteringY, this.speed, this.scale, this.scaleDelta, this.angle, this.angleDelta, this.lifetime);
 						this.particles.push(particle);
 					}
 					this.amount += this.growth;
@@ -71,9 +73,10 @@ ParticlesEmitter.prototype = {
 	}
 };
 
-function Particle(scatteringX, scatteringY, speed, angle, angleDelta, lifetime) {
+function Particle(scatteringX, scatteringY, speed, scale, scaleDelta, angle, angleDelta, lifetime) {
 	this.x = Math.random() * scatteringX;
 	this.y = Math.random() * scatteringY;
+	this.scale = scale + Math.random() * scaleDelta - scaleDelta / 2;
 	this.angle = angle + Math.random() * angleDelta - angleDelta / 2;
 	this.speedX = Math.cos(this.angle) * speed;
 	this.speedY = Math.sin(this.angle) * speed;
@@ -95,6 +98,7 @@ Particle.prototype = {
 		return true;
 	},
 	draw: function (sprite) {
-		CE.canvas.animation.context.drawImage(sprite.image, this.x - sprite.centerX, this.y - sprite.centerY);
+		CE.canvas.animation.context.globalAlpha = this.alpha;
+		CE.canvas.animation.context.drawImage(sprite.image, this.x - sprite.centerX * this.scale, this.y - sprite.centerY * this.scale, sprite.width * this.scale, sprite.height * this.scale);
 	}
 };

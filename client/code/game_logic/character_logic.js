@@ -1,5 +1,5 @@
 LogicItems.Farmer = function () {
-	LogicItem.call(this);
+	LogicItem.call(this, 0, 0);
 	this.is_allied = false;
 	this.nickname = "nick";
 };
