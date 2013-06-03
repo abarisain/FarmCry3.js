@@ -1,9 +1,9 @@
 LogicItems = {};
 
-function LogicItem() {
+function LogicItem(col, line) {
 	this.position = {
-		col: 0,
-		line: 0
+		col: col,
+		line: line
 	};
 }
 
