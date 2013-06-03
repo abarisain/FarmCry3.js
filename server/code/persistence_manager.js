@@ -48,6 +48,7 @@ var PersistenceManager = {
 		}
 	},
 	persist: function(callback) {
+		return;
 		this.asyncblock((function(flow) {
 			console.log("PersistenceManager - Persisting gamestate");
 			var startDate = Date.now();
@@ -77,6 +78,7 @@ var PersistenceManager = {
 		}).bind(this), callback);
 	},
 	load: function(callback) {
+		return;
 		this.asyncblock((function(flow) {
 			console.log("PersistenceManager - Loading gamestate");
 			var startDate = Date.now();
