@@ -1,6 +1,6 @@
 StoredCrop = require('./storedCrop');
 
-function Crop(codename, name, maturation_time, productivity, storability, seed_price) {
+function Crop(codename, name, maturation_time, productivity, storability, seed_price, selling_price, decay_time) {
 	if (typeof(codename) === 'undefined') {
 		//Same philosophy as weapon's constructor
 		this.codename = "dummy";
@@ -16,9 +16,10 @@ function Crop(codename, name, maturation_time, productivity, storability, seed_p
 	this.name = name;
 	this.maturation_time = maturation_time; //Time from seeding to harvest in ticks. NOT SECONDS.
 	this.productivity = productivity; //Harvest per tile at 100% health
-	this.storability = storability; //Amount of ticks that the crop can be stored without withering
+	this.storability = storability; //Amount of ticks that the STORED crop can be stored without withering
+	this.decay_time = decay_time; //Amount of ticks that the GROWN crop can be left on the tile without withering
 	this.seed_price = seed_price; //Seed price for one tile
-	this.storedCrop = new StoredCrop(this.codename, 0, 0);//The storage contains every data related to the current state of the crop
+	this.selling_price = selling_price; //Selling price PER unit. Don't forget that you have multiple harvest per stored crop
 }
 
 Crop.Types = {
@@ -27,19 +28,25 @@ Crop.Types = {
 		1000,
 		30,
 		2000,
-		100),
+		100,
+		80,
+		2000),
 	corn: new Crop("corn",
 		"Corn",
 		1800,
 		40,
 		3540,
-		200),
+		200,
+		150,
+		3540),
 	wheat: new Crop("wheat",
 		"Wheat",
 		1300,
 		30,
 		5800,
-		50)
+		50,
+		40,
+		5800)
 	//désolé mais j'ai pas du tout envie d'en faire plus que ce qui est dans le sujet de ce côté là
 	/*crops.push(new Crop("weed",
 	 "Weed",
