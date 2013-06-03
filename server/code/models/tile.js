@@ -11,8 +11,14 @@ function Tile() {
 	this.humidity = 1; // 0 to 1
 	this.fertility = 1;
 	this.max_fertility = 1;
-	this.crop = undefined;
-	this.building = undefined;
+	this.growingCrop = {
+		codename: null,
+		rotten: false,
+		time_left: 0,
+		harvest_quantity: 0 // If > 0 then time left is time before it becomes rotten
+	};
+	this.storedCrops = [];
+	this.building = null;
 	this.maturity = 0;
 	//Health being a dynamic value, it's not implemented as a variable
 }
@@ -44,10 +50,20 @@ Tile.prototype = {
 		tmpTile.humidity = this.humidity;
 		tmpTile.fertility = this.fertility;
 		tmpTile.max_fertility = this.max_fertility;
-		tmpTile.crop = this.crop;
-		tmpTile.building = this.building;
+		tmpTile.growingCrop = this.growingCrop;
+		if(tmpTile.growingCrop.codename == null)
+			tmpTile.growingCrop = null;
+		if(this.building == null) {
+			tmpTile.building = null;
+		} else {
+			tmpTile.building = this.building.codename;
+		}
 		tmpTile.owner = this.owner.nickname;
 		tmpTile.health = this.getHealth();
+		tmpTile.storedCrops = [];
+		this.storedCrops.forEach(function (storedCrop) {
+			tmpTile.storedCrops.push(storedCrop.id);
+		});
 		return tmpTile;
 	},
 	getPersistable: function () {
@@ -59,16 +75,17 @@ Tile.prototype = {
 		tmpTile.fertility = this.fertility;
 		tmpTile.max_fertility = this.max_fertility;
 		tmpTile.maturity = this.maturity;
-		if(this.crop === undefined) {
-			tmpTile.crop = "dummy";
-		} else {
-			tmpTile.crop = this.crop;
-		}
-		if(this.building === undefined) {
+		if(this.building == null) {
 			tmpTile.building = "dummy";
 		} else {
 			tmpTile.building = this.building;
 		}
+		var tmpArray = [];
+		this.storedCrops.forEach(function (storedCrop) {
+			tmpArray.push(storedCrop.id);
+		});
+		tmpTile.storedCrops = JSON.stringify(tmpArray);
+		tmpTile.growingCrop = JSON.stringify(this.growingCrop);
 		return tmpTile;
 	}
 };
