@@ -16,18 +16,18 @@ CrymeEngine.Weather = {
 				this.effects.push(this.clouds[this.clouds.length - 1]);
 			}
 		}
-		this.movementTransition.loop = true;
-		this.movementTransition.start(Transition.Type.FADE_IN);
+		this.movementTransition.loopType = Transition.LoopType.BOUNCE;
+		this.movementTransition.start(Transition.Direction.IN);
 		this.move();
 	},
 	move: function () {
 		//on verra plus tard pour l'aléatoire
 		/*this.wind.x = Math.floor(Math.random() * 4);
 		 this.wind.y = Math.floor(Math.random() * 4);*/
-		/*if (this.movementTransition.type == Transition.Type.FADE_IN) {
-		 this.movementTransition.start(Transition.Type.FADE_OUT, false);
+		/*if (this.movementTransition.Direction == Transition.Direction.FADE_IN) {
+		 this.movementTransition.start(Transition.Direction.FADE_OUT, false);
 		 } else {
-		 this.movementTransition.start(Transition.Type.FADE_IN, false);
+		 this.movementTransition.start(Transition.Direction.FADE_IN, false);
 		 }*/
 		for (var i = 0; i < this.effects.length; i++) {
 			this.effects[i].move(this.wind.x, this.wind.y);

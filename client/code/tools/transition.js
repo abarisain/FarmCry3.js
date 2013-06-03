@@ -8,17 +8,23 @@ function Transition(progressInit, progressMax, duration, eventEnd) {
 	this.duration = duration;
 	this.progressRate = (progressMax - progressInit) / duration;
 	this.started = false;
-	this.transitionType = Transition.Type.FADE_IN;
+	this.direction = Transition.Direction.IN;
 	this.eventEnd = eventEnd;
 	this.state = Transition.State.BEGIN;
-	this.loop = false;
+	this.loopType = Transition.LoopType.NONE;
 	this.smoothing = false;
 	this.smoothingProgress = 0;
 }
 
-Transition.Type = {
-	FADE_IN: -1, //on va de la valeur minimale à la valeur max avec max > init
-	FADE_OUT: 1//l'inverse
+Transition.LoopType = {
+	NONE: 0,
+	BOUNCE: 1,
+	RESET: 2
+};
+
+Transition.Direction = {
+	IN: -1, //on va de la valeur minimale à la valeur max avec max > init
+	OUT: 1//l'inverse
 };
 
 Transition.State = {
@@ -32,11 +38,10 @@ Transition.prototype = {
 	start: function (transitionType, reinitialize) {
 		this.started = true;
 		this.smoothingProgress = 0;
-		CrymeEngine.invalidateGraphic = true;
-		this.transitionType = transitionType;
+		this.direction = transitionType;
 		this.state = Transition.State.MOVING;
 		if (reinitialize) {
-			if (transitionType === Transition.Type.FADE_IN) {
+			if (transitionType === Transition.Direction.IN) {
 				this.progress = this.progressInit;
 			} else {
 				this.progress = this.progressMax;
@@ -45,7 +50,7 @@ Transition.prototype = {
 	},
 	updateProgress: function () {
 		if (this.started) {
-			if (this.transitionType === Transition.Type.FADE_IN) {
+			if (this.direction === Transition.Direction.IN) {
 				if (this.smoothing) {
 					this.smoothingProgress += 1 / this.duration;
 					this.progress = getBezier(this.smoothingProgress);
@@ -54,12 +59,14 @@ Transition.prototype = {
 				}
 				if ((this.smoothing && this.smoothingProgress >= 1) || (!this.smoothing && Math.abs(this.progress) >= Math.abs(this.progressMax))) {
 					this.progress = this.progressMax;
-					if (this.loop) {
-						this.transitionType = Transition.Type.FADE_OUT;
+					if (this.loopType == Transition.LoopType.BOUNCE) {
+						this.direction = Transition.Direction.OUT;
+					} else if (this.loopType == Transition.LoopType.RESET) {
+						this.progress = this.progressInit;
 					} else {
 						this.started = false;
 						this.state = Transition.State.END;
-						this.eventEnd(this.transitionType);
+						this.eventEnd(this.direction);
 					}
 
 				} else {
@@ -75,12 +82,14 @@ Transition.prototype = {
 				}
 				if ((this.smoothing && this.smoothingProgress <= 0) || (!this.smoothing && this.progress <= this.progressInit)) {
 					this.progress = this.progressInit;
-					if (this.loop) {
-						this.transitionType = Transition.Type.FADE_IN;
+					if (this.loopType == Transition.LoopType.BOUNCE) {
+						this.direction = Transition.Direction.IN;
+					} else if (this.loopType == Transition.LoopType.RESET) {
+						this.progress = this.progressMax;
 					} else {
 						this.started = false;
 						this.state = Transition.State.BEGIN;
-						this.eventEnd(this.transitionType);
+						this.eventEnd(this.direction);
 					}
 
 				} else {
@@ -90,7 +99,7 @@ Transition.prototype = {
 		}
 	},
 	percentage: function () {
-		if (this.transitionType === Transition.Type.FADE_IN) {
+		if (this.direction === Transition.Direction.IN) {
 			return this.progress / (this.progressMax - this.progressInit);
 		}
 		else {

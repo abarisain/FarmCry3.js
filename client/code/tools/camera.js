@@ -58,6 +58,6 @@ Camera.prototype = {
 			this.movement.finalPosition.y = -(Map.rect.y + Map.rect.dy - canvasHeight);
 		}
 		Map.refreshMapVisibility();
-		this.movementTransition.start(Transition.Type.FADE_IN, true);
+		this.movementTransition.start(Transition.Direction.IN, true);
 	}
 };

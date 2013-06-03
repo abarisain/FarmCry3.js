@@ -20,13 +20,13 @@ MapItems.Character.prototype.constructor = MapItems.Character;
 
 MapItems.Character.prototype.waters = function () {
 	if (!this.transitions.fertilizes.started) {
-		this.transitions.waters.start(Transition.Type.FADE_IN, true);
+		this.transitions.waters.start(Transition.Direction.IN, true);
 	}
 }
 
 MapItems.Character.prototype.fertilizes = function () {
 	if (!this.transitions.waters.started) {
-		this.transitions.fertilizes.start(Transition.Type.FADE_IN, true);
+		this.transitions.fertilizes.start(Transition.Direction.IN, true);
 	}
 }
 
@@ -54,7 +54,7 @@ MapItems.Character.prototype.move = function (col, line) {
 		if (this.isPlayer) {
 			CrymeEngine.camera.centerCamera(this.movement.finalPosition.x, this.movement.finalPosition.y);
 		}
-		this.transitions.movement.start(Transition.Type.FADE_IN, true);
+		this.transitions.movement.start(Transition.Direction.IN, true);
 	}
 };
 

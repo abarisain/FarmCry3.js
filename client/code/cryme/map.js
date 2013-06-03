@@ -207,7 +207,7 @@ var Map = {
 				this.mapItems[i].showInformation();
 			}
 		}
-		this.transitionInformation.start(Transition.Type.FADE_IN, true);
+		this.transitionInformation.start(Transition.Direction.IN, true);
 	},
 	highlightTile: function (x, y) {
 		var exHighlighted = this.tileHighLighted.index;
@@ -220,7 +220,7 @@ var Map = {
 					this.tileHighLighted.line = coord.line;
 					this.tileHighLighted.index = i;
 					if (i != exHighlighted) {
-						this.transitionInformationDetailed.start(Transition.Type.FADE_IN, true);
+						this.transitionInformationDetailed.start(Transition.Direction.IN, true);
 						CrymeEngine.mapInvalidated = true;
 					}
 					break;
@@ -234,7 +234,7 @@ var Map = {
 					this.tileHighLighted.line = coord.line;
 					this.tileHighLighted.index = i;
 					if (i != exHighlighted) {
-						this.transitionInformationDetailed.start(Transition.Type.FADE_IN, true);
+						this.transitionInformationDetailed.start(Transition.Direction.IN, true);
 						CrymeEngine.mapInvalidated = true;
 					}
 					break;
