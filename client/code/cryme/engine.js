@@ -276,19 +276,25 @@ var CrymeEngine = {
 					if (!Options.Debug.Graphic.enabled) {
 						var x = event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x;
 						var y = event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y;
-						var coord = Map.coordinatesFromMousePosition(x, y);
+						var coord = Map.getPlayerCoordinate(x, y);
 						var data = {col: 0, line: 0};
 						var moved = true;
 						coord.col -= Map.player.col;
 						coord.line -= Map.player.line;
-						var delta = {col: coord.col / Math.abs(coord.col), line: coord.line / Math.abs(coord.line)};//delta entre -1 et 1
-						if (delta.col == 0 && delta.line == 0) {
-							moved = false;
+						if (coord.building) {
+							//Vieux hack de merde pour forcer le joueur a entrer dans un building, part 2
+							data.col = coord.col;
+							data.line = coord.line;
 						} else {
-							if (Math.abs(coord.col) > Math.abs(coord.line)) {
-								data.col = delta.col;
+							var delta = {col: coord.col / Math.abs(coord.col), line: coord.line / Math.abs(coord.line)};//delta entre -1 et 1
+							if (delta.col == 0 && delta.line == 0) {
+								moved = false;
 							} else {
-								data.line = delta.line;
+								if (Math.abs(coord.col) > Math.abs(coord.line)) {
+									data.col = delta.col;
+								} else {
+									data.line = delta.line;
+								}
 							}
 						}
 						if (moved) {

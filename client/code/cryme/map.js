@@ -241,5 +241,15 @@ var Map = {
 				}
 			}
 		}
+	},
+	//Vieux hack de merde pour forcer le joueur a pop au dessus d'un bâtiment si il est dessus
+	getPlayerCoordinate: function (x, y) {
+		var coord = Map.coordinatesFromMousePosition(x, y)
+		for (var i = 0; i < this.mapItems.length; i++) {
+			if (this.mapItems[i].match(coord.col, coord.line)) {
+				return { col: this.mapItems[i].col, line: this.mapItems[i].line, building: true };
+			}
+		}
+		return { col: coord.col, line: coord.line, building: false };
 	}
 };
