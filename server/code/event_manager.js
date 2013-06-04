@@ -102,7 +102,8 @@ var EventManager = {
 				return true;
 			},
 			buyCrop: function (farmer, cropType) {
-				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop == undefined) {
+				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
+				if (targetTile.isOwnedBy(farmer) && !targetTile.hasGrowingCrop() && !targetTile.hasBuilding()) {
 					var cropInfo = GameState.settings.crops[cropType];
 					if (!this.substractMoney(farmer, cropInfo.seed_price)) {
 						NetworkEngine.clients.broadcast("game.error", {
@@ -111,31 +112,46 @@ var EventManager = {
 						});
 						return false;
 					}
-					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop = cropInfo;
-					NetworkEngine.clients.broadcast("player.cropBought", {
-						nickname: farmer.nickname,
-						cropType: cropInfo.codename,
-						col: farmer.last_pos.x,
-						line: farmer.last_pos.y
+					targetTile.initGrowingCrop(cropInfo);
+					NetworkEngine.clients.broadcast("player.growingCropUpdated", {
+						growingCrop: targetTile.growingCrop,
+						col: targetTile.position.x,
+						line: targetTile.position.y
 					});
 					return true;
 				}
 				return false;
 			},
 			harvestCrop: function (farmer) {
-				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop != undefined) {
-					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].crop = undefined;
-					NetworkEngine.clients.broadcast("player.cropHarvested", {
-						nickname: farmer.nickname,
-						col: farmer.last_pos.x,
-						line: farmer.last_pos.y
+				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
+				if (targetTile.isOwnedBy(farmer) && targetTile.hasGrowingCrop()) {
+					// Harvesting a rotten or non mature tile products nothing
+					// Note that a mature and non rotten growingCrop MUST be harvested and put in the player's inventory
+					// You can NOT delete it if it's viable
+					if(!targetTile.growingCrop.rotten && targetTile.growingCrop.harvested_quantity > 0) {
+						/*
+						TODO : Make a StoredCrop out of it and put it in the player's inventory
+						If the inventory is full, abort the harvest and tell the user that it's inventory is full
+						Of course, even if the inventory is full, a rotten/non mature crop can be deleted.
+
+						Before implementing that, the player's inventory of course has to be implemented
+						*/
+						this.addMoney(targetTile.growingCrop.harvested_quantity
+							* GameState.settings.crops[targetTile.growingCrop.codename].selling_price);
+ 					}
+					targetTile.resetGrowingCrop();
+					NetworkEngine.clients.broadcast("player.growingCropUpdated", {
+						growingCrop: targetTile.growingCrop,
+						col: targetTile.position.x,
+						line: targetTile.position.y
 					});
 					return true;
 				}
 				return false;
 			},
 			buyBuilding: function (farmer, buildingType) {
-				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building == undefined) {
+				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
+				if (targetTile.isOwnedBy(farmer) && !targetTile.hasGrowingCrop() && !targetTile.hasBuilding()) {
 					var buildingInfo = GameState.settings.buildings[buildingType];
 					if (!this.substractMoney(farmer, buildingInfo.price)) {
 						NetworkEngine.clients.broadcast("game.error", {
@@ -145,24 +161,27 @@ var EventManager = {
 						return false;
 					}
 					farmer.money -= buildingInfo.price;
-					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building = GameState.settings.buildings[buildingType];
+					targetTile.building = GameState.settings.buildings[buildingType];
+					targetTile.storedCrops = []; // This should not be polluted but clear it anyway, just to be safe
 					NetworkEngine.clients.broadcast("player.buildingBought", {
 						nickname: farmer.nickname,
 						buildingType: buildingType,
-						col: farmer.last_pos.x,
-						line: farmer.last_pos.y
+						col: targetTile.position.x,
+						line: targetTile.position.y
 					});
 					return true;
 				}
 				return false;
 			},
 			destroyBuilding: function (farmer) {
-				if (GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building != undefined) {
-					GameState.board.tiles[farmer.last_pos.y][farmer.last_pos.x].building = undefined;
+				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
+				if (targetTile.isOwnedBy(farmer) && targetTile.hasBuilding()) {
+					// TODO : Take care of the storedCrops. Forbid building removal or just do something.
+					targetTile.building = null;
 					NetworkEngine.clients.broadcast("player.buildingDestroyed", {
 						nickname: farmer.nickname,
-						col: farmer.last_pos.x,
-						line: farmer.last_pos.y
+						col: targetTile.position.x,
+						line: targetTile.position.y
 					});
 					return true;
 				}
