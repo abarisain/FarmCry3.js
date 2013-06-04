@@ -110,8 +110,6 @@ Tile.prototype = {
 		tmpTile.fertility = this.fertility;
 		tmpTile.max_fertility = this.max_fertility;
 		tmpTile.growingCrop = this.growingCrop;
-		if(tmpTile.growingCrop.codename == null)
-			tmpTile.growingCrop = null;
 		if(this.building == null) {
 			tmpTile.building = null;
 		} else {
