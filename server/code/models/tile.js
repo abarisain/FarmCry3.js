@@ -15,7 +15,7 @@ function Tile() {
 		codename: null,
 		rotten: false,
 		time_left: 0,
-		harvest_quantity: 0 // If > 0 then time left is time before it becomes rotten
+		harvested_quantity: 0 // If > 0 then time left is time before it becomes rotten
 	};
 	this.storedCrops = [];
 	this.building = null;
@@ -30,6 +30,9 @@ Tile.prototype = {
 		return (this.owner.name == "dummy");
 	},
 
+	/**
+	 @param {Farmer} targetFarmer
+	 */
 	isOwnedBy: function (targetFarmer) {
 		return (this.owner == targetFarmer);
 	},
@@ -42,7 +45,7 @@ Tile.prototype = {
 			codename: crop.codename,
 			rotten: false,
 			time_left: crop.maturation_time,
-			harvest_quantity: 0
+			harvested_quantity: 0
 		}
 	},
 
