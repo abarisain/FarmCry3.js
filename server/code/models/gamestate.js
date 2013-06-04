@@ -30,6 +30,23 @@ var GameState = {
 		},
 		tiles: [], //Please only add instances of Tile here. [x,y]
 
+		/**
+		 @param {Farmer} farmer
+		 @return {Tile}
+		 */
+		getAliasableTileForFarmer: function (farmer) {
+			return this.tiles[farmer.last_pos.y][farmer.last_pos.x].getAliasableSelf();
+		},
+
+		/**
+		 @param {Farmer} farmer
+		 @return {Tile}
+		 */
+		getTileForFarmer: function (farmer) {
+			return this.tiles[farmer.last_pos.y][farmer.last_pos.x];
+		},
+
+
 		//Inits a 8x8 grid
 		init: function () {
 			//We tell the board that it is already 8 tiles long

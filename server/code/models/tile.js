@@ -11,20 +11,38 @@ function Tile() {
 	this.humidity = 1; // 0 to 1
 	this.fertility = 1;
 	this.max_fertility = 1;
-	this.growingCrop = {
-		codename: null,
-		rotten: false,
-		time_left: 0,
-		harvested_quantity: 0 // If > 0 then time left is time before it becomes rotten
-	};
+	this.growingCrop = {};
+	this.resetGrowingCrop();
 	this.storedCrops = [];
 	this.building = null;
 	this.maturity = 0;
+	this.isAliasOf = null; // Getting this tile should return the alias if present
 	//Health being a dynamic value, it's not implemented as a variable
 }
 
 Tile.prototype = {
 	constructor: Tile,
+
+	/**
+	 @return {Tile}
+	 */
+	getAliasableSelf: function () {
+		//TODO : Remove this automatic correction for performance
+		//return (this.isAliasOf == null ? this : this.isAliasOf);
+
+		// Check if the alias target had a building on it. If not, it should not be aliased so log it and correct it
+		if(this.isAliasOf != null) {
+			if(this.isAliasOf.building == null) {
+				this.isAliasOf == null;
+				console.log("ERROR : Tile " + this.position.x + "," + this.position.y + " is aliased to " +
+					+ this.isAliasOf.position.x + "," + this.isAliasOf.position.y
+					+ " but the alias target has no building on it. Fixing.");
+			} else {
+				return this.isAliasOf;
+			}
+		}
+		return this;
+	},
 
 	isNeutral: function () {
 		return (this.owner.name == "dummy");
@@ -46,6 +64,15 @@ Tile.prototype = {
 			rotten: false,
 			time_left: crop.maturation_time,
 			harvested_quantity: 0
+		}
+	},
+
+	resetGrowingCrop: function () {
+		this.growingCrop = {
+			codename: null,
+			rotten: false,
+			time_left: 0,
+			harvested_quantity: 0 // If > 0 then time left is time before it becomes rotten
 		}
 	},
 
