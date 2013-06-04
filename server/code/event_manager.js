@@ -80,6 +80,10 @@ var EventManager = {
 				return true;
 			},
 			addMoney: function (farmer, amount) {
+				if (amount == 0)
+					return true;
+				if (amount < 0)
+					return false;
 				farmer.money += amount;
 				NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.moneyUpdated", {
 					money: farmer.money
@@ -87,7 +91,9 @@ var EventManager = {
 				return true;
 			},
 			substractMoney: function (farmer, amount) {
-				if (farmer.money < amount)
+				if (amount == 0)
+					return true;
+				if (amount < 0 || farmer.money < amount)
 					return false;
 				farmer.money -= amount;
 				NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.moneyUpdated", {
