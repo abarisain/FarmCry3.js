@@ -136,8 +136,6 @@ var EventManager = {
 
 						Before implementing that, the player's inventory of course has to be implemented
 						*/
-						this.addMoney(targetTile.growingCrop.harvested_quantity
-							* GameState.settings.crops[targetTile.growingCrop.codename].selling_price);
  					}
 					targetTile.resetGrowingCrop();
 					NetworkEngine.clients.broadcast("player.growingCropUpdated", {
