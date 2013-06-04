@@ -50,11 +50,26 @@ Tile.prototype = {
 
 	/**
 	 @param {Farmer} targetFarmer
+	 @return {boolean}
 	 */
 	isOwnedBy: function (targetFarmer) {
 		// For the time being, just say yes.
 		return true;
 		//return (this.owner == targetFarmer);
+	},
+
+	/**
+	 @return {boolean}
+	 */
+	hasBuilding: function () {
+		return this.building != null;
+	},
+
+	/**
+	 @return {boolean}
+	 */
+	hasGrowingCrop: function () {
+		return this.growingCrop.codename != null;
 	},
 
 	/**
