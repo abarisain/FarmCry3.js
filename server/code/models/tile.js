@@ -34,6 +34,18 @@ Tile.prototype = {
 		return (this.owner == targetFarmer);
 	},
 
+	/**
+	 @param {Crop} crop
+	*/
+	initGrowingCrop: function (crop) {
+		this.growingCrop = {
+			codename: crop.codename,
+			rotten: false,
+			time_left: crop.maturation_time,
+			harvest_quantity: 0
+		}
+	},
+
 	getHealth: function () {
 		//Return a 0 to 1 value function of fertility, humidity
 
