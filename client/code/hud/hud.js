@@ -39,8 +39,8 @@ CrymeEngine.hud = {
 	init: function () {
 		this.rootHudElement.resize();
 		//Lifebar
-		CE.hud.lifebar = new HudElement("lifebar", "life", 317, 124, 0, 0, HudElement.Anchors.TOP_LEFT, false);
-		CE.hud.lifebar.addChild(new HudElement("money_icon", "coin", 20, 23, 16, 120, HudElement.Anchors.TOP_LEFT, false));
+		CE.hud.panels.lifebar = new HudElement("lifebar", "life", 317, 124, 0, 0, HudElement.Anchors.TOP_LEFT, false);
+		CE.hud.panels.lifebar.addChild(new HudElement("money_icon", "coin", 20, 23, 16, 120, HudElement.Anchors.TOP_LEFT, false));
 		var posText = new HudElements.Text("position_text");
 		posText.horizontalMargin = 145;
 		posText.verticalMargin = 16;
@@ -49,11 +49,11 @@ CrymeEngine.hud = {
 				return 0;
 			return GameState.player.money;
 		});
-		CE.hud.lifebar.addChild(posText);
-		this.rootHudElement.addChild(CE.hud.lifebar);
+		CE.hud.panels.lifebar.addChild(posText);
+		this.rootHudElement.addChild(CE.hud.panels.lifebar);
 
 		//Time and notifications (tray)
-		CE.hud.tray = new HudElement("tray", "time", 159, 61, 0, 0, HudElement.Anchors.TOP_RIGHT, true);
+		CE.hud.panels.tray = new HudElement("tray", "time", 159, 61, 0, 0, HudElement.Anchors.TOP_RIGHT, true);
 		var timeText = new HudElements.Text("time_text");
 		timeText.horizontalMargin = -20;
 		timeText.verticalMargin = 18;
@@ -62,16 +62,16 @@ CrymeEngine.hud = {
 			var currentTime = new Date();
 			return currentTime.getHours() + ':' + currentTime.getSeconds();
 		});
-		CE.hud.tray.addChild(timeText);
-		this.rootHudElement.addChild(CE.hud.tray);
+		CE.hud.panels.tray.addChild(timeText);
+		this.rootHudElement.addChild(CE.hud.panels.tray);
 
 		var marketButton = new HudElements.Button(100, 50, 150, 0, "Market", HudElement.Anchors.TOP_LEFT, "#fff");
 		marketButton.onClick = (function () {
-			if (CE.hud.market == null) {
-				CE.hud.market = HudElements.Book.Premade.Market();
-				this.rootHudElement.addChild(CE.hud.market);
+			if (CE.hud.panels.market == null) {
+				CE.hud.panels.market = HudElements.Book.Premade.Market();
+				this.rootHudElement.addChild(CE.hud.panels.market);
 			} else {
-				CE.hud.market.visible = true;
+				CE.hud.panels.market.visible = true;
 			}
 		}).bind(this);
 		this.rootHudElement.addChild(marketButton);

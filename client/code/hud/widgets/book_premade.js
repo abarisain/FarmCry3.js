@@ -6,7 +6,7 @@ HudElements.Book.Premade = {};
 HudElements.Book.Premade.Market = function () {
 	var book = new HudElements.Book();
 	book.close = (function() {
-		CE.hud.market = null;
+		CE.hud.panels.market = null;
 		book.baseClose();
 	}).bind(book);
 	var tmpBuildingsData = [];
@@ -16,7 +16,7 @@ HudElements.Book.Premade.Market = function () {
 	var buildingsLayout = HudElements.List.PremadeLayouts.buildingMarketItem(null);
 	buildingsLayout.viewbag.buy.onClick = function (x, y, index, item) {
 		networkEngine.subsystems.player.actions.buyBuilding(item.codename);
-		CE.hud.market.close();
+		CE.hud.panels.market.close();
 	};
 	var buildingsList = new HudElements.List(470, 510, 0, 0, HudElement.Anchors.TOP_LEFT,
 		tmpBuildingsData,
@@ -39,7 +39,7 @@ HudElements.Book.Premade.Market = function () {
 	var cropsLayout = HudElements.List.PremadeLayouts.cropMarketItem(null);
 	cropsLayout.viewbag.buy.onClick = function (x, y, index, item) {
 		networkEngine.subsystems.player.actions.buyCrop(item.codename);
-		CE.hud.market.close();
+		CE.hud.panels.market.close();
 	};
 	var cropsList = new HudElements.List(470, 510, 0, 0, HudElement.Anchors.TOP_LEFT,
 		tmpCropsData,
