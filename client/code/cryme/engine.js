@@ -54,12 +54,13 @@ var CrymeEngine = {
 			});
 		},
 		logAsPng: function () {
-			for(var key in CE.canvas) {
+			for (var key in CE.canvas) {
 				var cn = CE.canvas[key];
-				if(cn == CE.canvas.resizeAll || cn == undefined
+				if (cn == CE.canvas.resizeAll || cn == undefined
 					|| cn == CE.canvas.logAsPng) {
 					continue;
-				};
+				}
+				;
 				console.log(key + " " + cn.canvas.toDataURL("image/png"));
 			}
 		}
@@ -235,7 +236,7 @@ var CrymeEngine = {
 			CE.filterType = filterType;
 			Map.tileHighLighted.index = -1;
 			Map.showMapInformations();
-			CE.mapInvalidated = true;
+			CrymeEngine.mapInvalidated = true;
 		}
 	},
 	init: function () {
@@ -432,7 +433,7 @@ function CreateMap() {
 	GameState.player = tmpFarmer;
 	Map.addPlayer(tmpFarmer);
 
-	Map.loadInformations();
+	Map.initMap();
 	CE.Weather.init();
 
 	CE.transitionMapCreation = new Transition(0, 1, 80, CrymeEngine.onLoadingAnimationFinished)

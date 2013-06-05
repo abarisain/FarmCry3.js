@@ -3,7 +3,7 @@ var Map = {
 	tilesVisibles: [],//tableau contenant les tiles visibles. Pour optimiser le rendu et les calculs
 	player: null,//le character du joueur
 	players: [],//tous les joueurs y compris le notre
-	mapItems: [],//contient à la fois les buildings, les crops de la map, et tous les personnages de la map
+	mapItems: {},//contient à la fois les buildings, les crops de la map, et tous les personnages de la map
 	rect: { x: 1, y: 1, dx: 0, dy: 0 },
 	tileHighLighted: {col: 0, line: 0, index: -1 },//pour pouvoir retrouver sur quelle case on veux interagir
 	transitionInformation: new Transition(0, 10, 15, function (transitionType) {
@@ -12,6 +12,8 @@ var Map = {
 	}),
 	network: {
 		buyCrop: function (type, col, line) {
+			//TODO update this method
+			GameState.addGrowingCrop(this.data.growingCrop, this.col, this.line);
 			var tile = Map.getTile(col, line);
 			tile.cropType = type;
 			tile.sprite = SpritePack.Tiles.Sprites.SOIL;
@@ -20,19 +22,20 @@ var Map = {
 			CrymeEngine.mapInvalidated = true;
 		},
 		harvestCrop: function (col, line) {
-			var tile = Map.getTile(col, line);
-			tile.cropType = 'dummy';
-			tile.updateImage();
-			var crop = Map.removeMapItem(col, line);
-			//Map.mapItems.remove(crop);
+			/*var tile = Map.getTile(col, line);
+			 tile.cropType = 'dummy';
+			 tile.updateImage();
+			 var crop = Map.removeMapItem(col, line);
+			 //Map.mapItems.remove(crop);*/
 		},
 		buyBuilding: function (type, col, line) {
-			var building = new MapItems.TileItems.Building(MapItems.TileItems.Building.Type[type], col, line);
-			Map.mapItems.push(building);
-			CrymeEngine.mapInvalidated = true;
+			//TODO update this method
+			/*var building = new MapItems.TileItems.Building(MapItems.TileItems.Building.Type[type], col, line);
+			 Map.mapItems.push(building);
+			 CrymeEngine.mapInvalidated = true;*/
 		},
 		destroyBuilding: function (col, line) {
-			Map.removeMapItem(col, line);
+			//Map.removeMapItem(col, line);
 		}
 	},
 	init: function (data) {
@@ -42,13 +45,22 @@ var Map = {
 		this.rect.dx = (tileWidth / 2) * (colSize + lineSize);
 		this.rect.dy = (tileHeight / 2) * (colSize + lineSize);
 	},
-	loadInformations: function () {
+	loadTiles: function (tileData) {
+		for (var i = tileData.length - 1; i >= 0; i--) {
+			for (var j = 0; j < tileData[i].length; j++) {
+				var tile = new MapItems.Tile(tileData[i][j]);
+				this.tiles.push(tile);
+			}
+		}
+	},
+	initMap: function () {
 		for (var i = 0; i < this.tiles.length; i++) {
-			this.tiles[i].load();
+			this.tiles[i].init();
 		}
-		for (var i = 0; i < this.mapItems.length; i++) {
-			this.mapItems[i].load();
+		for (var key in this.mapItems) {
+			this.mapItems[key].init();
 		}
+		GameState.updateMapItems();//il faut bien le faire avant d'initialiser chaque element
 	},
 	refreshMapVisibility: function () {//appelé quand la caméra bouge pour optimiser
 		this.tilesVisibles = [];
@@ -57,8 +69,8 @@ var Map = {
 				this.tilesVisibles.push(this.tiles[i]);
 			}
 		}
-		for (var i = 0; i < this.mapItems.length; i++) {
-			this.mapItems[i].checkVisibility();
+		for (var key in this.mapItems) {
+			this.mapItems[key].checkVisibility();
 		}
 		CE.Weather.refreshWeatherVisibility();
 	},
@@ -79,29 +91,29 @@ var Map = {
 			}
 			break;
 		}
+		//TODO vérifier que j'ai pas pêté cette méthode avec le foreach
 		var count = this.mapItems.length;
-		for (var i = count - 1; i >= 0; i--) {
-			if (this.mapItems[i].constructor == LogicItems.Farmer && this.mapItems[i].farmer.nickname == nickname) {
-				this.mapItems.removeItemAtIndex(i);
+		for (var key in this.mapItems) {
+			if (this.mapItems[key].constructor == LogicItems.Farmer && this.mapItems[key].farmer.nickname == nickname) {
+				delete this.mapItems[key];//aucune idée de si ça va marcher
 			}
 			break;
 		}
 	},
-	loadTiles: function (tileData) {
-		for (var i = tileData.length - 1; i >= 0; i--) {
-			for (var j = 0; j < tileData[i].length; j++) {
-				var tile = new MapItems.Tile(tileData[i][j]);
-				this.tiles.push(tile);
-			}
-		}
-	},
 	drawMapLoading: function (progress) {
-			for (var i = 0; i < Math.min(this.tiles.length * progress, this.tiles.length); i++) {
+		if (progress < animationDuration / 2) {
+			for (var i = 0; i < Math.min(this.tiles.length * progress / (animationDuration / 2), this.tiles.length); i++) {
 				this.tiles[i].drawLoading(progress);
 			}
-			for (var i = 0; i < this.mapItems.length; i++) {
-				this.mapItems[i].drawLoading(progress);
+		}
+		else {
+			for (var i = 0; i < this.tiles.length; i++) {
+				this.tiles[i].draw();
 			}
+			for (var key in this.mapItems) {
+				this.mapItems[key].drawLoading(progress - animationDuration / 2);
+			}
+		}
 	},
 	getTile: function (col, line) {
 		for (var i = 0; i < this.tiles.length; i++) {
@@ -121,10 +133,11 @@ var Map = {
 		}
 		return null;
 	},
+	//bientôt useless
 	removeMapItem: function (col, line) {
-		for (var i = 0; i < this.mapItems.length; i++) {
-			if (this.mapItems[i].match(col, line)) {
-				this.mapItems.remove(i);
+		for (var key in this.mapItems) {
+			if (this.mapItems[key].match(col, line)) {
+				this.mapItems.remove(key);
 				break;
 			}
 		}
@@ -154,8 +167,8 @@ var Map = {
 		for (var i = 0; i < this.tilesVisibles.length; i++) {
 			this.tilesVisibles[i].draw();
 		}
-		for (var i = 0; i < this.mapItems.length; i++) {
-			this.mapItems[i].draw();
+		for (var key in this.mapItems) {
+			this.mapItems[key].draw();
 		}
 	},
 	drawMapInfos: function () {
@@ -167,10 +180,10 @@ var Map = {
 				this.tiles[this.tileHighLighted.index].drawInfoDetailed();
 			}
 		} else if (CE.filterType.mapItems) {
-			for (var i = 0; i < this.mapItems.length; i++) {
-				this.mapItems[i].drawInfo();
+			for (var key in this.mapItems) {
+				this.mapItems[key].drawInfo();
 			}
-			if (this.tileHighLighted.index > -1) {
+			if (this.tileHighLighted.index != -1) {
 				this.mapItems[this.tileHighLighted.index].drawInfoDetailed();
 			}
 		}
@@ -179,8 +192,8 @@ var Map = {
 		for (var i = 0; i < this.players.length; i++) {
 			this.players[i].draw();
 		}
-		for (var i = 0; i < this.mapItems.length; i++) {
-			this.mapItems[i].drawAnimation();
+		for (var key in this.mapItems) {
+			this.mapItems[key].drawAnimation();
 		}
 	},
 	coordinatesFromMousePosition: function (x, y) {
@@ -196,8 +209,8 @@ var Map = {
 			this.tiles[i].showInformation();//obligatoire pour la couleur de fond
 		}
 		if (CE.filterType.mapItems) {
-			for (var i = 0; i < this.mapItems.length; i++) {
-				this.mapItems[i].showInformation();
+			for (var key in this.mapItems) {
+				this.mapItems[key].showInformation();
 			}
 		}
 		this.transitionInformation.start(Transition.Direction.IN, true);
@@ -238,9 +251,9 @@ var Map = {
 	//Vieux hack de merde pour forcer le joueur a pop au dessus d'un bâtiment si il est dessus
 	getPlayerCoordinate: function (x, y) {
 		var coord = Map.coordinatesFromMousePosition(x, y)
-		for (var i = 0; i < this.mapItems.length; i++) {
-			if (this.mapItems[i].match(coord.col, coord.line)) {
-				return { col: this.mapItems[i].col, line: this.mapItems[i].line, building: true };
+		for (var key in this.mapItems) {
+			if (this.mapItems[key].match(coord.col, coord.line)) {
+				return { col: this.mapItems[key].col, line: this.mapItems[key].line, building: true };
 			}
 		}
 		return { col: coord.col, line: coord.line, building: false };
