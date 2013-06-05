@@ -49,6 +49,7 @@ var NetworkModule = {
 				player_farmer: connection.farmer.getSmallFarmer(),
 				stored_crops: tmpStoredCrops,
 				online_farmers: tmpFarmers,
+				inventory_size: GameState.settings.inventorySize,
 				weapons: GameState.settings.weapons,//I'm going to use this later
 				crops: GameState.settings.crops,//TODO implement the use of these values in the client market
 				buildings: GameState.settings.buildings
