@@ -96,19 +96,12 @@ var Map = {
 		}
 	},
 	drawMapLoading: function (progress) {
-		if (progress < animationDuration / 2) {
-			for (var i = 0; i < Math.min(this.tiles.length * progress / (animationDuration / 2), this.tiles.length); i++) {
+			for (var i = 0; i < Math.min(this.tiles.length * progress, this.tiles.length); i++) {
 				this.tiles[i].drawLoading(progress);
 			}
-		}
-		else {
-			for (var i = 0; i < this.tiles.length; i++) {
-				this.tiles[i].draw();
-			}
 			for (var i = 0; i < this.mapItems.length; i++) {
-				this.mapItems[i].drawLoading(progress - animationDuration / 2);
+				this.mapItems[i].drawLoading(progress);
 			}
-		}
 	},
 	getTile: function (col, line) {
 		for (var i = 0; i < this.tiles.length; i++) {

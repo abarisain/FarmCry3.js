@@ -16,6 +16,8 @@ var networkEngine = {
 	},
 	onLoadingFinished: function () {
 	},
+	onLoadingAnimationFinished: function () {
+	},
 	init: function (serverUrl, email, password) {
 		this.manual_disconnect = false;
 		console.log("Network connecting to " + serverUrl);

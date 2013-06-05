@@ -17,6 +17,7 @@ var CrymeEngine = {
 	mapInvalidated: false, //If this is true, the map will be redrawn
 	highlightedItem: -1,//index de l'item selectionne
 	hudElements: [],
+	transitionMapCreation: null,
 	DisplayType: {//Selection du type de display
 		STANDARD: 0,
 		INFORMATION: 1
@@ -63,6 +64,13 @@ var CrymeEngine = {
 			}
 		}
 	},
+	onLoadingAnimationFinished: function () {
+		//Normal draw loop will now handle the rendering
+		networkEngine.onLoadingAnimationFinished();
+		loadingComplete = true;
+		CE.mapInvalidated = true;
+		CrymeEngine.camera.centerCamera(Map.player.x, Map.player.y);
+	},
 	Draw: {
 		Loading: function () {
 			if (initialDataLoaded && currentLoadingCount >= totalLoadingCount) {
@@ -82,7 +90,8 @@ var CrymeEngine = {
 				});
 			}
 		},
-		MapCreation: function (progress, speed) {
+		MapCreation: function () {
+			CE.transitionMapCreation.updateProgress();
 			//Pour faire apparaître la map de façon un peu "Qui pête"
 			CrymeEngine.canvas.map.context.save();
 			CrymeEngine.canvas.map.clear();
@@ -91,22 +100,13 @@ var CrymeEngine = {
 				CrymeEngine.camera.position.y);
 
 			//dessin du terrain
-			Map.drawMapLoading(progress);
+			Map.drawMapLoading(CE.transitionMapCreation.progress);
 			//il vaux mieux restaurer le contexte avant de commencer à dessiner, pour être tranquille
 			CrymeEngine.canvas.map.context.restore();
 
-			if (progress == animationDuration) {
-				//Normal draw loop will now handle the rendering
-				loadingComplete = true;
-				CE.mapInvalidated = true;
-				CrymeEngine.camera.centerCamera(Map.player.x, Map.player.y);
-			}
-			else {
-				if (progress >= animationDuration * 2 || progress <= 0) {
-					speed *= -1;
-				}
+			if(CE.transitionMapCreation.started) {
 				window.requestAnimFrame(function () {
-					CrymeEngine.Draw.MapCreation(progress + speed, speed);
+					CrymeEngine.Draw.MapCreation();
 				});
 			}
 		},
@@ -434,5 +434,9 @@ function CreateMap() {
 
 	Map.loadInformations();
 	CE.Weather.init();
+
+	CE.transitionMapCreation = new Transition(0, 1, 80, CrymeEngine.onLoadingAnimationFinished)
+	CE.transitionMapCreation.smoothing = true;
+	CE.transitionMapCreation.start(Transition.Direction.IN);
 
 }

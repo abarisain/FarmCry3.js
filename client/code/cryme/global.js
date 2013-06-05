@@ -16,7 +16,7 @@ var borderSize = 0;//taille des bordures dans la vue d'informations pour les til
 //liste des emetteurs de particules
 var particleEmitters;
 
-var animationDuration = 60;
+//var animationDuration = 800;
 
 //gestion du chargement
 var initialDataLoaded = false;//initialise la connexion avec le serveur et telecharge les donnees initiales

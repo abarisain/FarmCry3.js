@@ -96,6 +96,12 @@ var initLogin = function () {
 	};
 
 	networkEngine.onLoadingFinished = function () {
+		loadingPanel.style.zIndex = -1;
+		document.querySelector("#login").style.zIndex = -2;
+		setProgressbarValue(loadingProgressSpan, 1);
+	};
+
+	networkEngine.onLoadingAnimationFinished = function () {
 		loadingPanel.style.display = "none";
 		document.querySelector("body").removeChild(document.querySelector("#login"));
 	};

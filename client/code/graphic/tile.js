@@ -79,7 +79,7 @@ MapItems.Tile.prototype.drawLoading = function (progress) {
 	}
 	CrymeEngine.canvas.map.context.globalAlpha = this.alpha;
 	CrymeEngine.canvas.map.context.drawImage(this.sprite.image, this.imageLeft,
-		this.imageTop - this.col * tileHeight * (1 - progress / (animationDuration / 2)));
+		this.imageTop - this.col * tileHeight * (1 - progress));
 };
 //attention a bien se préoccuper du context avant, ici je m'en occupe pas
 MapItems.Tile.prototype.draw = function () {
