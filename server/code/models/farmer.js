@@ -1,4 +1,3 @@
-//TODO: Well fuck, there is so much to do
 function Farmer(nickname, email, password) {
 	this.last_pos = {
 		x: 0,
