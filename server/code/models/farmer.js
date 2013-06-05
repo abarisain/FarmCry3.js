@@ -7,6 +7,7 @@ function Farmer(nickname, email, password) {
 	this.money = 0;
 	this.allied_farmers = [];
 	this.logged_in = false;
+	this.health = 100;
 	if (typeof nickname == 'undefined') {
 		this.nickname = "dummy";
 		this.email = "dummy";
@@ -49,6 +50,7 @@ Farmer.prototype = {
 		tmpFarmer.nickname = this.nickname;
 		tmpFarmer.col = this.last_pos.x;
 		tmpFarmer.line = this.last_pos.y;
+		tmpFarmer.health = this.health;
 		return tmpFarmer;
 	},
 	getPersistable: function () {
@@ -56,6 +58,7 @@ Farmer.prototype = {
 		tmpFarmer.nickname = this.nickname;
 		tmpFarmer.email = this.email;
 		tmpFarmer.password = this.password;
+		tmpFarmer.health = this.health;
 		tmpFarmer.last_pos_x = this.last_pos.x;
 		tmpFarmer.last_pos_y = this.last_pos.y;
 		tmpFarmer.money = this.money;
