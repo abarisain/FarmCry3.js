@@ -37,7 +37,7 @@ var GameState = {
 		 @param {StoredCrop} storedCrop
 		 */
 		addStoredCrop: function (storedCrop) {
-			storedCrops[storedCrop.id] = storedCrop;
+			this.storedCrops[storedCrop.id] = storedCrop;
 			NetworkEngine.clients.broadcast("game.storedCropUpdated", {
 				storedCrop: storedCrop.getSmallStoredCrop()
 			});
@@ -47,7 +47,7 @@ var GameState = {
 		 @param {StoredCrop} storedCrop
 		 */
 		removeStoredCrop: function (storedCrop) {
-			delete storedCrops[storedCrop.id];
+			delete this.storedCrops[storedCrop.id];
 			NetworkEngine.clients.broadcast("game.storedCropDeleted", {
 				id: storedCrop.id
 			});
