@@ -168,7 +168,7 @@ var EventManager = {
 					farmer.money -= buildingInfo.price;
 					targetTile.building = GameState.settings.buildings[buildingType];
 					targetTile.storedCrops = []; // This should not be polluted but clear it anyway, just to be safe
-					NetworkEngine.clients.broadcast("player.buildingBought", {
+					NetworkEngine.clients.broadcast("player.buildingUpdated", {
 						nickname: farmer.nickname,
 						building: { codename: targetTile.building.codename },
 						col: targetTile.position.x,
@@ -183,8 +183,9 @@ var EventManager = {
 				if (targetTile.isOwnedBy(farmer) && targetTile.hasBuilding()) {
 					// TODO : Take care of the storedCrops. Forbid building removal or just do something.
 					targetTile.building = null;
-					NetworkEngine.clients.broadcast("player.buildingDestroyed", {
+					NetworkEngine.clients.broadcast("player.buildingUpdated", {
 						nickname: farmer.nickname,
+						building: null,
 						col: targetTile.position.x,
 						line: targetTile.position.y
 					});
