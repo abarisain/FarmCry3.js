@@ -101,18 +101,11 @@ var Map = {
 		}
 	},
 	drawMapLoading: function (progress) {
-		if (progress < animationDuration / 2) {
-			for (var i = 0; i < Math.min(this.tiles.length * progress / (animationDuration / 2), this.tiles.length); i++) {
-				this.tiles[i].drawLoading(progress);
-			}
+		for (var i = 0; i < Math.min(this.tiles.length * progress, this.tiles.length); i++) {
+			this.tiles[i].drawLoading(progress);
 		}
-		else {
-			for (var i = 0; i < this.tiles.length; i++) {
-				this.tiles[i].draw();
-			}
-			for (var key in this.mapItems) {
-				this.mapItems[key].drawLoading(progress - animationDuration / 2);
-			}
+		for (var key in this.mapItems) {
+			this.mapItems[key].drawLoading(progress);
 		}
 	},
 	getTile: function (col, line) {
