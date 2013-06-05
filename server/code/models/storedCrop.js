@@ -2,7 +2,7 @@ function StoredCrop(crop, owner, harvested_quantity) {
 	if (typeof(crop) === 'undefined') {
 		throw "You cannot create a StoredCrop without an attached crop"
 	}
-	this.id = this.generateUniqueId(); //Todo : generate an id
+	this.id = this.generateUniqueId();
 	this.crop = crop;
 	this.owner = owner; //Who this belongs to, obviously
 	this.parent_tile = null; //If this is null, it's in the player's inventory, otherwise it's in a building
