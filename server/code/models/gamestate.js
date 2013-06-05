@@ -7,7 +7,7 @@ Tile = require('./tile');
 Farmer = require('./farmer');
 NetworkEngine = require('../network/engine');
 
-var GameState = {
+module.exports = {
 	farmers: [],
 	autoPersisterId: null,
 	pauseAutoPersistence: false,
@@ -181,4 +181,4 @@ var GameState = {
 	}
 };
 
-module.exports = GameState;
+var GameState = module.exports;

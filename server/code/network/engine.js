@@ -9,7 +9,7 @@ EventManager = require('../event_manager');
 
 // Check modules/debug.js for an explanation of how modules work and should be written
 
-var NetworkEngine = {
+module.exports = {
 	timeout: 300, //5 minutes
 	clients: {
 		list: [],
@@ -91,10 +91,10 @@ var NetworkEngine = {
 	]
 };
 
+var NetworkEngine = module.exports;
+
 var moduleList = "";
 NetworkEngine.modules.forEach(function (_module) {
 	moduleList += " " + _module.name;
 });
 console.log("Loaded network modules :" + moduleList);
-
-module.exports = NetworkEngine;
