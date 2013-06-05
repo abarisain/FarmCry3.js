@@ -42,12 +42,6 @@ networkEngine.subsystems.player = {
 			}
 			target.invalidate();
 		},
-		cropBought: function (data) {
-			Map.network.buyCrop(data.cropType, data.col, data.line);
-		},
-		cropHarvested: function (data) {
-			Map.network.harvestCrop(data.col, data.line);
-		},
 		buildingBought: function (data) {
 			Map.network.buyBuilding(data.buildingType, data.col, data.line);
 		},
@@ -55,7 +49,7 @@ networkEngine.subsystems.player = {
 			Map.network.destroyBuilding(data.col, data.line);
 		},
 		moneyUpdated: function (data) {
-			if(GameState.player != null)
+			if (GameState.player != null)
 				GameState.player.money = data.money;
 		}
 	}
@@ -76,11 +70,17 @@ networkEngine.subsystems.game = {
 			console.log("Initial data ok");
 		},
 		error: function (data) {
-			if(data.title == null)
+			if (data.title == null)
 				data.title = "Error"
-			if(data.message == null)
+			if (data.message == null)
 				data.message = "Unknown error"
 			CE.hud.rootHudElement.addChild(new HudElements.FullscreenPopup(data.title, data.message));
+		},
+		/*
+		 this method add, update or remove depending on the data.growingCrop value
+		 */
+		growingCropUpdated: function (data) {
+			Map.network.growingCropUpdated(data.growingCrop, data.col, data.line);
 		}
 	}
 };
