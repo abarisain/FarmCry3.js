@@ -51,6 +51,16 @@ var CrymeEngine = {
 					CrymeEngine.canvas[targetCanvas].resize(width, height);
 				}
 			});
+		},
+		logAsPng: function () {
+			for(var key in CE.canvas) {
+				var cn = CE.canvas[key];
+				if(cn == CE.canvas.resizeAll || cn == undefined
+					|| cn == CE.canvas.logAsPng) {
+					continue;
+				};
+				console.log(key + " " + cn.canvas.toDataURL("image/png"));
+			}
 		}
 	},
 	Draw: {
