@@ -18,6 +18,7 @@ MapItems.TileItems.Crop.prototype.showInformation = function () {
 			this.informations.value = this.data.storedCrop.maturity;
 			break;
 		default:
+			this.informations.value = 0;
 			this.informations.visible = false;
 			break;
 	}

@@ -28,19 +28,19 @@ GameState = {
 			break;
 		}
 	},
-	/*
-	 @Param data les données du growing crop
+	/**
+	 @param {data} les données du growing crop
 	 */
 	addGrowingCrop: function (data, col, line) {
 		this.logicItems.growingCrops['g_' + col + '_' + line] = { data: data, col: col, line: line};
 	},
-	/*
-	 @Param data string codename du building
+	/**
+	 @param {data} litteral du building
 	 */
 	addBuilding: function (data, col, line) {
 		this.logicItems.buildings['b_' + col + '_' + line] = { data: GameState.buildings[data.codename], col: col, line: line};
 	},
-	/*
+	/**
 	 Methode which decide to add, update or remove any mapItem
 	 */
 	updateMapItems: function () {
@@ -51,15 +51,20 @@ GameState = {
 			this.updateBuilding(key);
 		}
 	},
-	/* The key name of the mapItem
-	 * g_col_line
+	/** The key name of the mapItem
+	 * @param {key} = g_col_line
 	 * */
 	updateGrowingCrop: function (key) {
 		var temp = this.logicItems.growingCrops[key];
-		Map.mapItems[key] = new MapItems.TileItems.Crop(temp.data, temp.col, temp.line);
+		//si growing crop existe pas, on le créé
+		if (temp == undefined) {
+			Map.mapItems[key] = new MapItems.TileItems.Crop(temp.data, temp.col, temp.line);
+		} else {
+
+		}
 	},
-	/* The key name of the building
-	 * c_col_line
+	/** The key name of the building
+	 * @param {key} c_col_line
 	 * */
 	updateBuilding: function (key) {
 		var temp = this.logicItems.buildings[key];

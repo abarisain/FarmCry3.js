@@ -13,12 +13,13 @@ var Map = {
 	network: {
 		buyCrop: function (type, col, line) {
 			//TODO update this method
-			/*var tile = Map.getTile(col, line);
-			 tile.cropType = type;
-			 tile.sprite = SpritePack.Tiles.Sprites.SOIL;
-			 var crop = new MapItems.TileItems.Crop(MapItems.TileItems.Crop.Type[type], col, line);
-			 Map.mapItems.push(crop);
-			 CrymeEngine.mapInvalidated = true;*/
+			GameState.addGrowingCrop(this.data.growingCrop, this.col, this.line);
+			var tile = Map.getTile(col, line);
+			tile.cropType = type;
+			tile.sprite = SpritePack.Tiles.Sprites.SOIL;
+			var crop = new MapItems.TileItems.Crop(MapItems.TileItems.Crop.Type[type], col, line);
+			Map.mapItems.push(crop);
+			CrymeEngine.mapInvalidated = true;
 		},
 		harvestCrop: function (col, line) {
 			/*var tile = Map.getTile(col, line);
@@ -182,9 +183,9 @@ var Map = {
 			for (var key in this.mapItems) {
 				this.mapItems[key].drawInfo();
 			}
-			/*if (this.tileHighLighted.index > -1) {
-			 this.mapItems[this.tileHighLighted.index].drawInfoDetailed();
-			 }*/
+			if (this.tileHighLighted.index != -1) {
+				this.mapItems[this.tileHighLighted.index].drawInfoDetailed();
+			}
 		}
 	},
 	drawAnimation: function () {
@@ -233,18 +234,18 @@ var Map = {
 			}
 		}
 		if (CE.filterType.mapItems) {
-			/*for (var i = 0; i < this.mapItems.length; i++) {
-			 if (this.mapItems[i].match(coord.col, coord.line)) {
-			 this.tileHighLighted.col = coord.col;
-			 this.tileHighLighted.line = coord.line;
-			 this.tileHighLighted.index = i;
-			 if (i != exHighlighted) {
-			 this.transitionInformationDetailed.start(Transition.Direction.IN, true);
-			 CrymeEngine.mapInvalidated = true;
-			 }
-			 break;
-			 }
-			 }*/
+			for (var i = 0; i < this.mapItems.length; i++) {
+				if (this.mapItems[i].match(coord.col, coord.line)) {
+					this.tileHighLighted.col = coord.col;
+					this.tileHighLighted.line = coord.line;
+					this.tileHighLighted.index = i;
+					if (i != exHighlighted) {
+						this.transitionInformationDetailed.start(Transition.Direction.IN, true);
+						CrymeEngine.mapInvalidated = true;
+					}
+					break;
+				}
+			}
 		}
 	},
 	//Vieux hack de merde pour forcer le joueur a pop au dessus d'un bâtiment si il est dessus

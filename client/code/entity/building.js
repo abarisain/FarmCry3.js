@@ -29,6 +29,7 @@ MapItems.TileItems.Building.prototype.showInformation = function () {
 			this.informations.value = this.data.size * 20;
 			break;
 		default:
+			this.informations.value = 0;
 			this.informations.visible = false;
 			break;
 	}

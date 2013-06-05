@@ -236,7 +236,7 @@ var CrymeEngine = {
 			CE.filterType = filterType;
 			Map.tileHighLighted.index = -1;
 			Map.showMapInformations();
-			CE.mapInvalidated = true;
+			CrymeEngine.mapInvalidated = true;
 		}
 	},
 	init: function () {
