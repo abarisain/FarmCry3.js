@@ -19,21 +19,9 @@ var Map = {
 				tile.sprite = SpritePack.Tiles.Sprites.SOIL;
 			}
 		},
-		harvestCrop: function (col, line) {
-			/*var tile = Map.getTile(col, line);
-			 tile.cropType = 'dummy';
-			 tile.updateImage();
-			 var crop = Map.removeMapItem(col, line);
-			 //Map.mapItems.remove(crop);*/
-		},
-		buyBuilding: function (type, col, line) {
+		buildingUpdated: function (building, col, line) {
 			//TODO update this method
-			/*var building = new MapItems.TileItems.Building(MapItems.TileItems.Building.Type[type], col, line);
-			 Map.mapItems.push(building);
-			 CrymeEngine.mapInvalidated = true;*/
-		},
-		destroyBuilding: function (col, line) {
-			//Map.removeMapItem(col, line);
+			GameState.updateBuilding(GameState.addBuilding(building, col, line));
 		}
 	},
 	init: function (data) {

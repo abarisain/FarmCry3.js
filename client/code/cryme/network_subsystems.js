@@ -42,11 +42,11 @@ networkEngine.subsystems.player = {
 			}
 			target.invalidate();
 		},
-		buildingBought: function (data) {
-			Map.network.buyBuilding(data.buildingType, data.col, data.line);
-		},
-		buildingDestroyed: function (data) {
-			Map.network.destroyBuilding(data.col, data.line);
+		/*
+		 this method add, update or remove a building
+		 */
+		buildingUpdated: function (data) {
+			Map.network.buildingUpdated(data.building, data.col, data.line);
 		},
 		moneyUpdated: function (data) {
 			if (GameState.player != null)
@@ -77,7 +77,7 @@ networkEngine.subsystems.game = {
 			CE.hud.rootHudElement.addChild(new HudElements.FullscreenPopup(data.title, data.message));
 		},
 		/*
-		 this method add, update or remove depending on the data.growingCrop value
+		 this method add, update or remove a growingCrop depending on the data.growingCrop value
 		 */
 		growingCropUpdated: function (data) {
 			Map.network.growingCropUpdated(data.growingCrop, data.col, data.line);
