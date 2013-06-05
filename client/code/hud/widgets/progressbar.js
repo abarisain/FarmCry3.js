@@ -89,6 +89,7 @@ HudElements.ProgressBar.prototype.setMaxProgress = function (maxProgress) {
 }
 
 HudElements.ProgressBar.prototype.computeProgressbarWidth = function () {
+	this._progressbar.visible = (this.progress > 0);
 	var ninePatchPaddingSum = this._progressbar.ninepatch.left_padding + this._progressbar.ninepatch.right_padding;
 	var tmpWidth = ninePatchPaddingSum + Math.ceil((this.width - ninePatchPaddingSum) * Math.min(1, this.progress / this.maxProgress));
 	tmpWidth = Math.max(this._progressbar.ninepatch.left_width + this._progressbar.ninepatch.right_width,
