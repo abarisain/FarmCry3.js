@@ -25,6 +25,9 @@ CrymeEngine.hud = {
 		market_corn: null,
 		market_tomato: null,
 		market_wheat: null,
+		progressbar_background: null,
+		progressbar_green: null,
+		progressbar_red: null,
 		book: null,
 		coin: null
 	},
@@ -72,7 +75,6 @@ CrymeEngine.hud = {
 			}
 		}).bind(this);
 		this.rootHudElement.addChild(marketButton);
-
 
 		/*			UI pour les filtres		*/
 		var filter = new HudElement("filterDisabled", "filter_disabled", 92, 92, -5, -10, HudElement.Anchors.BOTTOM_RIGHT, true);
