@@ -13,6 +13,12 @@ MapItems.TileItem = function (sprite, col, line) {
 MapItems.TileItem.prototype = new MapItem();
 MapItems.TileItem.prototype.constructor = MapItems.TileItem;
 
+MapItems.TileItem.prototype.init = function () {
+	if (this.informations != null) {
+		this.informations.loadInformations();
+	}
+};
+
 MapItems.TileItem.prototype.drawLoading = function (progress) {
 	CE.canvas.map.context.drawImage(this.sprite.image, this.imageLeft,
 		this.imageTop - this.col * tileHeight * (1 - progress / (animationDuration / 2)));
@@ -67,11 +73,7 @@ MapItems.TileItem.prototype.draw = function () {
 MapItems.TileItem.prototype.drawAnimation = function () {
 
 };
-MapItems.TileItem.prototype.load = function () {
-	if (this.informations != null) {
-		this.informations.loadInformations();
-	}
-};
+
 MapItems.TileItem.prototype.drawInfo = function () {
 	if (this.visible) {
 		if (this.informations != null) {

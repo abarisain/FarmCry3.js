@@ -15,6 +15,11 @@ function MapItem(sprite, col, line) {
 
 MapItem.prototype = {
 	constructor: MapItem,
+	init: function () {
+		this.sprite.updateWidthHeight();
+		this.updateCoord();
+		this.updateImageCoord();
+	},
 	showInformation: function () {
 		this.visible = false;//on est pas censé passer ici
 	},
@@ -95,11 +100,6 @@ MapItem.prototype = {
 	},
 	getLine: function () {
 		return this.line;
-	},
-	load: function () {
-		this.sprite.updateWidthHeight();
-		this.updateCoord();
-		this.updateImageCoord();
 	},
 	match: function (col, line) {
 		if (col == this.col && line == this.line) {

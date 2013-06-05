@@ -13,6 +13,18 @@ MapItems.Tile = function (data) {
 MapItems.Tile.prototype = new MapItem();
 MapItems.Tile.prototype.constructor = MapItems.Tile;
 
+MapItems.Tile.prototype.init = function () {
+	this.updateImage();
+	if (this.data.growingCrop != null) {
+		this.sprite = SpritePack.Tiles.Sprites.SOIL;
+		GameState.addGrowingCrop(this.data.growingCrop, this.col, this.line);
+	}
+	if (this.data.building != null) {
+		GameState.addBuilding(this.data.building, this.col, this.line);
+	}
+	this.updateImageCoord();
+};
+
 MapItems.Tile.prototype.showInformation = function () {
 	switch (CE.filterType) {
 		case CE.FilterType.OWNER:
@@ -136,18 +148,4 @@ MapItems.Tile.prototype.drawInfoDetailed = function () {
 	if (this.visible) {
 		this.informations.drawInformationDetailed();
 	}
-};
-MapItems.Tile.prototype.load = function () {
-	this.updateImage();
-	if (this.data.crop != undefined) {
-		this.sprite = SpritePack.Tiles.Sprites.SOIL;
-		this.crop = new MapItems.TileItems.Crop(this.data.crop, this.col, this.line);
-		Map.mapItems.push(this.crop);
-	}
-	if (this.data.building != undefined) {
-		this.building = new MapItems.TileItems.Building(this.data.building, this.col, this.line);
-		Map.mapItems.push(this.building);
-	}
-	this.updateImageCoord();
-	this.informations.loadInformations();
 };
