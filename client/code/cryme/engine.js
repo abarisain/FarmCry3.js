@@ -47,7 +47,7 @@ var CrymeEngine = {
 	canvas: { //Element type : CrymeCanvas
 		resizeAll: function (width, height) {
 			Object.keys(CrymeEngine.canvas).forEach(function (targetCanvas) {
-				if (targetCanvas != 'resizeAll' || targetCanvas != 'logAsPng') { //Exclude this function
+				if (targetCanvas != 'resizeAll' && targetCanvas != 'logAsPng') { //Exclude this function
 					CrymeEngine.canvas[targetCanvas].resize(width, height);
 				}
 			});
