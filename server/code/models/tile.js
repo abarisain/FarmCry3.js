@@ -113,7 +113,7 @@ Tile.prototype = {
 		if(this.building == null) {
 			tmpTile.building = null;
 		} else {
-			tmpTile.building = this.building.codename;
+			tmpTile.building = { codename: this.building.codename };
 		}
 		tmpTile.owner = this.owner.nickname;
 		tmpTile.health = this.getHealth();

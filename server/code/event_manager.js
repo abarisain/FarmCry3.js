@@ -170,7 +170,7 @@ var EventManager = {
 					targetTile.storedCrops = []; // This should not be polluted but clear it anyway, just to be safe
 					NetworkEngine.clients.broadcast("player.buildingBought", {
 						nickname: farmer.nickname,
-						buildingType: buildingType,
+						building: { codename: targetTile.building.codename },
 						col: targetTile.position.x,
 						line: targetTile.position.y
 					});
