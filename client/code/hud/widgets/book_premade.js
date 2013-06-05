@@ -91,6 +91,8 @@ HudElements.Book.Premade.Inventory = function () {
 	inventory.rightPage.viewbag.list = inventoryItemList;
 
 	inventory.rightPage.viewbag.inventoryFillMeter = new HudElements.ProgressBar(200, 32, 0, 0, HudElement.Anchors.BOTTOM_CENTER);
+	inventory.rightPage.viewbag.inventoryFillMeter.setProgress(GameState.player.inventory.length);
+	inventory.rightPage.viewbag.inventoryFillMeter.setMaxProgress(GameState.inventorySize);
 	inventory.rightPage.viewbag.inventoryFillMeter.setText(GameState.player.inventory.length + " / " + GameState.inventorySize);
 
 	inventory.rightPage.addChild(inventory.rightPage.viewbag.list);
