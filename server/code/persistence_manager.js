@@ -48,8 +48,8 @@ var PersistenceManager = {
 		}
 	},
 	persist: function(callback) {
-		return;
 		this.asyncblock((function(flow) {
+			return;
 			console.log("PersistenceManager - Persisting gamestate");
 			var startDate = Date.now();
 			this.client.flushdb(flow.add());
@@ -78,8 +78,8 @@ var PersistenceManager = {
 		}).bind(this), callback);
 	},
 	load: function(callback) {
-		return;
 		this.asyncblock((function(flow) {
+			return;
 			console.log("PersistenceManager - Loading gamestate");
 			var startDate = Date.now();
 			// This syntax allows me to get the database value in a synchronous way
