@@ -56,12 +56,3 @@ HudElements.BookPage = function () {
 
 HudElements.BookPage.prototype = new HudElement();
 HudElements.BookPage.prototype.constructor = HudElements.BookPage;
-
-HudElements.BookPage.prototype.addChild = function (hudElement) {
-	if(this.children.length > 0) {
-		// Nuh-uh ! This is only a container
-		console.log("Hud error : BookPage cannot have more than one child. It's like china.");
-	} else {
-		HudElement.prototype.addChild.call(this, hudElement);
-	}
-};
