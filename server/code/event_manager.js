@@ -114,7 +114,7 @@ var EventManager = {
 						return false;
 					}
 					targetTile.initGrowingCrop(cropInfo);
-					NetworkEngine.clients.broadcast("player.growingCropUpdated", {
+					NetworkEngine.clients.broadcast("game.growingCropUpdated", {
 						growingCrop: targetTile.growingCrop,
 						col: targetTile.position.x,
 						line: targetTile.position.y
@@ -145,8 +145,8 @@ var EventManager = {
 						GameState.board.addStoredCrop(tmpStored);
  					}
 					targetTile.resetGrowingCrop();
-					NetworkEngine.clients.broadcast("player.growingCropUpdated", {
-						growingCrop: targetTile.growingCrop,
+					NetworkEngine.clients.broadcast("game.growingCropUpdated", {
+						growingCrop: targetTile.hasGrowingCrop() ? targetTile.growingCrop : null,
 						col: targetTile.position.x,
 						line: targetTile.position.y
 					});

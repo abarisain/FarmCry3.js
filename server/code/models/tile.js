@@ -109,7 +109,7 @@ Tile.prototype = {
 		tmpTile.humidity = this.humidity;
 		tmpTile.fertility = this.fertility;
 		tmpTile.max_fertility = this.max_fertility;
-		tmpTile.growingCrop = this.growingCrop;
+		tmpTile.growingCrop = this.hasGrowingCrop() ? this.growingCrop : null
 		if(this.building == null) {
 			tmpTile.building = null;
 		} else {
