@@ -34,12 +34,21 @@ CrymeEngine.hud = {
 	panels: {
 		lifebar: null,
 		tray: null,
-		market: null
+		market: null,
+		inventory: null
 	},
 	init: function () {
 		this.rootHudElement.resize();
 		//Lifebar
-		CE.hud.panels.lifebar = new HudElement("lifebar", "life", 317, 124, 0, 0, HudElement.Anchors.TOP_LEFT, false);
+		CE.hud.panels.lifebar = new HudElement("lifebar", "life", 317, 124, 0, 0, HudElement.Anchors.TOP_LEFT, true);
+		CE.hud.panels.lifebar.onClick = (function () {
+			if (CE.hud.panels.inventory == null) {
+				CE.hud.panels.inventory = HudElements.Book.Premade.Inventory();
+				this.rootHudElement.addChild(CE.hud.panels.inventory);
+			} else {
+				CE.hud.panels.inventory.visible = true;
+			}
+		}).bind(this);
 		CE.hud.panels.lifebar.addChild(new HudElement("money_icon", "coin", 20, 23, 16, 120, HudElement.Anchors.TOP_LEFT, false));
 		var posText = new HudElements.Text("position_text");
 		posText.horizontalMargin = 145;

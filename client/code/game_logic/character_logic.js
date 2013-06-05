@@ -35,6 +35,7 @@ LogicItems.PlayableFarmer = function () {
 	this.money = 0;
 	this.allied_farmers = [];
 	this.weapons = [];
+	this.inventory = [];
 }
 
 LogicItems.PlayableFarmer.prototype = new LogicItems.Farmer();

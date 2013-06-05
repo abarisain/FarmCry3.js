@@ -5,6 +5,7 @@ GameState = {
 	buildings: {},
 	weapons: {},
 	stored_crops: {},
+	inventorySize: 5,
     addPlayer: function(player) {
         this.removePlayer(player.nickname);
         this.online_players.push(player);

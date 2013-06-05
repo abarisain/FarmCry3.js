@@ -58,3 +58,43 @@ HudElements.Book.Premade.Market = function () {
 
 	return book;
 };
+
+HudElements.Book.Premade.Inventory = function () {
+	var inventory = new HudElements.Book();
+	inventory.close = (function() {
+		CE.hud.panels.inventory = null;
+		inventory.baseClose();
+	}).bind(inventory);
+
+	inventory.leftPage.title = "Character";
+
+	var tmpInventoryData = ["j","j","j","j","j","j","j","j"];
+	GameState.player.inventory.forEach(function (inventoryItem) {
+		tmpInventoryData.push(GameState.stored_crops[inventoryItem]);
+	});
+
+	var inventoryItemLayout = HudElements.List.PremadeLayouts.cropMarketItem(null);
+	inventoryItemLayout.viewbag.buy.onClick = function (x, y, index, item) {
+		networkEngine.subsystems.player.actions.buyCrop(item.codename);
+		CE.hud.panels.inventory.close();
+	};
+	var inventoryItemList = new HudElements.List(470, 460, 0, 0, HudElement.Anchors.TOP_LEFT,
+		tmpInventoryData,
+		inventoryItemLayout,
+		function (layout, index, item) {
+			layout.viewbag.icon.image = "market_silo";
+			// I know that ticks aren't seconds, but we can't use that ...
+			layout.viewbag.maturation.setText(" s");
+		}
+	);
+	inventory.rightPage.title = "Inventory";
+	inventory.rightPage.viewbag.list = inventoryItemList;
+
+	inventory.rightPage.viewbag.inventoryFillMeter = new HudElements.ProgressBar(200, 32, 0, 0, HudElement.Anchors.BOTTOM_CENTER);
+	inventory.rightPage.viewbag.inventoryFillMeter.setText(GameState.player.inventory.length + " / " + GameState.inventorySize);
+
+	inventory.rightPage.addChild(inventory.rightPage.viewbag.list);
+	inventory.rightPage.addChild(inventory.rightPage.viewbag.inventoryFillMeter);
+
+	return inventory;
+};
