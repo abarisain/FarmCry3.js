@@ -11,15 +11,13 @@ var Map = {
 	transitionInformationDetailed: new Transition(0, 10, 10, function (transitionType) {
 	}),
 	network: {
-		buyCrop: function (type, col, line) {
+		growingCropUpdated: function (growingCrop, col, line) {
 			//TODO update this method
-			GameState.addGrowingCrop(this.data.growingCrop, this.col, this.line);
-			var tile = Map.getTile(col, line);
-			tile.cropType = type;
-			tile.sprite = SpritePack.Tiles.Sprites.SOIL;
-			var crop = new MapItems.TileItems.Crop(MapItems.TileItems.Crop.Type[type], col, line);
-			Map.mapItems.push(crop);
-			CrymeEngine.mapInvalidated = true;
+			GameState.updateGrowingCrop(GameState.addGrowingCrop(growingCrop, col, line));
+			if (growingCrop != null) {
+				var tile = Map.getTile(col, line);
+				tile.sprite = SpritePack.Tiles.Sprites.SOIL;
+			}
 		},
 		harvestCrop: function (col, line) {
 			/*var tile = Map.getTile(col, line);
@@ -57,10 +55,10 @@ var Map = {
 		for (var i = 0; i < this.tiles.length; i++) {
 			this.tiles[i].init();
 		}
+		GameState.updateMapItems();//il faut bien le faire avant d'initialiser chaque element
 		for (var key in this.mapItems) {
 			this.mapItems[key].init();
 		}
-		GameState.updateMapItems();//il faut bien le faire avant d'initialiser chaque element
 	},
 	refreshMapVisibility: function () {//appelé quand la caméra bouge pour optimiser
 		this.tilesVisibles = [];
@@ -109,13 +107,8 @@ var Map = {
 		}
 	},
 	getTile: function (col, line) {
-		for (var i = 0; i < this.tiles.length; i++) {
-			if (this.tiles[i].match(col, line)) {
-				return this.tiles[i];
-				break;
-			}
-		}
-		return null;
+		//TODO à vérifier
+		return this.tiles[col + (lineSize - 1 - line) * (lineSize)];
 	},
 	getMapItem: function (col, line) {
 		for (var i = 0; i < this.mapItems.length; i++) {
