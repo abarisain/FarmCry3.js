@@ -5,6 +5,7 @@ Crop = require('./crop');
 Building = require('./building');
 Tile = require('./tile');
 Farmer = require('./farmer');
+NetworkEngine = require('../network/engine');
 
 var GameState = {
 	farmers: [],
@@ -13,6 +14,7 @@ var GameState = {
 	paused: false,
 	lastPersistDate: 0,
 	settings: {
+		inventorySize: 5, //Max items a farmer can carry
 		tickRate: 1000, //Time between ticks in mS
 		startMoney: 1000, //Still dollars
 		playerRefreshDelay: 1500,//Time in ms before the refresh of a player
@@ -28,7 +30,28 @@ var GameState = {
 			x: 0,
 			y: 0
 		},
+		storedCrops: {},
 		tiles: [], //Please only add instances of Tile here. [x,y]
+
+		/**
+		 @param {StoredCrop} storedCrop
+		 */
+		addStoredCrop: function (storedCrop) {
+			storedCrops[storedCrop.id] = storedCrop;
+			NetworkEngine.clients.broadcast("game.storedCropUpdated", {
+				storedCrop: storedCrop.getSmallStoredCrop()
+			});
+		},
+
+		/**
+		 @param {StoredCrop} storedCrop
+		 */
+		removeStoredCrop: function (storedCrop) {
+			delete storedCrops[storedCrop.id];
+			NetworkEngine.clients.broadcast("game.storedCropDeleted", {
+				id: storedCrop.id
+			});
+		},
 
 		/**
 		 @param {Farmer} farmer

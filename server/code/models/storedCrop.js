@@ -12,14 +12,14 @@ function StoredCrop(crop, owner, harvested_quantity) {
 
 StoredCrop.prototype.generateUniqueId = function () {
 	// Thanks http://stackoverflow.com/a/6248722
-	return ("0000" + (Math.random() * Math.pow(36,4) << 0).toString(36)).substr(-4);
+	// Add _ in the beginning since we'll store in a literal and they can't have a number as first char
+	return "_" + ("0000" + (Math.random() * Math.pow(36,4) << 0).toString(36)).substr(-4);
 }
 
 StoredCrop.prototype.getSmallStoredCrop = function () {
 	var tmp = {};
 	tmp.id = this.id;
 	tmp.crop = this.crop.codename;
-	tmp.owner = this.owner.nickname;
 	tmp.harvested_quantity = this.harvested_quantity;
 	tmp.time_left = this.time_left;
 	if(this.parent_tile != null) {

@@ -1,6 +1,7 @@
 GameState = require('./models/gamestate');
 NetworkEngine = require('./network/engine');
 Chat = require('./network/modules/chat');
+StoredCrop = require('./models/storedCrop');
 
 var EventManager = {
 	tick: function () {
@@ -130,12 +131,18 @@ var EventManager = {
 					// You can NOT delete it if it's viable
 					if(!targetTile.growingCrop.rotten && targetTile.growingCrop.harvested_quantity > 0) {
 						/*
-						TODO : Make a StoredCrop out of it and put it in the player's inventory
 						If the inventory is full, abort the harvest and tell the user that it's inventory is full
 						Of course, even if the inventory is full, a rotten/non mature crop can be deleted.
-
-						Before implementing that, the player's inventory of course has to be implemented
 						*/
+						var tmpStored = new StoredCrop(GameState.settings.crops[targetTile.growingCrop.codename],
+							farmer,
+							targetTile.growingCrop.harvested_quantity
+						);
+
+						if(!this.addToInventory(farmer, tmpStored)) {
+							return false; // If there is no room, then stop
+						}
+						GameState.board.addStoredCrop(tmpStored);
  					}
 					targetTile.resetGrowingCrop();
 					NetworkEngine.clients.broadcast("player.growingCropUpdated", {
@@ -182,6 +189,53 @@ var EventManager = {
 						line: targetTile.position.y
 					});
 					return true;
+				}
+				return false;
+			},
+
+			/**
+			 * @param {Farmer} farmer
+			 * @param {StoredCrop} storedCrop
+			 */
+			addToInventory: function (farmer, storedCrop) {
+				var inventoryLength = farmer.inventory.length;
+				if(farmer.inventory.length >= GameState.settings.inventorySize) {
+					NetworkEngine.clients.broadcast("game.error", {
+						title: null,
+						message: "You do not have enough room in your inventory !"
+					});
+					return false;
+				}
+				var itemFound = false;
+				for(var i = 0; i < inventoryLength; i++) {
+					if(farmer.inventory[i].id === storedCrop.id) {
+						itemFound = true;
+						break;
+					}
+				}
+				if(itemFound)
+					return true;
+				farmer.inventory.push(storedCrop);
+				NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.inventoryItemAdded", {
+					id: storedCrop.id
+				});
+				return true;
+			},
+
+			/**
+			 * @param {Farmer} farmer
+			 * @param {StoredCrop} storedCrop
+			 */
+			removeFromInventory: function (farmer, storedCrop) {
+				var inventoryLength = farmer.inventory.length;
+				for (var i = inventoryLength - 1; i >= 0; i--) {
+					if (farmer.inventory[i].id === storedCrop.id) {
+						farmer.inventory.removeItemAtIndex(i);
+						NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.inventoryItemRemoved", {
+							id: storedCrop.id
+						});
+						return true;
+					}
 				}
 				return false;
 			}
