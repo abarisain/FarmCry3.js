@@ -39,9 +39,15 @@ var NetworkModule = {
 					tmpFarmers.push(GameState.farmers[i].getMinimalFarmer());
 			}
 
+			var tmpStoredCrops = [];
+			for (var i = 0; i < GameState.board.storedCrops.length; i++) {
+				tmpStoredCrops.push(GameState.board.storedCrops[i]);
+			}
+
 			connection.send("game.initialData", {
 				tiles: tmpTiles,
 				player_farmer: connection.farmer.getSmallFarmer(),
+				stored_crops: tmpStoredCrops,
 				online_farmers: tmpFarmers,
 				weapons: GameState.settings.weapons,//I'm going to use this later
 				crops: GameState.settings.crops,//TODO implement the use of these values in the client market
