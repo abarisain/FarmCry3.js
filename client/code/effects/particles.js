@@ -30,6 +30,10 @@ ParticlesEmitter.prototype = {
 	 	@param {float} angleDelta
 	 */
 	start: function (speed, speedDelta, angle, angleDelta, scale, scaleDelta) {
+		this.init(speed, speedDelta, angle, angleDelta, scale, scaleDelta);
+		this.started = true;
+	},
+	init: function (speed, speedDelta, angle, angleDelta, scale, scaleDelta) {
 		this.speed = speed;
 		this.speedDelta = speedDelta || 0;
 		this.angle = angle || 0;
@@ -38,8 +42,14 @@ ParticlesEmitter.prototype = {
 		this.scaleDelta = scaleDelta || 0;
 		this.particles = [];
 		this.amount = 0;
-		this.started = true;
 		this.lifetime = this.lifetimeMax;
+	},
+	/*
+	 Add another round of particles
+	 * */
+	additionnalStart: function (amount) {
+		this.started = true;
+		this.amountMax += amount;
 	},
 	endEvent: function () {
 	},

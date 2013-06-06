@@ -1,11 +1,12 @@
-Sprites.Animation = function (name, centerX, centerY, frameCount, frameTimer, textureInfo, extension) {
+Sprites.Animation = function (name, centerX, centerY, frameCount, frameTimer, scale, extension) {
 	if (name != null) {
-		Sprite.call(this, name, centerX, centerY, textureInfo, extension);
+		Sprite.call(this, name, centerX, centerY, false, extension);
 		this.frameCount = frameCount;
 		this.frameWidth = 0;
 		this.frameTimer = frameTimer;
 		this.frameSpeed = frameCount / frameTimer;
 		this.currentFrame = 0;
+		this.scale = scale || 1;
 	} else {
 		Sprite.call(this, '');
 	}

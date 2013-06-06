@@ -33,11 +33,11 @@ CrymeEngine.Battle = {
 			CE.Battle.weaponTransition.start(Transition.Direction.OUT);
 		});
 
-		this.playerSequence = new Battle.Sequence(canvasWidth / 2 + 250, canvasHeight / 2, function () {
+		this.playerSequence = new Battle.Sequence(canvasWidth / 2 + 150, canvasHeight / 2 + 100, function () {
 			CE.Battle.stopBattle();
 		});
 
-		this.opponentSequence = new Battle.Sequence(canvasWidth / 2 - 250, canvasHeight / 2, function () {
+		this.opponentSequence = new Battle.Sequence(canvasWidth / 2 - 150, canvasHeight / 2 + 100, function () {
 		});
 
 		this.elements = [];
@@ -62,13 +62,19 @@ CrymeEngine.Battle = {
 		this.playerSequence.addAnimation(SpritePack.Fight.Sprites.PLAYER_FORK);
 		this.playerSequence.addAnimation(SpritePack.Fight.Sprites.PLAYER_HIT);
 		this.playerSequence.addAnimation(SpritePack.Fight.Sprites.PLAYER_FORK);
+		this.playerSequence.addAnimation(SpritePack.Fight.Sprites.PLAYER_DODGE);
+		this.playerSequence.hit_points.init(5, 3, -Math.PI * 100 / 180, 45 * Math.PI / 180, 1, 0.8);
 
 		this.opponentSequence.addAnimation(SpritePack.Fight.Sprites.OPPONENT_INTRO);
 		this.opponentSequence.addAnimation(SpritePack.Fight.Sprites.OPPONENT_FORK);
 		this.opponentSequence.addAnimation(SpritePack.Fight.Sprites.OPPONENT_HIT);
 		this.opponentSequence.addAnimation(SpritePack.Fight.Sprites.OPPONENT_FORK);
 		this.opponentSequence.addAnimation(SpritePack.Fight.Sprites.OPPONENT_DODGE);
+		this.opponentSequence.addAnimation(SpritePack.Fight.Sprites.OPPONENT_DODGE);
+		this.opponentSequence.hit_points.init(5, 3, -Math.PI * 80 / 180, 45 * Math.PI / 180, 1, 0.8);
 
+		this.elements.push(new Battle.Element(SpritePack.Battle.Sprites.GROUND, this.playerSequence.x, this.playerSequence.y + 120));
+		this.elements.push(new Battle.Element(SpritePack.Battle.Sprites.GROUND, this.opponentSequence.x, this.opponentSequence.y + 120));
 		this.elements.push(this.playerSequence);//avatar
 		this.elements.push(this.opponentSequence);//avatar
 
