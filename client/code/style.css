@@ -169,18 +169,17 @@ a:hover {
 #loading_panel {
 	z-index: 101;
 	visibility: hidden;
-	height: 150px;
-	width: 500px;
+	height: 36px;
+	width: 290px;
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	margin-left: -250px;
 	margin-top: -75px;
-	box-shadow: 0 0 80px #222;
 }
 
 #loading_progress {
-	margin-top: 35px;
+	margin-top: 12px;
 }
 
 #login_remember_me, #login_remember_me_label {
@@ -297,19 +296,38 @@ a:hover {
 }
 
 .fc_window {
-	background-image: linear-gradient(bottom, rgb(193, 185, 156) 0%, rgb(243, 233, 196) 100%);
-	background-image: -o-linear-gradient(bottom, rgb(193, 185, 156) 0%, rgb(243, 233, 196) 100%);
-	background-image: -moz-linear-gradient(bottom, rgb(193, 185, 156) 0%, rgb(243, 233, 196) 100%);
-	background-image: -webkit-linear-gradient(bottom, rgb(193, 185, 156) 0%, rgb(243, 233, 196) 100%);
-	background-image: -ms-linear-gradient(bottom, rgb(193, 185, 156) 0%, rgb(243, 233, 196) 100%);
-	border-radius: 10px;
-	box-shadow: 0 0 15px #222;
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: 5px;
+    border-style:solid;
+    border-color: #868780;
+    border-width:5px;
+    border-top-width: 24px;
 }
 
 .fc_window_content {
 	padding-top: 10px;
 	padding-left: 20px;
 	padding-right: 20px;
+}
+
+.fc_window2 {
+    background-image: linear-gradient(bottom, rgb(193, 185, 156) 0%, rgb(243, 233, 196) 100%);
+    background-image: -o-linear-gradient(bottom, rgb(193, 185, 156) 0%, rgb(243, 233, 196) 100%);
+    background-image: -moz-linear-gradient(bottom, rgb(193, 185, 156) 0%, rgb(243, 233, 196) 100%);
+    background-image: -webkit-linear-gradient(bottom, rgb(193, 185, 156) 0%, rgb(243, 233, 196) 100%);
+    background-image: -ms-linear-gradient(bottom, rgb(193, 185, 156) 0%, rgb(243, 233, 196) 100%);
+    border-radius: 10px;
+    box-shadow: 0 0 15px #222;
+}
+
+#loading_panel .fc_window_content {
+    margin-top: -25px;
+    padding-left: 10px;
+    color: black;
+    font-family: arial;
+    text-align: left;
+    font-size: 10px;
+    font-weight: bold;
 }
 
 .fc_window input[type="text"] {
@@ -382,19 +400,18 @@ a:hover {
 .fc_window .progress-bar {
 	background-color: #1a1a1a;
 	text-align: left;
-	height: 25px;
-	box-shadow: 0 0 8px #333;
-	width: 410px;
-	margin: 10px 0;
-	margin-left: 25px;
-	border-radius: 8px;
+	height: 18px;
+	width: 259px;
+	margin-top: -100px;
+    border-style: solid;
+    border-color: #8b8b8b;
+    border-width: 1px;
+    padding: 1px;
 }
 
 .fc_window .progress-bar span {
 	display: inline-block;
 	height: 100%;
-	border-radius: 8px;
-	box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
 }
 
 .fc_window .blue span {
@@ -402,22 +419,7 @@ a:hover {
 }
 
 .fc_window .green span {
-	background-color: #67D210;
-}
-
-.fc_window .stripes span {
-	-webkit-background-size: 30px 30px;
-	-moz-background-size: 30px 30px;
-	background-size: 30px 30px;
-	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(.25, rgba(255, 255, 255, .15)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .15)), color-stop(.75, rgba(255, 255, 255, .15)), color-stop(.75, transparent), to(transparent));
-	background-image: -webkit-linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
-	background-image: -moz-linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
-	background-image: -ms-linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
-	background-image: -o-linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
-	background-image: linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
-
-	-webkit-animation: animate-stripes 3s linear infinite;
-	-moz-animation: animate-stripes 3s linear infinite;
+	background-color: #847d4a;
 }
 
 @-webkit-keyframes animate-stripes {
