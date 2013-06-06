@@ -61,20 +61,37 @@ GameState = {
 	 * @param {key} = g_col_line
 	 * */
 	updateGrowingCrop: function (key) {
-		var temp = this.logicItems.growingCrops[key];
-		//si le growing crop existe pas, on le créé
-		if (temp != undefined) {
-			Map.mapItems[key] = new MapItems.TileItems.Crop(temp.data, temp.col, temp.line);
-		} else {
-			Map.mapItems[key].data = temp.data;
+		var growingCrop = this.logicItems.growingCrops[key];
+		var mapItem = Map.mapItems[key];
+		//si le growing crop existe existe, il faut l'ajouter ou l'updater
+		if (growingCrop != undefined) {
+			//si le growing crop existe et le mapItem aussi, on l'update
+			if (mapItem != undefined) {
+				mapItem.data = temp.data;
+			} else {//sinon il faut l'ajouter
+				Map.mapItems[key] = new MapItems.TileItems.Crop(growingCrop.data, growingCrop.col, growingCrop.line);
+			}
+		} else {//si le growingCrop existe plus, on le supprime
+			delete mapItem;
 		}
 	},
 	/** The key name of the building
 	 * @param {key} c_col_line
 	 * */
 	updateBuilding: function (key) {
-		var temp = this.logicItems.buildings[key];
-		Map.mapItems[key] = new MapItems.TileItems.Building(temp.data, temp.col, temp.line);
+		var building = this.logicItems.buildings[key];
+		var mapItem = Map.mapItems[key];
+		//si le building existe existe, il faut l'ajouter ou l'updater
+		if (building != undefined) {
+			//si le building existe et le mapItem aussi, on l'update
+			if (mapItem != undefined) {
+				mapItem.data = temp.data;
+			} else {//sinon il faut l'ajouter
+				Map.mapItems[key] = new MapItems.TileItems.Building(building.data, building.col, building.line);
+			}
+		} else {//si le building existe plus, on le supprime
+			delete mapItem;
+		}
 	}
 
 	//TODO : Add weapons and stuff
