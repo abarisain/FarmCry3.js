@@ -24,10 +24,13 @@ CrymeEngine.Battle = {
 		this.playerTransition.start(Transition.Direction.OUT, true);
 		this.weaponTransition = new Transition(0, 1, 15, function () {
 			CE.Battle.weaponTransition.start(Transition.Direction.OUT);
+			if (!CE.Battle.explosion.started) {
+				CE.Battle.explosion.start(10, -Math.PI * 120 / 180, 0);
+			}
 		});
-		this.explosion = new ParticlesEmitter(SpritePack.Effects.Sprites.FIRE, canvasWidth / 2 - 350, 270, 2, 600, 30);
-		this.explosion.scaleDelta = 2;
-		this.explosion.start(10, Math.PI * 33 / 180, 0);
+		this.explosion = new ParticlesEmitter(SpritePack.Effects.Sprites.FIRE, canvasWidth / 2 - 350, 270, 2, 600, 40);
+		this.explosion.scaleDelta = 1;
+
 		this.elements = [];
 		for (var i = 0; i < 4; i++) {
 			for (var j = 0; j < 5; j++) {
@@ -36,10 +39,6 @@ CrymeEngine.Battle = {
 		}
 		this.elements.push(new Battle.Avatar(canvasWidth / 2, canvasHeight / 2));//avatar
 		this.elements.push(new Battle.Weapon(weaponSprite, canvasWidth / 2 - 350, 270));//weapon
-		this.elements.push(new Battle.Button(SpritePack.Battle.Sprites.BUTTON_AK47, canvasWidth / 2 - 350, canvasHeight / 2));//left
-		this.elements.push(new Battle.Button(SpritePack.Battle.Sprites.BUTTON_JUMP, canvasWidth / 2, canvasHeight / 2 - 350));//top
-		this.elements.push(new Battle.Button(SpritePack.Battle.Sprites.BUTTON_CROP, canvasWidth / 2 + 350, canvasHeight / 2));//right
-		this.elements.push(new Battle.Button(SpritePack.Battle.Sprites.BUTTON_DODGE, canvasWidth / 2, canvasHeight / 2 + 350));//bottom
 
 		this.initialized = true;
 	},
@@ -62,7 +61,8 @@ CrymeEngine.Battle = {
 			CE.canvas.animation.context.translate(Math.random() * 5, Math.random() * 5);
 			CE.canvas.animation.context.scale(1.02, 1.02);
 			CE.canvas.animation.context.drawImage(this.background.image, -10, -10);
-			this.explosion.draw();
+			this.explosion.draw(1);
+			CE.canvas.animation.context.globalAlpha = 1;//vu que l'opacité est modifié par les particules
 			for (var i = 0; i < this.elements.length; i++) {
 				this.elements[i].draw();
 			}
