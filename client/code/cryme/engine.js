@@ -74,7 +74,7 @@ var CrymeEngine = {
 	},
 	Draw: {
 		Loading: function () {
-			if (false && initialDataLoaded && currentLoadingCount >= totalLoadingCount) {
+			if (initialDataLoaded && currentLoadingCount >= totalLoadingCount) {
 				networkEngine.onLoadingFinished();
 				//indispensable pour créer la map
 				initSpriteEnums();

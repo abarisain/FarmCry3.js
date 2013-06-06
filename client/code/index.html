@@ -71,6 +71,10 @@
 <canvas id="canvasHud" class="topLeft canvasDrawable" style="z-index: 10;" oncontextmenu="return false;">
 </canvas>
 
+<audio controls id="bf-audio" style="display: none" preload="auto" autobuffer>
+    <source src="src/sounds/bf.mp3" type="audio/mpeg">
+</audio>
+
 <div id="hud_chat">
 	<div id="hud_chat_messages"></div>
 	<input id="hud_chat_message" name="hud_chat_message" type="text"/>
@@ -82,6 +86,7 @@
 		<div id="loading_progress" class="progress-bar green stripes">
 			<span style="width: 0%"></span>
 		</div>
+        <div class="center" id="escape">PRESS ESCAPE TO CANCEL</div>
 	</div>
 </div>
 <div id="login">
@@ -106,6 +111,9 @@
 		</div>
 
 	</div>
+</div>
+<div id="wait" style="z-index: 9000; background-color: gray; color: black;">
+    Attends un peu, ca charge et le wifi pue !
 </div>
 </body>
 </html> 

@@ -114,6 +114,17 @@ a:hover {
 	min-height: 700px;
 }
 
+#wait {
+    padding-top: 50px;
+    padding-left: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 300;
+    height: 100%;
+    width: 100%;
+    min-height: 700px;
+}
 #login_game_title,
 #register_game_title {
 	text-align: center;
@@ -172,10 +183,17 @@ a:hover {
 	height: 36px;
 	width: 290px;
 	position: absolute;
-	top: 50%;
+	top: 100%;
 	left: 50%;
-	margin-left: -250px;
-	margin-top: -75px;
+	margin-left: -145px;
+	margin-top: -134px;
+}
+
+#escape {
+    padding-top: 20px;
+    color: white;
+    font-weight: normal;
+    opacity: 0.8;
 }
 
 #loading_progress {
@@ -322,7 +340,7 @@ a:hover {
 
 #loading_panel .fc_window_content {
     margin-top: -25px;
-    padding-left: 10px;
+    padding-left: 12px;
     color: black;
     font-family: arial;
     text-align: left;
@@ -330,7 +348,7 @@ a:hover {
     font-weight: bold;
 }
 
-.fc_window input[type="text"] {
+.fc_window2 input[type="text"] {
 	margin-top: 4px;
 	margin-bottom: 4px;
 	padding: 8px;
@@ -343,7 +361,7 @@ a:hover {
 	box-shadow: 0 0 8px #888;
 }
 
-.fc_window .button {
+.fc_window2 .button {
 	display: inline-block;
 	outline: none;
 	cursor: pointer;
@@ -358,15 +376,15 @@ a:hover {
 	box-shadow: 0 0 8px #333;
 }
 
-.fc_window .button:hover {
+.fc_window2 .button:hover {
 
 }
 
-.fc_window .button:active {
+.fc_window2 .button:active {
 
 }
 
-.fc_window .button.green {
+.fc_window2 .button.green {
 	background-image: linear-gradient(bottom, #67D210 50%, #A2F261 100%);
 	background-image: -o-linear-gradient(bottom, #67D210 50%, #A2F261 100%);
 	background-image: -moz-linear-gradient(bottom, #67D210 50%, #A2F261 100%);
@@ -374,7 +392,7 @@ a:hover {
 	background-image: -ms-linear-gradient(bottom, #67D210 50%, #A2F261 100%);
 }
 
-.fc_window .button.green:active {
+.fc_window2 .button.green:active {
 	background-image: linear-gradient(bottom, #A2F261 10%, #67D210 100%);
 	background-image: -o-linear-gradient(bottom, #A2F261 10%, #67D210 100%);
 	background-image: -moz-linear-gradient(bottom, #A2F261 10%, #67D210 100%);
@@ -382,7 +400,7 @@ a:hover {
 	background-image: -ms-linear-gradient(bottom, #A2F261 10%, #67D210 100%);
 }
 
-.fc_window .button.disabled {
+.fc_window2 .button.disabled {
 	background-image: linear-gradient(bottom, rgba(156, 156, 156, 0.42) 50%, rgba(103, 104, 102, 0.19) 100%);
 	background-image: -o-linear-gradient(bottom, rgba(156, 156, 156, 0.42) 50%, rgba(103, 104, 102, 0.19) 100%);
 	background-image: -moz-linear-gradient(bottom, rgba(156, 156, 156, 0.42) 50%, rgba(103, 104, 102, 0.19) 100%);
@@ -393,7 +411,7 @@ a:hover {
 	text-shadow: none;
 }
 
-.fc_window .button.disabled:hover {
+.fc_window2 .button.disabled:hover {
 	cursor: not-allowed;
 }
 

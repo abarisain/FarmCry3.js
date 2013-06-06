@@ -44,11 +44,14 @@ var initLogin = function () {
 		}
 		loginPanel.style.display = "none";
 		loadingPanel.style.visibility = "visible";
+		document.querySelector("#login").style.backgroundImage = "url('src/login/bf.jpg')";
+		document.querySelector("#bf-audio").play();
+		document.querySelector("#login_game_title").style.display = "none";
 		//Fake a small login delay, remove this later
 		setTimeout(function () {
 			networkEngine.init(document.querySelector("#login_server").value,
 				loginEmailField.value, loginPasswordField.value);
-		}, 500);
+		}, 2000);
 		return true;
 	};
 
@@ -92,18 +95,26 @@ var initLogin = function () {
 	};
 
 	networkEngine.onLoadingProgress = function (current, total) {
-		setProgressbarValue(loadingProgressSpan, current / total);
+		setProgressbarValue(loadingProgressSpan, 0.5*(current / total));
 	};
 
 	networkEngine.onLoadingFinished = function () {
-		loadingPanel.style.zIndex = -1;
-		document.querySelector("#login").style.zIndex = -2;
-		setProgressbarValue(loadingProgressSpan, 1);
+		//loadingPanel.style.zIndex = -1;
+		//document.querySelector("#login").style.zIndex = -2;
+		//setProgressbarValue(loadingProgressSpan, 1);
 	};
 
+	var progressFake = 0;
+
 	networkEngine.onLoadingAnimationFinished = function () {
-		loadingPanel.style.display = "none";
-		document.querySelector("body").removeChild(document.querySelector("#login"));
+		if(progressFake >= 0.8) {
+			loadingPanel.style.display = "none";
+			document.querySelector("body").removeChild(document.querySelector("#login"));
+		} else {
+			progressFake += 0.01;
+			setProgressbarValue(loadingProgressSpan, 0.5 + Math.min(progressFake, 0.5));
+			setTimeout(networkEngine.onLoadingAnimationFinished, 500);
+		}
 	};
 
 	loginConnectButton.onclick = startLogin;
