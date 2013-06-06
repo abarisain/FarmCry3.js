@@ -105,7 +105,7 @@ var CrymeEngine = {
 			//il vaux mieux restaurer le contexte avant de commencer à dessiner, pour être tranquille
 			CrymeEngine.canvas.map.context.restore();
 
-			if(CE.transitionMapCreation.started) {
+			if (CE.transitionMapCreation.started) {
 				window.requestAnimFrame(function () {
 					CrymeEngine.Draw.MapCreation();
 				});
@@ -232,11 +232,22 @@ var CrymeEngine = {
 	},
 	Event: {
 		changeFilterType: function (filterType) {
-			CE.displayType = CE.DisplayType.INFORMATION;
+			if (CE.displayType == CE.DisplayType.STANDARD) {
+				CE.displayType = CE.DisplayType.INFORMATION;
+			} else {
+
+			}
+			CE.hud.events.showFilter(filterType.name);
 			CE.filterType = filterType;
 			Map.tileHighLighted.index = -1;
 			Map.showMapInformations();
 			CrymeEngine.mapInvalidated = true;
+		},
+		removeFilterType: function () {
+			CE.hud.events.removeFilter();
+			CE.displayType = CE.DisplayType.STANDARD;
+			Map.tileHighLighted.index = -1;
+			CE.mapInvalidated = true;
 		}
 	},
 	init: function () {

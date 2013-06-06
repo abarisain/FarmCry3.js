@@ -12,7 +12,7 @@ CrymeEngine.hud = {
 		button_buy: null,
 		button_close: null,
 		button_delete: null,
-		filter_disabled: null,
+		filter_header: null,
 		filter_owner: null,
 		filter_humidity: null,
 		filter_fertility: null,
@@ -85,46 +85,49 @@ CrymeEngine.hud = {
 		}).bind(this);
 		this.rootHudElement.addChild(marketButton);
 
-		/*			UI pour les filtres		*/
-		var filter = new HudElement("filterDisabled", "filter_disabled", 92, 92, -5, -10, HudElement.Anchors.BOTTOM_RIGHT, true);
-		filter.onClick = function () {
-			CE.displayType = CE.DisplayType.STANDARD;
-			Map.tileHighLighted.index = -1;
-			CE.mapInvalidated = true;
-		}
-		this.rootHudElement.addChild(filter);
 
-		var filter = new HudElement("filterOwner", "filter_owner", 32, 32, -17, -112, HudElement.Anchors.BOTTOM_RIGHT, true);
+		/*			UI pour les filtres		*/
+		this.rootHudElement.viewbag.filter_header = new HudElement("filterDisabled", "filter_header", 287, 35, 0, 0, HudElement.Anchors.TOP_CENTER, true);
+		this.rootHudElement.viewbag.filter_header.visible = false;
+		this.rootHudElement.viewbag.filter_header.onClick = function () {
+			CE.Event.removeFilterType();
+		}
+		this.rootHudElement.addChild(this.rootHudElement.viewbag.filter_header);
+
+		this.rootHudElement.viewbag.filter_text = new HudElements.Text("No filter", HudElement.Anchors.CENTER, '#898989');
+		this.rootHudElement.viewbag.filter_header.addChild(this.rootHudElement.viewbag.filter_text);
+
+		var filter = new HudElement("filterOwner", "filter_owner", 32, 32, -20, -100, HudElement.Anchors.BOTTOM_CENTER, true);
 		filter.onClick = function () {
 			CE.Event.changeFilterType(CE.FilterType.OWNER);
 		}
 		this.rootHudElement.addChild(filter);
 
-		filter = new HudElement("filterHumidity", "filter_humidity", 32, 32, -50, -117, HudElement.Anchors.BOTTOM_RIGHT, true);
+		filter = new HudElement("filterHumidity", "filter_humidity", 32, 32, -20, -60, HudElement.Anchors.BOTTOM_CENTER, true);
 		filter.onClick = function () {
 			CE.Event.changeFilterType(CE.FilterType.HUMIDITY);
 		}
 		this.rootHudElement.addChild(filter);
 
-		filter = new HudElement("filterFertility", "filter_fertility", 32, 32, -83, -107, HudElement.Anchors.BOTTOM_RIGHT, true);
+		filter = new HudElement("filterFertility", "filter_fertility", 32, 32, -20, -20, HudElement.Anchors.BOTTOM_CENTER, true);
 		filter.onClick = function () {
 			CE.Event.changeFilterType(CE.FilterType.FERTILITY);
 		}
 		this.rootHudElement.addChild(filter);
 
-		filter = new HudElement("filterMaturity", "filter_maturity", 32, 32, -107, -83, HudElement.Anchors.BOTTOM_RIGHT, true);
+		filter = new HudElement("filterMaturity", "filter_maturity", 32, 32, -20, 20, HudElement.Anchors.BOTTOM_CENTER, true);
 		filter.onClick = function () {
 			CE.Event.changeFilterType(CE.FilterType.MATURITY);
 		}
 		this.rootHudElement.addChild(filter);
 
-		filter = new HudElement("filterHealth", "filter_health", 32, 32, -113, -50, HudElement.Anchors.BOTTOM_RIGHT, true);
+		filter = new HudElement("filterHealth", "filter_health", 32, 32, -20, 60, HudElement.Anchors.BOTTOM_CENTER, true);
 		filter.onClick = function () {
 			CE.Event.changeFilterType(CE.FilterType.HEALTH);
 		}
 		this.rootHudElement.addChild(filter);
 
-		filter = new HudElement("filterStorage", "filter_storage", 32, 32, -104, -17, HudElement.Anchors.BOTTOM_RIGHT, true);
+		filter = new HudElement("filterStorage", "filter_storage", 32, 32, -20, 100, HudElement.Anchors.BOTTOM_CENTER, true);
 		filter.onClick = function () {
 			CE.Event.changeFilterType(CE.FilterType.STORAGE_AVAILABLE);
 		}
@@ -165,6 +168,20 @@ CrymeEngine.hud = {
 			CrymeEngine.hud.textures[textureName] = texture;
 			i++;
 		});
+	},
+	events: {
+		showFilter: function (name) {
+			CE.hud.panels.lifebar.visible = false;
+			CE.hud.panels.tray.visible = false;
+			CE.hud.rootHudElement.viewbag.filter_header.visible = true;
+			CE.hud.rootHudElement.viewbag.filter_text.setText(name);
+		},
+		removeFilter: function () {
+			CE.hud.panels.lifebar.visible = true;
+			CE.hud.panels.tray.visible = true;
+			CE.hud.rootHudElement.viewbag.filter_header.visible = false;
+			CE.hud.rootHudElement.viewbag.filter_text.setText('No filter');
+		}
 	},
 	draw: function () {
 		if (loadingComplete) {
