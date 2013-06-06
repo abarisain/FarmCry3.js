@@ -84,7 +84,7 @@ function LoadSpritePack() {
 	SpritePack.Effects.Sprites.CLOUD = new Sprite('cloud', 545, 427);
 	SpritePack.Effects.Sprites.TORNADO = new Sprites.Animation('tornado_animated', 150, 420, 23, 46);
 	SpritePack.Effects.Sprites.RAIN = new Sprite('rain', 256, 256);
-	SpritePack.Effects.Sprites.FIRE = new Sprite('fire', 128, 128);
+	SpritePack.Effects.Sprites.FIRE = new Sprite('light', 256, 256);
 
 	SpritePack.Battle.Sprites.BACKGROUND = new Sprite('background', 0, 0);
 	SpritePack.Battle.Sprites.ACTION = new Sprite('action', 42, 40);
@@ -105,7 +105,6 @@ function LoadSpritePack() {
 	SpritePack.Battle.Sprites.WEAPON_FLAMETHROWER = new Sprite('flamethrower', 212, 189);
 	SpritePack.Battle.Sprites.WEAPON_AK = new Sprite('ak', 240, 200);
 	SpritePack.Battle.Sprites.LIGHTNING = new Sprite('lightning', 480, 327);
-	SpritePack.Battle.Sprites.LIGHT = new Sprite('light', 525, 475);
 
 	SpritePack.Background.Sprites.TOP_LEFT = new Sprite('bkg_top_left', 0, 0, false, ".jpg");
 	SpritePack.Background.Sprites.TOP_RIGHT = new Sprite('bkg_top_right', 1920, 0, false, ".jpg");

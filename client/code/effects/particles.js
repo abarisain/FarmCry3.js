@@ -17,6 +17,8 @@ function ParticlesEmitter(sprite, x, y, growth, amountMax, lifetime) {
 	this.speed = 0;
 	this.scale = 1;//taille de reference des elements
 	this.scaleDelta = 0;//delta de taille pour chaque element
+	this.gravity = 0;
+	this.rotation = 1 * Math.PI / 180;
 }
 
 ParticlesEmitter.prototype = {
@@ -26,11 +28,13 @@ ParticlesEmitter.prototype = {
 	 @param {float] angle rad
 	 	@param {float} angleDelta
 	 */
-	start: function (speed, angle, angleDelta) {
+	start: function (speed, angle, angleDelta, scale, scaleDelta) {
 		this.speed = speed;
-		this.angle = angle;
+		this.angle = angle || 0;
+		this.angleDelta = angleDelta || 0;
+		this.scale = scale || 1;
+		this.scaleDelta = scaleDelta || 0;
 		this.particles = [];
-		this.angleDelta = angleDelta;
 		this.amount = 0;
 		this.started = true;
 		this.lifetime = this.lifetimeMax;
@@ -43,13 +47,13 @@ ParticlesEmitter.prototype = {
 				var newParticleCount = Math.min(this.amountMax - this.amount, this.growth);
 				if (this.growth >= 1) {
 					for (var i = 0; i < newParticleCount; i++) {
-						var particle = new Particle(this.scatteringX, this.scatteringY, this.speed, this.scale, this.scaleDelta, this.angle, this.angleDelta, this.lifetime);
+						var particle = new Particle(this.scatteringX, this.scatteringY, this.speed, this.scale, this.scaleDelta, this.rotation, this.angle, this.angleDelta, this.lifetime);
 						this.particles.push(particle);
 						this.amount++;
 					}
 				} else {
 					if (Math.floor(this.amount + this.growth) > Math.floor(this.amount)) {
-						var particle = new Particle(this.scatteringX, this.scatteringY, this.speed, this.scale, this.scaleDelta, this.angle, this.angleDelta, this.lifetime);
+						var particle = new Particle(this.scatteringX, this.scatteringY, this.speed, this.scale, this.scaleDelta, this.rotation, this.angle, this.angleDelta, this.lifetime);
 						this.particles.push(particle);
 					}
 					this.amount += this.growth;
@@ -62,7 +66,7 @@ ParticlesEmitter.prototype = {
 				return false;
 			}
 			for (i = 0; i < this.particles.length; i++) {
-				if (!this.particles[i].update())//if particle is dead
+				if (!this.particles[i].update(this.gravity))//if particle is dead
 				{
 					this.particles.removeItemAtIndex(i);//enfin on supprime les particules haha
 				}
@@ -81,9 +85,9 @@ ParticlesEmitter.prototype = {
 	}
 };
 
-function Particle(scatteringX, scatteringY, speed, scale, scaleDelta, angle, angleDelta, lifetime) {
-	this.x = Math.random() * scatteringX;
-	this.y = Math.random() * scatteringY;
+function Particle(scatteringX, scatteringY, speed, scale, scaleDelta, rotation, angle, angleDelta, lifetime) {
+	this.x = Math.random() * scatteringX - scatteringX / 2;
+	this.y = Math.random() * scatteringY - scatteringY / 2;
 	this.scale = scale + Math.random() * scaleDelta - scaleDelta / 2;
 	this.angle = angle + Math.random() * angleDelta - angleDelta / 2;
 	this.speedX = Math.cos(this.angle) * speed;
@@ -91,11 +95,14 @@ function Particle(scatteringX, scatteringY, speed, scale, scaleDelta, angle, ang
 	this.lifetime = lifetime;
 	this.alpha = 1;
 	this.apparitionAlpha = 0;
+	this.rotation = Math.random() * Math.PI / 180;
+	this.rotationSpeed = rotation;
 }
 
 Particle.prototype = {
-	update: function () {
+	update: function (gravity) {
 		this.lifetime--;
+		this.speedY -= gravity;
 		this.x += this.speedX;
 		this.y += this.speedY;
 		if (this.apparitionAlpha < 1) {
@@ -109,6 +116,7 @@ Particle.prototype = {
 		if (this.lifetime <= 0) {
 			return false;
 		}
+		this.rotation += this.rotationSpeed;
 		return true;
 	},
 	draw: function (sprite, maxAlpha) {
