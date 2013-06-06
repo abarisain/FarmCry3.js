@@ -30,6 +30,7 @@ var SpritePack = {
 	Characters: new SpriteSheet('src/character/', false),
 	Crops: new SpriteSheet('src/crops/', true),
 	Effects: new SpriteSheet('src/effects/', false),
+	Fight: new SpriteSheet('src/fight/', false),
 	Storages: new SpriteSheet('src/storages/', true),
 	Tiles: new SpriteSheet('src/tiles/', false)
 
@@ -100,13 +101,23 @@ function LoadSpritePack() {
 	SpritePack.Battle.Sprites.BUTTON_ANTHRAX = new Sprite('button_anthrax', 81, 81);
 
 	SpritePack.Battle.Sprites.AVATAR = new Sprite('avatar', 233, 260);
-	SpritePack.Battle.Sprites.AVATAR_BAD_GUY = new Sprite('avatar_bad_guy', 233, 260);
+	SpritePack.Battle.Sprites.AVATAR_BAD_GUY = new Sprite('avatar_bad_guy', 295, 211);
 	SpritePack.Battle.Sprites.AURA = new Sprite('aura', 797, 797);
 	SpritePack.Battle.Sprites.WEAPON_FORK = new Sprite('fork', 212, 189);
 	SpritePack.Battle.Sprites.WEAPON_FLAMETHROWER = new Sprite('flamethrower', 212, 189);
 	SpritePack.Battle.Sprites.WEAPON_AK = new Sprite('ak', 240, 200);
 	SpritePack.Battle.Sprites.LIGHTNING = new Sprite('lightning', 480, 327);
 	SpritePack.Battle.Sprites.HIT_POINT = new Sprite('hit_point', 25, 26);
+
+	SpritePack.Fight.Sprites.PLAYER_INTRO = new Sprites.Animation('player_intro', 205, 230, 25, 60);
+	SpritePack.Fight.Sprites.PLAYER_FORK = new Sprites.Animation('player_fork', 380, 420, 23, 60);
+	SpritePack.Fight.Sprites.PLAYER_DODGE = new Sprites.Animation('player_dodge', 166, 365, 23, 60);
+	SpritePack.Fight.Sprites.PLAYER_HIT = new Sprites.Animation('player_hit', 102, 240, 23, 60);
+
+	SpritePack.Fight.Sprites.OPPONENT_INTRO = new Sprites.Animation('opponent_intro', 289, 240, 25, 60);
+	SpritePack.Fight.Sprites.OPPONENT_FORK = new Sprites.Animation('opponent_fork', 422, 508, 23, 60);
+	SpritePack.Fight.Sprites.OPPONENT_DODGE = new Sprites.Animation('opponent_dodge', 216, 237, 23, 60);
+	SpritePack.Fight.Sprites.OPPONENT_HIT = new Sprites.Animation('opponent_hit', 205, 248, 23, 60);
 
 	SpritePack.Background.Sprites.TOP_LEFT = new Sprite('bkg_top_left', 0, 0, false, ".jpg");
 	SpritePack.Background.Sprites.TOP_RIGHT = new Sprite('bkg_top_right', 1920, 0, false, ".jpg");

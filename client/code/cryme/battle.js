@@ -5,8 +5,8 @@ CrymeEngine.Battle = {
 	auraTransition: {},
 	playerTransition: {},//used to display the character with a small animation
 	weaponTransition: {},//used to move the main weapon
-	player_hit_points: null,
-	opponent_hit_points: null,
+	playerSequence: {},
+	opponentSequence: {},
 	explosion: null,
 	initialized: false,
 	FightPhase: {
@@ -22,8 +22,7 @@ CrymeEngine.Battle = {
 		this.breathTransition.loopType = Transition.LoopType.BOUNCE;
 		this.breathTransition.start(Transition.Direction.IN);
 		this.auraTransition = new Transition(0, 1, 120, function () {
-			CE.Battle.playerTransition.start(Transition.Direction.IN);
-			CE.Battle.explosion.start(60, 20, 0, 0, 1, 3);
+			CE.Battle.launchFight();
 		});
 		this.auraTransition.start(Transition.Direction.IN);
 		this.playerTransition = new Transition(1, 2, 10, function () {
@@ -32,27 +31,14 @@ CrymeEngine.Battle = {
 		this.playerTransition.start(Transition.Direction.OUT, true);
 		this.weaponTransition = new Transition(0, 1, 15, function () {
 			CE.Battle.weaponTransition.start(Transition.Direction.OUT);
-
 		});
 
-		this.explosion = new ParticlesEmitter(SpritePack.Effects.Sprites.FIRE, 0, canvasHeight / 2, 120, 240, 40);
-		this.explosion.scatteringY = canvasHeight;
-		this.explosion.endEvent = function () {
-			CE.Battle.launchFight();
-		};
-
-		this.player_hit_points = new ParticlesEmitter(SpritePack.Battle.Sprites.HIT_POINT, canvasWidth - 270, canvasHeight / 2 - 120, 5, 10, 240);
-		this.player_hit_points.endEvent = function () {
+		this.playerSequence = new Battle.Sequence(canvasWidth / 2 + 250, canvasHeight / 2, function () {
 			CE.Battle.stopBattle();
-		};
-		this.player_hit_points.gravity = -0.089;
-		this.player_hit_points.scatteringX = 20;
-		this.player_hit_points.scatteringY = 20;
+		});
 
-		this.opponent_hit_points = new ParticlesEmitter(SpritePack.Battle.Sprites.HIT_POINT, 280, canvasHeight / 2 - 120, 5, 30, 240);
-		this.opponent_hit_points.gravity = -0.089;
-		this.opponent_hit_points.scatteringX = 20;
-		this.opponent_hit_points.scatteringY = 20;
+		this.opponentSequence = new Battle.Sequence(canvasWidth / 2 - 250, canvasHeight / 2, function () {
+		});
 
 		this.elements = [];
 		for (var i = 0; i < 4; i++) {
@@ -71,29 +57,33 @@ CrymeEngine.Battle = {
 		this.fightPhase = CE.Battle.FightPhase.FIGHT;
 
 		this.elements = [];
-		for (var i = 0; i < 4; i++) {
-			for (var j = 0; j < 5; j++) {
-				this.elements.push(new Battle.BackgroundParticle(-1500 + j * 600 - 200 * i, -2000 + i * 400 + 300 * j));
-			}
-		}
-		this.elements.push(new Battle.Element(SpritePack.Battle.Sprites.AVATAR, canvasWidth - 250, canvasHeight / 2));//avatar
-		this.elements.push(new Battle.Element(SpritePack.Battle.Sprites.AVATAR_BAD_GUY, 250, canvasHeight / 2));//avatar
+		this.playerSequence.addAnimation(SpritePack.Fight.Sprites.PLAYER_INTRO);
+		this.playerSequence.addAnimation(SpritePack.Fight.Sprites.PLAYER_DODGE);
+		this.playerSequence.addAnimation(SpritePack.Fight.Sprites.PLAYER_FORK);
+		this.playerSequence.addAnimation(SpritePack.Fight.Sprites.PLAYER_HIT);
+		this.playerSequence.addAnimation(SpritePack.Fight.Sprites.PLAYER_FORK);
 
-		CE.Battle.player_hit_points.start(5, 3, -Math.PI * 100 / 180, 45 * Math.PI / 180, 1, 0.8);
-		CE.Battle.opponent_hit_points.start(5, 3, -Math.PI * 80 / 180, 45 * Math.PI / 180, 1, 0.8);
+		this.opponentSequence.addAnimation(SpritePack.Fight.Sprites.OPPONENT_INTRO);
+		this.opponentSequence.addAnimation(SpritePack.Fight.Sprites.OPPONENT_FORK);
+		this.opponentSequence.addAnimation(SpritePack.Fight.Sprites.OPPONENT_HIT);
+		this.opponentSequence.addAnimation(SpritePack.Fight.Sprites.OPPONENT_FORK);
+		this.opponentSequence.addAnimation(SpritePack.Fight.Sprites.OPPONENT_DODGE);
+
+		this.elements.push(this.playerSequence);//avatar
+		this.elements.push(this.opponentSequence);//avatar
+
 	},
 	stopBattle: function () {
 		CE.gameState = CE.GameState.FARMING;
 		CE.mapInvalidated = true;
 	},
 	update: function () {
-		this.breathTransition.updateProgress();
-		this.auraTransition.updateProgress();
-		this.playerTransition.updateProgress();
-		this.weaponTransition.updateProgress();
-		this.explosion.update();
-		this.player_hit_points.update();
-		this.opponent_hit_points.update();
+		if (CE.Battle.fightPhase == CE.Battle.FightPhase.INTRODUCTION) {
+			this.breathTransition.updateProgress();
+			this.auraTransition.updateProgress();
+			this.playerTransition.updateProgress();
+			this.weaponTransition.updateProgress();
+		}
 		for (var i = 0; i < this.elements.length; i++) {
 			this.elements[i].update();
 		}
@@ -103,15 +93,14 @@ CrymeEngine.Battle = {
 			this.update();
 			CE.canvas.animation.context.translate(Math.random() * 5, Math.random() * 5);
 			CE.canvas.animation.context.scale(1.02, 1.02);
-			CE.canvas.animation.context.drawImage(this.background.image, -10, -10);
+			if (CE.Battle.fightPhase == CE.Battle.FightPhase.INTRODUCTION) {
+				CE.canvas.animation.context.drawImage(this.background.image, -10, -10);
+			}
 
 			CE.canvas.animation.context.globalAlpha = 1;//vu que l'opacité est modifié par les particules
 			for (var i = 0; i < this.elements.length; i++) {
 				this.elements[i].draw();
 			}
-			this.explosion.draw();
-			this.player_hit_points.draw();
-			this.opponent_hit_points.draw();
 		}
 	}
 };
