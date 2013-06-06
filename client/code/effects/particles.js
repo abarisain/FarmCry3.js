@@ -21,6 +21,11 @@ function ParticlesEmitter(sprite, x, y, growth, amountMax, lifetime) {
 
 ParticlesEmitter.prototype = {
 	constructor: ParticlesEmitter,
+	/**
+	 @param {float} speed
+	 @param {float] angle rad
+	 	@param {float} angleDelta
+	 */
 	start: function (speed, angle, angleDelta) {
 		this.speed = speed;
 		this.angle = angle;

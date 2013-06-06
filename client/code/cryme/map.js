@@ -98,24 +98,6 @@ var Map = {
 		//TODO à vérifier
 		return this.tiles[col + (lineSize - 1 - line) * (lineSize)];
 	},
-	getMapItem: function (col, line) {
-		for (var i = 0; i < this.mapItems.length; i++) {
-			if (this.mapItems[i].match(col, line)) {
-				return this.mapItems[i];
-				break;
-			}
-		}
-		return null;
-	},
-	//bientôt useless
-	removeMapItem: function (col, line) {
-		for (var key in this.mapItems) {
-			if (this.mapItems[key].match(col, line)) {
-				this.mapItems.remove(key);
-				break;
-			}
-		}
-	},
 	drawBackground: function () {
 		CE.canvas.map.context.fillStyle = "#f9f9f9";
 		CE.canvas.map.context.fillRect(this.rect.x, this.rect.y, this.rect.dx, this.rect.dy);

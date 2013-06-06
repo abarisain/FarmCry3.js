@@ -5,6 +5,7 @@ CrymeEngine.Battle = {
 	auraTransition: {},
 	playerTransition: {},
 	weaponTransition: {},
+	explosion: null,
 	initialized: false,
 	init: function (weaponSprite) {
 		this.background = SpritePack.Battle.Sprites.BACKGROUND;
@@ -24,6 +25,9 @@ CrymeEngine.Battle = {
 		this.weaponTransition = new Transition(0, 1, 15, function () {
 			CE.Battle.weaponTransition.start(Transition.Direction.OUT);
 		});
+		this.explosion = new ParticlesEmitter(SpritePack.Effects.Sprites.FIRE, canvasWidth / 2 - 350, 270, 2, 600, 30);
+		this.explosion.scaleDelta = 2;
+		this.explosion.start(10, Math.PI * 33 / 180, 0);
 		this.elements = [];
 		for (var i = 0; i < 4; i++) {
 			for (var j = 0; j < 5; j++) {
@@ -47,6 +51,7 @@ CrymeEngine.Battle = {
 		this.auraTransition.updateProgress();
 		this.playerTransition.updateProgress();
 		this.weaponTransition.updateProgress();
+		this.explosion.update();
 		for (var i = 0; i < this.elements.length; i++) {
 			this.elements[i].update();
 		}
@@ -57,6 +62,7 @@ CrymeEngine.Battle = {
 			CE.canvas.animation.context.translate(Math.random() * 5, Math.random() * 5);
 			CE.canvas.animation.context.scale(1.02, 1.02);
 			CE.canvas.animation.context.drawImage(this.background.image, -10, -10);
+			this.explosion.draw();
 			for (var i = 0; i < this.elements.length; i++) {
 				this.elements[i].draw();
 			}
