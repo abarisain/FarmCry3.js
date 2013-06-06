@@ -50,7 +50,7 @@ MapItems.Cloud.prototype.rain = function () {
 	this.raining = true;
 	this.transition.start(Transition.Direction.IN, false);
 	this.transitionThunder.start(Transition.Direction.IN, true);
-	this.emitterRain.start(5, 1 / 2 * Math.PI + Math.PI * 3 / 180, 0);
+	this.emitterRain.start(5, 0, 1 / 2 * Math.PI + Math.PI * 3 / 180, 0);
 }
 
 MapItems.Cloud.prototype.draw = function () {

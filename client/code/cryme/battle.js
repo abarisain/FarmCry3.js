@@ -24,12 +24,14 @@ CrymeEngine.Battle = {
 		this.playerTransition.start(Transition.Direction.OUT, true);
 		this.weaponTransition = new Transition(0, 1, 15, function () {
 			CE.Battle.weaponTransition.start(Transition.Direction.OUT);
-			/*if (!CE.Battle.explosion.started) {
-			 CE.Battle.explosion.start(6, -Math.PI * 140 / 180, 0, 0.5, 1);
-			 }*/
+			if (!CE.Battle.explosion.started) {
+				CE.Battle.explosion.start(5, 3, -Math.PI * 90 / 180, 45 * Math.PI / 180, 1, 0.8);
+			}
 		});
-		this.explosion = new ParticlesEmitter(SpritePack.Effects.Sprites.FIRE, canvasWidth / 2 - 360, 260, 1, 300, 240);
-		this.explosion.gravity = 0.05;
+		this.explosion = new ParticlesEmitter(SpritePack.Battle.Sprites.HIT_POINT, canvasWidth / 2 - 40, canvasHeight / 2 - 120, 5, 30, 600);
+		this.explosion.gravity = -0.089;
+		this.explosion.scatteringX = 20;
+		this.explosion.scatteringY = 20;
 		this.elements = [];
 		for (var i = 0; i < 4; i++) {
 			for (var j = 0; j < 5; j++) {
@@ -61,10 +63,11 @@ CrymeEngine.Battle = {
 			CE.canvas.animation.context.scale(1.02, 1.02);
 			CE.canvas.animation.context.drawImage(this.background.image, -10, -10);
 
-			//CE.canvas.animation.context.globalAlpha = 1;//vu que l'opacité est modifié par les particules
+			CE.canvas.animation.context.globalAlpha = 1;//vu que l'opacité est modifié par les particules
 			for (var i = 0; i < this.elements.length; i++) {
 				this.elements[i].draw();
 			}
+			this.explosion.draw();
 		}
 	}
 };
