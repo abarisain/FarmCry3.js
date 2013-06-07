@@ -33,7 +33,6 @@ CrymeEngine.hud = {
 	},
 	panels: {
 		lifebar: null,
-		tray: null,
 		market: null,
 		inventory: null
 	},
@@ -60,19 +59,6 @@ CrymeEngine.hud = {
 		});
 		CE.hud.panels.lifebar.addChild(posText);
 		this.rootHudElement.addChild(CE.hud.panels.lifebar);
-
-		//Time and notifications (tray)
-		CE.hud.panels.tray = new HudElement("tray", "time", 159, 61, 0, 0, HudElement.Anchors.TOP_RIGHT, true);
-		var timeText = new HudElements.Text("time_text");
-		timeText.horizontalMargin = -20;
-		timeText.verticalMargin = 18;
-		timeText.anchor = HudElement.Anchors.TOP_RIGHT;
-		timeText.setTextFunction(function () {
-			var currentTime = new Date();
-			return currentTime.getHours() + ':' + currentTime.getSeconds();
-		});
-		CE.hud.panels.tray.addChild(timeText);
-		this.rootHudElement.addChild(CE.hud.panels.tray);
 
 		var marketButton = new HudElements.Button(100, 50, 150, 0, "Market", HudElement.Anchors.TOP_LEFT, "#fff");
 		marketButton.onClick = (function () {
@@ -172,13 +158,11 @@ CrymeEngine.hud = {
 	events: {
 		showFilter: function (name) {
 			CE.hud.panels.lifebar.visible = false;
-			CE.hud.panels.tray.visible = false;
 			CE.hud.rootHudElement.viewbag.filter_header.visible = true;
 			CE.hud.rootHudElement.viewbag.filter_text.setText(name);
 		},
 		removeFilter: function () {
 			CE.hud.panels.lifebar.visible = true;
-			CE.hud.panels.tray.visible = true;
 			CE.hud.rootHudElement.viewbag.filter_header.visible = false;
 			CE.hud.rootHudElement.viewbag.filter_text.setText('No filter');
 		}
