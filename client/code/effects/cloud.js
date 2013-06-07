@@ -38,8 +38,8 @@ MapItems.Cloud.prototype.move = function (deltaCol, deltaLine) {
 }
 
 MapItems.Cloud.prototype.update = function () {
-	this.x = this.movement.startPosition.x + (this.movement.finalPosition.x - this.movement.startPosition.x) * CE.Weather.movementTransition.progress;
-	this.y = this.movement.startPosition.y + (this.movement.finalPosition.y - this.movement.startPosition.y) * CE.Weather.movementTransition.progress;
+	this.x = this.movement.startPosition.x + (this.movement.finalPosition.x - this.movement.startPosition.x) * CE.Environment.movementTransition.progress;
+	this.y = this.movement.startPosition.y + (this.movement.finalPosition.y - this.movement.startPosition.y) * CE.Environment.movementTransition.progress;
 	this.updateImageCoord();
 	this.transition.updateProgress();
 	this.transitionThunder.updateProgress();

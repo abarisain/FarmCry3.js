@@ -98,7 +98,7 @@ CrymeEngine.keyboard = {
 		CE.hud.chat.append(messageData);
 		switch (event.keyCode) {
 			case CE.keyboard.Keys.ESCAPE.code:
-				if(CE.hud.rootHudElement != null)
+				if (CE.hud.rootHudElement != null)
 					CE.hud.rootHudElement.onEscapeKeyPressed();
 				break;
 			case CE.keyboard.Shortcuts.CHAT.code:
@@ -132,10 +132,10 @@ CrymeEngine.keyboard = {
 				CE.keyboard.showKeyMap = !CE.keyboard.showKeyMap;
 				break;
 			case CE.keyboard.Shortcuts.NATURAL_TORNADO.code:
-				CE.Weather.addTornado(Map.player.col, Map.player.line);
+				CE.Environment.addTornado(Map.player.col, Map.player.line);
 				break;
 			case CE.keyboard.Shortcuts.NATURAL_RAIN.code:
-				CE.Weather.startRain();
+				CE.Environment.startRain();
 				break;
 			case CE.keyboard.Shortcuts.ATTACK_FORK.code:
 				CE.gameState = CE.GameState.BATTLE;

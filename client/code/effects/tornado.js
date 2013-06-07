@@ -10,8 +10,8 @@ MapItems.Tornado = function (col, line) {
 	this.transition.start(Transition.Direction.IN);
 	var tornado = this;//variable moche pour la fonction suivante
 	this.movementTransition = new Transition(0, 1, 1200, function () {
-		CE.Weather.removeTornado(tornado);
-	})
+		CE.Environment.remove(this);
+	}).bind(this);
 	this.movementTransition.start(Transition.Direction.IN);
 }
 

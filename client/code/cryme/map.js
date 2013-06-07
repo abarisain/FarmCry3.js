@@ -44,7 +44,7 @@ var Map = {
 		for (var key in this.mapItems) {
 			this.mapItems[key].checkVisibility();
 		}
-		CE.Weather.refreshWeatherVisibility();
+		CE.Environment.refreshWeatherVisibility();
 	},
 	addPlayer: function (player) {
 		this.removePlayer(player.nickname);

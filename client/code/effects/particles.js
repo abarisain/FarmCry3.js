@@ -20,6 +20,7 @@ function ParticlesEmitter(sprite, x, y, growth, amountMax, lifetime) {
 	this.scaleDelta = 0;//delta de taille pour chaque element
 	this.gravity = 0;
 	this.rotation = 1 * Math.PI / 180;
+	this.visible = true;
 }
 
 ParticlesEmitter.prototype = {
@@ -89,11 +90,13 @@ ParticlesEmitter.prototype = {
 		}
 	},
 	draw: function (maxAlpha) {
-		CE.canvas.animation.context.translate(this.x, this.y);
-		for (var i = 0; i < this.particles.length; i++) {
-			this.particles[i].draw(this.sprite, maxAlpha);
+		if (this.visible) {
+			CE.canvas.animation.context.translate(this.x, this.y);
+			for (var i = 0; i < this.particles.length; i++) {
+				this.particles[i].draw(this.sprite, maxAlpha);
+			}
+			CE.canvas.animation.context.translate(-this.x, -this.y);
 		}
-		CE.canvas.animation.context.translate(-this.x, -this.y);
 	}
 };
 

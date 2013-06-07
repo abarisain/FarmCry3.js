@@ -35,6 +35,7 @@ GameState = {
 	updateTileOwner: function (data, col, line) {
 		var tile = Map.getTile(col, line);
 		tile.updateOwner(data);
+		CE.Environment.addSmoke(col, line);
 	},
 	/** Add, update or delete growingCrop
 	 * @param {GrowingCrop} data

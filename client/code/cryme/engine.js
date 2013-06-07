@@ -165,7 +165,7 @@ var CrymeEngine = {
 
 			Map.drawAnimation();
 			if (CE.displayType == CE.DisplayType.STANDARD) {
-				CE.Weather.draw();
+				CE.Environment.draw();
 			}
 
 			CrymeEngine.canvas.animation.context.restore();
@@ -215,7 +215,7 @@ var CrymeEngine = {
 	},
 	Update: {
 		Animation: function () {
-			CE.Weather.update();
+			CE.Environment.update();
 		},
 		MainLoop: function () {
 			if (!CrymeEngine.pauseRendering) {
@@ -454,7 +454,7 @@ function CreateMap() {
 	Map.addPlayer(tmpFarmer);
 
 	Map.initMap();
-	CE.Weather.init();
+	CE.Environment.init();
 
 	CE.transitionMapCreation = new Transition(0, 1, 80, CrymeEngine.onLoadingAnimationFinished)
 	CE.transitionMapCreation.smoothing = true;
