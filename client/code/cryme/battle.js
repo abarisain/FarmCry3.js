@@ -103,6 +103,9 @@ CrymeEngine.Battle = {
 			CE.canvas.animation.context.scale(1.02, 1.02);
 			if (CE.Battle.fightPhase == CE.Battle.FightPhase.INTRODUCTION) {
 				CE.canvas.animation.context.drawImage(this.background.image, -10, -10);
+			} else {
+				CE.canvas.animation.context.fillStyle = '#000000';
+				CE.canvas.animation.context.fillRect(-10, -10, canvasWidth, canvasHeight);
 			}
 
 			CE.canvas.animation.context.globalAlpha = 1;//vu que l'opacité est modifié par les particules
