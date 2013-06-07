@@ -226,6 +226,26 @@ var EventManager = {
 				});
 				return true;
 			},
+			addHealth: function (farmer, health) {
+				if (health == 0)
+					return true;
+				if (health < 0)
+					return false;
+				farmer.health = Math.min(100, farmer.health + health);
+				NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.healthUpdated", {
+					health: farmer.health
+				});
+				return true;
+			},
+			substractHealth: function (farmer, health) {
+				if (health == 0)
+					return true;
+				farmer.health = Math.max(0, farmer.health - health);
+				NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.healthUpdated", {
+					health: farmer.health
+				});
+				return true;
+			},
 			buyCrop: function (farmer, cropType) {
 				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
 				if (targetTile.isOwnedBy(farmer) && !targetTile.hasGrowingCrop() && !targetTile.hasBuilding()) {
@@ -316,6 +336,45 @@ var EventManager = {
 					return true;
 				}
 				return false;
+			},
+			takeCurrentTile: function (farmer) {
+				// If you attack a tile with a building on it, you will (read not implemented yet) inherit the building and what's in it
+				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
+				if(targetTile.isNeutral()) {
+					this.changeTileOwner(targetTile, farmer);
+				} else if(!targetTile.isOwnedBy(farmer)) {
+					var healthLossMine = 10 + Math.ceil(10 * Math.random()) * 5;
+					var healthLossTheirs = 10 + Math.ceil(10 * Math.random()) * 5;
+					this.substractHealth(farmer, healthLossMine);
+					this.substractHealth(targetTile.owner, healthLossTheirs);
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.launchBattle", {
+						health_loss_mine: healthLossMine,
+						health_loss_theirs: healthLossTheirs
+					});
+					NetworkEngine.clients.getConnectionForFarmer(targetTile.owner).send("player.launchBattle", {
+						health_loss_mine: healthLossTheirs,
+						health_loss_theirs: healthLossMine
+					});
+
+					// If the ennemy died and we DID NOT die, we won
+					if(targetTile.owner.isDead() && !farmer.isDead()) {
+						this.changeTileOwner(targetTile, farmer);
+					}
+				}
+				return true;
+			},
+			changeTileOwner: function (tile, farmer) {
+				// Take the building/growingCrop too, but destroy any storedCrop
+				tile.storedCrops.forEach(function (tileStoredCrop) {
+					GameState.board.removeStoredCrop(tileStoredCrop);
+				});
+				tile.storedCrops.length = 0; // According to the spec, clears the array
+				tile.owner = farmer;
+				NetworkEngine.clients.broadcast("game.tileOwnerUpdated", {
+					owner: tile.owner.nickname,
+					col: tile.position.x,
+					line: tile.position.y
+				});
 			},
 
 			/**

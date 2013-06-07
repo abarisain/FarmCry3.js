@@ -23,6 +23,9 @@ function Farmer(nickname, email, password) {
 
 Farmer.prototype = {
 	constructor: Farmer,
+	isDead: function () {
+		return this.health == 0;
+	},
 	getSmallFarmer: function () {
 		var tmpFarmer = this.getMinimalFarmer();
 		tmpFarmer.money = this.money;
