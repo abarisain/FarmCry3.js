@@ -12,10 +12,15 @@ MapItems.TileItems.Crop.prototype.showInformation = function () {
 	this.informations.visible = true;
 	switch (CE.filterType) {
 		case CE.FilterType.HEALTH:
-			this.informations.value = this.data.time_left / 100;
+			this.informations.value = this.data.time_left / 10;
 			break;
 		case CE.FilterType.MATURITY:
-			this.informations.value = this.data.time_left / 100;
+			if (this.data.harvested_quantity > 0) {
+				this.informations.value = 100;
+			} else {
+				var maturationTime = GameState.crops[this.type.codename].maturation_time;
+				this.informations.value = (maturationTime - this.data.time_left) / maturationTime * 100;
+			}
 			break;
 		default:
 			this.informations.value = 0;
