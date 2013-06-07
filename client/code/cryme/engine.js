@@ -336,7 +336,7 @@ var CrymeEngine = {
 						CrymeEngine.movingMap = true;
 					} else {
 						//sans le mode debug, le clic droit arrose
-						Map.player.waters();
+						Map.player.fertilizes();
 					}
 				}
 			}
