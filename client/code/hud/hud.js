@@ -1,7 +1,6 @@
 CrymeEngine.hud = {
 	textures: {
 		life: null,
-		time: null,
 		popup: null,
 		popup_important: null,
 		inventory: null,
@@ -19,6 +18,7 @@ CrymeEngine.hud = {
 		filter_maturity: null,
 		filter_health: null,
 		filter_storage: null,
+		filters_enable: null,
 		market_barn: null,
 		market_silo: null,
 		market_cold_storage: null,
@@ -28,6 +28,7 @@ CrymeEngine.hud = {
 		progressbar_background: null,
 		progressbar_green: null,
 		progressbar_red: null,
+		topbar: null,
 		book: null,
 		coin: null
 	},
@@ -39,7 +40,7 @@ CrymeEngine.hud = {
 	init: function () {
 		this.rootHudElement.resize();
 		//Lifebar
-		CE.hud.panels.lifebar = new HudElement("lifebar", "life", 317, 124, 0, 0, HudElement.Anchors.TOP_LEFT, true);
+		CE.hud.panels.lifebar = new HudElement("lifebar", "life", 201, 100, -10, 0, HudElement.Anchors.TOP_LEFT, true);
 		CE.hud.panels.lifebar.onClick = (function () {
 			if (CE.hud.panels.inventory == null) {
 				CE.hud.panels.inventory = HudElements.Book.Premade.Inventory();
@@ -48,10 +49,10 @@ CrymeEngine.hud = {
 				CE.hud.panels.inventory.visible = true;
 			}
 		}).bind(this);
-		CE.hud.panels.lifebar.addChild(new HudElement("money_icon", "coin", 20, 23, 16, 120, HudElement.Anchors.TOP_LEFT, false));
+		CE.hud.panels.lifebar.addChild(new HudElement("money_icon", "coin", 20, 23, 23, 88, HudElement.Anchors.TOP_LEFT, false));
 		var posText = new HudElements.Text("position_text");
-		posText.horizontalMargin = 145;
-		posText.verticalMargin = 16;
+		posText.horizontalMargin = 115;
+		posText.verticalMargin = 24;
 		posText.setTextFunction(function () {
 			if (GameState.player == null)
 				return 0;
