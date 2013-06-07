@@ -206,11 +206,20 @@ CrymeEngine.hud.chat = {
 		LOCAL: 2
 	},
 	divs: {
+		root: null,
 		log: null,
 		input: null,
 		send: null
 	},
+	toggleVisibility: function (visible) {
+		if(visible) {
+			this.divs.root.style.display = null;
+		} else {
+			this.divs.root.style.display = "none";
+		}
+	},
 	init: function () {
+		this.divs.root = document.getElementById("hud_chat");
 		this.divs.log = document.getElementById("hud_chat_messages");
 		this.divs.input = document.getElementById("hud_chat_message");
 		this.divs.send = document.getElementById("hud_chat_send");

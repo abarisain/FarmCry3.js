@@ -15,6 +15,7 @@ CrymeEngine.Battle = {
 	},
 	fightPhase: 0,
 	init: function (weaponSprite) {
+		CE.hud.chat.toggleVisibility(false);
 		this.fightPhase = CE.Battle.FightPhase.INTRODUCTION;
 		this.background = SpritePack.Battle.Sprites.BACKGROUND;
 		this.breathTransition = new Transition(0.9, 1.1, 30, function () {
@@ -80,6 +81,7 @@ CrymeEngine.Battle = {
 
 	},
 	stopBattle: function () {
+		CE.hud.chat.toggleVisibility(true);
 		CE.gameState = CE.GameState.FARMING;
 		CE.mapInvalidated = true;
 	},
