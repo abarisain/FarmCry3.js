@@ -22,8 +22,9 @@ networkEngine.subsystems.player = {
 		}
 	},
 	events: {
+
 		connected: function (data) {
-			var tmpPlayer = new Farmer();
+			var tmpPlayer = new LogicItems.Farmer();
 			tmpPlayer.initFromFarmer(data.farmer);
 			GameState.addPlayer(tmpPlayer);
 		},
@@ -49,11 +50,14 @@ networkEngine.subsystems.player = {
 		 this method add, update or remove a building
 		 */
 		buildingUpdated: function (data) {
-			Map.network.buildingUpdated(data.building, data.col, data.line);
+			GameState.updateBuilding(data.building, data.col, data.line);
 		},
 		moneyUpdated: function (data) {
 			if (GameState.player != null)
 				GameState.player.money = data.money;
+		},
+		launchBattle: function (data) {
+			CE.Event.launchBattle(data);
 		}
 	}
 };
@@ -64,6 +68,8 @@ networkEngine.subsystems.game = {
 			initialData = data;
 			networkEngine.onLoadingStarted();
 			initialDataLoaded = true;
+			colSize = data.col_size;
+			lineSize = data.line_size;
 			GameState.buildings = data.buildings;
 			GameState.crops = data.crops;
 			GameState.weapons = data.weapons;
@@ -72,12 +78,15 @@ networkEngine.subsystems.game = {
 			currentLoadingCount++;
 			console.log("Initial data ok");
 		},
+		tileOwnerUpdated: function (data) {
+			GameState.updateTileOwner(data, data.col, data.line);
+		},
 		/**
 		 @param {array} data
 		 */
 		tileDataUpdated: function (data) {
 			for (var i = 0; i < data.tiles.length; i++) {
-				Map.network.tileUpdated(data.tiles[i], data.tiles[i].position.col, data.tiles[i].position.line);
+				GameState.updateTile(data.tiles[i], data.tiles[i].col, data.tiles[i].line);
 			}
 		},
 		error: function (data) {
@@ -91,7 +100,7 @@ networkEngine.subsystems.game = {
 		 this method add, update or remove a growingCrop depending on the data.growingCrop value
 		 */
 		growingCropUpdated: function (data) {
-			Map.network.growingCropUpdated(data.growingCrop, data.col, data.line);
+			GameState.updateGrowingCrop(data.growingCrop, data.col, data.line);
 		}
 	}
 };

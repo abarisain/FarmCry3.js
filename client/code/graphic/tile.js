@@ -27,8 +27,16 @@ MapItems.Tile.prototype.init = function () {
 };
 
 MapItems.Tile.prototype.updateData = function (data) {
-	this.data = data;
+	this.data.fertility = data.fertility;
+	this.data.humidity = data.humidity;
 	this.updateImage();
+	if (CE.displayType == CE.DisplayType.INFORMATION) {
+		this.showInformation();
+	}
+};
+
+MapItems.Tile.prototype.updateOwner = function (data) {
+	this.data.owner = data.owner;
 	if (CE.displayType == CE.DisplayType.INFORMATION) {
 		this.showInformation();
 	}
@@ -39,7 +47,7 @@ MapItems.Tile.prototype.showInformation = function () {
 		case CE.FilterType.OWNER:
 			if (this.data.owner == 'dummy') {
 				this.infoColor.copyColor(ColorHelper.Templates.WHITE);
-			} else if (this.data.owner == GameState.player.name) {
+			} else if (this.data.owner == GameState.player.nickname) {
 				this.infoColor.copyColor(ColorHelper.Templates.ORANGE);
 			} else {
 				this.infoColor.copyColor(ColorHelper.Templates.RED);

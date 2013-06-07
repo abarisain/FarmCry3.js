@@ -231,6 +231,11 @@ var CrymeEngine = {
 		}
 	},
 	Event: {
+		launchBattle: function (data) {
+			CE.gameState = CE.GameState.BATTLE;
+			CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_FORK);
+			CE.mapInvalidated = true;
+		},
 		showFilterType: function () {
 			CE.displayType = CE.DisplayType.INFORMATION;
 			CE.hud.events.showFilter(CE.filterType.name);

@@ -10,22 +10,9 @@ var Map = {
 	}),
 	transitionInformationDetailed: new Transition(0, 10, 10, function (transitionType) {
 	}),
-	network: {
-		growingCropUpdated: function (data, col, line) {
-			//TODO update this method
-			GameState.updateGrowingCrop(data, col, line);
-		},
-		buildingUpdated: function (data, col, line) {
-			//TODO update this method
-			GameState.updateBuilding(data, col, line);
-		},
-		tileUpdated: function (data, col, line) {
-			var tile = Map.getTile(col, line);
-			tile.updateData(data);
-		}
-	},
 	init: function (data) {
 		this.loadTiles(data.tiles);
+
 		this.rect.x = -tileWidth / 2;
 		this.rect.y = -tileHeight / 2;
 		this.rect.dx = (tileWidth / 2) * (colSize + lineSize);

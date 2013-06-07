@@ -76,8 +76,8 @@ module.exports = {
 			//We tell the board that it is already 8 tiles long
 			//But it's not, since it's size_y is 0
 			//Grow Y will take care of filling everything without any hack this way
-			this.size.x = 8;
-			GameState.board.growY(8);
+			this.size.x = 12;
+			GameState.board.growY(12);
 		},
 		grow: function (x, y) {
 			this.growX(x);
