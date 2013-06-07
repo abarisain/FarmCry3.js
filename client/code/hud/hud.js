@@ -40,7 +40,7 @@ CrymeEngine.hud = {
 	init: function () {
 		this.rootHudElement.resize();
 		//Lifebar
-		CE.hud.panels.lifebar = new HudElement("lifebar", "life", 201, 100, -10, 0, HudElement.Anchors.TOP_LEFT, true);
+		CE.hud.panels.lifebar = new HudElement("lifebar", "life", 201, 100, 0, 0, HudElement.Anchors.TOP_LEFT, true);
 		CE.hud.panels.lifebar.onClick = (function () {
 			if (CE.hud.panels.inventory == null) {
 				CE.hud.panels.inventory = HudElements.Book.Premade.Inventory();
