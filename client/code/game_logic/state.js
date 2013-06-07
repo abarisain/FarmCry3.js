@@ -28,6 +28,14 @@ GameState = {
 			break;
 		}
 	},
+	updateTile: function (data, col, line) {
+		var tile = Map.getTile(col, line);
+		tile.updateData(data);
+	},
+	updateTileOwner: function (data, col, line) {
+		var tile = Map.getTile(col, line);
+		tile.updateOwner(data);
+	},
 	/** Add, update or delete growingCrop
 	 * @param {GrowingCrop} data
 	 * */

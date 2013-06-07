@@ -41,13 +41,15 @@ var NetworkModule = {
 
 			var tmpStoredCrops = [];
 			for (var i = 0; i < GameState.board.storedCrops.length; i++) {
-				if(GameState.board.storedCrops.owner != connection.farmer)
+				if (GameState.board.storedCrops.owner != connection.farmer)
 					continue;
 				tmpStoredCrops.push(GameState.board.storedCrops[i]);
 			}
 
 			connection.send("game.initialData", {
 				tiles: tmpTiles,
+				col_size: GameState.board.size.x,
+				line_size: GameState.board.size.y,
 				player_farmer: connection.farmer.getSmallFarmer(),
 				stored_crops: tmpStoredCrops,
 				online_farmers: tmpFarmers,
