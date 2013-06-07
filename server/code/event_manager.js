@@ -129,13 +129,15 @@ var EventManager = {
 		}
 
 		// Now that we're done with tiles, push the updates in a more efficient format
-		var smallUpdatedTiles = [];
-		updatedTiles.forEach(function (updatedTile) {
-			smallUpdatedTiles.push(updatedTile.getTickUpdateTile());
-		});
-		NetworkEngine.clients.broadcast("game.tileDataUpdated", {
-			tiles: smallUpdatedTiles
-		});
+		if(updatedTiles.length > 0) {
+			var smallUpdatedTiles = [];
+			updatedTiles.forEach(function (updatedTile) {
+				smallUpdatedTiles.push(updatedTile.getTickUpdateTile());
+			});
+			NetworkEngine.clients.broadcast("game.tileDataUpdated", {
+				tiles: smallUpdatedTiles
+			});
+		}
 
 		// Handle farmers
 		// Heal a little (if not in combat, if we handle that someday)
