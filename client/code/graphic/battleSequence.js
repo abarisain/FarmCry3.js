@@ -16,22 +16,24 @@ Battle.Sequence = function (x, y, eventEnd) {
 
 Battle.Sequence.prototype = {
 	constructor: Battle.Sequence,
-	addAnimation: function (animation) {
-		this.animations.push(animation);
-		this.frameCount += animation.frameCount;
+	addAnimation: function (sprite, damage) {
+		this.animations.push({sprite: sprite, damage: damage});
+		this.frameCount += sprite.sprite.frameCount;
 	},
 	update: function () {
 		this.hit_points.update();
 		if (this.started) {
-			this.currentFrame += this.animations[this.currentAnimation].frameSpeed;
-			if (this.currentFrame >= this.animations[this.currentAnimation].frameCount) {
+			this.currentFrame += this.animations[this.currentAnimation].sprite.frameSpeed;
+			if (this.currentFrame >= this.animations[this.currentAnimation].sprite.frameCount) {
 				this.currentAnimation++;
 				this.currentFrame = 0;
 				if (this.currentAnimation >= this.animations.length) {
 					this.eventEnd();
 					this.started = false;
 				} else {
-					this.hit_points.additionnalStart(Math.random() * 10);
+					if (this.animations[this.currentAnimation].damage > 0) {
+						this.hit_points.additionnalStart(this.animations[this.currentAnimation].damage);
+					}
 				}
 			}
 		}
@@ -39,7 +41,7 @@ Battle.Sequence.prototype = {
 	draw: function () {//cette fonction devras être override par les classes enfants
 		if (this.started) {
 			CE.canvas.animation.context.globalAlpha = 1;
-			this.animations[this.currentAnimation].draw(this.x, this.y);
+			this.animations[this.currentAnimation].sprite.draw(this.x, this.y);
 		}
 		this.hit_points.draw();
 	}

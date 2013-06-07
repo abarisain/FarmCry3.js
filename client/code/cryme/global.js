@@ -39,7 +39,8 @@ Options.Sound = {
 };
 
 Options.Gameplay = {
-	mapSpeed: 5
+	mapSpeed: 5,
+	fightRoundCount: 3
 };
 
 //graphic debug
