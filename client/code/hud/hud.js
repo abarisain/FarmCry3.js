@@ -35,7 +35,10 @@ CrymeEngine.hud = {
 	panels: {
 		lifebar: null,
 		market: null,
-		inventory: null
+		inventory: null,
+		rightbar: null,
+		filters_enable: null,
+		filter_buttons: []
 	},
 	init: function () {
 		this.rootHudElement.resize();
@@ -60,6 +63,16 @@ CrymeEngine.hud = {
 		});
 		CE.hud.panels.lifebar.addChild(posText);
 		this.rootHudElement.addChild(CE.hud.panels.lifebar);
+
+		CE.hud.panels.filters_enable = new HudElement("filter_button", "filters_enable", 99, 99, 0, 0, HudElement.Anchors.TOP_RIGHT, true);
+		CE.hud.panels.filters_enable.onClick = (function () {
+			if (CE.displayType == CE.DisplayType.STANDARD) {
+				CE.Event.changeFilterType(CE.FilterType.OWNER);
+			} else {
+				CE.Event.removeFilterType();
+			}
+		}).bind(this);
+		this.rootHudElement.addChild(CE.hud.panels.filters_enable);
 
 		var marketButton = new HudElements.Button(100, 50, 150, 0, "Market", HudElement.Anchors.TOP_LEFT, "#fff");
 		marketButton.onClick = (function () {
@@ -105,40 +118,52 @@ CrymeEngine.hud = {
 		this.rootHudElement.viewbag.filter_text = new HudElements.Text("No filter", HudElement.Anchors.CENTER, '#898989');
 		this.rootHudElement.viewbag.filter_header.addChild(this.rootHudElement.viewbag.filter_text);
 
-		var filter = new HudElement("filterOwner", "filter_owner", 32, 32, -20, -100, HudElement.Anchors.BOTTOM_CENTER, true);
+		var filter = new HudElement("filterOwner", "filter_owner", 32, 32, 100, -34, HudElement.Anchors.TOP_RIGHT, true);
 		filter.onClick = function () {
 			CE.Event.changeFilterType(CE.FilterType.OWNER);
 		}
+		filter.visible = false;
+		CE.hud.panels.filter_buttons.push(filter);
 		this.rootHudElement.addChild(filter);
 
-		filter = new HudElement("filterHumidity", "filter_humidity", 32, 32, -20, -60, HudElement.Anchors.BOTTOM_CENTER, true);
+		filter = new HudElement("filterHumidity", "filter_humidity", 32, 32, 140, -34, HudElement.Anchors.TOP_RIGHT, true);
 		filter.onClick = function () {
 			CE.Event.changeFilterType(CE.FilterType.HUMIDITY);
 		}
+		filter.visible = false;
+		CE.hud.panels.filter_buttons.push(filter);
 		this.rootHudElement.addChild(filter);
 
-		filter = new HudElement("filterFertility", "filter_fertility", 32, 32, -20, -20, HudElement.Anchors.BOTTOM_CENTER, true);
+		filter = new HudElement("filterFertility", "filter_fertility", 32, 32, 180, -34, HudElement.Anchors.TOP_RIGHT, true);
 		filter.onClick = function () {
 			CE.Event.changeFilterType(CE.FilterType.FERTILITY);
 		}
+		filter.visible = false;
+		CE.hud.panels.filter_buttons.push(filter);
 		this.rootHudElement.addChild(filter);
 
-		filter = new HudElement("filterMaturity", "filter_maturity", 32, 32, -20, 20, HudElement.Anchors.BOTTOM_CENTER, true);
+		filter = new HudElement("filterMaturity", "filter_maturity", 32, 32, 220, -34, HudElement.Anchors.TOP_RIGHT, true);
 		filter.onClick = function () {
 			CE.Event.changeFilterType(CE.FilterType.MATURITY);
 		}
+		filter.visible = false;
+		CE.hud.panels.filter_buttons.push(filter);
 		this.rootHudElement.addChild(filter);
 
-		filter = new HudElement("filterHealth", "filter_health", 32, 32, -20, 60, HudElement.Anchors.BOTTOM_CENTER, true);
+		filter = new HudElement("filterHealth", "filter_health", 32, 32, 260, -34, HudElement.Anchors.TOP_RIGHT, true);
 		filter.onClick = function () {
 			CE.Event.changeFilterType(CE.FilterType.HEALTH);
 		}
+		filter.visible = false;
+		CE.hud.panels.filter_buttons.push(filter);
 		this.rootHudElement.addChild(filter);
 
-		filter = new HudElement("filterStorage", "filter_storage", 32, 32, -20, 100, HudElement.Anchors.BOTTOM_CENTER, true);
+		filter = new HudElement("filterStorage", "filter_storage", 32, 32, 300, -34, HudElement.Anchors.TOP_RIGHT, true);
 		filter.onClick = function () {
 			CE.Event.changeFilterType(CE.FilterType.STORAGE_AVAILABLE);
 		}
+		filter.visible = false;
+		CE.hud.panels.filter_buttons.push(filter);
 		this.rootHudElement.addChild(filter);
 
 	},
@@ -161,11 +186,17 @@ CrymeEngine.hud = {
 			CE.hud.panels.lifebar.visible = false;
 			CE.hud.rootHudElement.viewbag.filter_header.visible = true;
 			CE.hud.rootHudElement.viewbag.filter_text.setText(name);
+			for(var i = 0; i < CE.hud.panels.filter_buttons.length; i++) {
+				CE.hud.panels.filter_buttons[i].visible = true;
+			}
 		},
 		removeFilter: function () {
 			CE.hud.panels.lifebar.visible = true;
 			CE.hud.rootHudElement.viewbag.filter_header.visible = false;
 			CE.hud.rootHudElement.viewbag.filter_text.setText('No filter');
+			for(var i = 0; i < CE.hud.panels.filter_buttons.length; i++) {
+				CE.hud.panels.filter_buttons[i].visible = false;
+			}
 		}
 	},
 	draw: function () {
