@@ -53,9 +53,7 @@ Tile.prototype = {
 	 @return {boolean}
 	 */
 	isOwnedBy: function (targetFarmer) {
-		// For the time being, just say yes.
-		return true;
-		//return (this.owner == targetFarmer);
+		return (this.owner == targetFarmer);
 	},
 
 	/**
