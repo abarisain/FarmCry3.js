@@ -15,7 +15,7 @@ module.exports = {
 	lastPersistDate: 0,
 	settings: {
 		inventorySize: 5, //Max items a farmer can carry
-		tickRate: 1000, //Time between ticks in mS
+		tickRate: 5000, //Time between ticks in mS
 		startMoney: 1000, //Still dollars
 		playerRefreshDelay: 1500,//Time in ms before the refresh of a player
 		//Here are the reference instances of the objects

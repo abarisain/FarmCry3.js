@@ -5,10 +5,8 @@ StoredCrop = require('./models/storedCrop');
 
 var EventManager = {
 	tick: function () {
-		for (var i = 0; i < GameState.farmers.length; i++) {
-			if (GameState.farmers[i].update()) {//return True if need to send new data
-			}
-		}
+		console.log("Event manager tick - " + Date.now());
+		
 		//Trigger all the time based events here
 		//Schedule the next tick. We don't use setInterval because the tick might change at anytime
 		setTimeout(EventManager.tick(), GameState.settings.tickRate);
