@@ -41,6 +41,8 @@ var NetworkModule = {
 
 			var tmpStoredCrops = [];
 			for (var i = 0; i < GameState.board.storedCrops.length; i++) {
+				if(GameState.board.storedCrops.owner != connection.farmer)
+					continue;
 				tmpStoredCrops.push(GameState.board.storedCrops[i]);
 			}
 

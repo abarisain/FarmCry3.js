@@ -38,7 +38,7 @@ module.exports = {
 		 */
 		addStoredCrop: function (storedCrop) {
 			this.storedCrops[storedCrop.id] = storedCrop;
-			NetworkEngine.clients.broadcast("game.storedCropUpdated", {
+			NetworkEngine.clients.getConnectionForFarmer(storedCrop.owner).send("game.storedCropUpdated", {
 				storedCrop: storedCrop.getSmallStoredCrop()
 			});
 		},
@@ -48,7 +48,7 @@ module.exports = {
 		 */
 		removeStoredCrop: function (storedCrop) {
 			delete this.storedCrops[storedCrop.id];
-			NetworkEngine.clients.broadcast("game.storedCropDeleted", {
+			NetworkEngine.clients.getConnectionForFarmer(storedCrop.owner).send("game.storedCropDeleted", {
 				id: storedCrop.id
 			});
 		},
