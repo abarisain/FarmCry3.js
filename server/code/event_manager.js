@@ -8,6 +8,8 @@ var EventManager = {
 		var tickStart = Date.now();
 		console.log("Event manager tick - " + tickStart);
 
+		// TODO : Add rain/Tornados
+
 		// Whither stored crops
 		var storedCrops = GameState.board.storedCrops; // faster lookup
 		var storedCrop;
@@ -104,12 +106,13 @@ var EventManager = {
 				Everything implied by any of these cases has already been taken care of
 				*/
 
-				// So now, make it more humid
+				// So now, make it more fertile over time
 				tileValueUpdated = false;
+				/* Todo : check if raining
 				if(tile.humidity < 1) {
 					tileValueUpdated = true;
 					tile.humidity = Math.min(1, tile.humidity + 0.01);
-				}
+				}*/
 				if(tile.fertility < tile.max_fertility) {
 					tileValueUpdated = true;
 					tile.fertility = Math.min(tile.max_fertility, tile.fertility + 0.01);
