@@ -69,8 +69,13 @@ networkEngine.subsystems.game = {
 			currentLoadingCount++;
 			console.log("Initial data ok");
 		},
+		/**
+		 @param {array} data
+		 */
 		tileDataUpdated: function (data) {
-			Map.network.growingCropUpdated(data.growingCrop, data.col, data.line);
+			for (var i = 0; i < data.tiles.length; i++) {
+				Map.network.tileUpdated(data.tiles[i], data.tiles[i].position.col, data.tiles[i].position.line);
+			}
 		},
 		error: function (data) {
 			if (data.title == null)

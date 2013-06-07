@@ -120,7 +120,7 @@ var EventManager = {
 				 }*/
 				if (tile.fertility < tile.max_fertility) {
 					tileValueUpdated = true;
-					tile.fertility = Math.min(tile.max_fertility, tile.fertility + 0.1);
+					tile.fertility = Math.min(tile.max_fertility, tile.fertility + 0.01);
 				}
 				if (tileValueUpdated && updatedTiles.indexOf(tile) <= 0) {
 					updatedTiles.push(tile);

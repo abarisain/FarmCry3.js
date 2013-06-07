@@ -1,7 +1,7 @@
 var diagramSizeX = 60;
 var diagramSizeY = 40;
 var diagramDeltaY = 10;
-var diagramDetailWidth = 150;
+var diagramDetailWidth = 250;
 
 MapItems.TileItemInfos = function (x, y) {
 	this.x = x;

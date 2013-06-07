@@ -11,21 +11,17 @@ var Map = {
 	transitionInformationDetailed: new Transition(0, 10, 10, function (transitionType) {
 	}),
 	network: {
-		growingCropUpdated: function (growingCrop, col, line) {
+		growingCropUpdated: function (data, col, line) {
 			//TODO update this method
-			GameState.updateGrowingCrop(growingCrop, col, line);
-			if (growingCrop != null) {
-				var tile = Map.getTile(col, line);
-				tile.sprite = SpritePack.Tiles.Sprites.SOIL;
-			}
+			GameState.updateGrowingCrop(data, col, line);
 		},
-		buildingUpdated: function (building, col, line) {
+		buildingUpdated: function (data, col, line) {
 			//TODO update this method
-			GameState.updateBuilding(building, col, line);
+			GameState.updateBuilding(data, col, line);
 		},
-		tileUpdated: function (tile, col, line) {
+		tileUpdated: function (data, col, line) {
 			var tile = Map.getTile(col, line);
-			tile.updateData(tile);
+			tile.updateData(data);
 		}
 	},
 	init: function (data) {

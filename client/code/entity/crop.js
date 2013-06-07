@@ -12,10 +12,10 @@ MapItems.TileItems.Crop.prototype.showInformation = function () {
 	this.informations.visible = true;
 	switch (CE.filterType) {
 		case CE.FilterType.HEALTH:
-			this.informations.value = this.data.growingCrop.health;
+			this.informations.value = this.data.time_left / 100;
 			break;
 		case CE.FilterType.MATURITY:
-			this.informations.value = this.data.growingCrop.maturity;
+			this.informations.value = this.data.time_left / 100;
 			break;
 		default:
 			this.informations.value = 0;
