@@ -18,10 +18,10 @@ var EventManager = {
 		// Whither stored crops
 		var storedCrops = GameState.board.storedCrops; // faster lookup
 		var storedCrop;
-		for(var key in storedCrops) {
+		for (var key in storedCrops) {
 			storedCrop = storedCrops[key];
 			// If there is time left and the stored crop is not on a tile with a building that stops withering
-			if(storedCrop.time_left > 0 && storedCrop.parent_tile != null && storedCrop.parent_tile.hasBuilding()
+			if (storedCrop.time_left > 0 && storedCrop.parent_tile != null && storedCrop.parent_tile.hasBuilding()
 				&& storedCrop.parent_tile.building.stops_withering) {
 				continue;
 			}
@@ -40,28 +40,28 @@ var EventManager = {
 		var targetCrop;
 		var updatedTiles = [];
 		var tileValueUpdated;
-		for(var y = 0; y < GameState.board.size.y; y++) {
-			for(var x = 0; x < GameState.board.size.x; x++) {
+		for (var y = 0; y < GameState.board.size.y; y++) {
+			for (var x = 0; x < GameState.board.size.x; x++) {
 				tile = GameState.board.tiles[y][x];
-				if(tile.getAliasableSelf() != tile) {
+				if (tile.getAliasableSelf() != tile) {
 					// Aliased tile, don't do anything
 					continue;
 				}
-				if(tile.hasBuilding()) {
+				if (tile.hasBuilding()) {
 					EventManager.subsystems.player.substractMoney(tile.owner, tile.building.price_tick);
 					// The stored crops are whithered somewhere else, stop processing this tile
 					continue;
 				}
-				if(tile.hasGrowingCrop()) {
+				if (tile.hasGrowingCrop()) {
 					// If it's rotten, there is nothing to do
-					if(!tile.growingCrop.rotten) {
+					if (!tile.growingCrop.rotten) {
 						// Decrease its life
 						tile.growingCrop.time_left--;
 
-						if(tile.growingCrop.time_left <= 0) {
+						if (tile.growingCrop.time_left <= 0) {
 							// Whoops, its life is over
 							// Was it already mature ?
-							if(tile.growingCrop.harvested_quantity > 0) {
+							if (tile.growingCrop.harvested_quantity > 0) {
 								// Boom, it's rotten now
 								tile.growingCrop.rotten = true;
 								tile.growingCrop.time_left = 0; // If we went < 0, should not happen but heh
@@ -84,18 +84,18 @@ var EventManager = {
 						// We need to check that again. Because time_left might have been changed by the maturation logic
 						// If it is still maturing, suck the tile's ressources
 						// No need to check for rottenness, since rotten means tha time_left equals 0
-						if(tile.growingCrop.time_left > 0) {
+						if (tile.growingCrop.time_left > 0) {
 							// Hey its still alive ! Let's suck some ressources
 							tileValueUpdated = false;
-							if(tile.humidity > 0) {
+							if (tile.humidity > 0) {
 								tileValueUpdated = true;
 								tile.humidity = Math.max(0, tile.humidity - 0.01);
 							}
-							if(tile.fertility > 0) {
+							if (tile.fertility > 0) {
 								tileValueUpdated = true;
 								tile.fertility = Math.max(0, tile.fertility - 0.01);
 							}
-							if(tileValueUpdated && updatedTiles.indexOf(tile) <= 0) {
+							if (tileValueUpdated && updatedTiles.indexOf(tile) <= 0) {
 								updatedTiles.push(tile);
 							}
 						}
@@ -104,32 +104,32 @@ var EventManager = {
 				}
 
 				/*
-				If we got here, the tile :
-					- Not aliased
-					- Does not have a building
-					- Does not have a growing crop
-				Everything implied by any of these cases has already been taken care of
-				*/
+				 If we got here, the tile :
+				 - Not aliased
+				 - Does not have a building
+				 - Does not have a growing crop
+				 Everything implied by any of these cases has already been taken care of
+				 */
 
 				// So now, make it more fertile over time
 				tileValueUpdated = false;
 				/* Todo : check if raining
-				if(tile.humidity < 1) {
+				 if(tile.humidity < 1) {
+				 tileValueUpdated = true;
+				 tile.humidity = Math.min(1, tile.humidity + 0.01);
+				 }*/
+				if (tile.fertility < tile.max_fertility) {
 					tileValueUpdated = true;
-					tile.humidity = Math.min(1, tile.humidity + 0.01);
-				}*/
-				if(tile.fertility < tile.max_fertility) {
-					tileValueUpdated = true;
-					tile.fertility = Math.min(tile.max_fertility, tile.fertility + 0.01);
+					tile.fertility = Math.min(tile.max_fertility, tile.fertility + 0.1);
 				}
-				if(tileValueUpdated && updatedTiles.indexOf(tile) <= 0) {
+				if (tileValueUpdated && updatedTiles.indexOf(tile) <= 0) {
 					updatedTiles.push(tile);
 				}
 			}
 		}
 
 		// Now that we're done with tiles, push the updates in a more efficient format
-		if(updatedTiles.length > 0) {
+		if (updatedTiles.length > 0) {
 			var smallUpdatedTiles = [];
 			updatedTiles.forEach(function (updatedTile) {
 				smallUpdatedTiles.push(updatedTile.getTickUpdateTile());
@@ -243,7 +243,7 @@ var EventManager = {
 					return false;
 				var oldHealth = farmer.health;
 				farmer.health = Math.min(100, farmer.health + health);
-				if(oldHealth != farmer.health) {
+				if (oldHealth != farmer.health) {
 					NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.healthUpdated", {
 						health: farmer.health
 					});
@@ -255,7 +255,7 @@ var EventManager = {
 					return true;
 				var oldHealth = farmer.health;
 				farmer.health = Math.max(0, farmer.health - health);
-				if(oldHealth != farmer.health) {
+				if (oldHealth != farmer.health) {
 					NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.healthUpdated", {
 						health: farmer.health
 					});
@@ -289,21 +289,21 @@ var EventManager = {
 					// Harvesting a rotten or non mature tile products nothing
 					// Note that a mature and non rotten growingCrop MUST be harvested and put in the player's inventory
 					// You can NOT delete it if it's viable
-					if(!targetTile.growingCrop.rotten && targetTile.growingCrop.harvested_quantity > 0) {
+					if (!targetTile.growingCrop.rotten && targetTile.growingCrop.harvested_quantity > 0) {
 						/*
-						If the inventory is full, abort the harvest and tell the user that it's inventory is full
-						Of course, even if the inventory is full, a rotten/non mature crop can be deleted.
-						*/
+						 If the inventory is full, abort the harvest and tell the user that it's inventory is full
+						 Of course, even if the inventory is full, a rotten/non mature crop can be deleted.
+						 */
 						var tmpStored = new StoredCrop(GameState.settings.crops[targetTile.growingCrop.codename],
 							farmer,
 							targetTile.growingCrop.harvested_quantity
 						);
 
-						if(!this.addToInventory(farmer, tmpStored)) {
+						if (!this.addToInventory(farmer, tmpStored)) {
 							return false; // If there is no room, then stop
 						}
 						GameState.board.addStoredCrop(tmpStored);
- 					}
+					}
 					targetTile.resetGrowingCrop();
 					NetworkEngine.clients.broadcast("game.growingCropUpdated", {
 						growingCrop: targetTile.hasGrowingCrop() ? targetTile.growingCrop : null,
@@ -356,9 +356,9 @@ var EventManager = {
 			takeCurrentTile: function (farmer) {
 				// If you attack a tile with a building on it, you will (read not implemented yet) inherit the building and what's in it
 				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
-				if(targetTile.isNeutral()) {
+				if (targetTile.isNeutral()) {
 					this.changeTileOwner(targetTile, farmer);
-				} else if(!targetTile.isOwnedBy(farmer)) {
+				} else if (!targetTile.isOwnedBy(farmer)) {
 					var healthLossMine = 10 + Math.ceil(10 * Math.random()) * 5;
 					var healthLossTheirs = 10 + Math.ceil(10 * Math.random()) * 5;
 					this.substractHealth(farmer, healthLossMine);
@@ -373,7 +373,7 @@ var EventManager = {
 					});
 
 					// If the ennemy died and we DID NOT die, we won
-					if(targetTile.owner.isDead() && !farmer.isDead()) {
+					if (targetTile.owner.isDead() && !farmer.isDead()) {
 						this.changeTileOwner(targetTile, farmer);
 					}
 				}
@@ -399,7 +399,7 @@ var EventManager = {
 			 */
 			addToInventory: function (farmer, storedCrop) {
 				var inventoryLength = farmer.inventory.length;
-				if(farmer.inventory.length >= GameState.settings.inventorySize) {
+				if (farmer.inventory.length >= GameState.settings.inventorySize) {
 					NetworkEngine.clients.broadcast("game.error", {
 						title: null,
 						message: "You do not have enough room in your inventory !"
@@ -407,13 +407,13 @@ var EventManager = {
 					return false;
 				}
 				var itemFound = false;
-				for(var i = 0; i < inventoryLength; i++) {
-					if(farmer.inventory[i].id === storedCrop.id) {
+				for (var i = 0; i < inventoryLength; i++) {
+					if (farmer.inventory[i].id === storedCrop.id) {
 						itemFound = true;
 						break;
 					}
 				}
-				if(itemFound)
+				if (itemFound)
 					return true;
 				farmer.inventory.push(storedCrop);
 				NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.inventoryItemAdded", {

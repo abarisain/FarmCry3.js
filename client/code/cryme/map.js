@@ -13,7 +13,7 @@ var Map = {
 	network: {
 		growingCropUpdated: function (growingCrop, col, line) {
 			//TODO update this method
-			GameState.updateGrowingCrop(GameState.addGrowingCrop(growingCrop, col, line));
+			GameState.updateGrowingCrop(growingCrop, col, line);
 			if (growingCrop != null) {
 				var tile = Map.getTile(col, line);
 				tile.sprite = SpritePack.Tiles.Sprites.SOIL;
@@ -21,7 +21,11 @@ var Map = {
 		},
 		buildingUpdated: function (building, col, line) {
 			//TODO update this method
-			GameState.updateBuilding(GameState.addBuilding(building, col, line));
+			GameState.updateBuilding(building, col, line);
+		},
+		tileUpdated: function (tile, col, line) {
+			var tile = Map.getTile(col, line);
+			tile.updateData(tile);
 		}
 	},
 	init: function (data) {
@@ -43,7 +47,6 @@ var Map = {
 		for (var i = 0; i < this.tiles.length; i++) {
 			this.tiles[i].init();
 		}
-		GameState.updateMapItems();//il faut bien le faire avant d'initialiser chaque element
 		for (var key in this.mapItems) {
 			this.mapItems[key].init();
 		}
@@ -97,6 +100,9 @@ var Map = {
 	getTile: function (col, line) {
 		//TODO à vérifier
 		return this.tiles[col + (lineSize - 1 - line) * (lineSize)];
+	},
+	getMapItemKey: function (col, line) {
+		return '_' + col + '_' + line;
 	},
 	drawBackground: function () {
 		CE.canvas.map.context.fillStyle = "#f9f9f9";
@@ -190,16 +196,15 @@ var Map = {
 			}
 		}
 		if (CE.filterType.mapItems) {
-			for (var i = 0; i < this.mapItems.length; i++) {
-				if (this.mapItems[i].match(coord.col, coord.line)) {
-					this.tileHighLighted.col = coord.col;
-					this.tileHighLighted.line = coord.line;
-					this.tileHighLighted.index = i;
-					if (i != exHighlighted) {
-						this.transitionInformationDetailed.start(Transition.Direction.IN, true);
-						CrymeEngine.mapInvalidated = true;
-					}
-					break;
+			var key = this.getMapItemKey(coord.col, coord.line);
+			var mapItem = this.mapItems[key];
+			if (mapItem != undefined) {
+				this.tileHighLighted.col = coord.col;
+				this.tileHighLighted.line = coord.line;
+				this.tileHighLighted.index = key;
+				if (key != exHighlighted) {
+					this.transitionInformationDetailed.start(Transition.Direction.IN, true);
+					CrymeEngine.mapInvalidated = true;
 				}
 			}
 		}

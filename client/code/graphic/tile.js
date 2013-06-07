@@ -15,14 +15,23 @@ MapItems.Tile.prototype.constructor = MapItems.Tile;
 
 MapItems.Tile.prototype.init = function () {
 	this.updateImage();
+	//TODO optimier ici en remplacement update par add
 	if (this.data.growingCrop != null) {
 		this.sprite = SpritePack.Tiles.Sprites.SOIL;
-		GameState.addGrowingCrop(this.data.growingCrop, this.col, this.line);
+		GameState.updateGrowingCrop(this.data.growingCrop, this.col, this.line);
 	}
 	if (this.data.building != null) {
-		GameState.addBuilding(this.data.building, this.col, this.line);
+		GameState.updateBuilding(this.data.building, this.col, this.line);
 	}
 	this.updateImageCoord();
+};
+
+MapItems.Tile.prototype.updateData = function (data) {
+	this.data = data;
+	this.updateImage();
+	if (CE.displayType == CE.DisplayType.INFORMATION) {
+		this.showInformation();
+	}
 };
 
 MapItems.Tile.prototype.showInformation = function () {

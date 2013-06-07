@@ -231,6 +231,13 @@ var CrymeEngine = {
 		}
 	},
 	Event: {
+		showFilterType: function () {
+			CE.displayType = CE.DisplayType.INFORMATION;
+			CE.hud.events.showFilter(CE.filterType.name);
+			Map.tileHighLighted.index = -1;
+			Map.showMapInformations();
+			CrymeEngine.mapInvalidated = true;
+		},
 		changeFilterType: function (filterType) {
 			if (CE.displayType == CE.DisplayType.STANDARD) {
 				CE.displayType = CE.DisplayType.INFORMATION;

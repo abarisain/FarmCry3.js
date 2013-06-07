@@ -69,6 +69,9 @@ networkEngine.subsystems.game = {
 			currentLoadingCount++;
 			console.log("Initial data ok");
 		},
+		tileDataUpdated: function (data) {
+			Map.network.growingCropUpdated(data.growingCrop, data.col, data.line);
+		},
 		error: function (data) {
 			if (data.title == null)
 				data.title = "Error"

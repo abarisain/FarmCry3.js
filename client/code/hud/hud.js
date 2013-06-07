@@ -76,7 +76,7 @@ CrymeEngine.hud = {
 		CE.hud.panels.filters_enable = new HudElement("filter_button", "filters_enable", 99, 99, 0, 0, HudElement.Anchors.TOP_RIGHT, true);
 		CE.hud.panels.filters_enable.onClick = (function () {
 			if (CE.displayType == CE.DisplayType.STANDARD) {
-				CE.Event.changeFilterType(CE.FilterType.OWNER);
+				CE.Event.showFilterType();
 			} else {
 				CE.Event.removeFilterType();
 			}
