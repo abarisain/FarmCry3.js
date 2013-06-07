@@ -100,6 +100,7 @@ Tile.prototype = {
 	},
 	getTickUpdateTile: function () {
 		var tmpTile = {};
+		tmpTile.position = {};
 		tmpTile.position.col = this.position.x;
 		tmpTile.position.line = this.position.y;
 		tmpTile.humidity = this.humidity;

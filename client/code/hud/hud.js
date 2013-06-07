@@ -3,7 +3,6 @@ CrymeEngine.hud = {
 		bag_panel: null,
 		popup: null,
 		popup_important: null,
-		inventory: null,
 		action_bar: null,
 		action_bar_small: null,
 		action_attack: null,
