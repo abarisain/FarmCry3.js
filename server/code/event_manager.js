@@ -391,6 +391,8 @@ var EventManager = {
 					});
 
 					// If the ennemy died and we DID NOT die, we won
+					console.log("Battle against " + farmer.nickname + "(lost " + healthLossMine + " remaining " + farmer.health + " )" + " and "
+						+ targetTile.owner.nickname + "(lost " + healthLossTheirs + " remaining " + targetTile.owner.health + " )");
 					if (targetTile.owner.isDead() && !farmer.isDead()) {
 						this.changeTileOwner(targetTile, farmer);
 					}
