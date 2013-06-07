@@ -6,7 +6,34 @@ StoredCrop = require('./models/storedCrop');
 var EventManager = {
 	tick: function () {
 		console.log("Event manager tick - " + Date.now());
-		
+
+		// Whither stored crops
+		var storedCrops = GameState.board.storedCrops; // faster lookup
+		var storedCrop;
+		for(var key in storedCrops) {
+			storedCrop = storedCrops[key];
+			// If there is time left and the stored crop is not on a tile with a building that stops withering
+			if(storedCrop.time_left > 0 && storedCrop.parent_tile != null && storedCrop.parent_tile.building != null
+				&& storedCrop.parent_tile.building.stops_withering) {
+				continue;
+			}
+			storedCrop.time_left--;
+			NetworkEngine.clients.broadcast("game.storedCropUpdated", {
+				storedCrop: storedCrop.getSmallStoredCrop()
+			});
+		}
+
+		// Handle tiles changes
+		// If aliased, do nothing.
+		// If building on it, check if it has maintenance and suck the building's money
+		// If growing crop, tick it, and decrease humidity/fertility
+		// If nothing else, rise humidity/fertility slowly
+
+
+		// Handle farmers
+		// Heal a little (if not in combat, if we handle that someday)
+		// That's it, stored crops have already been decayed
+
 		//Trigger all the time based events here
 		//Schedule the next tick. We don't use setInterval because the tick might change at anytime
 		setTimeout(EventManager.tick(), GameState.settings.tickRate);
