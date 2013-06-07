@@ -55,8 +55,12 @@ var EventManager = {
 				if (tile.hasGrowingCrop()) {
 					// If it's rotten, there is nothing to do
 					if (!tile.growingCrop.rotten) {
-						// Decrease its life
-						tile.growingCrop.time_left--;
+						// If it is mature already, decrease its life
+						// Or, if it is not, make it mature only if humidity and fertility are > 0
+						if(tile.growingCrop.harvested_quantity > 0 ||
+							(tile.humidity > 0 && tile.fertility > 0)) {
+							tile.growingCrop.time_left--;
+						}
 
 						if (tile.growingCrop.time_left <= 0) {
 							// Whoops, its life is over
