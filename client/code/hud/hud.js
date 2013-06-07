@@ -35,12 +35,14 @@ CrymeEngine.hud = {
 		progressbar_background: null,
 		progressbar_green: null,
 		progressbar_red: null,
+		progressbar_life: null,
 		topbar: null,
 		book: null,
 		coin: null
 	},
 	panels: {
 		lifebar: null,
+		inventorybar: null,
 		market: null,
 		inventory: null,
 		rightbar: null,
@@ -51,9 +53,23 @@ CrymeEngine.hud = {
 	},
 	init: function () {
 		this.rootHudElement.resize();
-		//Lifebar
-		CE.hud.panels.lifebar = new HudElement("lifebar", "bag_panel", 202, 111, 0, 0, HudElement.Anchors.TOP_LEFT, true);
-		CE.hud.panels.lifebar.onClick = (function () {
+
+		CE.hud.panels.lifebar = new HudElements.ProgressBar(108, 28, 34, 78, HudElement.Anchors.TOP_LEFT);
+		CE.hud.panels.lifebar.image = null;
+		CE.hud.panels.lifebar._progressbar.ninepatch = {
+			enabled: true,
+			left_padding: 0,
+			right_padding: 0,
+			left_width: 1,
+			right_width: 16,
+			top_height: 1,
+			bottom_height: 16
+		}
+		CE.hud.panels.lifebar.setProgressImage("progressbar_life");
+		this.rootHudElement.addChild(CE.hud.panels.lifebar);
+
+		CE.hud.panels.inventorybar = new HudElement("lifebar", "bag_panel", 202, 111, 0, 0, HudElement.Anchors.TOP_LEFT, true);
+		CE.hud.panels.inventorybar.onClick = (function () {
 			if (CE.hud.panels.inventory == null) {
 				CE.hud.panels.inventory = HudElements.Book.Premade.Inventory();
 				this.rootHudElement.addChild(CE.hud.panels.inventory);
@@ -61,7 +77,7 @@ CrymeEngine.hud = {
 				CE.hud.panels.inventory.visible = true;
 			}
 		}).bind(this);
-		CE.hud.panels.lifebar.addChild(new HudElement("money_icon", "coin", 20, 23, 28, 88, HudElement.Anchors.TOP_LEFT, false));
+		CE.hud.panels.inventorybar.addChild(new HudElement("money_icon", "coin", 20, 23, 28, 88, HudElement.Anchors.TOP_LEFT, false));
 		var posText = new HudElements.Text("position_text");
 		posText.horizontalMargin = 115;
 		posText.verticalMargin = 29;
@@ -70,8 +86,8 @@ CrymeEngine.hud = {
 				return 0;
 			return GameState.player.money;
 		});
-		CE.hud.panels.lifebar.addChild(posText);
-		this.rootHudElement.addChild(CE.hud.panels.lifebar);
+		CE.hud.panels.inventorybar.addChild(posText);
+		this.rootHudElement.addChild(CE.hud.panels.inventorybar);
 
 		CE.hud.panels.filters_enable = new HudElement("filter_button", "filters_enable", 99, 99, 0, 0, HudElement.Anchors.TOP_RIGHT, true);
 		CE.hud.panels.filters_enable.onClick = (function () {
@@ -224,6 +240,7 @@ CrymeEngine.hud = {
 	events: {
 		showFilter: function (name) {
 			CE.hud.panels.lifebar.visible = false;
+			CE.hud.panels.inventorybar.visible = false;
 			CE.hud.panels.actionBar.visible = false;
 			CE.hud.panels.actionBarSmall.visible = false;
 			CE.hud.rootHudElement.viewbag.filter_header.visible = true;
@@ -234,6 +251,7 @@ CrymeEngine.hud = {
 		},
 		removeFilter: function () {
 			CE.hud.panels.lifebar.visible = true;
+			CE.hud.panels.inventorybar.visible = true;
 			CE.hud.panels.actionBar.visible = true;
 			CE.hud.panels.actionBarSmall.visible = true;
 			CE.hud.rootHudElement.viewbag.filter_header.visible = false;

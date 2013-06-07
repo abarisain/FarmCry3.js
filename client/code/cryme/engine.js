@@ -451,6 +451,7 @@ function CreateMap() {
 	tmpFarmer = new LogicItems.PlayableFarmer();
 	tmpFarmer.initFromFarmer(initialData.player_farmer);
 	GameState.player = tmpFarmer;
+	CE.hud.panels.lifebar.setProgress(GameState.player.health);
 	Map.addPlayer(tmpFarmer);
 
 	Map.initMap();

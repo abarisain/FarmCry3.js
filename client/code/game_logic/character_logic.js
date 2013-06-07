@@ -55,4 +55,5 @@ LogicItems.PlayableFarmer.prototype.initFromFarmer = function (smallFarmer) {
 	this.allied_farmers = [];
 	//TODO : Implement weapons parsing
 	this.weapons = [];
+	this.health = smallFarmer.health;
 };
