@@ -14,6 +14,7 @@ module.exports = {
 	paused: false,
 	lastPersistDate: 0,
 	settings: {
+		healPerSecond: 10,
 		inventorySize: 5, //Max items a farmer can carry
 		tickRate: 5000, //Time between ticks in mS
 		startMoney: 1000, //Still dollars

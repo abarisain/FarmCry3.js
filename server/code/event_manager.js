@@ -10,6 +10,11 @@ var EventManager = {
 
 		// TODO : Add rain/Tornados
 
+		// Heal all farmers over time
+		GameState.farmers.forEach((function (currentFarmer) {
+			this.addHealth(currentFarmer, GameState.settings.healPerSecond);
+		}).bind(EventManager.subsystems.player));
+
 		// Whither stored crops
 		var storedCrops = GameState.board.storedCrops; // faster lookup
 		var storedCrop;
@@ -234,19 +239,25 @@ var EventManager = {
 					return true;
 				if (health < 0)
 					return false;
+				var oldHealth = farmer.health;
 				farmer.health = Math.min(100, farmer.health + health);
-				NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.healthUpdated", {
-					health: farmer.health
-				});
+				if(oldHealth != farmer.health) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.healthUpdated", {
+						health: farmer.health
+					});
+				}
 				return true;
 			},
 			substractHealth: function (farmer, health) {
 				if (health == 0)
 					return true;
+				var oldHealth = farmer.health;
 				farmer.health = Math.max(0, farmer.health - health);
-				NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.healthUpdated", {
-					health: farmer.health
-				});
+				if(oldHealth != farmer.health) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.healthUpdated", {
+						health: farmer.health
+					});
+				}
 				return true;
 			},
 			buyCrop: function (farmer, cropType) {
