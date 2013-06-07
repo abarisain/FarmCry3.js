@@ -22,6 +22,7 @@ networkEngine.subsystems.player = {
 		}
 	},
 	events: {
+
 		connected: function (data) {
 			var tmpPlayer = new LogicItems.Farmer();
 			tmpPlayer.initFromFarmer(data.farmer);
@@ -54,6 +55,9 @@ networkEngine.subsystems.player = {
 		moneyUpdated: function (data) {
 			if (GameState.player != null)
 				GameState.player.money = data.money;
+		},
+		launchBattle: function (data) {
+			CE.Event.launchBattle(data);
 		}
 	}
 };
