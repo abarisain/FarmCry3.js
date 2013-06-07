@@ -6,6 +6,7 @@ GameModule = require('./modules/game');
 ChatModule = require('./modules/chat');
 PlayerModule = require('./modules/player');
 EventManager = require('../event_manager');
+Farmer = require('../models/farmer');
 
 // Check modules/debug.js for an explanation of how modules work and should be written
 
@@ -15,7 +16,7 @@ module.exports = {
 		list: [],
 		getConnectionForFarmer: function (farmer) {
 			if (typeof farmer == 'undefined') {
-				return null;
+				return this.getFakeConnection();
 			}
 			var clientCount = NetworkEngine.clients.list.length;
 			var connection;
@@ -28,7 +29,16 @@ module.exports = {
 					return connection;
 				}
 			}
-			return null;
+			return this.getFakeConnection();
+		},
+		getFakeConnection: function () {
+			// Useful for disconnected farmers
+			// Lololololo
+			return {
+				farmer: new Farmer(),
+				send: function () {},
+				sendError: function () {}
+			};
 		},
 		add: function (socket) {
 			//We wrap this so we can do stuff when we add a connection
