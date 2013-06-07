@@ -108,11 +108,11 @@ var EventManager = {
 				tileValueUpdated = false;
 				if(tile.humidity < 1) {
 					tileValueUpdated = true;
-					tile.humidity = Math.max(1, tile.humidity + 0.01);
+					tile.humidity = Math.min(1, tile.humidity + 0.01);
 				}
 				if(tile.fertility < tile.max_fertility) {
 					tileValueUpdated = true;
-					tile.fertility = Math.max(tile.max_fertility, tile.fertility + 0.01);
+					tile.fertility = Math.min(tile.max_fertility, tile.fertility + 0.01);
 				}
 				if(tileValueUpdated && updatedTiles.indexOf(tile) <= 0) {
 					updatedTiles.push(tile);
