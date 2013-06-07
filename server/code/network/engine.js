@@ -16,7 +16,7 @@ module.exports = {
 		list: [],
 		getConnectionForFarmer: function (farmer) {
 			if (typeof farmer == 'undefined') {
-				return this.getFakeConnection();
+				return this.fakeConnection();
 			}
 			var clientCount = NetworkEngine.clients.list.length;
 			var connection;
@@ -29,16 +29,12 @@ module.exports = {
 					return connection;
 				}
 			}
-			return this.getFakeConnection();
+			return this.fakeConnection;
 		},
-		getFakeConnection: function () {
-			// Useful for disconnected farmers
-			// Lololololo
-			return {
-				farmer: new Farmer(),
-				send: function () {},
-				sendError: function () {}
-			};
+		fakeConnection: { // Useful for disconnected farmers lolol dirty code
+			farmer: new Farmer(),
+			send: function () {},
+			sendError: function () {}
 		},
 		add: function (socket) {
 			//We wrap this so we can do stuff when we add a connection
