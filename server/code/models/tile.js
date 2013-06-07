@@ -98,6 +98,14 @@ Tile.prototype = {
 
 		return 1; //Guaranteed random since 1801 !
 	},
+	getTickUpdateTile: function () {
+		var tmpTile = {};
+		tmpTile.position.col = this.position.x;
+		tmpTile.position.line = this.position.y;
+		tmpTile.humidity = this.humidity;
+		tmpTile.fertility = this.fertility;
+		return tmpTile;
+	},
 	getSmallTile: function () {
 		//Returns a small version of this tile (for network usage)
 		var tmpTile = new Tile();

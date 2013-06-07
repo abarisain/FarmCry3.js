@@ -5,7 +5,8 @@ StoredCrop = require('./models/storedCrop');
 
 var EventManager = {
 	tick: function () {
-		console.log("Event manager tick - " + Date.now());
+		var tickStart = Date.now();
+		console.log("Event manager tick - " + tickStart);
 
 		// Whither stored crops
 		var storedCrops = GameState.board.storedCrops; // faster lookup
@@ -13,7 +14,7 @@ var EventManager = {
 		for(var key in storedCrops) {
 			storedCrop = storedCrops[key];
 			// If there is time left and the stored crop is not on a tile with a building that stops withering
-			if(storedCrop.time_left > 0 && storedCrop.parent_tile != null && storedCrop.parent_tile.building != null
+			if(storedCrop.time_left > 0 && storedCrop.parent_tile != null && storedCrop.parent_tile.hasBuilding()
 				&& storedCrop.parent_tile.building.stops_withering) {
 				continue;
 			}
@@ -28,15 +29,113 @@ var EventManager = {
 		// If building on it, check if it has maintenance and suck the building's money
 		// If growing crop, tick it, and decrease humidity/fertility
 		// If nothing else, rise humidity/fertility slowly
+		var tile;
+		var targetCrop;
+		var updatedTiles = [];
+		var tileValueUpdated;
+		for(var y = 0; y < GameState.board.size.y; y++) {
+			for(var x = 0; x < GameState.board.size.x; x++) {
+				tile = GameState.board.tiles[y][x];
+				if(tile.getAliasableSelf() != tile) {
+					// Aliased tile, don't do anything
+					continue;
+				}
+				if(tile.hasBuilding()) {
+					EventManager.subsystems.player.substractMoney(tile.owner, tile.building.price_tick);
+					// The stored crops are whithered somewhere else, stop processing this tile
+					continue;
+				}
+				if(tile.hasGrowingCrop()) {
+					// If it's rotten, there is nothing to do
+					if(!tile.growingCrop.rotten) {
+						// Decrease its life
+						tile.growingCrop.time_left--;
 
+						if(tile.growingCrop.time_left <= 0) {
+							// Whoops, its life is over
+							// Was it already mature ?
+							if(tile.growingCrop.harvested_quantity > 0) {
+								// Boom, it's rotten now
+								tile.growingCrop.rotten = true;
+								tile.growingCrop.time_left = 0; // If we went < 0, should not happen but heh
+							} else {
+								// Now it's mature ! Yay
+								// Sadly, it also starts decaying
+								targetCrop = GameState.settings.crops[tile.growingCrop.codename];
+								// TODO : implement health pondering of productivity
+								tile.growingCrop.harvested_quantity = targetCrop.productivity;
+								tile.growingCrop.time_left = targetCrop.decay_time;
+							}
+						}
+						NetworkEngine.clients.broadcast("game.growingCropUpdated", {
+							growingCrop: tile.growingCrop,
+							col: tile.position.x,
+							line: tile.position.y
+						});
+
+
+						// We need to check that again. Because time_left might have been changed by the maturation logic
+						// If it is still maturing, suck the tile's ressources
+						// No need to check for rottenness, since rotten means tha time_left equals 0
+						if(tile.growingCrop.time_left > 0) {
+							// Hey its still alive ! Let's suck some ressources
+							tileValueUpdated = false;
+							if(tile.humidity > 0) {
+								tileValueUpdated = true;
+								tile.humidity = Math.max(0, tile.humidity - 0.01);
+							}
+							if(tile.fertility > 0) {
+								tileValueUpdated = true;
+								tile.fertility = Math.max(0, tile.fertility - 0.01);
+							}
+							if(tileValueUpdated && updatedTiles.indexOf(tile) <= 0) {
+								updatedTiles.push(tile);
+							}
+						}
+					}
+					continue;
+				}
+
+				/*
+				If we got here, the tile :
+					- Not aliased
+					- Does not have a building
+					- Does not have a growing crop
+				Everything implied by any of these cases has already been taken care of
+				*/
+
+				// So now, make it more humid
+				tileValueUpdated = false;
+				if(tile.humidity < 1) {
+					tileValueUpdated = true;
+					tile.humidity = Math.max(1, tile.humidity + 0.01);
+				}
+				if(tile.fertility < tile.max_fertility) {
+					tileValueUpdated = true;
+					tile.fertility = Math.max(tile.max_fertility, tile.fertility + 0.01);
+				}
+				if(tileValueUpdated && updatedTiles.indexOf(tile) <= 0) {
+					updatedTiles.push(tile);
+				}
+			}
+		}
+
+		// Now that we're done with tiles, push the updates in a more efficient format
+		var smallUpdatedTiles = [];
+		updatedTiles.forEach(function (updatedTile) {
+			smallUpdatedTiles.push(updatedTile.getTickUpdateTile());
+		});
+		NetworkEngine.clients.broadcast("game.tileDataUpdated", {
+			tiles: smallUpdatedTiles
+		});
 
 		// Handle farmers
 		// Heal a little (if not in combat, if we handle that someday)
 		// That's it, stored crops have already been decayed
 
-		//Trigger all the time based events here
 		//Schedule the next tick. We don't use setInterval because the tick might change at anytime
-		setTimeout(EventManager.tick(), GameState.settings.tickRate);
+		setTimeout(EventManager.tick, GameState.settings.tickRate);
+		console.log("Event manager tick end - " + (Date.now() - tickStart));
 	},
 	subsystems: {
 		player: {
