@@ -10,7 +10,9 @@ var EventManager = {
 
 		// TODO : Add rain/Tornados
 
-		// Heal all farmers over time
+		// Handle farmers
+		// Heal a little (if not in combat, if we handle that someday)
+		// That's it, stored crops have already been decayed
 		GameState.farmers.forEach((function (currentFarmer) {
 			this.addHealth(currentFarmer, GameState.settings.healPerSecond);
 		}).bind(EventManager.subsystems.player));
@@ -142,10 +144,6 @@ var EventManager = {
 				tiles: smallUpdatedTiles
 			});
 		}
-
-		// Handle farmers
-		// Heal a little (if not in combat, if we handle that someday)
-		// That's it, stored crops have already been decayed
 
 		//Schedule the next tick. We don't use setInterval because the tick might change at anytime
 		setTimeout(EventManager.tick, GameState.settings.tickRate);
