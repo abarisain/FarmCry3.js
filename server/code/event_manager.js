@@ -268,7 +268,14 @@ var EventManager = {
 			},
 			buyCrop: function (farmer, cropType) {
 				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
-				if (targetTile.isOwnedBy(farmer) && !targetTile.hasGrowingCrop() && !targetTile.hasBuilding()) {
+				if (!targetTile.isOwnedBy(farmer)) {
+					NetworkEngine.clients.broadcast("game.error", {
+						title: null,
+						message: "You cannot buy a crop on a land you don't own !"
+					});
+					return false;
+				}
+				if (!targetTile.hasGrowingCrop() && !targetTile.hasBuilding()) {
 					var cropInfo = GameState.settings.crops[cropType];
 					if (!this.substractMoney(farmer, cropInfo.seed_price)) {
 						NetworkEngine.clients.broadcast("game.error", {
@@ -320,7 +327,14 @@ var EventManager = {
 			},
 			buyBuilding: function (farmer, buildingType) {
 				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
-				if (targetTile.isOwnedBy(farmer) && !targetTile.hasGrowingCrop() && !targetTile.hasBuilding()) {
+				if (!targetTile.isOwnedBy(farmer)) {
+					NetworkEngine.clients.broadcast("game.error", {
+						title: null,
+						message: "You cannot buy a building on a land you don't own !"
+					});
+					return false;
+				}
+				if (!targetTile.hasGrowingCrop() && !targetTile.hasBuilding()) {
 					var buildingInfo = GameState.settings.buildings[buildingType];
 					if (!this.substractMoney(farmer, buildingInfo.price)) {
 						NetworkEngine.clients.broadcast("game.error", {
