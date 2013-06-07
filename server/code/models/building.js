@@ -8,7 +8,6 @@ function Building(codename, name, size, capacity, price, price_tick, stops_withe
 		this.price = 100;
 		this.price_tick = 1;
 		this.stops_withering = false;
-		this.storages = [];
 		return;
 	}
 	this.codename = codename;
@@ -18,8 +17,6 @@ function Building(codename, name, size, capacity, price, price_tick, stops_withe
 	this.price = price; //Build price
 	this.price_tick = price_tick; //Maintenance per tick if not empty
 	this.stops_withering = stops_withering;
-	this.storages = [];//List of every storage stocked inside the building
-	//the thing is every crop contain in fact a storage, and when we harvest it, we just get the storage
 }
 
 Building.Types = {
