@@ -85,6 +85,27 @@ CrymeEngine.hud = {
 		}).bind(this);
 		this.rootHudElement.addChild(marketButton);
 
+		/* Boutons de test pour la version iPad	*/
+		var forkButton = new HudElements.Button(100, 50, 200, 0, "Fork", HudElement.Anchors.TOP_LEFT, "#fff");
+		forkButton.onClick = function () {
+			CE.gameState = CE.GameState.BATTLE;
+			CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_FORK);
+			CE.mapInvalidated = true;
+		}
+		this.rootHudElement.addChild(forkButton);
+
+		var tornadoButton = new HudElements.Button(100, 50, 250, 0, "Tornado", HudElement.Anchors.TOP_LEFT, "#fff");
+		tornadoButton.onClick = function () {
+			CE.Weather.addTornado(Map.player.col, Map.player.line);
+		}
+		this.rootHudElement.addChild(tornadoButton);
+
+		var rainButton = new HudElements.Button(100, 50, 300, 0, "Rain", HudElement.Anchors.TOP_LEFT, "#fff");
+		rainButton.onClick = function () {
+			CE.Weather.startRain();
+		}
+		this.rootHudElement.addChild(rainButton);
+
 
 		/*			UI pour les filtres		*/
 		this.rootHudElement.viewbag.filter_header = new HudElement("filterDisabled", "filter_header", 287, 35, 0, 0, HudElement.Anchors.TOP_CENTER, true);
@@ -133,27 +154,6 @@ CrymeEngine.hud = {
 		}
 		this.rootHudElement.addChild(filter);
 
-
-		/* Boutons de test pour la version iPad	*/
-		var forkButton = new HudElements.Button(100, 50, -10, -210, "Fork", HudElement.Anchors.BOTTOM_RIGHT, "#fff");
-		forkButton.onClick = function () {
-			CE.gameState = CE.GameState.BATTLE;
-			CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_FORK);
-			CE.mapInvalidated = true;
-		}
-		this.rootHudElement.addChild(forkButton);
-
-		var tornadoButton = new HudElements.Button(100, 50, -10, -310, "Tornado", HudElement.Anchors.BOTTOM_RIGHT, "#fff");
-		tornadoButton.onClick = function () {
-			CE.Weather.addTornado(Map.player.col, Map.player.line);
-		}
-		this.rootHudElement.addChild(tornadoButton);
-
-		var rainButton = new HudElements.Button(100, 50, -10, -410, "Rain", HudElement.Anchors.BOTTOM_RIGHT, "#fff");
-		rainButton.onClick = function () {
-			CE.Weather.startRain();
-		}
-		this.rootHudElement.addChild(rainButton);
 	},
 	loadTextures: function () {
 		var textureList = Object.keys(this.textures);

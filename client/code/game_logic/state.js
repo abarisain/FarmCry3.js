@@ -74,6 +74,7 @@ GameState = {
 		} else {//si le growingCrop existe plus, on le supprime
 			delete mapItem;
 		}
+		CE.mapInvalidated = true;
 	},
 	/** The key name of the building
 	 * @param {key} c_col_line
@@ -92,6 +93,7 @@ GameState = {
 		} else {//si le building existe plus, on le supprime
 			delete mapItem;
 		}
+		CE.mapInvalidated = true;
 	}
 
 	//TODO : Add weapons and stuff
