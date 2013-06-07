@@ -16,6 +16,9 @@ networkEngine.subsystems.player = {
 		},
 		destroyBuilding: function () {
 			networkEngine.call('player', 'destroyBuilding', {});
+		},
+		takeCurrentTile: function () {
+			networkEngine.call('player', 'takeCurrentTile', {});
 		}
 	},
 	events: {

@@ -113,9 +113,10 @@ CrymeEngine.hud = {
 
 		this.panels.actionBarSmall.viewbag.attack = new HudElement('attack', 'action_attack', 56, 48, 0, 0, HudElement.Anchors.CENTER);
 		this.panels.actionBarSmall.viewbag.attack.onClick = function () {
-			CE.gameState = CE.GameState.BATTLE;
-			CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_FORK);
-			CE.mapInvalidated = true;
+			networkEngine.subsystems.player.actions.takeCurrentTile();
+			/*CE.gameState = CE.GameState.BATTLE;
+			 CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_FORK);
+			 CE.mapInvalidated = true;*/
 		}
 		this.panels.actionBarSmall.addChild(this.panels.actionBarSmall.viewbag.attack);
 
