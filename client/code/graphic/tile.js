@@ -17,7 +17,7 @@ MapItems.Tile.prototype.init = function () {
 	this.updateImage();
 	//TODO optimier ici en remplacement update par add
 	if (this.data.growingCrop != null) {
-		this.sprite = SpritePack.Tiles.Sprites.SOIL;
+		//this.sprite = SpritePack.Tiles.Sprites.SOIL;
 		GameState.updateGrowingCrop(this.data.growingCrop, this.col, this.line);
 	}
 	if (this.data.building != null) {
@@ -38,12 +38,12 @@ MapItems.Tile.prototype.updateData = function (data) {
 MapItems.Tile.prototype.showInformation = function () {
 	switch (CE.filterType) {
 		case CE.FilterType.OWNER:
-			if (this.data.humidity > 0.6) {
-				this.infoColor.copyColor(ColorHelper.Templates.RED);
-			} else if (this.data.humidity > 0.4) {
+			if (this.data.owner == 'dummy') {
+				this.infoColor.copyColor(ColorHelper.Templates.WHITE);
+			} else if (this.data.owner == GameState.player.name) {
 				this.infoColor.copyColor(ColorHelper.Templates.ORANGE);
 			} else {
-				this.infoColor.copyColor(ColorHelper.Templates.WHITE);
+				this.infoColor.copyColor(ColorHelper.Templates.RED);
 			}
 			break;
 		case CE.FilterType.HUMIDITY:
