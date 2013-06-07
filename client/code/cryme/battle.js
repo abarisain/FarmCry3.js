@@ -34,11 +34,11 @@ CrymeEngine.Battle = {
 			CE.Battle.weaponTransition.start(Transition.Direction.OUT);
 		});
 
-		this.playerSequence = new Battle.Sequence(canvasWidth / 2 + 150, canvasHeight / 2 + 100, function () {
+		this.playerSequence = new Battle.Sequence(canvasWidth / 2 + 130, canvasHeight / 2 + 100, function () {
 			CE.Battle.stopBattle();
 		});
 
-		this.opponentSequence = new Battle.Sequence(canvasWidth / 2 - 150, canvasHeight / 2 + 100, function () {
+		this.opponentSequence = new Battle.Sequence(canvasWidth / 2 - 130, canvasHeight / 2 + 100, function () {
 		});
 
 		this.elements = [];

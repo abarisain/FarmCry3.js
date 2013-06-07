@@ -334,9 +334,6 @@ var CrymeEngine = {
 
 						//activation du deplacement de la map
 						CrymeEngine.movingMap = true;
-					} else {
-						//sans le mode debug, le clic droit arrose
-						Map.player.fertilizes();
 					}
 				}
 			}

@@ -4,6 +4,14 @@ CrymeEngine.hud = {
 		popup: null,
 		popup_important: null,
 		inventory: null,
+		action_bar: null,
+		action_bar_small: null,
+		action_attack: null,
+		action_buy: null,
+		action_fertilizes: null,
+		action_harvests: null,
+		action_open: null,
+		action_waters: null,
 		button_red: null,
 		button_gray: null,
 		button_green: null,
@@ -37,6 +45,8 @@ CrymeEngine.hud = {
 		market: null,
 		inventory: null,
 		rightbar: null,
+		actionBarSmall: null,
+		actionBar: null,
 		filters_enable: null,
 		filter_buttons: []
 	},
@@ -74,8 +84,25 @@ CrymeEngine.hud = {
 		}).bind(this);
 		this.rootHudElement.addChild(CE.hud.panels.filters_enable);
 
-		var marketButton = new HudElements.Button(100, 50, 150, 0, "Market", HudElement.Anchors.TOP_LEFT, "#fff");
-		marketButton.onClick = (function () {
+		/*var marketButton = new HudElements.Button(100, 50, 150, 0, "Market", HudElement.Anchors.TOP_LEFT, "#fff");
+		 marketButton.onClick = (function () {
+		 if (CE.hud.panels.market == null) {
+		 CE.hud.panels.market = HudElements.Book.Premade.Market();
+		 this.rootHudElement.addChild(CE.hud.panels.market);
+		 } else {
+		 CE.hud.panels.market.visible = true;
+		 }
+		 }).bind(this);
+		 this.rootHudElement.addChild(marketButton);*/
+
+
+		/*		Small panel for non owend tile or owned tile with building or nothing	*/
+
+		//TODO modifier l'action bar pour afficher la petite à la place
+		this.panels.actionBarSmall = new HudElement("actionBarSmall", 'action_bar', 298, 94, 0, -150, HudElement.Anchors.BOTTOM_CENTER);
+
+		this.panels.actionBarSmall.viewbag.buy = new HudElement('buy', 'action_buy', 56, 48, 0, -100, HudElement.Anchors.CENTER);
+		this.panels.actionBarSmall.viewbag.buy.onClick = (function () {
 			if (CE.hud.panels.market == null) {
 				CE.hud.panels.market = HudElements.Book.Premade.Market();
 				this.rootHudElement.addChild(CE.hud.panels.market);
@@ -83,39 +110,55 @@ CrymeEngine.hud = {
 				CE.hud.panels.market.visible = true;
 			}
 		}).bind(this);
-		this.rootHudElement.addChild(marketButton);
+		this.panels.actionBarSmall.addChild(this.panels.actionBarSmall.viewbag.buy);
 
-		/* Boutons de test pour la version iPad	*/
-		var forkButton = new HudElements.Button(100, 50, 200, 0, "Fork", HudElement.Anchors.TOP_LEFT, "#fff");
-		forkButton.onClick = function () {
+		this.panels.actionBarSmall.viewbag.attack = new HudElement('attack', 'action_attack', 56, 48, 0, 0, HudElement.Anchors.CENTER);
+		this.panels.actionBarSmall.viewbag.attack.onClick = function () {
 			CE.gameState = CE.GameState.BATTLE;
 			CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_FORK);
 			CE.mapInvalidated = true;
 		}
-		this.rootHudElement.addChild(forkButton);
+		this.panels.actionBarSmall.addChild(this.panels.actionBarSmall.viewbag.attack);
 
-		var tornadoButton = new HudElements.Button(100, 50, 250, 0, "Tornado", HudElement.Anchors.TOP_LEFT, "#fff");
-		tornadoButton.onClick = function () {
-			CE.Weather.addTornado(Map.player.col, Map.player.line);
-		}
-		this.rootHudElement.addChild(tornadoButton);
+		this.panels.actionBarSmall.viewbag.open_building = new HudElement('open', 'action_open', 56, 48, 0, 100, HudElement.Anchors.CENTER);
+		//this.panels.actionBarSmall.viewbag.open_building.onClick = function () {	};
+		this.panels.actionBarSmall.addChild(this.panels.actionBarSmall.viewbag.open_building);
 
-		var rainButton = new HudElements.Button(100, 50, 300, 0, "Rain", HudElement.Anchors.TOP_LEFT, "#fff");
-		rainButton.onClick = function () {
-			CE.Weather.startRain();
-		}
-		this.rootHudElement.addChild(rainButton);
+		this.rootHudElement.addChild(this.panels.actionBarSmall);
+
+		/*		Big panel for own tile with crop	*/
+
+		this.panels.actionBar = new HudElement("actionBar", 'action_bar', 298, 95, 0, 150, HudElement.Anchors.BOTTOM_CENTER);
+
+		this.panels.actionBar.viewbag.harvest = new HudElement('harvest', 'action_harvests', 56, 48, 0, -100, HudElement.Anchors.CENTER);
+		this.panels.actionBar.viewbag.harvest.onClick = (function () {
+		}).bind(this);
+		this.panels.actionBar.addChild(this.panels.actionBar.viewbag.harvest);
+
+		this.panels.actionBar.viewbag.fertlizes = new HudElement('harvest', 'action_fertilizes', 56, 48, 0, 0, HudElement.Anchors.CENTER);
+		this.panels.actionBar.viewbag.fertlizes.onClick = (function () {
+			Map.player.fertilizes();
+		}).bind(this);
+		this.panels.actionBar.addChild(this.panels.actionBar.viewbag.fertlizes);
+
+		this.panels.actionBar.viewbag.waters = new HudElement('harvest', 'action_waters', 56, 48, 0, 105, HudElement.Anchors.CENTER);
+		this.panels.actionBar.viewbag.waters.onClick = (function () {
+			Map.player.waters();
+		}).bind(this);
+		this.panels.actionBar.addChild(this.panels.actionBar.viewbag.waters);
+
+		this.rootHudElement.addChild(this.panels.actionBar);
 
 
 		/*			UI pour les filtres		*/
-		this.rootHudElement.viewbag.filter_header = new HudElement("filterDisabled", "filter_header", 287, 35, 0, 0, HudElement.Anchors.TOP_CENTER, true);
+		this.rootHudElement.viewbag.filter_header = new HudElement("filterDisabled", "filter_header", 306, 35, 0, 0, HudElement.Anchors.TOP_CENTER, true);
 		this.rootHudElement.viewbag.filter_header.visible = false;
 		this.rootHudElement.viewbag.filter_header.onClick = function () {
 			CE.Event.removeFilterType();
 		}
 		this.rootHudElement.addChild(this.rootHudElement.viewbag.filter_header);
 
-		this.rootHudElement.viewbag.filter_text = new HudElements.Text("No filter", HudElement.Anchors.CENTER, '#898989');
+		this.rootHudElement.viewbag.filter_text = new HudElements.Text("No filter", HudElement.Anchors.CENTER);
 		this.rootHudElement.viewbag.filter_header.addChild(this.rootHudElement.viewbag.filter_text);
 
 		var filter = new HudElement("filterOwner", "filter_owner", 32, 32, 100, -34, HudElement.Anchors.TOP_RIGHT, true);
@@ -184,17 +227,21 @@ CrymeEngine.hud = {
 	events: {
 		showFilter: function (name) {
 			CE.hud.panels.lifebar.visible = false;
+			CE.hud.panels.actionBar.visible = false;
+			CE.hud.panels.actionBarSmall.visible = false;
 			CE.hud.rootHudElement.viewbag.filter_header.visible = true;
 			CE.hud.rootHudElement.viewbag.filter_text.setText(name);
-			for(var i = 0; i < CE.hud.panels.filter_buttons.length; i++) {
+			for (var i = 0; i < CE.hud.panels.filter_buttons.length; i++) {
 				CE.hud.panels.filter_buttons[i].visible = true;
 			}
 		},
 		removeFilter: function () {
 			CE.hud.panels.lifebar.visible = true;
+			CE.hud.panels.actionBar.visible = true;
+			CE.hud.panels.actionBarSmall.visible = true;
 			CE.hud.rootHudElement.viewbag.filter_header.visible = false;
 			CE.hud.rootHudElement.viewbag.filter_text.setText('No filter');
-			for(var i = 0; i < CE.hud.panels.filter_buttons.length; i++) {
+			for (var i = 0; i < CE.hud.panels.filter_buttons.length; i++) {
 				CE.hud.panels.filter_buttons[i].visible = false;
 			}
 		}
@@ -228,7 +275,7 @@ CrymeEngine.hud.chat = {
 		send: null
 	},
 	toggleVisibility: function (visible) {
-		if(visible) {
+		if (visible) {
 			this.divs.root.style.display = null;
 		} else {
 			this.divs.root.style.display = "none";
