@@ -62,7 +62,7 @@ MapItems.TileItems.Crop.prototype.updateImage = function () {
 				this.sprite = SpritePack.Crops.Sprites.CORN_0;
 			}
 			break;
-		case 'wheat':
+		case 'tomato':
 			if (this.maturity > 0.8) {
 				this.sprite = SpritePack.Crops.Sprites.TOMATO_4;
 			} else if (this.maturity > 0.6) {
@@ -75,7 +75,7 @@ MapItems.TileItems.Crop.prototype.updateImage = function () {
 				this.sprite = SpritePack.Crops.Sprites.TOMATO_0;
 			}
 			break;
-		case 'tomato':
+		case 'wheat':
 			if (this.maturity > 0.8) {
 				this.sprite = SpritePack.Crops.Sprites.WHEAT_4;
 			} else if (this.maturity > 0.6) {
