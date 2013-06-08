@@ -55,6 +55,10 @@ CrymeEngine.hud = {
 	init: function () {
 		this.rootHudElement.resize();
 
+		if(isIOS) {
+			CE.hud.chat.toggleVisibility(false);
+		}
+
 		CE.hud.panels.lifebar = new HudElements.ProgressBar(108, 28, 34, 78, HudElement.Anchors.TOP_LEFT);
 		CE.hud.panels.lifebar.image = null;
 		CE.hud.panels.lifebar._progressbar.ninepatch = {
