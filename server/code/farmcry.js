@@ -56,6 +56,9 @@ var start_game = (function() {
 
 	console.log("Server started on port 8088");
 
+	// Less logging
+	io.set('log level', 1);
+	
 	io.sockets.on('connection', function (socket) {
 		NetworkEngine.clients.add(socket);
 	});
