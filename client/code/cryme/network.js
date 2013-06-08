@@ -6,7 +6,6 @@ var networkEngine = {
 	manual_disconnect: false,
 	socket: null,
 	socket_connected: false,
-	debugPackets: false,
 	onConnectionFailed: function () {
 	},
 	onLoginFailed: function (error) {
@@ -23,15 +22,14 @@ var networkEngine = {
 		this.manual_disconnect = false;
 		console.log("Network connecting to " + serverUrl);
 		this.socket = io.connect(serverUrl);
+		//TODO : Add a connection timeout
 		this.socket.on('connect', function () {
 			//Iterate over the subsystems and their functions to bind them to events (module.function)
 			Object.keys(networkEngine.subsystems).forEach(function (subsystem) {
 				Object.keys(networkEngine.subsystems[subsystem].events).forEach(function (_function) {
 					networkEngine.socket.on(subsystem + '.' + _function, function (data) {
-						if(networkEngine.debugPackets) {
-							console.log('Received : ' + subsystem + ', ' + _function);
-							console.debug(data);
-						}
+						console.log('Received : ' + subsystem + ', ' + _function);
+						console.debug(data);
 						networkEngine.subsystems[subsystem].events[_function](data);
 					});
 				});

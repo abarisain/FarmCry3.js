@@ -1,13 +1,9 @@
 CrymeEngine.Battle = {
 	background: {},
 	elements: [],
-	transitionBreath: {},//used to make buttton breath
-	transitionAura: {},
-	transitionPlayer: {},//used to display the character with a small animation
-	transitionWeapon: {},//used to move the main weapon
+	sequenceFight: {},
 	sequencePlayer: {},
 	sequenceOpponent: {},
-	explosion: null,
 	initialized: false,
 	damagePlayer: 0,
 	damagePlayerRemaining: 0,
@@ -18,32 +14,19 @@ CrymeEngine.Battle = {
 		FIGHT: 1
 	},
 	fightPhase: 0,
-	init: function (weaponSprite) {
+	init: function () {
 		CE.hud.chat.toggleVisibility(false);
 		this.fightPhase = CE.Battle.FightPhase.INTRODUCTION;
 		this.background = SpritePack.Battle.Sprites.BACKGROUND;
-		this.transitionBreath = new Transition(0.9, 1.1, 30, function () {
-		});
-		this.transitionBreath.loopType = Transition.LoopType.BOUNCE;
-		this.transitionBreath.start(Transition.Direction.IN);
-		this.transitionAura = new Transition(0, 1, 120, function () {
-			CE.Battle.launchFight();
-		});
-		this.transitionAura.start(Transition.Direction.IN);
-		this.transitionPlayer = new Transition(1, 2, 10, function () {
-			CE.Battle.transitionWeapon.start(Transition.Direction.IN, true);
-		});
-		this.transitionPlayer.start(Transition.Direction.OUT, true);
-		this.transitionWeapon = new Transition(0, 1, 15, function () {
-			CE.Battle.transitionWeapon.start(Transition.Direction.OUT);
-		});
 
-		this.sequencePlayer = new Battle.Sequence(canvasWidth / 2 + 130, canvasHeight / 2 + 100, function () {
-			CE.Battle.stopBattle();
-		});
+		this.sequenceFight = new Battle.Sequences.MainTimeline();
+		CE.Battle.Timeline.sequences.push(this.sequenceFight);
 
-		this.sequenceOpponent = new Battle.Sequence(canvasWidth / 2 - 130, canvasHeight / 2 + 100, function () {
-		});
+		this.sequencePlayer = new Battle.Sequences.Fighter(canvasWidth / 2 + 130, canvasHeight / 2 + 100);
+		CE.Battle.Timeline.sequences.push(this.sequencePlayer);
+
+		this.sequenceOpponent = new Battle.Sequences.Fighter(canvasWidth / 2 - 130, canvasHeight / 2 + 100);
+		CE.Battle.Timeline.sequences.push(this.sequenceOpponent);
 
 		this.elements = [];
 		for (var i = 0; i < 4; i++) {
@@ -51,72 +34,12 @@ CrymeEngine.Battle = {
 				this.elements.push(new Battle.BackgroundParticle(-1500 + j * 600 - 200 * i, -2000 + i * 400 + 300 * j));
 			}
 		}
-		this.elements.push(new Battle.Avatar(canvasWidth / 2, canvasHeight / 2));//avatar
-		this.elements.push(new Battle.Weapon(weaponSprite, canvasWidth / 2 - 350, 270));//weapon
 		this.initialized = true;
 	},
 	launchBattle: function (data) {//c'est temporaire de passer le sprite de l'arme en paramètre of course
 		this.damagePlayer = data.health_loss_mine;
 		this.damageOpponent = data.health_loss_theirs;
-		this.init(SpritePack.Battle.Sprites.WEAPON_FORK);
-	},
-	launchFight: function () {
-		this.fightPhase = CE.Battle.FightPhase.FIGHT;
-
-		this.elements = [];
-		this.sequencePlayer.hit_points.init(5, 3, -Math.PI * 100 / 180, 45 * Math.PI / 180, 1, 0.8);
-		this.sequenceOpponent.hit_points.init(5, 3, -Math.PI * 80 / 180, 45 * Math.PI / 180, 1, 0.8);
-		this.sequencePlayer.addAnimation(SpritePack.Fight.Sprites.PLAYER_INTRO, 0);
-		this.sequenceOpponent.addAnimation(SpritePack.Fight.Sprites.OPPONENT_INTRO, 0);
-
-		this.damagePlayerRemaining = this.damagePlayer;
-		this.damageOpponentRemaining = this.damageOpponent;
-		//on part sur du 6 animations au total
-		for (var i = 0; i < Options.Gameplay.fightRoundCount; i++) {
-			this.addHitOpponent(i);
-			this.addHitPlayer(i);
-		}
-
-		this.elements.push(new Battle.Element(SpritePack.Battle.Sprites.GROUND, this.sequencePlayer.x, this.sequencePlayer.y + 120));
-		this.elements.push(new Battle.Element(SpritePack.Battle.Sprites.GROUND, this.sequenceOpponent.x, this.sequenceOpponent.y + 120));
-		this.elements.push(this.sequencePlayer);//avatar
-		this.elements.push(this.sequenceOpponent);//avatar
-	},
-	addHitPlayer: function (round) {
-		var damage = 0;
-		if (round == Options.Gameplay.fightRoundCount - 1) {
-			damage = this.damagePlayerRemaining;
-		} else {
-			var hit = Math.random();
-			if (this.damagePlayerRemaining >= 20 && hit > 0.8) {//coup critique
-				damage = Math.floor(Math.random() * 20) * this.damagePlayerRemaining / 20;
-			} else if (hit < 0.2) {
-				damage = 0;
-			} else {
-				damage = Math.floor(Math.random() * 10) * this.damagePlayerRemaining / 10;
-			}
-		}
-		this.damagePlayerRemaining -= damage;
-		this.sequencePlayer.addAnimation(SpritePack.Fight.Sprites.PLAYER_HIT, damage);
-		this.sequenceOpponent.addAnimation(SpritePack.Fight.Sprites.OPPONENT_FORK, 0);
-	},
-	addHitOpponent: function (round) {
-		var damage = 0;
-		if (round == Options.Gameplay.fightRoundCount - 1) {
-			damage = this.damageOpponentRemaining;
-		} else {
-			var hit = Math.random();
-			if (this.damageOpponentRemaining >= 20 && hit > 0.8) {//coup critique
-				damage = Math.floor(Math.random() * 20) * this.damageOpponentRemaining / 20;
-			} else if (hit < 0.2) {
-				damage = 0;
-			} else {
-				damage = Math.floor(Math.random() * 10) * this.damageOpponent / 10;
-			}
-		}
-		this.damageOpponentRemaining -= damage;
-		this.sequencePlayer.addAnimation(SpritePack.Fight.Sprites.PLAYER_FORK, 0);
-		this.sequenceOpponent.addAnimation(SpritePack.Fight.Sprites.OPPONENT_HIT, damage);
+		this.init();
 	},
 	stopBattle: function () {
 		CE.hud.chat.toggleVisibility(true);
@@ -124,12 +47,7 @@ CrymeEngine.Battle = {
 		CE.mapInvalidated = true;
 	},
 	update: function () {
-		if (CE.Battle.fightPhase == CE.Battle.FightPhase.INTRODUCTION) {
-			this.transitionBreath.updateProgress();
-			this.transitionAura.updateProgress();
-			this.transitionPlayer.updateProgress();
-			this.transitionWeapon.updateProgress();
-		}
+		CE.Battle.Timeline.update();
 		for (var i = 0; i < this.elements.length; i++) {
 			this.elements[i].update();
 		}
@@ -150,6 +68,8 @@ CrymeEngine.Battle = {
 			for (var i = 0; i < this.elements.length; i++) {
 				this.elements[i].draw();
 			}
+
+			CE.Battle.Timeline.draw();
 		}
 	}
 };
