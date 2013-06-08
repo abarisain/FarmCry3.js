@@ -33,6 +33,7 @@ var Map = {
 		for (var key in this.mapItems) {
 			this.mapItems[key].init();
 		}
+		this.refreshMapVisibility();
 	},
 	refreshMapVisibility: function () {//appelé quand la caméra bouge pour optimiser
 		this.tilesVisibles = [];
@@ -96,7 +97,6 @@ var Map = {
 			this.tiles[i].drawLoading(progress);
 		}
 		for (var key in this.mapItems) {
-			console.log(key);
 			this.mapItems[key].drawLoading(progress);
 		}
 	},

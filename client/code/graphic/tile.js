@@ -118,12 +118,14 @@ MapItems.Tile.prototype.updateImage = function () {
 };
 
 MapItems.Tile.prototype.drawLoading = function (progress) {
-	if (this.alpha < 1) {
-		this.alpha += 0.1;
+	if (this.visible) {
+		if (this.alpha < 1) {
+			this.alpha += 0.1;
+		}
+		CrymeEngine.canvas.map.context.globalAlpha = this.alpha;
+		CrymeEngine.canvas.map.context.drawImage(this.sprite.image, this.imageLeft,
+			this.imageTop - this.col * tileHeight * (1 - progress));
 	}
-	CrymeEngine.canvas.map.context.globalAlpha = this.alpha;
-	CrymeEngine.canvas.map.context.drawImage(this.sprite.image, this.imageLeft,
-		this.imageTop - this.col * tileHeight * (1 - progress));
 };
 //attention a bien se préoccuper du context avant, ici je m'en occupe pas
 MapItems.Tile.prototype.draw = function () {
