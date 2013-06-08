@@ -26,6 +26,7 @@ PM = require('./persistence_manager');
 GameState = require('./models/gamestate');
 NetworkEngine = require('./network/engine');
 EventManager = require('./event_manager');
+tick = require('./tick');
 
 var start_game = (function() {
 	// Show the map in the console, because it looks greaaaaat.
@@ -63,7 +64,7 @@ var start_game = (function() {
 		NetworkEngine.clients.add(socket);
 	});
 
-	EventManager.tick();
+	tick();
 }).bind(this);
 
 var generate_new_initialdata = (function() {
