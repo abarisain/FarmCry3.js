@@ -28,7 +28,7 @@ var SpritePack = {
 	Background: new SpriteSheet('src/background/', false),
 	Buildings: new SpriteSheet('src/buildings/', true),
 	Characters: new SpriteSheet('src/character/', false),
-	Crops: new SpriteSheet('src/crops/', true),
+	Crops: new SpriteSheet('src/crops/', false),
 	Effects: new SpriteSheet('src/effects/', false),
 	Fight: new SpriteSheet('src/fight/', false),
 	Storages: new SpriteSheet('src/storages/', true),
@@ -65,9 +65,24 @@ function LoadSpritePack() {
 	SpritePack.Characters.Sprites.ANIM_BOTTOM_LEFT = new Sprites.Animation('farmer_bottom_left', 10, 49, 23, 30);
 	SpritePack.Characters.Sprites.ANIM_BOTTOM_RIGHT = new Sprites.Animation('farmer_bottom_right', 30, 39, 23, 30);
 
-	SpritePack.Crops.Sprites.WHEAT = new Sprite('wheat', 112, 118);
-	SpritePack.Crops.Sprites.TOMATO = new Sprite('tomato', 125, 114);
-	SpritePack.Crops.Sprites.CORN = new Sprite('corn', 114, 88);
+	SpritePack.Crops.Sprites.WHEAT_WHITE = new Sprite('wheat_white', 114, 118);//hack
+	SpritePack.Crops.Sprites.WHEAT_0 = new Sprite('wheat_0', 113, 83);
+	SpritePack.Crops.Sprites.WHEAT_1 = new Sprite('wheat_1', 112, 89);
+	SpritePack.Crops.Sprites.WHEAT_2 = new Sprite('wheat_2', 112, 110);
+	SpritePack.Crops.Sprites.WHEAT_3 = new Sprite('wheat_3', 113, 113);
+	SpritePack.Crops.Sprites.WHEAT_4 = new Sprite('wheat_4', 115, 113);
+	SpritePack.Crops.Sprites.TOMATO_WHITE = new Sprite('tomato_white', 127, 114);
+	SpritePack.Crops.Sprites.TOMATO_0 = new Sprite('tomato_0', 116, 77);
+	SpritePack.Crops.Sprites.TOMATO_1 = new Sprite('tomato_1', 127, 93);
+	SpritePack.Crops.Sprites.TOMATO_2 = new Sprite('tomato_2', 127, 103);
+	SpritePack.Crops.Sprites.TOMATO_3 = new Sprite('tomato_3', 135, 112);
+	SpritePack.Crops.Sprites.TOMATO_4 = new Sprite('tomato_4', 134, 117);
+	SpritePack.Crops.Sprites.CORN_WHITE = new Sprite('corn_white', 116, 88);
+	SpritePack.Crops.Sprites.CORN_0 = new Sprite('corn_0', 105, 77);
+	SpritePack.Crops.Sprites.CORN_1 = new Sprite('corn_1', 120, 77);
+	SpritePack.Crops.Sprites.CORN_2 = new Sprite('corn_2', 115, 85);
+	SpritePack.Crops.Sprites.CORN_3 = new Sprite('corn_3', 115, 90);
+	SpritePack.Crops.Sprites.CORN_4 = new Sprite('corn_4', 115, 97);
 
 	SpritePack.Tiles.Sprites.SOIL_0 = new Sprite('soil_0');
 	SpritePack.Tiles.Sprites.SOIL_1 = new Sprite('soil_1');
@@ -138,17 +153,29 @@ function LoadSpritePack() {
 
 //cette fonction permet de charger tous les enums qui contiennent des sprites, vu qu'il faut attendre de les avoir chargés
 function initSpriteEnums() {
-	MapItems.TileItems.Crop.Type.corn.sprite = SpritePack.Crops.Sprites.CORN;
+
+	//pour tout initialiser bien comme il faut, sans dupliquer les textures
+	for (var i = 0; i < SpritePack.Crops.spriteList.length; i++) {
+		if (SpritePack.Crops.spriteList[i].name.match('corn')) {
+			SpritePack.Crops.spriteList[i].imageInfo = SpritePack.Crops.Sprites.CORN_WHITE.image;
+		} else if (SpritePack.Crops.spriteList[i].name.match('tomato')) {
+			SpritePack.Crops.spriteList[i].imageInfo = SpritePack.Crops.Sprites.TOMATO_WHITE.image;
+		} else if (SpritePack.Crops.spriteList[i].name.match('wheat')) {
+			SpritePack.Crops.spriteList[i].imageInfo = SpritePack.Crops.Sprites.WHEAT_WHITE.image;
+		}
+	}
+
+	//MapItems.TileItems.Crop.Type.corn.sprite = SpritePack.Crops.Sprites.CORN;
 	MapItems.TileItems.Crop.Type.corn.spriteBarrel = SpritePack.Storages.Sprites.BARREL_CORN;
 	MapItems.TileItems.Crop.Type.corn.spriteBox = SpritePack.Storages.Sprites.BOX_CORN;
 	MapItems.TileItems.Crop.Type.corn.spriteIceBox = SpritePack.Storages.Sprites.ICE_BOX_CORN;
 
-	MapItems.TileItems.Crop.Type.tomato.sprite = SpritePack.Crops.Sprites.TOMATO;
+	//MapItems.TileItems.Crop.Type.tomato.sprite = SpritePack.Crops.Sprites.TOMATO;
 	MapItems.TileItems.Crop.Type.tomato.spriteBarrel = SpritePack.Storages.Sprites.BARREL_TOMATO;
 	MapItems.TileItems.Crop.Type.tomato.spriteBox = SpritePack.Storages.Sprites.BOX_TOMATO;
 	MapItems.TileItems.Crop.Type.tomato.spriteIceBox = SpritePack.Storages.Sprites.ICE_BOX_TOMATO;
 
-	MapItems.TileItems.Crop.Type.wheat.sprite = SpritePack.Crops.Sprites.WHEAT;
+	//MapItems.TileItems.Crop.Type.wheat.sprite = SpritePack.Crops.Sprites.WHEAT;
 	MapItems.TileItems.Crop.Type.wheat.spriteBarrel = SpritePack.Storages.Sprites.BARREL_WHEAT;
 	MapItems.TileItems.Crop.Type.wheat.spriteBox = SpritePack.Storages.Sprites.BOX_WHEAT;
 	MapItems.TileItems.Crop.Type.wheat.spriteIceBox = SpritePack.Storages.Sprites.ICE_BOX_WHEAT;
