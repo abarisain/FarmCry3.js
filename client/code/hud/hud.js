@@ -326,7 +326,7 @@ CrymeEngine.hud.chat = {
 					}
 					CrymeEngine.hud.chat.append(messageData);
 				} else if (msg.beginsWith("/reload")) {
-					window.location = '';
+					document.location.reload();
 				} else if (msg.beginsWith("/raw ")) {
 					try {
 						var splitMsg = msg.split(" ", 2);
