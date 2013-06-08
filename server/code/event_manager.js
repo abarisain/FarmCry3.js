@@ -223,7 +223,7 @@ var EventManager = {
 						});
 						return false;
 					}
-					farmer.money -= buildingInfo.price;
+					this.substractMoney(buildingInfo.price);
 					targetTile.building = GameState.settings.buildings[buildingType];
 					targetTile.storedCrops = []; // This should not be polluted but clear it anyway, just to be safe
 					NetworkEngine.clients.broadcast("player.buildingUpdated", {
