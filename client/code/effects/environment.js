@@ -39,6 +39,10 @@ CrymeEngine.Environment = {
 		}
 		CE.Sound.sounds.ambiant.rain.play();
 	},
+	stopRain: function () {
+
+		CE.Sound.sounds.ambiant.rain.stop();
+	},
 	addTornado: function (col, line) {
 		var tornado = new MapItems.Tornado(col, line);
 		tornado.move(Math.random() * 5 + 3, Math.random() * 5 + 3);

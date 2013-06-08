@@ -114,7 +114,7 @@ networkEngine.subsystems.game = {
 			if(data.isRaining) {
 				CrymeEngine.Environment.startRain();
 			} else {
-
+				CrymeEngine.Environment.stopRain();
 			}
 		}
 	}
