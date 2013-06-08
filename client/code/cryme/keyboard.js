@@ -1,5 +1,6 @@
 CrymeEngine.keyboard = {
 	showKeyMap: false,//pour afficher ou non la keyMap à l'écran
+	debugKeyPresses: false,
 	keyCount: -1,
 	Keys: {
 		ENTER: { code: 13, name: 'Enter' },
@@ -91,9 +92,11 @@ CrymeEngine.keyboard = {
 		if (document.activeElement == CE.hud.chat.divs.input && event.keyCode != CE.keyboard.Shortcuts.CHAT.code) {
 			return true;
 		}
-		var messageData = {
-			kind: CE.hud.chat.Kind.LOCAL,
-			message: 'Keyboard debug : key - ' + event.keyCode
+		if(this.debugKeyPresses) {
+			var messageData = {
+				kind: CE.hud.chat.Kind.LOCAL,
+				message: 'Keyboard debug : key - ' + event.keyCode
+			}
 		}
 		CE.hud.chat.append(messageData);
 		switch (event.keyCode) {
