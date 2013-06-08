@@ -169,6 +169,9 @@ module.exports = {
 				var tmpFarmer = farmers[farmer.nickname];
 				tmpFarmer.email = farmer.email;
 				tmpFarmer.password = farmer.password;
+				tmpFarmer.password = farmer.password;
+				tmpFarmer.health = parseInt(farmer.health);
+				tmpFarmer.admin = farmer.admin == "true" ? true : false;
 				tmpFarmer.last_pos.x = parseInt(farmer.last_pos_x);
 				tmpFarmer.last_pos.y = parseInt(farmer.last_pos_y);
 				tmpFarmer.money = parseInt(farmer.money);

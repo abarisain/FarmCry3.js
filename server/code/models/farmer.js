@@ -3,7 +3,7 @@ function Farmer(nickname, email, password) {
 		x: 0,
 		y: 0
 	};
-	this.money = 0;
+	this.money = 9000;
 	this.allied_farmers = [];
 	this.logged_in = false;
 	this.health = 100;
@@ -12,6 +12,7 @@ function Farmer(nickname, email, password) {
 	this.password = password;
 	this.weapons = [ require('./gamestate').settings.weapons.fork ];
 	this.inventory = []; // Instances of storedCrop only for the time being
+	this.admin = false;
 	if (typeof nickname == 'undefined') {
 		this.nickname = "dummy";
 		this.email = "dummy";
@@ -43,6 +44,7 @@ Farmer.prototype = {
 		tmpFarmer.col = this.last_pos.x;
 		tmpFarmer.line = this.last_pos.y;
 		tmpFarmer.health = this.health;
+		tmpFarmer.admin = this.admin;
 		return tmpFarmer;
 	},
 	getPersistable: function () {
@@ -54,6 +56,7 @@ Farmer.prototype = {
 		tmpFarmer.last_pos_x = this.last_pos.x;
 		tmpFarmer.last_pos_y = this.last_pos.y;
 		tmpFarmer.money = this.money;
+		tmpFarmer.admin = this.admin;
 		var tmpArray = [];
 		this.weapons.forEach(function (weapon) {
 			tmpArray.push(weapon.codename);
