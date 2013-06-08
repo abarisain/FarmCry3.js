@@ -8,7 +8,8 @@ CrymeEngine.Sound = {
 	sounds: {
 		wololo: new Sound("wololo", "wololo.wav"),
 		ambiant: {
-			rain: new Sound("ambiant/rain", "ambiant/rain.wav", true, true)
+			rain: new Sound("ambiant/rain", "ambiant/rain.wav", true, true),
+			thunder: new Sound("ambiant/thunder", "ambiant/thunder.wav", true)
 		}
 	},
 	init: function () {

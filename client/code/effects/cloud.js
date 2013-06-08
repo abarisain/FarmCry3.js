@@ -39,6 +39,10 @@ MapItems.Cloud.prototype.update = function () {
 	this.transition.updateProgress();
 	this.transitionThunder.updateProgress();
 	this.emitterRain.update();
+	if (this.transitionThunder.started && this.transitionThunder.progress == this.transitionThunder.progressMax - 5) {
+		// Thunder strikes
+		CE.Sound.sounds.ambiant.thunder.play(3);
+	}
 }
 
 MapItems.Cloud.prototype.rain = function () {
@@ -55,6 +59,7 @@ MapItems.Cloud.prototype.draw = function () {
 		if (this.raining) {
 			var maxAlpha = 1;
 			if (this.transitionThunder.started && this.transitionThunder.progress > this.transitionThunder.progressMax - 5) {
+				// Thunder strikes
 				maxAlpha = this.transition.progress * ((this.transitionThunder.progressMax - this.transitionThunder.progress) / 5);
 			} else {
 				maxAlpha = this.transition.progress;
