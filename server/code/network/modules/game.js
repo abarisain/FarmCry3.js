@@ -11,6 +11,12 @@ var NetworkModule = {
 			var PM = require('../../persistence_manager');
 			PM.persist(PM.defaultPersistCallback);
 		},
+		clearSavedGame: function  (connection, request, data, callback) {
+			//WARNING : Debug/admin function
+			Chat.broadcastServerMessage(connection.farmer.nickname + " DELETED GAME DATA");
+			var PM = require('../../persistence_manager');
+			PM.clear();
+		},
 		updateMap: function () {
 
 			/*connection.send("game.initialData", {
