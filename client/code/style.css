@@ -136,7 +136,9 @@ a:hover {
 }
 
 #login_panel input[type="text"],
-#register_panel input[type="text"] {
+#register_panel input[type="text"],
+#login_panel input[type="password"],
+#register_panel input[type="password"]{
 	margin-left: 10px;
 	width: 320px;
 }
@@ -312,7 +314,8 @@ a:hover {
 	padding-right: 20px;
 }
 
-.fc_window input[type="text"] {
+.fc_window input[type="text"],
+.fc_window input[type="password"] {
 	margin-top: 4px;
 	margin-bottom: 4px;
 	padding: 8px;
