@@ -50,9 +50,12 @@ var PersistenceManager = {
 	},
 	persist: function(callback) {
 		this.asyncblock((function(flow) {
+
+			// Quick, dirty, non exhaustive and maybe not even working sanity check
 			if(GameState == undefined || GameState == null || GameState.board == undefined || GameState.board == null
-				|| GameState.board.x == undefined || GameState.board.x == null || isNaN(GameState.board.x)) {
+				|| GameState.board.size.x == undefined || GameState.board.size.x == null || isNaN(GameState.board.size.x)) {
 				console.log("PersistenceManager - Bad GameState, bailing out");
+				return;
 			}
 			console.log("PersistenceManager - Persisting gamestate");
 			var startDate = Date.now();
@@ -65,10 +68,11 @@ var PersistenceManager = {
 				// Key : farmer:<nickname>
 				this.client.hmset(this.keys.farmersPrefix + farmer.nickname, farmer.getPersistable(), flow.add());
 			}).bind(this));
-			GameState.board.storedCrops.forEach((function(storedCrop) {
-				// Key : stored_crop:<nickname>
-				this.client.hmset(this.keys.storedCropsPrefix + storedCrop.id, storedCrop.getPersistable(), flow.add());
-			}).bind(this));
+			var tmpStoredCrop;
+			for(var key in GameState.board.storedCrops) {
+				tmpStoredCrop = GameState.board.storedCrops[key];
+				this.client.hmset(this.keys.storedCropsPrefix + tmpStoredCrop.id, tmpStoredCrop.getPersistable(), flow.add());
+			}
 			GameState.board.tiles.forEach((function(tileLine) {
 				tileLine.forEach((function(tile) {
 					// Key : board:tile:<y>:<x>
