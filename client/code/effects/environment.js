@@ -5,10 +5,14 @@ CrymeEngine.Environment = {
 	clouds: [],
 	effects: [],
 	wind: {x: -4, y: 0 },
+	transitionThunder: new Transition(0, 1200, 1200, function () {
+	}),
+	thunderAlpha: 0,
 	movementTransition: new Transition(0, 1, 1200, function () {
 		CE.Environment.move();
 	}),
-	init: function () {
+	init: function (initialData) {
+
 		this.clouds = [];
 		for (var i = 0; i < colSize / 4; i++) {
 			for (var j = 0; j < lineSize / 4; j++) {
@@ -19,6 +23,9 @@ CrymeEngine.Environment = {
 		this.movementTransition.loopType = Transition.LoopType.BOUNCE;
 		this.movementTransition.start(Transition.Direction.IN);
 		this.move();
+		if (initialData.raining) {
+			this.startRain();
+		}
 	},
 	move: function () {
 		//on verra plus tard pour l'aléatoire
@@ -35,12 +42,23 @@ CrymeEngine.Environment = {
 	},
 	startRain: function () {
 		for (var i = 0; i < this.clouds.length; i++) {
-			this.clouds[i].rain();
+			this.clouds[i].startRain();
 		}
 		CE.Sound.sounds.ambiant.rain.play();
+		this.transitionThunder.start(Transition.Direction.IN, true);
+		this.transitionThunder.loopType = Transition.LoopType.RESET;
+		this.transitionThunder.eventEnd = function () {
+			CE.Sound.sounds.ambiant.thunder.play(3);
+		};
 	},
 	stopRain: function () {
-
+		for (var i = 0; i < this.clouds.length; i++) {
+			this.clouds[i].stopRain();
+		}
+		this.transitionThunder.start(Transition.Direction.OUT, true);
+		this.transitionThunder.loopType = Transition.LoopType.NONE;
+		this.transitionThunder.eventEnd = function () {
+		};
 		CE.Sound.sounds.ambiant.rain.stop();
 	},
 	addTornado: function (col, line) {
@@ -80,8 +98,14 @@ CrymeEngine.Environment = {
 	},
 	update: function () {
 		this.movementTransition.updateProgress();
+		this.transitionThunder.updateProgress();
+		if (this.transitionThunder.started && this.transitionThunder.progress > this.transitionThunder.progressMax - 5) {
+			this.thunderAlpha = (this.transitionThunder.progressMax - this.transitionThunder.progress) / 5;
+		} else {
+			this.thunderAlpha = 0;
+		}
 		for (var i = 0; i < this.effects.length; i++) {
-			this.effects[i].update();//je suis obligé de séparé pour la suppression des tornades
+			this.effects[i].update(this.thunderAlpha);//je suis obligé de séparé pour la suppression des tornades
 		}
 	},
 	draw: function () {

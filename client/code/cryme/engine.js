@@ -459,7 +459,7 @@ function CreateMap() {
 	Map.addPlayer(tmpFarmer);
 
 	Map.initMap();
-	CE.Environment.init();
+	CE.Environment.init(initialData);
 
 	CE.transitionMapCreation = new Transition(0, 1, 80, CrymeEngine.onLoadingAnimationFinished)
 	CE.transitionMapCreation.smoothing = true;

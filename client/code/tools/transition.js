@@ -63,6 +63,7 @@ Transition.prototype = {
 						this.direction = Transition.Direction.OUT;
 					} else if (this.loopType == Transition.LoopType.RESET) {
 						this.progress = this.progressInit;
+						this.eventEnd(this.direction);
 					} else {
 						this.started = false;
 						this.state = Transition.State.END;
@@ -86,6 +87,7 @@ Transition.prototype = {
 						this.direction = Transition.Direction.IN;
 					} else if (this.loopType == Transition.LoopType.RESET) {
 						this.progress = this.progressMax;
+						this.eventEnd(this.direction);
 					} else {
 						this.started = false;
 						this.state = Transition.State.BEGIN;
