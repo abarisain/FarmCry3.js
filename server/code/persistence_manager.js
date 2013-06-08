@@ -21,7 +21,7 @@ var Tile = require('./models/tile');
 var GameState = require('./models/gamestate');
 var StoredCrop = require('./models/storedCrop');
 
-var PersistenceManager = {
+module.exports = {
 	asyncblock: null,
 	keys: {
 		databaseVersion: null,
@@ -39,6 +39,7 @@ var PersistenceManager = {
 		boardSizeY: null,
 		boardTilesPrefix: null
 	},
+	enabled: true,
 	databaseVersion: 2,
 	client: null,
 	onError: function(err) {
@@ -49,7 +50,21 @@ var PersistenceManager = {
 			console.log("PersistenceManager - Error while persisting : " + err);
 		}
 	},
+	clear: function() {
+		this.enabled = false;
+		console.log("PersistenceManager - CLEARING GAME DATA and disabling PM for this session");
+		console.log("PersistenceManager - Please reboot the server, it will now exit");
+		this.asyncblock((function(flow) {
+			this.client.flushdb(flow.add());
+			flow.wait();
+			process.exit(1337);
+		}).bind(this));
+	},
 	persist: function(callback) {
+		if(!this.enabled) {
+			console.log("PersistenceManager - Persistence failed : PM Disabled");
+			return;
+		}
 		this.asyncblock((function(flow) {
 			// Quick, dirty, non exhaustive and maybe not even working sanity check
 			if(GameState == undefined || GameState == null || GameState.board == undefined || GameState.board == null
@@ -90,6 +105,10 @@ var PersistenceManager = {
 		}).bind(this), callback);
 	},
 	load: function(callback) {
+		if(!this.enabled) {
+			console.log("PersistenceManager - Loading failed : PM Disabled");
+			return;
+		}
 		this.asyncblock((function(flow) {
 			console.log("PersistenceManager - Loading gamestate");
 			var startDate = Date.now();
@@ -247,6 +266,8 @@ var PersistenceManager = {
 		}).bind(this), callback);
 	}
 };
+
+var PersistenceManager = module.exports;
 
 // Populate keys here. We can't do this before because some values depend on others.
 PersistenceManager.keys.databaseVersion = "databaseVersion";
