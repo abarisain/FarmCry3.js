@@ -15,7 +15,7 @@ MapItems.Cloud = function (col, line) {
 	this.transitionThunder = new Transition(0, 300, 300, function () {
 	});
 	this.transitionThunder.loopType = Transition.LoopType.RESET;
-
+	this.thunderAlpha = 0;
 	this.raining = false;
 }
 
@@ -32,35 +32,40 @@ MapItems.Cloud.prototype.move = function (deltaCol, deltaLine) {
 	this.movement.finalPosition.y = this.y;
 }
 
-MapItems.Cloud.prototype.update = function () {
+MapItems.Cloud.prototype.update = function (thunderAlpha) {
 	this.x = this.movement.startPosition.x + (this.movement.finalPosition.x - this.movement.startPosition.x) * CE.Environment.movementTransition.progress;
 	this.y = this.movement.startPosition.y + (this.movement.finalPosition.y - this.movement.startPosition.y) * CE.Environment.movementTransition.progress;
 	this.updateImageCoord();
 	this.transition.updateProgress();
-	this.transitionThunder.updateProgress();
 	this.emitterRain.update();
-	if (this.transitionThunder.started && this.transitionThunder.progress == this.transitionThunder.progressMax - 5) {
-		// Thunder strikes
-		CE.Sound.sounds.ambiant.thunder.play(3);
-	}
+	this.thunderAlpha = thunderAlpha;
 }
 
-MapItems.Cloud.prototype.rain = function () {
+MapItems.Cloud.prototype.startRain = function () {
 	if (this.raining)
 		return;
 	this.raining = true;
 	this.transition.start(Transition.Direction.IN, false);
-	this.transitionThunder.start(Transition.Direction.IN, true);
+	this.transition.loopType = Transition.LoopType.NONE;
 	this.emitterRain.start(5, 0, 1 / 2 * Math.PI + Math.PI * 3 / 180, 0);
+}
+
+MapItems.Cloud.prototype.stopRain = function () {
+	this.transition.start(Transition.Direction.OUT, false);
+	this.transition.loopType = Transition.LoopType.BOUNCE;
+	this.emitterRain.stop();
+	this.emitterRain.endEvent = function () {
+		this.raining = false;
+	}.bind(this);
 }
 
 MapItems.Cloud.prototype.draw = function () {
 	if (this.visible) {
 		if (this.raining) {
 			var maxAlpha = 1;
-			if (this.transitionThunder.started && this.transitionThunder.progress > this.transitionThunder.progressMax - 5) {
+			if (this.thunderAlpha > 0) {
 				// Thunder strikes
-				maxAlpha = this.transition.progress * ((this.transitionThunder.progressMax - this.transitionThunder.progress) / 5);
+				maxAlpha = this.transition.progress * this.thunderAlpha;
 			} else {
 				maxAlpha = this.transition.progress;
 			}
