@@ -14,6 +14,7 @@ LogicItems.Farmer.prototype.getSmallFarmer = function () {
 };
 LogicItems.Farmer.prototype.initFromFarmer = function (smallFarmer) {
 	this.nickname = smallFarmer.nickname;
+	this.admin = smallFarmer.admin;
 	this.position.col = smallFarmer.col;
 	this.position.line = smallFarmer.line;
 	//TODO : Add support for allies

@@ -39,7 +39,7 @@ Building.Types = {
 		6,
 		20,//20 barrels
 		1400,
-		3,
+		1,
 		true)
 };
 

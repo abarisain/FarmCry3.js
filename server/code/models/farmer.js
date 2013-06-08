@@ -1,28 +1,33 @@
+Crypto = require('crypto');
+
 function Farmer(nickname, email, password) {
 	this.last_pos = {
 		x: 0,
 		y: 0
 	};
-	this.money = 0;
+	this.money = 9000;
 	this.allied_farmers = [];
 	this.logged_in = false;
 	this.health = 100;
+	this.nickname = nickname;
+	this.email = email;
+	this.password = password || "";
+	this.password = Crypto.createHash('md5').update(this.password).digest("hex"); // Weak storage, but not plaintext
+	this.weapons = [ require('./gamestate').settings.weapons.fork ];
+	this.inventory = []; // Instances of storedCrop only for the time being
+	this.admin = false;
 	if (typeof nickname == 'undefined') {
 		this.nickname = "dummy";
 		this.email = "dummy";
 		this.password = "";
-		this.weapons = [];
-		return;
 	}
-	this.nickname = nickname;
-	this.email = email;
-	this.password = password;
-	this.weapons = [ require('./gamestate').settings.weapons.fork ];
-	this.inventory = []; // Instances of storedCrop only for the time being
 }
 
 Farmer.prototype = {
 	constructor: Farmer,
+	checkPassword: function (targetPassword) {
+		return Crypto.createHash('md5').update(targetPassword).digest("hex") == this.password;
+	},
 	isDead: function () {
 		return this.health == 0;
 	},
@@ -45,6 +50,7 @@ Farmer.prototype = {
 		tmpFarmer.col = this.last_pos.x;
 		tmpFarmer.line = this.last_pos.y;
 		tmpFarmer.health = this.health;
+		tmpFarmer.admin = this.admin;
 		return tmpFarmer;
 	},
 	getPersistable: function () {
@@ -56,6 +62,7 @@ Farmer.prototype = {
 		tmpFarmer.last_pos_x = this.last_pos.x;
 		tmpFarmer.last_pos_y = this.last_pos.y;
 		tmpFarmer.money = this.money;
+		tmpFarmer.admin = this.admin;
 		var tmpArray = [];
 		this.weapons.forEach(function (weapon) {
 			tmpArray.push(weapon.codename);

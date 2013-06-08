@@ -383,7 +383,16 @@ CrymeEngine.hud.chat = {
 			case this.Kind.PLAYER:
 				classText = "player";
 				// Easter eeeeeg
-				if (messageData.player == "Kalahim") {
+				var targetFarmer = null;
+				if(GameState.player.nickname.toLowerCase() == messageData.player.toLowerCase()) {
+					targetFarmer = GameState.player;
+				} else {
+					GameState.online_players.forEach(function (onlinePlayer) {
+						if(onlinePlayer.nickname.toLowerCase() == messageData.player.toLowerCase())
+							targetFarmer = onlinePlayer;
+					});
+				}
+				if (targetFarmer != null && targetFarmer.admin) {
 					var tmpImg = document.createElement("img");
 					tmpImg.setAttribute("src", "src/hud/admin.gif");
 					tmpDiv.appendChild(tmpImg);

@@ -18,7 +18,7 @@ Battle.Sequence.prototype = {
 	constructor: Battle.Sequence,
 	addAnimation: function (sprite, damage) {
 		this.animations.push({sprite: sprite, damage: damage});
-		this.frameCount += sprite.sprite.frameCount;
+		this.frameCount += sprite.frameCount;
 	},
 	update: function () {
 		this.hit_points.update();

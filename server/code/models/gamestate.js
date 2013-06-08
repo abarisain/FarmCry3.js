@@ -13,6 +13,7 @@ module.exports = {
 	pauseAutoPersistence: false,
 	paused: false,
 	lastPersistDate: 0,
+	tickCount: 0,
 	settings: {
 		healPerSecond: 1,
 		inventorySize: 5, //Max items a farmer can carry

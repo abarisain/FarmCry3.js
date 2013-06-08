@@ -233,7 +233,7 @@ var CrymeEngine = {
 	Event: {
 		launchBattle: function (data) {
 			CE.gameState = CE.GameState.BATTLE;
-			CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_FORK);
+			CE.Battle.launchBattle(data);
 			CE.mapInvalidated = true;
 		},
 		showFilterType: function () {
@@ -288,19 +288,19 @@ var CrymeEngine = {
 					CrymeEngine.mousePosition.x = event.pageX / scaleFactor - this.offsetLeft;
 					CrymeEngine.mousePosition.y = event.pageY / scaleFactor - this.offsetTop;
 					var objectSelected = false;
-					for (var i = Map.mapItems.length - 1; i >= 0; i--) {//en gérant par la fin, on sélectionne l'élément au premier plan
-						if (Map.mapItems[i].mouseIntersect(CE.mousePosition.x - CE.camera.position.x, CE.mousePosition.y - CE.camera.position.y)) {
-							if (CE.highlightedItem > -1 && CE.highlightedItem != i) {
+					for (var key in Map.mapItems) {//en gérant par la fin, on sélectionne l'élément au premier plan
+						if (Map.mapItems[key].mouseIntersect(CE.mousePosition.x - CE.camera.position.x, CE.mousePosition.y - CE.camera.position.y)) {
+							if (CE.highlightedItem != -1 && CE.highlightedItem != key) {
 								Map.mapItems[CE.highlightedItem].highlighted = false;
 							}
-							CE.highlightedItem = i;
+							CE.highlightedItem = key;
 							objectSelected = true;
 							break;
 						}
 					}
 					//si on ne sélectionne rien, on déselectionne
 					if (!objectSelected) {
-						if (CE.highlightedItem > -1) {
+						if (CE.highlightedItem != -1) {
 							Map.mapItems[CE.highlightedItem].highlighted = false;
 							CE.highlightedItem = -1;
 							CrymeEngine.mapInvalidated = true;
@@ -379,7 +379,7 @@ var CrymeEngine = {
 
 		window.onmouseup = function () {
 			CrymeEngine.movingMap = false;
-			if (CE.highlightedItem > -1) {
+			if (CE.highlightedItem != -1) {
 				Map.mapItems[CE.highlightedItem].highlighted = false;
 				CE.highlightedItem = -1;
 				CrymeEngine.mapInvalidated = true;
@@ -412,7 +412,7 @@ var CrymeEngine = {
 				CrymeEngine.mapInvalidated = true;
 			}
 
-			if (CE.highlightedItem > -1 && Options.Debug.Graphic.enabled) {
+			if (CE.highlightedItem != -1 && Options.Debug.Graphic.enabled) {
 				Map.mapItems[CE.highlightedItem].sprite.centerX -= (event.pageX / scaleFactor - this.offsetLeft - CrymeEngine.mousePosition.x);
 				Map.mapItems[CE.highlightedItem].sprite.centerY -= (event.pageY / scaleFactor - this.offsetTop - CrymeEngine.mousePosition.y);
 				Map.mapItems[CE.highlightedItem].updateImageCoord();
