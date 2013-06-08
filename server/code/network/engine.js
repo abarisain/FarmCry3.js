@@ -16,7 +16,10 @@ module.exports = {
 		list: [],
 		getConnectionForFarmer: function (farmer) {
 			if (typeof farmer == 'undefined') {
-				return this.fakeConnection();
+				if (this.fakeConnection.farmer == null) {
+					this.fakeConnection.farmer = new Farmer();
+				}
+				return this.fakeConnection;
 			}
 			var clientCount = NetworkEngine.clients.list.length;
 			var connection;
@@ -29,10 +32,13 @@ module.exports = {
 					return connection;
 				}
 			}
+			if (this.fakeConnection.farmer == null) {
+				this.fakeConnection.farmer = new Farmer();
+			}
 			return this.fakeConnection;
 		},
 		fakeConnection: { // Useful for disconnected farmers lolol dirty code
-			farmer: new Farmer(),
+			farmer: null, // Will be lazy loaded because of issues with GameState
 			send: function () {},
 			sendError: function () {}
 		},

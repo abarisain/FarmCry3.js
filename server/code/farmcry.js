@@ -26,6 +26,7 @@ PM = require('./persistence_manager');
 GameState = require('./models/gamestate');
 NetworkEngine = require('./network/engine');
 EventManager = require('./event_manager');
+tick = require('./tick');
 
 var start_game = (function() {
 	// Show the map in the console, because it looks greaaaaat.
@@ -56,11 +57,14 @@ var start_game = (function() {
 
 	console.log("Server started on port 8088");
 
+	// Less logging
+	io.set('log level', 1);
+	
 	io.sockets.on('connection', function (socket) {
 		NetworkEngine.clients.add(socket);
 	});
 
-	EventManager.tick();
+	tick();
 }).bind(this);
 
 var generate_new_initialdata = (function() {
@@ -72,16 +76,16 @@ var generate_new_initialdata = (function() {
 
 	// Create the users
 	var tmpFarmer = new Farmer("Arkanta", "dreamteam69@gmail.com", "prout");
-	tmpFarmer.money = 9001;
+	tmpFarmer.admin = true;
 	GameState.farmers.push(tmpFarmer);
 	tmpFarmer = new Farmer("Yaurthek", "yaurthek@gmail.com", "nightcore");
-	tmpFarmer.money = 9002;
+	tmpFarmer.admin = true;
 	GameState.farmers.push(tmpFarmer);
 	tmpFarmer = new Farmer("iPoi", "rouxguigui@gmail.com", "3D");
-	tmpFarmer.money = 9003;
+	tmpFarmer.admin = true;
 	GameState.farmers.push(tmpFarmer);
 	tmpFarmer = new Farmer("Kalahim", "kalahim69@gmail.com", "dieu");
-	tmpFarmer.money = 9004;
+	tmpFarmer.admin = true;
 	GameState.farmers.push(tmpFarmer);
 
 }).bind(this);
