@@ -120,8 +120,11 @@ function LoadSpritePack() {
 	SpritePack.Battle.Sprites.LENGTH = new Sprite('length', 81, 81);
 	SpritePack.Battle.Sprites.BUTTON_ANTHRAX = new Sprite('button_anthrax', 81, 81);
 
-	SpritePack.Battle.Sprites.AVATAR = new Sprite('avatar', 233, 260);
-	SpritePack.Battle.Sprites.AVATAR_BAD_GUY = new Sprite('avatar_bad_guy', 295, 211);
+
+	SpritePack.Battle.Sprites.PLAYER_IDLE = new Sprite('player_idle', 41, 111, null, null, 2);
+	SpritePack.Battle.Sprites.OPPONENT_IDLE = new Sprite('opponent_idle', 83, 119, null, null, 2);
+	SpritePack.Battle.Sprites.PLAYER_FLYING = new Sprite('player_flying', 112, 172, null, null, 2);
+	SpritePack.Battle.Sprites.OPPONENT_FLYING = new Sprite('opponent_flying', 183, 117, null, null, 2);
 	SpritePack.Battle.Sprites.AURA = new Sprite('aura', 797, 797);
 	SpritePack.Battle.Sprites.WEAPON_FORK = new Sprite('fork', 212, 189);
 	SpritePack.Battle.Sprites.WEAPON_FLAMETHROWER = new Sprite('flamethrower', 212, 189);

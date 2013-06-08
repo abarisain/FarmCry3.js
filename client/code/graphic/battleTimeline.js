@@ -2,9 +2,24 @@
 CE.Battle.Timeline = {
 	sequences: [],
 	currentFrame: 0,
-	duration: 5,//10 sec
-	frameCount: 5 * Options.Graphic.refreshRate,
+	duration: 10,//10 sec
+	frameCount: 10 * Options.Graphic.refreshRate,
 	started: true,
+	/**
+	 *
+	 * @returns {boolean} true if initialisation needed
+	 */
+	start: function () {
+		if (this.started == false) {
+			this.currentFrame = 0;
+			this.started = true;
+			for (var i = 0; i < this.sequences.length; i++) {
+				this.sequences[i].reset();
+			}
+			return false;
+		}
+		return true;
+	},
 	eventEnd: function () {
 		CE.Battle.stopBattle();
 	},
