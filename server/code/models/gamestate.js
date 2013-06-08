@@ -27,6 +27,10 @@ module.exports = {
 		crops: Crop.Types,
 		buildings: Building.Types
 	},
+	rain: {
+		isRaining: false,
+		timeLeft: 0
+	},
 	board: {
 		size: {
 			x: 0,
