@@ -239,10 +239,10 @@ CrymeEngine.hud = {
 	},
 	events: {
 		showFilter: function (name) {
-			CE.hud.panels.lifebar.visible = false;
-			CE.hud.panels.inventorybar.visible = false;
-			CE.hud.panels.actionBar.visible = false;
-			CE.hud.panels.actionBarSmall.visible = false;
+			//CE.hud.panels.lifebar.visible = false;
+			//CE.hud.panels.inventorybar.visible = false;
+			//CE.hud.panels.actionBar.visible = false;
+			//CE.hud.panels.actionBarSmall.visible = false;
 			CE.hud.rootHudElement.viewbag.filter_header.visible = true;
 			CE.hud.rootHudElement.viewbag.filter_text.setText(name);
 			for (var i = 0; i < CE.hud.panels.filter_buttons.length; i++) {
@@ -250,10 +250,10 @@ CrymeEngine.hud = {
 			}
 		},
 		removeFilter: function () {
-			CE.hud.panels.lifebar.visible = true;
-			CE.hud.panels.inventorybar.visible = true;
-			CE.hud.panels.actionBar.visible = true;
-			CE.hud.panels.actionBarSmall.visible = true;
+			//CE.hud.panels.lifebar.visible = true;
+			//CE.hud.panels.inventorybar.visible = true;
+			//CE.hud.panels.actionBar.visible = true;
+			//CE.hud.panels.actionBarSmall.visible = true;
 			CE.hud.rootHudElement.viewbag.filter_header.visible = false;
 			CE.hud.rootHudElement.viewbag.filter_text.setText('No filter');
 			for (var i = 0; i < CE.hud.panels.filter_buttons.length; i++) {
