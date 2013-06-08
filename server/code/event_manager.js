@@ -267,7 +267,7 @@ var EventManager = {
 			buyCrop: function (farmer, cropType) {
 				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
 				if (!targetTile.isOwnedBy(farmer)) {
-					NetworkEngine.clients.broadcast("game.error", {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
 						title: null,
 						message: "You cannot buy a crop on a land you don't own !"
 					});
@@ -276,7 +276,7 @@ var EventManager = {
 				if (!targetTile.hasGrowingCrop() && !targetTile.hasBuilding()) {
 					var cropInfo = GameState.settings.crops[cropType];
 					if (!this.substractMoney(farmer, cropInfo.seed_price)) {
-						NetworkEngine.clients.broadcast("game.error", {
+						NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
 							title: null,
 							message: "You do not have enough money for this seed !"
 						});
@@ -335,7 +335,7 @@ var EventManager = {
 				if (!targetTile.hasGrowingCrop() && !targetTile.hasBuilding()) {
 					var buildingInfo = GameState.settings.buildings[buildingType];
 					if (!this.substractMoney(farmer, buildingInfo.price)) {
-						NetworkEngine.clients.broadcast("game.error", {
+						NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
 							title: null,
 							message: "You do not have enough money for this building !"
 						});
@@ -418,7 +418,7 @@ var EventManager = {
 			addToInventory: function (farmer, storedCrop) {
 				var inventoryLength = farmer.inventory.length;
 				if (farmer.inventory.length >= GameState.settings.inventorySize) {
-					NetworkEngine.clients.broadcast("game.error", {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
 						title: null,
 						message: "You do not have enough room in your inventory !"
 					});
