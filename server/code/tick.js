@@ -131,16 +131,17 @@ module.exports = function () {
 			 Everything implied by any of these cases has already been taken care of
 			 */
 
-			// So now, make it more fertile over time
+			// So now, make it more fertile over time, but only if it is owned
+			// Otherwise, the map maxes out too fast
 			tileValueUpdated = false;
-			/* Todo : check if raining
-			 if(tile.humidity < 1) {
-			 tileValueUpdated = true;
-			 tile.humidity = Math.min(1, tile.humidity + 0.01);
-			 }*/
-			if (tile.fertility < tile.max_fertility) {
+			if (!tile.isNeutral() && tile.fertility < tile.max_fertility) {
 				tileValueUpdated = true;
 				tile.fertility = Math.min(tile.max_fertility, tile.fertility + 0.01);
+			}
+			// If it's raining, humidify the tiles
+			if(GameState.rain.isRaining && tile.humidity < 1) {
+				tileValueUpdated = true;
+				tile.humidity = Math.min(1, tile.humidity + 0.01);
 			}
 			if (tileValueUpdated && updatedTiles.indexOf(tile) <= 0) {
 				updatedTiles.push(tile);
