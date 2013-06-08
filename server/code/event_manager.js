@@ -6,7 +6,6 @@ StoredCrop = require('./models/storedCrop');
 var EventManager = {
 	tick: function () {
 		var tickStart = Date.now();
-		console.log("Event manager tick - " + tickStart);
 
 		// TODO : Add rain/Tornados
 
@@ -50,7 +49,9 @@ var EventManager = {
 					continue;
 				}
 				if (tile.hasBuilding()) {
-					EventManager.subsystems.player.substractMoney(tile.owner, tile.building.price_tick);
+					// Buildings are ticked every 10 ticks
+					if(GameState.tickCount%10 == 0)
+						EventManager.subsystems.player.substractMoney(tile.owner, tile.building.price_tick);
 					// The stored crops are whithered somewhere else, stop processing this tile
 					continue;
 				}
@@ -145,9 +146,13 @@ var EventManager = {
 			});
 		}
 
+		GameState.tickCount++;
+		if(GameState.tickCount == 9007199254740990) { //If almost max int (closest to a multiple of 10), reset to 0
+			GameState.tickCount = 0;
+		}
+		console.log("Event manager tick n°" + GameState.tickCount + " - " + (Date.now() - tickStart) + " ms");
 		//Schedule the next tick. We don't use setInterval because the tick might change at anytime
 		setTimeout(EventManager.tick, GameState.settings.tickRate);
-		console.log("Event manager tick end - " + (Date.now() - tickStart));
 	},
 	subsystems: {
 		player: {
