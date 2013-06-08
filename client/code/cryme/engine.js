@@ -428,7 +428,6 @@ var CrymeEngine = {
 		CrymeEngine.Update.MainLoop();
 
 		CrymeEngine.hud.init();
-		CrymeEngine.Sound.init();
 		InitLoading();
 	}
 };

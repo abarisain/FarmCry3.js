@@ -4,6 +4,7 @@ CrymeEngine.Sound = {
 	mainOutput: null,
 	unsupportedBrowser: false,
 	muted: false,
+	isAudioUnlocked: true,
 	sounds: {
 		wololo: new Sound("wololo", "wololo.wav")
 	},
@@ -55,5 +56,36 @@ CrymeEngine.Sound = {
 			this.muted = !this.muted;
 		}
 		this.mainOutput.gain.value = this.muted ? 0 : 1;
+	},
+	/**
+	 * For iOS
+	 */
+	unlockAudio: function () {
+		// Thanks http://paulbakaus.com/tutorials/html5/web-audio-on-ios/
+		if(this.context != null && !this.isAudioUnlocked) {
+			console.log("Unlocking iOS audio");
+			var buffer = this.context.createBuffer(1, 1, 22050);
+			var source = this.context.createBufferSource();
+			if(!source.start)
+				source.start = source.noteOn;
+			source.buffer = buffer;
+
+			// Connect to output (your speakers)
+			source.connect(this.context.destination);
+
+			// Play the file
+			source.start(0);
+
+			CE.Sound.isAudioUnlocked = true; // Assume unlocked
+			// By checking the play state after some time, we know if we're really unlocked
+			setTimeout(function() {
+				if((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
+					CE.Sound.isAudioUnlocked = true;
+				} else {
+					CE.Sound.isAudioUnlocked = false;
+				}
+				source.disconnect();
+			}, 0);
+		}
 	}
 }

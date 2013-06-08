@@ -27,6 +27,10 @@ Sound.prototype.setupBufferNode = function () {
 	this.nodes.buffer = CE.Sound.context.createBufferSource();
 	// 1st buffer is the "buffer node", then it's the internal buffer, then it's the buffer we loaded
 	this.nodes.buffer.buffer = this.buffer;
+	if(!this.nodes.buffer.stop)
+		this.nodes.buffer.stop = this.nodes.buffer.noteOff;
+	if(!this.nodes.buffer.start)
+		this.nodes.buffer.start = this.nodes.buffer.noteOn;
 	this.connect();
 }
 
