@@ -8,7 +8,7 @@ CrymeEngine.Environment = {
 	transitionThunder: new Transition(0, 1200, 1200, function () {
 	}),
 	thunderAlpha: 0,
-	movementTransition: new Transition(0, 1, 1200, function () {
+	movementTransition: new Transition(0, 1, 1600, function () {
 		CE.Environment.move();
 	}),
 	init: function (initialData) {
@@ -20,6 +20,7 @@ CrymeEngine.Environment = {
 				this.effects.push(this.clouds[this.clouds.length - 1]);
 			}
 		}
+		this.movementTransition.smoothing = true;
 		this.movementTransition.loopType = Transition.LoopType.BOUNCE;
 		this.movementTransition.start(Transition.Direction.IN);
 		this.move();
