@@ -105,7 +105,7 @@ var CrymeEngine = {
 			//il vaux mieux restaurer le contexte avant de commencer à dessiner, pour être tranquille
 			CrymeEngine.canvas.map.context.restore();
 
-			if(CE.transitionMapCreation.started) {
+			if (CE.transitionMapCreation.started) {
 				window.requestAnimFrame(function () {
 					CrymeEngine.Draw.MapCreation();
 				});
@@ -165,7 +165,7 @@ var CrymeEngine = {
 
 			Map.drawAnimation();
 			if (CE.displayType == CE.DisplayType.STANDARD) {
-				CE.Weather.draw();
+				CE.Environment.draw();
 			}
 
 			CrymeEngine.canvas.animation.context.restore();
@@ -215,7 +215,7 @@ var CrymeEngine = {
 	},
 	Update: {
 		Animation: function () {
-			CE.Weather.update();
+			CE.Environment.update();
 		},
 		MainLoop: function () {
 			if (!CrymeEngine.pauseRendering) {
@@ -231,12 +231,35 @@ var CrymeEngine = {
 		}
 	},
 	Event: {
-		changeFilterType: function (filterType) {
+		launchBattle: function (data) {
+			CE.gameState = CE.GameState.BATTLE;
+			CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_FORK);
+			CE.mapInvalidated = true;
+		},
+		showFilterType: function () {
 			CE.displayType = CE.DisplayType.INFORMATION;
+			CE.hud.events.showFilter(CE.filterType.name);
+			Map.tileHighLighted.index = -1;
+			Map.showMapInformations();
+			CrymeEngine.mapInvalidated = true;
+		},
+		changeFilterType: function (filterType) {
+			if (CE.displayType == CE.DisplayType.STANDARD) {
+				CE.displayType = CE.DisplayType.INFORMATION;
+			} else {
+
+			}
+			CE.hud.events.showFilter(filterType.name);
 			CE.filterType = filterType;
 			Map.tileHighLighted.index = -1;
 			Map.showMapInformations();
 			CrymeEngine.mapInvalidated = true;
+		},
+		removeFilterType: function () {
+			CE.hud.events.removeFilter();
+			CE.displayType = CE.DisplayType.STANDARD;
+			Map.tileHighLighted.index = -1;
+			CE.mapInvalidated = true;
 		}
 	},
 	init: function () {
@@ -323,9 +346,6 @@ var CrymeEngine = {
 
 						//activation du deplacement de la map
 						CrymeEngine.movingMap = true;
-					} else {
-						//sans le mode debug, le clic droit arrose
-						Map.player.waters();
 					}
 				}
 			}
@@ -431,10 +451,11 @@ function CreateMap() {
 	tmpFarmer = new LogicItems.PlayableFarmer();
 	tmpFarmer.initFromFarmer(initialData.player_farmer);
 	GameState.player = tmpFarmer;
+	CE.hud.panels.lifebar.setProgress(GameState.player.health);
 	Map.addPlayer(tmpFarmer);
 
 	Map.initMap();
-	CE.Weather.init();
+	CE.Environment.init();
 
 	CE.transitionMapCreation = new Transition(0, 1, 80, CrymeEngine.onLoadingAnimationFinished)
 	CE.transitionMapCreation.smoothing = true;

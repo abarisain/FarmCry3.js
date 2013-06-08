@@ -16,11 +16,15 @@ networkEngine.subsystems.player = {
 		},
 		destroyBuilding: function () {
 			networkEngine.call('player', 'destroyBuilding', {});
+		},
+		takeCurrentTile: function () {
+			networkEngine.call('player', 'takeCurrentTile', {});
 		}
 	},
 	events: {
+
 		connected: function (data) {
-			var tmpPlayer = new Farmer();
+			var tmpPlayer = new LogicItems.Farmer();
 			tmpPlayer.initFromFarmer(data.farmer);
 			GameState.addPlayer(tmpPlayer);
 		},
@@ -42,21 +46,23 @@ networkEngine.subsystems.player = {
 			}
 			target.invalidate();
 		},
-		cropBought: function (data) {
-			Map.network.buyCrop(data.cropType, data.col, data.line);
-		},
-		cropHarvested: function (data) {
-			Map.network.harvestCrop(data.col, data.line);
-		},
-		buildingBought: function (data) {
-			Map.network.buyBuilding(data.buildingType, data.col, data.line);
-		},
-		buildingDestroyed: function (data) {
-			Map.network.destroyBuilding(data.col, data.line);
+		/*
+		 this method add, update or remove a building
+		 */
+		buildingUpdated: function (data) {
+			GameState.updateBuilding(data.building, data.col, data.line);
 		},
 		moneyUpdated: function (data) {
-			if(GameState.player != null)
+			if (GameState.player != null)
 				GameState.player.money = data.money;
+		},
+		healthUpdated: function (data) {
+			if (GameState.player != null)
+				GameState.player.health = data.health;
+			CE.hud.panels.lifebar.setProgress(GameState.player.health);
+		},
+		launchBattle: function (data) {
+			CE.Event.launchBattle(data);
 		}
 	}
 };
@@ -67,6 +73,8 @@ networkEngine.subsystems.game = {
 			initialData = data;
 			networkEngine.onLoadingStarted();
 			initialDataLoaded = true;
+			colSize = data.col_size;
+			lineSize = data.line_size;
 			GameState.buildings = data.buildings;
 			GameState.crops = data.crops;
 			GameState.weapons = data.weapons;
@@ -75,12 +83,29 @@ networkEngine.subsystems.game = {
 			currentLoadingCount++;
 			console.log("Initial data ok");
 		},
+		tileOwnerUpdated: function (data) {
+			GameState.updateTileOwner(data, data.col, data.line);
+		},
+		/**
+		 @param {array} data
+		 */
+		tileDataUpdated: function (data) {
+			for (var i = 0; i < data.tiles.length; i++) {
+				GameState.updateTile(data.tiles[i], data.tiles[i].col, data.tiles[i].line);
+			}
+		},
 		error: function (data) {
-			if(data.title == null)
+			if (data.title == null)
 				data.title = "Error"
-			if(data.message == null)
+			if (data.message == null)
 				data.message = "Unknown error"
 			CE.hud.rootHudElement.addChild(new HudElements.FullscreenPopup(data.title, data.message));
+		},
+		/*
+		 this method add, update or remove a growingCrop depending on the data.growingCrop value
+		 */
+		growingCropUpdated: function (data) {
+			GameState.updateGrowingCrop(data.growingCrop, data.col, data.line);
 		}
 	}
 };

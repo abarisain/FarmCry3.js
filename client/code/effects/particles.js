@@ -15,20 +15,42 @@ function ParticlesEmitter(sprite, x, y, growth, amountMax, lifetime) {
 	this.angle = 0;//l'angle dans lequel il faut balancer les particules en radian (au centre du delta d'angle)
 	this.angleDelta = 0;//le total d'angle dans lequel on peut balancer des particules en radian
 	this.speed = 0;
+	this.speedDelta = 0;
 	this.scale = 1;//taille de reference des elements
 	this.scaleDelta = 0;//delta de taille pour chaque element
+	this.gravity = 0;
+	this.rotation = 1 * Math.PI / 180;
+	this.visible = true;
 }
 
 ParticlesEmitter.prototype = {
 	constructor: ParticlesEmitter,
-	start: function (speed, angle, angleDelta) {
-		this.speed = speed;
-		this.angle = angle;
-		this.particles = [];
-		this.angleDelta = angleDelta;
-		this.amount = 0;
+	/**
+	 @param {float} speed
+	 @param {float] angle rad
+	 	@param {float} angleDelta
+	 */
+	start: function (speed, speedDelta, angle, angleDelta, scale, scaleDelta) {
+		this.init(speed, speedDelta, angle, angleDelta, scale, scaleDelta);
 		this.started = true;
+	},
+	init: function (speed, speedDelta, angle, angleDelta, scale, scaleDelta) {
+		this.speed = speed;
+		this.speedDelta = speedDelta || 0;
+		this.angle = angle || 0;
+		this.angleDelta = angleDelta || 0;
+		this.scale = scale || 1;
+		this.scaleDelta = scaleDelta || 0;
+		this.particles = [];
+		this.amount = 0;
 		this.lifetime = this.lifetimeMax;
+	},
+	/*
+	 Add another round of particles
+	 * */
+	additionnalStart: function (amount) {
+		this.started = true;
+		this.amountMax += amount;
 	},
 	endEvent: function () {
 	},
@@ -38,13 +60,13 @@ ParticlesEmitter.prototype = {
 				var newParticleCount = Math.min(this.amountMax - this.amount, this.growth);
 				if (this.growth >= 1) {
 					for (var i = 0; i < newParticleCount; i++) {
-						var particle = new Particle(this.scatteringX, this.scatteringY, this.speed, this.scale, this.scaleDelta, this.angle, this.angleDelta, this.lifetime);
+						var particle = new Particle(this.scatteringX, this.scatteringY, this.speed, this.speedDelta, this.scale, this.scaleDelta, this.rotation, this.angle, this.angleDelta, this.lifetime);
 						this.particles.push(particle);
 						this.amount++;
 					}
 				} else {
 					if (Math.floor(this.amount + this.growth) > Math.floor(this.amount)) {
-						var particle = new Particle(this.scatteringX, this.scatteringY, this.speed, this.scale, this.scaleDelta, this.angle, this.angleDelta, this.lifetime);
+						var particle = new Particle(this.scatteringX, this.scatteringY, this.speed, this.speedDelta, this.scale, this.scaleDelta, this.rotation, this.angle, this.angleDelta, this.lifetime);
 						this.particles.push(particle);
 					}
 					this.amount += this.growth;
@@ -57,7 +79,7 @@ ParticlesEmitter.prototype = {
 				return false;
 			}
 			for (i = 0; i < this.particles.length; i++) {
-				if (!this.particles[i].update())//if particle is dead
+				if (!this.particles[i].update(this.gravity))//if particle is dead
 				{
 					this.particles.removeItemAtIndex(i);//enfin on supprime les particules haha
 				}
@@ -68,29 +90,35 @@ ParticlesEmitter.prototype = {
 		}
 	},
 	draw: function (maxAlpha) {
-		CE.canvas.animation.context.translate(this.x, this.y);
-		for (var i = 0; i < this.particles.length; i++) {
-			this.particles[i].draw(this.sprite, maxAlpha);
+		if (this.visible) {
+			CE.canvas.animation.context.translate(this.x, this.y);
+			for (var i = 0; i < this.particles.length; i++) {
+				this.particles[i].draw(this.sprite, maxAlpha);
+			}
+			CE.canvas.animation.context.translate(-this.x, -this.y);
 		}
-		CE.canvas.animation.context.translate(-this.x, -this.y);
 	}
 };
 
-function Particle(scatteringX, scatteringY, speed, scale, scaleDelta, angle, angleDelta, lifetime) {
-	this.x = Math.random() * scatteringX;
-	this.y = Math.random() * scatteringY;
+function Particle(scatteringX, scatteringY, speed, speedDelta, scale, scaleDelta, rotation, angle, angleDelta, lifetime) {
+	this.x = Math.random() * scatteringX - scatteringX / 2;
+	this.y = Math.random() * scatteringY - scatteringY / 2;
 	this.scale = scale + Math.random() * scaleDelta - scaleDelta / 2;
 	this.angle = angle + Math.random() * angleDelta - angleDelta / 2;
+	speed = speed + Math.random() * speedDelta - speedDelta / 2;
 	this.speedX = Math.cos(this.angle) * speed;
 	this.speedY = Math.sin(this.angle) * speed;
 	this.lifetime = lifetime;
 	this.alpha = 1;
 	this.apparitionAlpha = 0;
+	/*this.rotation = Math.random() * Math.PI / 180;
+	 this.rotationSpeed = rotation;*/
 }
 
 Particle.prototype = {
-	update: function () {
+	update: function (gravity) {
 		this.lifetime--;
+		this.speedY -= gravity;
 		this.x += this.speedX;
 		this.y += this.speedY;
 		if (this.apparitionAlpha < 1) {
@@ -104,6 +132,7 @@ Particle.prototype = {
 		if (this.lifetime <= 0) {
 			return false;
 		}
+		this.rotation += this.rotationSpeed;
 		return true;
 	},
 	draw: function (sprite, maxAlpha) {

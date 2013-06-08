@@ -25,6 +25,7 @@ String.prototype.beginsWith = function (string) {
 PM = require('./persistence_manager');
 GameState = require('./models/gamestate');
 NetworkEngine = require('./network/engine');
+EventManager = require('./event_manager');
 
 var start_game = (function() {
 	// Show the map in the console, because it looks greaaaaat.
@@ -56,13 +57,10 @@ var start_game = (function() {
 	console.log("Server started on port 8088");
 
 	io.sockets.on('connection', function (socket) {
-		/*socket.on('my other event', function (data) {
-		 console.log(data);
-		 });*/
-		//TODO : Tell the event manager that a new client connected
-		//TODO : Oh, also don't forget to code an event manager
 		NetworkEngine.clients.add(socket);
 	});
+
+	EventManager.tick();
 }).bind(this);
 
 var generate_new_initialdata = (function() {

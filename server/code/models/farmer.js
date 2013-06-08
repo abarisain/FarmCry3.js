@@ -3,7 +3,6 @@ function Farmer(nickname, email, password) {
 		x: 0,
 		y: 0
 	};
-	this.lastTimer = new Date().getTime();//last timestamp to check the delay between 2 refresh
 	this.money = 0;
 	this.allied_farmers = [];
 	this.logged_in = false;
@@ -24,13 +23,8 @@ function Farmer(nickname, email, password) {
 
 Farmer.prototype = {
 	constructor: Farmer,
-	update: function () {
-		if (new Date().getTime() - this.lastTimer > GameState.playerRefreshDelay) {
-			this.lastTimer = new Date().getTime();//c'est ptet pas très opti de redemander le timestamp ici, à voir si je change
-			return true;
-		} else {
-			return false;
-		}
+	isDead: function () {
+		return this.health == 0;
 	},
 	getSmallFarmer: function () {
 		var tmpFarmer = this.getMinimalFarmer();

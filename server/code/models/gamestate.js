@@ -14,8 +14,9 @@ module.exports = {
 	paused: false,
 	lastPersistDate: 0,
 	settings: {
+		healPerSecond: 1,
 		inventorySize: 5, //Max items a farmer can carry
-		tickRate: 1000, //Time between ticks in mS
+		tickRate: 2500, //Time between ticks in mS
 		startMoney: 1000, //Still dollars
 		playerRefreshDelay: 1500,//Time in ms before the refresh of a player
 		//Here are the reference instances of the objects
@@ -38,7 +39,7 @@ module.exports = {
 		 */
 		addStoredCrop: function (storedCrop) {
 			this.storedCrops[storedCrop.id] = storedCrop;
-			NetworkEngine.clients.broadcast("game.storedCropUpdated", {
+			NetworkEngine.clients.getConnectionForFarmer(storedCrop.owner).send("game.storedCropUpdated", {
 				storedCrop: storedCrop.getSmallStoredCrop()
 			});
 		},
@@ -48,7 +49,7 @@ module.exports = {
 		 */
 		removeStoredCrop: function (storedCrop) {
 			delete this.storedCrops[storedCrop.id];
-			NetworkEngine.clients.broadcast("game.storedCropDeleted", {
+			NetworkEngine.clients.getConnectionForFarmer(storedCrop.owner).send("game.storedCropDeleted", {
 				id: storedCrop.id
 			});
 		},
@@ -75,8 +76,8 @@ module.exports = {
 			//We tell the board that it is already 8 tiles long
 			//But it's not, since it's size_y is 0
 			//Grow Y will take care of filling everything without any hack this way
-			this.size.x = 8;
-			GameState.board.growY(8);
+			this.size.x = 12;
+			GameState.board.growY(12);
 		},
 		grow: function (x, y) {
 			this.growX(x);
@@ -151,7 +152,7 @@ module.exports = {
 					//Fertile ground output a max fertility of 70-100%
 					//Non fertile is 2-32%
 					tile.max_fertility = (lowFertility ? 0.02 : 0.70) + Math.random() * 0.3;
-					tile.fertility = tile.max_fertility;
+					tile.fertility = 0;//tile.max_fertility;
 					tile.humidity = (highHumidity ? (0.70 + Math.random() * 0.3) :
 						(0.30 + Math.random() * 0.4));
 					line.push(tile);

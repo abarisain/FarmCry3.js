@@ -48,6 +48,17 @@ Sprite.prototype = {
 			this.imageInfo = this.image;
 		}
 	},
+	copySprite: function (sprite) {
+		this.name = sprite.name;
+		this.scale = sprite.scale;
+		this.centerX = sprite.centerX;
+		this.centerY = sprite.centerY;
+		this.image = sprite.image;
+		this.imageInfo = sprite.imageInfo;
+		this.textureInfo = sprite.textureInfo;
+		this.width = sprite.width;
+		this.height = sprite.height;
+	},
 	updateWidthHeight: function () {
 		this.width = this.image.width;
 		this.height = this.image.height;

@@ -31,11 +31,10 @@ Tile.prototype = {
 		//return (this.isAliasOf == null ? this : this.isAliasOf);
 
 		// Check if the alias target had a building on it. If not, it should not be aliased so log it and correct it
-		if(this.isAliasOf != null) {
-			if(this.isAliasOf.building == null) {
+		if (this.isAliasOf != null) {
+			if (this.isAliasOf.building == null) {
 				this.isAliasOf == null;
-				console.log("ERROR : Tile " + this.position.x + "," + this.position.y + " is aliased to " +
-					+ this.isAliasOf.position.x + "," + this.isAliasOf.position.y
+				console.log("ERROR : Tile " + this.position.x + "," + this.position.y + " is aliased to " + +this.isAliasOf.position.x + "," + this.isAliasOf.position.y
 					+ " but the alias target has no building on it. Fixing.");
 			} else {
 				return this.isAliasOf;
@@ -45,7 +44,7 @@ Tile.prototype = {
 	},
 
 	isNeutral: function () {
-		return (this.owner.name == "dummy");
+		return (this.owner.nickname == "dummy");
 	},
 
 	/**
@@ -53,9 +52,7 @@ Tile.prototype = {
 	 @return {boolean}
 	 */
 	isOwnedBy: function (targetFarmer) {
-		// For the time being, just say yes.
-		return true;
-		//return (this.owner == targetFarmer);
+		return (this.owner == targetFarmer);
 	},
 
 	/**
@@ -74,7 +71,7 @@ Tile.prototype = {
 
 	/**
 	 @param {Crop} crop
-	*/
+	 */
 	initGrowingCrop: function (crop) {
 		this.growingCrop = {
 			codename: crop.codename,
@@ -98,6 +95,14 @@ Tile.prototype = {
 
 		return 1; //Guaranteed random since 1801 !
 	},
+	getTickUpdateTile: function () {
+		var tmpTile = {};
+		tmpTile.col = this.position.x;
+		tmpTile.line = this.position.y;
+		tmpTile.humidity = this.humidity;
+		tmpTile.fertility = this.fertility;
+		return tmpTile;
+	},
 	getSmallTile: function () {
 		//Returns a small version of this tile (for network usage)
 		var tmpTile = new Tile();
@@ -110,7 +115,7 @@ Tile.prototype = {
 		tmpTile.fertility = this.fertility;
 		tmpTile.max_fertility = this.max_fertility;
 		tmpTile.growingCrop = this.hasGrowingCrop() ? this.growingCrop : null
-		if(this.building == null) {
+		if (this.building == null) {
 			tmpTile.building = null;
 		} else {
 			tmpTile.building = { codename: this.building.codename };
@@ -132,7 +137,7 @@ Tile.prototype = {
 		tmpTile.fertility = this.fertility;
 		tmpTile.max_fertility = this.max_fertility;
 		tmpTile.maturity = this.maturity;
-		if(this.building == null) {
+		if (this.building == null) {
 			tmpTile.building = "dummy";
 		} else {
 			tmpTile.building = this.building;

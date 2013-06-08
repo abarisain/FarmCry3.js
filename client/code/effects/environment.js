@@ -1,12 +1,12 @@
 /*
  Cette classe gère tous les évènements venant du serveur et liés à la météo et aux catastrophes.
  */
-CrymeEngine.Weather = {
+CrymeEngine.Environment = {
 	clouds: [],
 	effects: [],
 	wind: {x: -4, y: 0 },
 	movementTransition: new Transition(0, 1, 1200, function () {
-		CE.Weather.move();
+		CE.Environment.move();
 	}),
 	init: function () {
 		this.clouds = [];
@@ -43,11 +43,32 @@ CrymeEngine.Weather = {
 		tornado.move(Math.random() * 5 + 3, Math.random() * 5 + 3);
 		this.effects.push(tornado);
 	},
-	removeTornado: function (tornado) {
-		this.effects.removeItem(tornado);
+	addExplosion: function (col, line) {
+		var explosion = new MapItems.Effect(col, line);
+		explosion.effect = new ParticlesEmitter(SpritePack.Effects.Sprites.FIRE, explosion.x, explosion.y, 60, 120, 30);
+		//explosion.effect.gravity = -0.05;
+		explosion.effect.start(2, 1, 0, Math.PI * 2, 0.5, 0.5);
+		/*explosion.effect.endEvent = function() {
+		 CE.Environment.remove(this);
+		 }.bind(explosion.effect);*/
+		this.effects.push(explosion);
+	},
+	addSmoke: function (col, line) {
+		var explosion = new MapItems.Effect(col, line);
+		explosion.effect = new ParticlesEmitter(SpritePack.Effects.Sprites.SMOKE, explosion.x, explosion.y - 20, 60, 180, 60);
+		//explosion.effect.gravity = -0.05;
+		explosion.effect.scatteringX = tileWidth * 2 / 3;
+		explosion.effect.scatteringY = tileHeight * 2 / 3;
+		explosion.effect.start(1, 1, Math.PI * 90 / 180, 0, 0.2, 0);
+		/*explosion.effect.endEvent = function() {
+		 CE.Environment.remove(this);
+		 }.bind(explosion.effect);*/
+		this.effects.push(explosion);
+	},
+	remove: function (effect) {
+		this.effects.removeItem(effect);
 	},
 	refreshWeatherVisibility: function () {//appelé quand la caméra bouge pour optimiser
-		CE.canvas.map.context.globalCompositeOperation = "destination-lighter";
 		for (var i = 0; i < this.effects.length; i++) {
 			this.effects[i].checkVisibility();
 		}

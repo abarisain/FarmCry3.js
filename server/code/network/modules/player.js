@@ -36,6 +36,11 @@ var NetworkModule = {
 			if (!EventManager.subsystems.player.destroyBuilding(connection.farmer)) {
 				connection.send("player.destroyBuildingDenied", data);
 			}
+		},
+		takeCurrentTile: function (connection, request, data, callback) {
+			if (!EventManager.subsystems.player.takeCurrentTile(connection.farmer)) {
+				connection.send("player.takeCurrentTileDenied", data);
+			}
 		}
 	}
 };

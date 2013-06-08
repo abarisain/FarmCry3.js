@@ -25,6 +25,13 @@ MapItems.TileItem.prototype.drawLoading = function (progress) {
 };
 MapItems.TileItem.prototype.showInformation = function () {
 };
+
+MapItems.TileItem.prototype.updateData = function (data) {
+	this.data = data;
+	if (CE.displayType == CE.DisplayType.INFORMATION) {
+		this.showInformation();
+	}
+};
 MapItems.TileItem.prototype.draw = function () {
 	if (this.visible) {
 		if (CE.displayType == CE.DisplayType.STANDARD) {

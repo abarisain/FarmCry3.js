@@ -15,25 +15,42 @@ MapItems.Tile.prototype.constructor = MapItems.Tile;
 
 MapItems.Tile.prototype.init = function () {
 	this.updateImage();
+	//TODO optimier ici en remplacement update par add
 	if (this.data.growingCrop != null) {
-		this.sprite = SpritePack.Tiles.Sprites.SOIL;
-		GameState.addGrowingCrop(this.data.growingCrop, this.col, this.line);
+		//this.sprite = SpritePack.Tiles.Sprites.SOIL;
+		GameState.updateGrowingCrop(this.data.growingCrop, this.col, this.line);
 	}
 	if (this.data.building != null) {
-		GameState.addBuilding(this.data.building, this.col, this.line);
+		GameState.updateBuilding(this.data.building, this.col, this.line);
 	}
 	this.updateImageCoord();
+};
+
+MapItems.Tile.prototype.updateData = function (data) {
+	this.data.fertility = data.fertility;
+	this.data.humidity = data.humidity;
+	this.updateImage();
+	if (CE.displayType == CE.DisplayType.INFORMATION) {
+		this.showInformation();
+	}
+};
+
+MapItems.Tile.prototype.updateOwner = function (data) {
+	this.data.owner = data.owner;
+	if (CE.displayType == CE.DisplayType.INFORMATION) {
+		this.showInformation();
+	}
 };
 
 MapItems.Tile.prototype.showInformation = function () {
 	switch (CE.filterType) {
 		case CE.FilterType.OWNER:
-			if (this.data.humidity > 0.6) {
-				this.infoColor.copyColor(ColorHelper.Templates.RED);
-			} else if (this.data.humidity > 0.4) {
+			if (this.data.owner == 'dummy') {
+				this.infoColor.copyColor(ColorHelper.Templates.WHITE);
+			} else if (this.data.owner == GameState.player.nickname) {
 				this.infoColor.copyColor(ColorHelper.Templates.ORANGE);
 			} else {
-				this.infoColor.copyColor(ColorHelper.Templates.WHITE);
+				this.infoColor.copyColor(ColorHelper.Templates.RED);
 			}
 			break;
 		case CE.FilterType.HUMIDITY:

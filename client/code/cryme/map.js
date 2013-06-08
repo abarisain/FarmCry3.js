@@ -10,36 +10,9 @@ var Map = {
 	}),
 	transitionInformationDetailed: new Transition(0, 10, 10, function (transitionType) {
 	}),
-	network: {
-		buyCrop: function (type, col, line) {
-			//TODO update this method
-			GameState.addGrowingCrop(this.data.growingCrop, this.col, this.line);
-			var tile = Map.getTile(col, line);
-			tile.cropType = type;
-			tile.sprite = SpritePack.Tiles.Sprites.SOIL;
-			var crop = new MapItems.TileItems.Crop(MapItems.TileItems.Crop.Type[type], col, line);
-			Map.mapItems.push(crop);
-			CrymeEngine.mapInvalidated = true;
-		},
-		harvestCrop: function (col, line) {
-			/*var tile = Map.getTile(col, line);
-			 tile.cropType = 'dummy';
-			 tile.updateImage();
-			 var crop = Map.removeMapItem(col, line);
-			 //Map.mapItems.remove(crop);*/
-		},
-		buyBuilding: function (type, col, line) {
-			//TODO update this method
-			/*var building = new MapItems.TileItems.Building(MapItems.TileItems.Building.Type[type], col, line);
-			 Map.mapItems.push(building);
-			 CrymeEngine.mapInvalidated = true;*/
-		},
-		destroyBuilding: function (col, line) {
-			//Map.removeMapItem(col, line);
-		}
-	},
 	init: function (data) {
 		this.loadTiles(data.tiles);
+
 		this.rect.x = -tileWidth / 2;
 		this.rect.y = -tileHeight / 2;
 		this.rect.dx = (tileWidth / 2) * (colSize + lineSize);
@@ -60,7 +33,6 @@ var Map = {
 		for (var key in this.mapItems) {
 			this.mapItems[key].init();
 		}
-		GameState.updateMapItems();//il faut bien le faire avant d'initialiser chaque element
 	},
 	refreshMapVisibility: function () {//appelé quand la caméra bouge pour optimiser
 		this.tilesVisibles = [];
@@ -72,7 +44,7 @@ var Map = {
 		for (var key in this.mapItems) {
 			this.mapItems[key].checkVisibility();
 		}
-		CE.Weather.refreshWeatherVisibility();
+		CE.Environment.refreshWeatherVisibility();
 	},
 	addPlayer: function (player) {
 		this.removePlayer(player.nickname);
@@ -109,31 +81,11 @@ var Map = {
 		}
 	},
 	getTile: function (col, line) {
-		for (var i = 0; i < this.tiles.length; i++) {
-			if (this.tiles[i].match(col, line)) {
-				return this.tiles[i];
-				break;
-			}
-		}
-		return null;
+		//TODO à vérifier
+		return this.tiles[col + (lineSize - 1 - line) * (lineSize)];
 	},
-	getMapItem: function (col, line) {
-		for (var i = 0; i < this.mapItems.length; i++) {
-			if (this.mapItems[i].match(col, line)) {
-				return this.mapItems[i];
-				break;
-			}
-		}
-		return null;
-	},
-	//bientôt useless
-	removeMapItem: function (col, line) {
-		for (var key in this.mapItems) {
-			if (this.mapItems[key].match(col, line)) {
-				this.mapItems.remove(key);
-				break;
-			}
-		}
+	getMapItemKey: function (col, line) {
+		return '_' + col + '_' + line;
 	},
 	drawBackground: function () {
 		CE.canvas.map.context.fillStyle = "#f9f9f9";
@@ -227,16 +179,15 @@ var Map = {
 			}
 		}
 		if (CE.filterType.mapItems) {
-			for (var i = 0; i < this.mapItems.length; i++) {
-				if (this.mapItems[i].match(coord.col, coord.line)) {
-					this.tileHighLighted.col = coord.col;
-					this.tileHighLighted.line = coord.line;
-					this.tileHighLighted.index = i;
-					if (i != exHighlighted) {
-						this.transitionInformationDetailed.start(Transition.Direction.IN, true);
-						CrymeEngine.mapInvalidated = true;
-					}
-					break;
+			var key = this.getMapItemKey(coord.col, coord.line);
+			var mapItem = this.mapItems[key];
+			if (mapItem != undefined) {
+				this.tileHighLighted.col = coord.col;
+				this.tileHighLighted.line = coord.line;
+				this.tileHighLighted.index = key;
+				if (key != exHighlighted) {
+					this.transitionInformationDetailed.start(Transition.Direction.IN, true);
+					CrymeEngine.mapInvalidated = true;
 				}
 			}
 		}
