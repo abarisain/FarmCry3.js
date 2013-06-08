@@ -55,6 +55,12 @@ CrymeEngine.Sound = {
 				}, function (err) {
 					console.log("SoundEngine - Error while loading " + bufferName);
 					console.log(err);
+					if(CE.Sound.enabled) {
+						console.log("SoundEngine - Sound disabled");
+						CE.Sound.unsupportedBrowser = true;
+						CE.Sound.enabled = false;
+					}
+					currentLoadingCount++;
 				});
 			}).bind(this);
 			request.send();
