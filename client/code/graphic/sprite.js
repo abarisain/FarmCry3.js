@@ -1,8 +1,8 @@
 var Sprites = {};
 
-function Sprite(name, centerX, centerY, textureInfo, extension) {
+function Sprite(name, centerX, centerY, textureInfo, extension, scale) {
 	this.name = name;
-	this.scale = 1;
+	this.scale = scale || 1;
 	if (centerX === undefined || centerX === null) {
 		this.centerX = tileWidth / 2;
 		this.centerY = tileHeight / 2;

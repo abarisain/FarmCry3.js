@@ -19,19 +19,22 @@ CrymeEngine.Battle = {
 		this.fightPhase = CE.Battle.FightPhase.INTRODUCTION;
 		this.background = SpritePack.Battle.Sprites.BACKGROUND;
 
-		this.sequenceFight = new Battle.Sequences.MainTimeline();
-		CE.Battle.Timeline.sequences.push(this.sequenceFight);
+		if (CE.Battle.Timeline.start()) {
 
-		this.sequencePlayer = new Battle.Sequences.Fighter(canvasWidth / 2 + 130, canvasHeight / 2 + 100);
-		CE.Battle.Timeline.sequences.push(this.sequencePlayer);
+			this.sequencePlayer = new Battle.Sequences.Player('Guigui', canvasWidth / 2 + 130, canvasHeight / 2 + 100, 100, 50);
+			CE.Battle.Timeline.sequences.push(this.sequencePlayer);
 
-		this.sequenceOpponent = new Battle.Sequences.Fighter(canvasWidth / 2 - 130, canvasHeight / 2 + 100);
-		CE.Battle.Timeline.sequences.push(this.sequenceOpponent);
+			this.sequenceOpponent = new Battle.Sequences.Opponent('Kalahim', canvasWidth / 2 - 130, canvasHeight / 2 + 100, 80, 40);
+			CE.Battle.Timeline.sequences.push(this.sequenceOpponent);
 
-		this.elements = [];
-		for (var i = 0; i < 4; i++) {
-			for (var j = 0; j < 5; j++) {
-				this.elements.push(new Battle.BackgroundParticle(-1500 + j * 600 - 200 * i, -2000 + i * 400 + 300 * j));
+			this.sequenceFight = new Battle.Sequences.MainTimeline();
+			CE.Battle.Timeline.sequences.push(this.sequenceFight);
+
+			this.elements = [];
+			for (var i = 0; i < 4; i++) {
+				for (var j = 0; j < 5; j++) {
+					this.elements.push(new Battle.BackgroundParticle(-1500 + j * 600 - 200 * i, -2000 + i * 400 + 300 * j));
+				}
 			}
 		}
 		this.initialized = true;
