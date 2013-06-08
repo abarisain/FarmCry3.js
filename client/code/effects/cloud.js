@@ -47,6 +47,8 @@ MapItems.Cloud.prototype.update = function () {
 }
 
 MapItems.Cloud.prototype.rain = function () {
+	if(this.raining)
+		return;
 	this.raining = true;
 	this.transition.start(Transition.Direction.IN, false);
 	this.transitionThunder.start(Transition.Direction.IN, true);
