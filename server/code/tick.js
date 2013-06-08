@@ -7,7 +7,20 @@ StoredCrop = require('./models/storedCrop');
 module.exports = function () {
 	var tickStart = Date.now();
 
-	// TODO : Add rain/Tornados
+	// TODO : Add Tornados
+	// Only decrement if > 0, -1 means forced rain
+	if(GameState.rain.timeLeft > 0) {
+		GameState.rain.timeLeft--;
+		if(GameState.rain.timeLeft == 0) {
+			if(GameState.rain.isRaining) {
+				// It was raining, no time left, stops raining
+				EventManager.subsystems.game.rainStop(false);
+			} else {
+				// It was not raining, no time left, starts raining
+				EventManager.subsystems.game.rainStart(false);
+			}
+		}
+	}
 
 	// Handle farmers
 	// Heal a little (if not in combat, if we handle that someday)
