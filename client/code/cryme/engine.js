@@ -187,6 +187,8 @@ var CrymeEngine = {
 			CrymeEngine.canvas.animation.clear();
 			CrymeEngine.canvas.animation.context.save();
 
+			CrymeEngine.canvas.animation.context.textAlign = 'center';
+
 			CrymeEngine.Battle.draw();
 
 			CrymeEngine.canvas.animation.context.restore();
@@ -270,6 +272,7 @@ var CrymeEngine = {
 		this.canvas.debug = new CrymeCanvas('#canvasDebug');
 		this.canvas.map.setFont("normal 12pt stanberry");
 		this.canvas.hud.setFont("bold 13pt stanberry,Calibri,Geneva,Arial");
+		this.canvas.animation.setFont("bold 100pt Berlin Sans FB Demi,Calibri,Geneva,Arial");
 		this.canvas.resizeAll(canvasWidth, canvasHeight);
 
 		CE.keyboard.init();
@@ -307,7 +310,7 @@ var CrymeEngine = {
 						}
 					}
 
-					if (!Options.Debug.Graphic.enabled) {
+					if (!Options.Debug.Graphic.enabled && CE.gameState == CE.GameState.FARMING) {
 						var x = event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x;
 						var y = event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y;
 						var coord = Map.getPlayerCoordinate(x, y);
@@ -437,6 +440,7 @@ var CE = CrymeEngine;
 function InitLoading() {
 	LoadSpritePack();
 	CrymeEngine.hud.loadTextures();
+	CrymeEngine.Sound.load();
 }
 
 //fonction pour placer des trucs sur la map pour test le rendu

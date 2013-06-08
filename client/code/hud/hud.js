@@ -9,6 +9,7 @@ CrymeEngine.hud = {
 		action_buy: null,
 		action_fertilizes: null,
 		action_harvests: null,
+		action_hide_chat: null,
 		action_open: null,
 		action_waters: null,
 		button_red: null,
@@ -53,6 +54,10 @@ CrymeEngine.hud = {
 	},
 	init: function () {
 		this.rootHudElement.resize();
+
+		if(isIOS) {
+			CE.hud.chat.toggleVisibility(false);
+		}
 
 		CE.hud.panels.lifebar = new HudElements.ProgressBar(108, 28, 34, 78, HudElement.Anchors.TOP_LEFT);
 		CE.hud.panels.lifebar.image = null;
@@ -99,17 +104,17 @@ CrymeEngine.hud = {
 		}).bind(this);
 		this.rootHudElement.addChild(CE.hud.panels.filters_enable);
 
-		/*var marketButton = new HudElements.Button(100, 50, 150, 0, "Market", HudElement.Anchors.TOP_LEFT, "#fff");
-		 marketButton.onClick = (function () {
-		 if (CE.hud.panels.market == null) {
-		 CE.hud.panels.market = HudElements.Book.Premade.Market();
-		 this.rootHudElement.addChild(CE.hud.panels.market);
-		 } else {
-		 CE.hud.panels.market.visible = true;
-		 }
-		 }).bind(this);
-		 this.rootHudElement.addChild(marketButton);*/
+		/*		Small action panel 	*/
 
+		var chatPanel = new HudElement("chatPanel", 'action_bar_small', 95, 95, 0, 0, HudElement.Anchors.BOTTOM_RIGHT);
+
+		var hide_chat = new HudElement('hide_chat', 'action_hide_chat', 56, 48, 0, 0, HudElement.Anchors.CENTER);
+		hide_chat.onClick = function () {
+			CE.hud.chat.toggleVisibility(null);
+		};
+		chatPanel.addChild(hide_chat);
+
+		this.rootHudElement.addChild(chatPanel);
 
 		/*		Small panel for non owend tile or owned tile with building or nothing	*/
 
@@ -134,7 +139,10 @@ CrymeEngine.hud = {
 		this.panels.actionBarSmall.addChild(this.panels.actionBarSmall.viewbag.attack);
 
 		this.panels.actionBarSmall.viewbag.open_building = new HudElement('open', 'action_open', 56, 48, 0, 100, HudElement.Anchors.CENTER);
-		//this.panels.actionBarSmall.viewbag.open_building.onClick = function () {	};
+		this.panels.actionBarSmall.viewbag.open_building.onClick = function () {
+			CE.hud.chat.toggleVisibility(null);
+		};
+
 		this.panels.actionBarSmall.addChild(this.panels.actionBarSmall.viewbag.open_building);
 
 		this.rootHudElement.addChild(this.panels.actionBarSmall);
@@ -290,10 +298,18 @@ CrymeEngine.hud.chat = {
 		send: null
 	},
 	toggleVisibility: function (visible) {
-		if (visible) {
-			this.divs.root.style.display = null;
+		if (visible == null) {
+			if (this.divs.root.style.display == 'none') {
+				this.divs.root.style.display = null;
+			} else {
+				this.divs.root.style.display = 'none';
+			}
 		} else {
-			this.divs.root.style.display = "none";
+			if (visible) {
+				this.divs.root.style.display = null;
+			} else {
+				this.divs.root.style.display = "none";
+			}
 		}
 	},
 	init: function () {
@@ -325,6 +341,8 @@ CrymeEngine.hud.chat = {
 						message: 'Help : "/raw <module.command> <JSON args>" Send raw command to server. DANGEROUS'
 					}
 					CrymeEngine.hud.chat.append(messageData);
+				} else if (msg.beginsWith("/reload")) {
+					document.location.reload();
 				} else if (msg.beginsWith("/raw ")) {
 					try {
 						var splitMsg = msg.split(" ", 2);
@@ -384,11 +402,11 @@ CrymeEngine.hud.chat = {
 				classText = "player";
 				// Easter eeeeeg
 				var targetFarmer = null;
-				if(GameState.player.nickname.toLowerCase() == messageData.player.toLowerCase()) {
+				if (GameState.player.nickname.toLowerCase() == messageData.player.toLowerCase()) {
 					targetFarmer = GameState.player;
 				} else {
 					GameState.online_players.forEach(function (onlinePlayer) {
-						if(onlinePlayer.nickname.toLowerCase() == messageData.player.toLowerCase())
+						if (onlinePlayer.nickname.toLowerCase() == messageData.player.toLowerCase())
 							targetFarmer = onlinePlayer;
 					});
 				}

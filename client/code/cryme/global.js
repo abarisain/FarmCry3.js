@@ -13,6 +13,9 @@ var scaleFactor = 1;
 
 var borderSize = 0;//taille des bordures dans la vue d'informations pour les tiles
 
+var isAudioUnlocked = false;
+var isIOS = false;
+
 //liste des emetteurs de particules
 var particleEmitters;
 
