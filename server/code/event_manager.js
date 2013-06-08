@@ -326,7 +326,7 @@ var EventManager = {
 			buyBuilding: function (farmer, buildingType) {
 				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
 				if (!targetTile.isOwnedBy(farmer)) {
-					NetworkEngine.clients.broadcast("game.error", {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
 						title: null,
 						message: "You cannot buy a building on a land you don't own !"
 					});
