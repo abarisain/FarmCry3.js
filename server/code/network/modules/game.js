@@ -1,5 +1,6 @@
 GameState = require('../../models/gamestate');
 Chat = require('./chat');
+EventManager = require('../../event_manager');
 
 var NetworkModule = {
 	name: "game",
@@ -24,6 +25,25 @@ var NetworkModule = {
 				Chat.broadcastServerMessage(connection.farmer.nickname + " DELETED GAME DATA");
 				var PM = require('../../persistence_manager');
 				PM.clear();
+			} else {
+				connection.send("game.error", {
+					title: null,
+					message: "This command is only for administrators."
+				});
+			}
+		},
+		toggleRain: function (connection, request, data, callback) {
+			//WARNING : Debug/admin function
+			if(connection.farmer.admin) {
+				var force = false;
+				if(data.force != undefined && data.force === true) {
+					force = true;
+				}
+				if(GameState.rain.isRaining) {
+					EventManager.subsystems.game.rainStop();
+				} else {
+					EventManager.subsystems.game.rainStart(force);
+				}
 			} else {
 				connection.send("game.error", {
 					title: null,
@@ -73,6 +93,7 @@ var NetworkModule = {
 				player_farmer: connection.farmer.getSmallFarmer(),
 				stored_crops: tmpStoredCrops,
 				online_farmers: tmpFarmers,
+				raining: GameState.rain.isRaining,
 				inventory_size: GameState.settings.inventorySize,
 				weapons: GameState.settings.weapons,//I'm going to use this later
 				crops: GameState.settings.crops,//TODO implement the use of these values in the client market
