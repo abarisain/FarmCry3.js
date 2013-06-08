@@ -2,14 +2,9 @@ MapItems.Cloud = function (col, line) {
 	MapItem.call(this, SpritePack.Effects.Sprites.CLOUD, col, line);
 	this.updateCoord();
 	this.updateImageCoord();
-	this.emitterRain = new ParticlesEmitter(SpritePack.Effects.Sprites.RAIN, this.x, this.y - 1000, 0.01, 7, 240);
+	this.emitterRain = new ParticlesEmitter(SpritePack.Effects.Sprites.RAIN, this.x, this.y - 1000, 0.01, -1, 240);
 	this.emitterRain.scale = 1;
 	this.emitterRain.scatteringX = 20;
-	var cloud = this;
-	this.emitterRain.endEvent = function () {
-		cloud.raining = false;
-		cloud.transitionThunder.started = false;
-	}
 	this.movement = { finalPosition: { x: 0, y: 0}, startPosition: { x: 0, y: 0}};
 	this.alpha = 0.6 * Math.random() + 0.4;
 	this.transition = new Transition(0, 1, 600, function () {
@@ -47,7 +42,7 @@ MapItems.Cloud.prototype.update = function () {
 }
 
 MapItems.Cloud.prototype.rain = function () {
-	if(this.raining)
+	if (this.raining)
 		return;
 	this.raining = true;
 	this.transition.start(Transition.Direction.IN, false);
