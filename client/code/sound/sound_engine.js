@@ -52,8 +52,9 @@ CrymeEngine.Sound = {
 				this.context.decodeAudioData(request.response, function(buffer) {
 					target.initWithBuffer(buffer);
 					currentLoadingCount++;
-				}, function () {
+				}, function (err) {
 					console.log("SoundEngine - Error while loading " + bufferName);
+					console.log(err);
 				});
 			}).bind(this);
 			request.send();
