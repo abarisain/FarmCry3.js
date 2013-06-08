@@ -5,7 +5,7 @@ function Transition(progressInit, progressMax, duration, eventEnd) {
 	this.progressInit = progressInit;
 	this.progressMax = progressMax;
 	this.progress = progressInit;
-	this.duration = duration * Option.Graphic.refreshRate / Option.Graphic.refreshRateReference;
+	this.duration = duration * Options.Graphic.refreshRate / Options.Graphic.refreshRateReference;
 	this.progressRate = (progressMax - progressInit) / duration;
 	this.started = false;
 	this.direction = Transition.Direction.IN;
