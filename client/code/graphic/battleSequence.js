@@ -37,8 +37,6 @@ Battle.KeyFrame.prototype = {
 				this.progress = (frame - this.beginFrame) / this.frameCount;
 			}
 		}
-	},
-	draw: function () {
 		if (this.started) {
 			this.action(this.progress);
 		}
@@ -57,40 +55,29 @@ Battle.Sequence.prototype = {
 		}
 	},
 	draw: function () {//cette fonction devras être override par les classes enfants
-		for (var i = 0; i < this.keyFrames.length; i++) {
-			this.keyFrames[i].draw();
-		}
 	}
 }
 
 Battle.Sequences = {};
 
-Battle.Sequences.MainTimeline = function () {
+Battle.Sequences.MainTimeline = function (playerName, opponentName) {
 	Battle.Sequence.call(this);
+	this.x = -canvasWidth / 2;
+	this.y = canvasHeight / 2 - 50;
+	this.text = 'Versus';
 	this.keyFrames.push(
 		new Battle.KeyFrame(0, 1, null,
 			function (progress) {
-				CE.canvas.animation.context.fillStyle = '#fff';
-				CE.canvas.animation.context.fillText('Kalahims attack !', (canvasWidth / 2) * progress, 200);
-			},
-			null
-		)
-	);
-	this.keyFrames.push(
-		new Battle.KeyFrame(1, 1, null,
-			function (progress) {
-				CE.canvas.animation.context.fillStyle = '#fff';
-				CE.canvas.animation.context.fillText('Kalahims attack !', canvasWidth / 2, 200);
-			},
+				this.x = -canvasWidth / 2 + canvasWidth * progress;
+			}.bind(this),
 			null
 		)
 	);
 	this.keyFrames.push(
 		new Battle.KeyFrame(2, 1, null,
 			function (progress) {
-				CE.canvas.animation.context.fillStyle = '#fff';
-				CE.canvas.animation.context.fillText('Kalahim attacks !', canvasWidth / 2 + (canvasWidth + 700) * progress, 200);
-			},
+				this.x = canvasWidth / 2 + canvasWidth * progress;
+			}.bind(this),
 			null
 		)
 	);
@@ -99,10 +86,21 @@ Battle.Sequences.MainTimeline = function () {
 Battle.Sequences.MainTimeline.prototype = new Battle.Sequence();
 Battle.Sequences.MainTimeline.prototype.constructor = Battle.Sequences.MainTimeline;
 
+Battle.Sequences.MainTimeline.prototype.drawParent = Battle.Sequences.MainTimeline.prototype.draw;
+Battle.Sequences.MainTimeline.prototype.draw = function () {//cette fonction devras être override par les classes enfants
+	CE.canvas.animation.context.globalAlpha = 1;
+	CE.canvas.animation.context.fillStyle = '#fff';
+	CE.canvas.animation.context.fillText(this.text, this.x, this.y);
+};
+
 
 //classe utilisée pour tous les éléments qui se dessineront sur l'écran des combats
-Battle.Sequences.Fighter = function (x, y) {
+Battle.Sequences.Fighter = function (x, y, life, damage) {
 	Battle.Sequence.call(this);
+	this.spriteIdle = {};
+	this.spriteAnimation = {};
+	this.life = life;
+	this.damage = damage;
 	this.hit_points = new ParticlesEmitter(SpritePack.Battle.Sprites.HIT_POINT, x, y - 30, 5, 10, 240);
 	this.hit_points.gravity = -0.089;
 	this.hit_points.scatteringX = 20;
@@ -129,6 +127,15 @@ Battle.Sequences.Fighter.prototype.update = function () {
 Battle.Sequences.Fighter.prototype.drawParent = Battle.Sequences.Fighter.prototype.draw;
 Battle.Sequences.Fighter.prototype.draw = function () {//cette fonction devras être override par les classes enfants
 	CE.canvas.animation.context.globalAlpha = 1;
-	this.drawParent();
+	switch (this.state) {
+		case Battle.Sequences.Fighter.State.HIDDEN:
+			break;
+		case Battle.Sequences.Fighter.State.IDLE:
+			this.spriteIdle.draw(this.x, this.y);
+			break;
+		case Battle.Sequences.Fighter.State.MOVING:
+			this.spriteAnimation.draw(this.x, this.y);
+			break;
+	}
 	this.hit_points.draw();
 };
