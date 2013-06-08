@@ -27,6 +27,12 @@ module.exports = {
 		crops: Crop.Types,
 		buildings: Building.Types
 	},
+	rain: {
+		isRaining: false,
+		timeLeft: 0,
+		defaultDuration: 72, // 3 minutes of rain
+		interval: 168 // 7 minutes of good weather
+	},
 	board: {
 		size: {
 			x: 0,

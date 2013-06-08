@@ -83,6 +83,8 @@ networkEngine.subsystems.game = {
 			CrymeEngine.init();
 			currentLoadingCount++;
 			console.log("Initial data ok");
+			if(data.isRaining)
+				CrymeEngine.Environment.startRain();
 		},
 		tileOwnerUpdated: function (data) {
 			GameState.updateTileOwner(data, data.col, data.line);
@@ -107,6 +109,13 @@ networkEngine.subsystems.game = {
 		 */
 		growingCropUpdated: function (data) {
 			GameState.updateGrowingCrop(data.growingCrop, data.col, data.line);
+		},
+		rainChanged: function (data) {
+			if(data.isRaining) {
+				CrymeEngine.Environment.startRain();
+			} else {
+				CrymeEngine.Environment.stopRain();
+			}
 		}
 	}
 };

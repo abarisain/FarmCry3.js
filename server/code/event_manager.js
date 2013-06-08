@@ -5,6 +5,33 @@ StoredCrop = require('./models/storedCrop');
 
 var EventManager = {
 	subsystems: {
+		game: {
+			/**
+			 * @param {boolean} force
+			 */
+			rainStart: function (force) {
+				GameState.rain.isRaining = true;
+				if(force) {
+					GameState.rain.timeLeft = -1;
+				} else {
+					GameState.rain.timeLeft = GameState.rain.defaultDuration;
+				}
+				NetworkEngine.clients.broadcast("game.rainChanged", {
+					isRaining: GameState.rain.isRaining
+				});
+			},
+
+			/**
+			 * @param {boolean} force
+			 */
+			rainStop: function () {
+				GameState.rain.isRaining = false;
+				GameState.rain.timeLeft = GameState.rain.interval;
+				NetworkEngine.clients.broadcast("game.rainChanged", {
+					isRaining: GameState.rain.isRaining
+				});
+			}
+		},
 		player: {
 			connected: function (newConnection, farmer) {
 				farmer.logged_in = true;

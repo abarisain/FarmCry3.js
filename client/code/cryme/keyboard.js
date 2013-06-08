@@ -97,8 +97,8 @@ CrymeEngine.keyboard = {
 				kind: CE.hud.chat.Kind.LOCAL,
 				message: 'Keyboard debug : key - ' + event.keyCode
 			}
+			CE.hud.chat.append(messageData);
 		}
-		CE.hud.chat.append(messageData);
 		switch (event.keyCode) {
 			case CE.keyboard.Keys.ESCAPE.code:
 				if (CE.hud.rootHudElement != null)
