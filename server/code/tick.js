@@ -96,11 +96,11 @@ module.exports = function () {
 						tileValueUpdated = false;
 						if (tile.humidity > 0) {
 							tileValueUpdated = true;
-							tile.humidity = Math.max(0, tile.humidity - 0.01);
+							tile.humidity = Math.max(0, tile.humidity - 0.001);
 						}
 						if (tile.fertility > 0) {
 							tileValueUpdated = true;
-							tile.fertility = Math.max(0, tile.fertility - 0.01);
+							tile.fertility = Math.max(0, tile.fertility - 0.001);
 						}
 						if (tileValueUpdated && updatedTiles.indexOf(tile) <= 0) {
 							updatedTiles.push(tile);
