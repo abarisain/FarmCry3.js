@@ -428,7 +428,7 @@ var CrymeEngine = {
 		CrymeEngine.Update.MainLoop();
 
 		CrymeEngine.hud.init();
-		CrymeEngine.sound.init();
+		CrymeEngine.Sound.init();
 		InitLoading();
 	}
 };
@@ -438,7 +438,7 @@ var CE = CrymeEngine;
 function InitLoading() {
 	LoadSpritePack();
 	CrymeEngine.hud.loadTextures();
-	CrymeEngine.sound.load();
+	CrymeEngine.Sound.load();
 }
 
 //fonction pour placer des trucs sur la map pour test le rendu

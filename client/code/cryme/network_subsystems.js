@@ -18,6 +18,7 @@ networkEngine.subsystems.player = {
 			networkEngine.call('player', 'destroyBuilding', {});
 		},
 		takeCurrentTile: function () {
+			CE.Sound.sounds.wololo.play();
 			networkEngine.call('player', 'takeCurrentTile', {});
 		}
 	},

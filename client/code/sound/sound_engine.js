@@ -1,9 +1,11 @@
-CrymeEngine.sound = {
+CrymeEngine.Sound = {
 	enabled: true,
 	context: null,
+	mainOutput: null,
 	unsupportedBrowser: false,
+	muted: false,
 	sounds: {
-		wololo: "wololo.wav"
+		wololo: new Sound("wololo", "wololo.wav")
 	},
 	init: function () {
 		if (typeof AudioContext !== "undefined") {
@@ -14,7 +16,11 @@ CrymeEngine.sound = {
 			this.unsupportedBrowser = true;
 			this.enabled = false;
 			console.log('SoundEngine - AudioContext not supported, disabling');
+			return;
 		}
+		this.mainOutput = this.context.createGainNode();
+		this.mainOutput.gain.value = 1;
+		this.mainOutput.connect(this.context.destination);
 	},
 	load: function () {
 		if(this.unsupportedBrowser)
@@ -22,7 +28,6 @@ CrymeEngine.sound = {
 		var buffersList = Object.keys(this.sounds);
 		totalLoadingCount += buffersList.length;
 		buffersList.forEach((function (bufferName) {
-			this.sounds[bufferName] = new Sound(bufferName, this.sounds[bufferName]);
 			var request = new XMLHttpRequest();
 			request.open('GET', 'src/sounds/' + this.sounds[bufferName].src, true);
 			request.responseType = 'arraybuffer';
@@ -30,7 +35,7 @@ CrymeEngine.sound = {
 			// Decode asynchronously
 			request.onload = (function() {
 				this.context.decodeAudioData(request.response, function(buffer) {
-					CrymeEngine.sound.sounds[bufferName].data = buffer;
+					CrymeEngine.Sound.sounds[bufferName].initWithBuffer(buffer);
 					currentLoadingCount++;
 				}, function () {
 					console.log("SoundEngine - Error while loading " + bufferName);
@@ -38,5 +43,17 @@ CrymeEngine.sound = {
 			}).bind(this);
 			request.send();
 		}).bind(this));
+	},
+	/**
+	 * Toggles mute, except if you force the state
+	 * @param {boolean} forceState
+	 */
+	mute: function (forceState) {
+		if(typeof forceState != 'undefined') {
+			this.muted = forceState ? true : false; // Sanitize the type
+		} else {
+			this.muted = !this.muted;
+		}
+		this.mainOutput.gain.value = this.muted ? 0 : 1;
 	}
 }
