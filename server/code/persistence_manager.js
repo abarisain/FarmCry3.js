@@ -50,6 +50,10 @@ var PersistenceManager = {
 	persist: function(callback) {
 		this.asyncblock((function(flow) {
 			return;
+			if(GameState == undefined || GameState == null || GameState.board == undefined || GameState.board == null
+				|| GameState.board.x == undefined || GameState.board.x == null || isNaN(GameState.board.x)) {
+				console.log("PersistenceManager - Bad GameState, bailing out");
+			}
 			console.log("PersistenceManager - Persisting gamestate");
 			var startDate = Date.now();
 			this.client.flushdb(flow.add());
