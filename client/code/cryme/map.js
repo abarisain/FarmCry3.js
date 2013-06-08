@@ -72,14 +72,6 @@ var Map = {
 			break;
 		}
 	},
-	drawMapLoading: function (progress) {
-		for (var i = 0; i < Math.min(this.tiles.length * progress, this.tiles.length); i++) {
-			this.tiles[i].drawLoading(progress);
-		}
-		for (var key in this.mapItems) {
-			this.mapItems[key].drawLoading(progress);
-		}
-	},
 	getTile: function (col, line) {
 		//TODO à vérifier
 		return this.tiles[col + (lineSize - 1 - line) * (lineSize)];
@@ -98,6 +90,15 @@ var Map = {
 		CE.canvas.map.context.drawImage(SpritePack.Background.Sprites.BOTTOM_RIGHT.image, this.rect.x + this.rect.dx -
 			SpritePack.Background.Sprites.BOTTOM_RIGHT.centerX, this.rect.y + this.rect.dy -
 			SpritePack.Background.Sprites.BOTTOM_RIGHT.centerY);
+	},
+	drawMapLoading: function (progress) {
+		for (var i = 0; i < Math.min(this.tiles.length * progress, this.tiles.length); i++) {
+			this.tiles[i].drawLoading(progress);
+		}
+		for (var key in this.mapItems) {
+			console.log(key);
+			this.mapItems[key].drawLoading(progress);
+		}
 	},
 	drawMap: function () {
 		//Todo séparer l'update du draw
