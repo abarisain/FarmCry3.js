@@ -49,8 +49,8 @@ module.exports = function () {
 				continue;
 			}
 			if (tile.hasBuilding()) {
-				// Buildings are ticked every 10 ticks
-				if(GameState.tickCount%10 == 0)
+				// Buildings are ticked every 24 ticks
+				if(GameState.tickCount%24 == 0)
 					EventManager.subsystems.player.substractMoney(tile.owner, tile.building.price_tick);
 				// The stored crops are whithered somewhere else, stop processing this tile
 				continue;
