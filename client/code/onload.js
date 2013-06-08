@@ -3,7 +3,6 @@ window.onload = function () {
 		isIOS = true;
 		CE.Sound.isAudioUnlocked = false;
 	}
-	console.log("wat");
 	initLogin();
 	CrymeEngine.hud.chat.init();
 	CrymeEngine.Sound.init();
