@@ -6,7 +6,10 @@ CrymeEngine.Sound = {
 	muted: false,
 	isAudioUnlocked: true,
 	sounds: {
-		wololo: new Sound("wololo", "wololo.wav")
+		wololo: new Sound("wololo", "wololo.wav"),
+		ambiant: {
+			rain: new Sound("ambiant/rain", "ambiant/rain.wav", true, true)
+		}
 	},
 	init: function () {
 		if (typeof AudioContext !== "undefined") {
@@ -26,17 +29,27 @@ CrymeEngine.Sound = {
 	load: function () {
 		if(this.unsupportedBrowser)
 			return;
-		var buffersList = Object.keys(this.sounds);
-		totalLoadingCount += buffersList.length;
+		this.loadLiteral(this.sounds);
+	},
+	loadLiteral: function (literal) {
+		var buffersList = Object.keys(literal);
 		buffersList.forEach((function (bufferName) {
+			var target = literal[bufferName];
+			// Not a perfect check but good enough for us, we just need to know if it's not a Sound
+			if(target != null && Object.getPrototypeOf(target) == Object.prototype) {
+				// Recursive loading
+				this.loadLiteral(target);
+				return;
+			}
+			totalLoadingCount++;
 			var request = new XMLHttpRequest();
-			request.open('GET', 'src/sounds/' + this.sounds[bufferName].src, true);
+			request.open('GET', 'src/sounds/' + target.src, true);
 			request.responseType = 'arraybuffer';
 
 			// Decode asynchronously
 			request.onload = (function() {
 				this.context.decodeAudioData(request.response, function(buffer) {
-					CrymeEngine.Sound.sounds[bufferName].initWithBuffer(buffer);
+					target.initWithBuffer(buffer);
 					currentLoadingCount++;
 				}, function () {
 					console.log("SoundEngine - Error while loading " + bufferName);
