@@ -10,7 +10,7 @@ var NetworkModule = {
 	},
 	broadcastServerMessage: function (message) {
 		NetworkEngine.clients.broadcast("chat.message", {kind: NetworkModule.Kind.SERVER, message: message});
-		console.log("Server message broadcast : " + message);
+		console.log("Server message broadcast " + Date.now() + " : " + message);
 	},
 	sendServerMessage: function (connection, message) {
 		connection.send("chat.message", {kind: NetworkModule.Kind.SERVER, message: message});

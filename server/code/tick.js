@@ -10,7 +10,6 @@ module.exports = function () {
 	// TODO : Add Tornados
 	// Only decrement if > 0, -1 means forced rain
 	if(GameState.rain.timeLeft > 0) {
-		console.log("Decrementing weather");
 		GameState.rain.timeLeft--;
 		if(GameState.rain.timeLeft == 0) {
 			if(GameState.rain.isRaining) {

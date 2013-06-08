@@ -36,9 +36,11 @@ var NetworkModule = {
 			//WARNING : Debug/admin function
 			if(connection.farmer.admin) {
 				var force = false;
-				if(data.force != undefined && data.force === true) {
+				if(data.force != undefined && data.force == "true") {
 					force = true;
 				}
+				Chat.broadcastServerMessage(connection.farmer.nickname +
+					(GameState.rain.isRaining ? " disabled" : " enabled") + " rain (unlimited : " + force + ")");
 				if(GameState.rain.isRaining) {
 					EventManager.subsystems.game.rainStop();
 				} else {
