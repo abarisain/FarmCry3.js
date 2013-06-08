@@ -40,7 +40,7 @@ module.exports = {
 		boardTilesPrefix: null
 	},
 	enabled: true,
-	databaseVersion: 2,
+	databaseVersion: 1,
 	client: null,
 	onError: function(err) {
 		console.log("Redis error : " + err);
