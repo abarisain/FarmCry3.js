@@ -16,7 +16,6 @@ var NetworkModule = {
 			for (var i = 0; i < farmersCount; i++) {
 				currentFarmer = GameState.farmers[i];
 				if (data.email == currentFarmer.email) {
-					//TODO : Disconnect already connected farmers for that email (if any)
 					//TODO : CRYPT THIS SHIT
 					//Password check is disabled, too annoying for debugging. I tested it before commenting it.
 					//if(data.password == currentFarmer.password) {
