@@ -443,6 +443,11 @@ a:hover {
 	background-color: #847d4a;
 }
 
+.fc_window .stripes-animated span {
+    -webkit-animation: animate-stripes 3s linear infinite;
+    -moz-animation: animate-stripes 3s linear infinite;
+}
+
 @-webkit-keyframes animate-stripes {
 	0% {
 		background-position: 0 0;
