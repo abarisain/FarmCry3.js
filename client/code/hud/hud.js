@@ -285,6 +285,7 @@ CrymeEngine.hud = {
  It's drawn using the DOM (html/css) and not canvas, so there it goes.
  */
 CrymeEngine.hud.chat = {
+	visible: true,
 	timestampFormat: "HH:MM:ss",
 	Kind: {
 		SERVER: 0,
@@ -301,14 +302,18 @@ CrymeEngine.hud.chat = {
 		if (visible == null) {
 			if (this.divs.root.style.display == 'none') {
 				this.divs.root.style.display = null;
+				this.visible = true;
 			} else {
 				this.divs.root.style.display = 'none';
+				this.visible = false;
 			}
 		} else {
 			if (visible) {
 				this.divs.root.style.display = null;
+				this.visible = true;
 			} else {
 				this.divs.root.style.display = "none";
+				this.visible = false;
 			}
 		}
 	},

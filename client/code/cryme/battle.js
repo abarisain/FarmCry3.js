@@ -14,7 +14,9 @@ CrymeEngine.Battle = {
 		FIGHT: 1
 	},
 	fightPhase: 0,
+	oldChatVisibility: true,
 	init: function () {
+		this.oldChatVisibility = CE.hud.chat.visible;
 		CE.hud.chat.toggleVisibility(false);
 		this.fightPhase = CE.Battle.FightPhase.INTRODUCTION;
 		this.background = SpritePack.Battle.Sprites.BACKGROUND;
@@ -45,7 +47,7 @@ CrymeEngine.Battle = {
 		this.init();
 	},
 	stopBattle: function () {
-		CE.hud.chat.toggleVisibility(true);
+		CE.hud.chat.toggleVisibility(this.oldChatVisibility);
 		CE.gameState = CE.GameState.FARMING;
 		CE.mapInvalidated = true;
 	},
