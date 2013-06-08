@@ -49,17 +49,19 @@ GameState = {
 			mapItem = Map.mapItems[key];
 			delete growingCrop;
 			delete mapItem;
-
+			Map.getTile(col, line).setHasGrowingCrop(false);
 		} else {
 			if (growingCrop == undefined) {
 				//add growingCrop if growingCrop don't exist
 				this.logicItems.growingCrops[key] = data;
 				Map.mapItems[key] = new MapItems.TileItems.Crop(data, col, line);
+				Map.getTile(col, line).setHasGrowingCrop(true);
 			} else {
 				//update growingCrop if exist
 				mapItem = Map.mapItems[key];
 				growingCrop.data = data;
 				mapItem.updateData(data);
+				Map.getTile(col, line).setHasGrowingCrop(true);
 			}
 		}
 		CE.mapInvalidated = true;

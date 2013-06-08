@@ -69,6 +69,11 @@ function LoadSpritePack() {
 	SpritePack.Crops.Sprites.TOMATO = new Sprite('tomato', 125, 114);
 	SpritePack.Crops.Sprites.CORN = new Sprite('corn', 114, 88);
 
+	SpritePack.Tiles.Sprites.SOIL_0 = new Sprite('soil_0');
+	SpritePack.Tiles.Sprites.SOIL_1 = new Sprite('soil_1');
+	SpritePack.Tiles.Sprites.SOIL_2 = new Sprite('soil_2');
+	SpritePack.Tiles.Sprites.SOIL_3 = new Sprite('soil_3');
+	SpritePack.Tiles.Sprites.SOIL_4 = new Sprite('soil_4');
 	SpritePack.Tiles.Sprites.GRASS_0 = new Sprite('grass_0');
 	SpritePack.Tiles.Sprites.GRASS_1 = new Sprite('grass_1');
 	SpritePack.Tiles.Sprites.GRASS_2 = new Sprite('grass_2');
@@ -76,7 +81,6 @@ function LoadSpritePack() {
 	SpritePack.Tiles.Sprites.ROCK_0 = new Sprite('rock_0');
 	SpritePack.Tiles.Sprites.ROCK_1 = new Sprite('rock_1');
 	SpritePack.Tiles.Sprites.LEAVE = new Sprite('leave');
-	SpritePack.Tiles.Sprites.SOIL = new Sprite('soil');
 	SpritePack.Tiles.Sprites.WATER_0 = new Sprite('water_0');
 	SpritePack.Tiles.Sprites.WATER_1 = new Sprite('water_1');
 	SpritePack.Tiles.Sprites.WATER_2 = new Sprite('water_2');
