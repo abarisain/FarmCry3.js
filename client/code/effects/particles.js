@@ -56,8 +56,13 @@ ParticlesEmitter.prototype = {
 	},
 	update: function () {
 		if (this.started) {
-			if (this.amount < this.amountMax) {
-				var newParticleCount = Math.min(this.amountMax - this.amount, this.growth);
+			if (this.amount < this.amountMax || this.amountMax == -1) {
+				var newParticleCount = 0;
+				if (this.amountMax == -1) {
+					newParticleCount = this.growth;
+				} else {
+					newParticleCount = Math.min(this.amountMax - this.amount, this.growth);
+				}
 				if (this.growth >= 1) {
 					for (var i = 0; i < newParticleCount; i++) {
 						var particle = new Particle(this.scatteringX, this.scatteringY, this.speed, this.speedDelta, this.scale, this.scaleDelta, this.rotation, this.angle, this.angleDelta, this.lifetime);
@@ -73,7 +78,7 @@ ParticlesEmitter.prototype = {
 
 				}
 			}
-			if (this.particles.length == 0 && this.amount >= this.amountMax) {
+			if (this.particles.length == 0 && this.amount >= this.amountMax && this.amountMax != -1) {
 				this.started = false;
 				this.endEvent();
 				return false;
