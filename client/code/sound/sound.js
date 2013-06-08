@@ -1,9 +1,10 @@
-function Sound(name, src, unique) {
+function Sound(name, src, unique, loop) {
 	this.name = name;
 	this.src = src;
 	this.volume = 1;
 	this.mute = false;
 	this.buffer = null;
+	this.loop = loop || false;
 	this.unique = unique || false; // Can this sound be played many times or must it stop the other instance ?
 	this.nodes = {
 		buffer: null,
@@ -25,6 +26,7 @@ Sound.prototype.initWithBuffer = function (buffer) {
 
 Sound.prototype.setupBufferNode = function () {
 	this.nodes.buffer = CE.Sound.context.createBufferSource();
+	this.nodes.buffer.loop = this.loop;
 	// 1st buffer is the "buffer node", then it's the internal buffer, then it's the buffer we loaded
 	this.nodes.buffer.buffer = this.buffer;
 	if(!this.nodes.buffer.stop)
@@ -42,6 +44,17 @@ Sound.prototype.setVolume = function (volume) {
 	}
 	if(this.nodes.volume != null)
 		this.nodes.volume.gain.value = this.mute ? 0 : this.volume;
+}
+
+/**
+ * @param {boolean} loop
+ */
+Sound.prototype.setLoop = function (loop) {
+	if(!CE.Sound.enabled)
+		return;
+	this.loop = loop;
+	if(this.nodes.buffer != null)
+		this.nodes.buffer.loop = this.loop;
 }
 
 Sound.prototype.mute = function () {
@@ -76,7 +89,7 @@ Sound.prototype.play = function (delay) {
 		ldelay = delay;
 	}
 	if(CE.Sound.enabled) {
-		if(this.nodes.buffer != null && this.unique)
+		if(this.nodes.buffer != null && (this.unique || this.loop))
 			this.nodes.buffer.stop(0);
 		this.setupBufferNode();
 		this.nodes.buffer.start(ldelay);
