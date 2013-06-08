@@ -84,13 +84,13 @@ CrymeEngine.Battle = {
 	},
 	addHitPlayer: function (round) {
 		var damage = 0;
-		if (round == Options.Gameplay.fightRoundCount) {
+		if (round == Options.Gameplay.fightRoundCount - 1) {
 			damage = this.damagePlayerRemaining;
 		} else {
 			var hit = Math.random();
 			if (this.damagePlayerRemaining >= 20 && hit > 0.8) {//coup critique
 				damage = Math.floor(Math.random() * 20) * this.damagePlayerRemaining / 20;
-			} else if (hit < 0.3) {
+			} else if (hit < 0.2) {
 				damage = 0;
 			} else {
 				damage = Math.floor(Math.random() * 10) * this.damagePlayerRemaining / 10;
@@ -102,13 +102,13 @@ CrymeEngine.Battle = {
 	},
 	addHitOpponent: function (round) {
 		var damage = 0;
-		if (round == Options.Gameplay.fightRoundCount) {
+		if (round == Options.Gameplay.fightRoundCount - 1) {
 			damage = this.damageOpponentRemaining;
 		} else {
 			var hit = Math.random();
 			if (this.damageOpponentRemaining >= 20 && hit > 0.8) {//coup critique
 				damage = Math.floor(Math.random() * 20) * this.damageOpponentRemaining / 20;
-			} else if (hit < 0.3) {
+			} else if (hit < 0.2) {
 				damage = 0;
 			} else {
 				damage = Math.floor(Math.random() * 10) * this.damageOpponent / 10;

@@ -233,7 +233,7 @@ var CrymeEngine = {
 	Event: {
 		launchBattle: function (data) {
 			CE.gameState = CE.GameState.BATTLE;
-			CE.Battle.launchBattle(SpritePack.Battle.Sprites.WEAPON_FORK);
+			CE.Battle.launchBattle(data);
 			CE.mapInvalidated = true;
 		},
 		showFilterType: function () {

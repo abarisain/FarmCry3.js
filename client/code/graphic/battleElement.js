@@ -68,7 +68,7 @@ Battle.Button = function (sprite, x, y) {
 Battle.Button.prototype = new Battle.Element();
 Battle.Button.prototype.constructor = Battle.Button;
 Battle.Button.prototype.update = function () {
-	this.scaleFactor = CE.Battle.breathTransition.progress;
+	this.scaleFactor = CE.Battle.transitionBreath.progress;
 }
 Battle.Button.prototype.drawBackground = function () {
 	CE.canvas.animation.context.drawImage(this.background.image, -this.background.centerX, -this.background.centerY);
@@ -77,20 +77,19 @@ Battle.Button.prototype.drawBackground = function () {
 Battle.Weapon = function (sprite, x, y) {
 	Battle.Element.call(this, sprite, x, y);
 	this.lightning = SpritePack.Battle.Sprites.LIGHTNING;
-	this.light = SpritePack.Battle.Sprites.LIGHT;
 }
 
 Battle.Weapon.prototype = new Battle.Element();
 Battle.Weapon.prototype.constructor = Battle.Weapon;
 Battle.Weapon.prototype.draw = function () {
 	this.initContext();
-	CE.canvas.animation.context.globalAlpha = CE.Battle.weaponTransition.progress * CE.Battle.breathTransition.progress;
+	CE.canvas.animation.context.globalAlpha = CE.Battle.transitionWeapon.progress * CE.Battle.transitionBreath.progress;
 	CE.canvas.animation.context.drawImage(this.lightning.image, -this.lightning.centerX, -this.lightning.centerY);
 	CE.canvas.animation.context.globalAlpha = 1;
-	CE.canvas.animation.context.translate(-100 * (1 - CE.Battle.auraTransition.progress), -100 * (1 - CE.Battle.auraTransition.progress));
+	CE.canvas.animation.context.translate(-100 * (1 - CE.Battle.transitionAura.progress), -100 * (1 - CE.Battle.transitionAura.progress));
 	this.drawElement();
-	CE.canvas.animation.context.translate(100 * (1 - CE.Battle.auraTransition.progress), 100 * (1 - CE.Battle.auraTransition.progress));
-	CE.canvas.animation.context.globalAlpha = CE.Battle.weaponTransition.progress * CE.Battle.breathTransition.progress;
+	CE.canvas.animation.context.translate(100 * (1 - CE.Battle.transitionAura.progress), 100 * (1 - CE.Battle.transitionAura.progress));
+	CE.canvas.animation.context.globalAlpha = CE.Battle.transitionWeapon.progress * CE.Battle.transitionBreath.progress;
 	CE.canvas.animation.context.drawImage(this.lightning.image, -this.lightning.centerX, -this.lightning.centerY);
 	CE.canvas.animation.context.globalAlpha = 1;
 	this.restoreContext();
@@ -108,24 +107,24 @@ Battle.Avatar.prototype.update = function () {
 }
 Battle.Avatar.prototype.draw = function () {
 	this.initContext();
-	if (CE.Battle.playerTransition.state == Transition.State.MOVING) {
-		CE.canvas.animation.context.scale(CE.Battle.playerTransition.progress, CE.Battle.playerTransition.progress);
+	if (CE.Battle.transitionPlayer.state == Transition.State.MOVING) {
+		CE.canvas.animation.context.scale(CE.Battle.transitionPlayer.progress, CE.Battle.transitionPlayer.progress);
 		this.restoreContextRotation();
 	}
 	this.drawBackground();
 	this.drawElement();
-	if (CE.Battle.playerTransition.state == Transition.State.MOVING) {
-		CE.canvas.animation.context.scale(1 / CE.Battle.playerTransition.progress, 1 / CE.Battle.playerTransition.progress);
+	if (CE.Battle.transitionPlayer.state == Transition.State.MOVING) {
+		CE.canvas.animation.context.scale(1 / CE.Battle.transitionPlayer.progress, 1 / CE.Battle.transitionPlayer.progress);
 	}
 	this.restoreContextScale();
 	this.restoreContextTranslation();
 }
 Battle.Avatar.prototype.drawBackground = function () {
-	if (CE.Battle.playerTransition.state == Transition.State.BEGIN) {
+	if (CE.Battle.transitionPlayer.state == Transition.State.BEGIN) {
 		this.initContextScale();
 		this.initContextScale();
 		this.initContextScale();
-		CE.canvas.animation.context.globalAlpha = CE.Battle.auraTransition.progress;
+		CE.canvas.animation.context.globalAlpha = CE.Battle.transitionAura.progress;
 		CE.canvas.animation.context.drawImage(this.aura.image, -this.aura.centerX, -this.aura.centerY);
 		this.restoreContextRotation();
 		this.restoreContextRotation();

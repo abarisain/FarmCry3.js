@@ -31,7 +31,9 @@ var networkEngine;
 Options.Graphic = {
 	particles: true,
 	clouds: true,
-	advancedEffects: true
+	advancedEffects: true,
+	refreshRate: 60,
+	refreshRateReference: 60//default
 };
 
 Options.Sound = {
