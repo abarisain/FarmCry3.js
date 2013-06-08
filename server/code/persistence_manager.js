@@ -25,6 +25,7 @@ var PersistenceManager = {
 	keys: {
 		databaseVersion: null,
 		lastPersistDate: null,
+		storedCropsPrefix: null,
 		farmersPrefix: null,
 		settingsPrefix: null,
 		tickRate: null,
@@ -37,7 +38,7 @@ var PersistenceManager = {
 		boardSizeY: null,
 		boardTilesPrefix: null
 	},
-	databaseVersion: 1,
+	databaseVersion: 2,
 	client: null,
 	onError: function(err) {
 		console.log("Redis error : " + err);
@@ -49,7 +50,6 @@ var PersistenceManager = {
 	},
 	persist: function(callback) {
 		this.asyncblock((function(flow) {
-			return;
 			if(GameState == undefined || GameState == null || GameState.board == undefined || GameState.board == null
 				|| GameState.board.x == undefined || GameState.board.x == null || isNaN(GameState.board.x)) {
 				console.log("PersistenceManager - Bad GameState, bailing out");
@@ -64,6 +64,10 @@ var PersistenceManager = {
 			GameState.farmers.forEach((function(farmer) {
 				// Key : farmer:<nickname>
 				this.client.hmset(this.keys.farmersPrefix + farmer.nickname, farmer.getPersistable(), flow.add());
+			}).bind(this));
+			GameState.board.storedCrops.forEach((function(storedCrop) {
+				// Key : stored_crop:<nickname>
+				this.client.hmset(this.keys.storedCropsPrefix + storedCrop.id, storedCrop.getPersistable(), flow.add());
 			}).bind(this));
 			GameState.board.tiles.forEach((function(tileLine) {
 				tileLine.forEach((function(tile) {
@@ -200,6 +204,7 @@ PersistenceManager.keys.boardPrefix = "board:";
 PersistenceManager.keys.boardSizeX = PersistenceManager.keys.boardPrefix + "size:x";
 PersistenceManager.keys.boardSizeY = PersistenceManager.keys.boardPrefix + "size:y";
 PersistenceManager.keys.boardTilesPrefix = PersistenceManager.keys.boardPrefix + "tile:";
+PersistenceManager.keys.storedCropsPrefix = PersistenceManager.keys.boardPrefix + "stored_crop:";
 
 
 // Synchronous node.js, deal with it.
