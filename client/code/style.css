@@ -418,9 +418,11 @@ a:hover {
 	background-image: -ms-linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
 	background-image: -o-linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
 	background-image: linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+}
 
-	/*-webkit-animation: animate-stripes 3s linear infinite;
-	-moz-animation: animate-stripes 3s linear infinite;*/
+.fc_window .stripes-animated span {
+    -webkit-animation: animate-stripes 3s linear infinite;
+    -moz-animation: animate-stripes 3s linear infinite;
 }
 
 @-webkit-keyframes animate-stripes {

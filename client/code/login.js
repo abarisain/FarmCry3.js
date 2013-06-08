@@ -52,6 +52,10 @@ var initLogin = function () {
 		return true;
 	};
 
+	if(isIOS) {
+		// Remove animated stripes on iOS (too slow)
+		document.querySelector("#loading_progress").classList.remove("stripes-animated");
+	}
 
     document.querySelector("#login_server").value = document.location;
 	//Check if local storage is supported
