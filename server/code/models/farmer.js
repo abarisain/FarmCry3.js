@@ -1,3 +1,5 @@
+Crypto = require('crypto');
+
 function Farmer(nickname, email, password) {
 	this.last_pos = {
 		x: 0,
@@ -9,7 +11,8 @@ function Farmer(nickname, email, password) {
 	this.health = 100;
 	this.nickname = nickname;
 	this.email = email;
-	this.password = password;
+	this.password = password || "";
+	this.password = Crypto.createHash('md5').update(this.password).digest("hex"); // Weak storage, but not plaintext
 	this.weapons = [ require('./gamestate').settings.weapons.fork ];
 	this.inventory = []; // Instances of storedCrop only for the time being
 	this.admin = false;
@@ -22,6 +25,9 @@ function Farmer(nickname, email, password) {
 
 Farmer.prototype = {
 	constructor: Farmer,
+	checkPassword: function (targetPassword) {
+		return Crypto.createHash('md5').update(targetPassword).digest("hex") == this.password;
+	},
 	isDead: function () {
 		return this.health == 0;
 	},
