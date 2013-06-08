@@ -7,18 +7,16 @@ function Farmer(nickname, email, password) {
 	this.allied_farmers = [];
 	this.logged_in = false;
 	this.health = 100;
-	if (typeof nickname == 'undefined') {
-		this.nickname = "dummy";
-		this.email = "dummy";
-		this.password = "";
-		this.weapons = [];
-		return;
-	}
 	this.nickname = nickname;
 	this.email = email;
 	this.password = password;
 	this.weapons = [ require('./gamestate').settings.weapons.fork ];
 	this.inventory = []; // Instances of storedCrop only for the time being
+	if (typeof nickname == 'undefined') {
+		this.nickname = "dummy";
+		this.email = "dummy";
+		this.password = "";
+	}
 }
 
 Farmer.prototype = {
