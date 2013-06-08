@@ -1,8 +1,7 @@
 MapItems.Tile = function (data) {
 	MapItem.call(this, null, data.position.col, data.position.line);
 	this.data = data;
-	this.crop = {};//GRAPHIC
-	this.building = {};//GRAPHIC
+	this.hasGrowingCrop = false;
 	this.sprite = {};
 	this.alpha = 0;
 	this.infoColor = new ColorHelper(255, 255, 255);
@@ -17,7 +16,7 @@ MapItems.Tile.prototype.init = function () {
 	this.updateImage();
 	//TODO optimier ici en remplacement update par add
 	if (this.data.growingCrop != null) {
-		//this.sprite = SpritePack.Tiles.Sprites.SOIL;
+		this.hasGrowingCrop = true;
 		GameState.updateGrowingCrop(this.data.growingCrop, this.col, this.line);
 	}
 	if (this.data.building != null) {
@@ -33,6 +32,11 @@ MapItems.Tile.prototype.updateData = function (data) {
 	if (CE.displayType == CE.DisplayType.INFORMATION) {
 		this.showInformation();
 	}
+};
+
+MapItems.Tile.prototype.setHasGrowingCrop = function (hasGrowingCrop) {
+	this.hasGrowingCrop = hasGrowingCrop;
+	this.updateImage();
 };
 
 MapItems.Tile.prototype.updateOwner = function (data) {
@@ -68,37 +72,48 @@ MapItems.Tile.prototype.showInformation = function () {
 };
 
 MapItems.Tile.prototype.updateImage = function () {
-	if (this.data.humidity < 0.3) {
-		if (this.data.fertility < 0.2) {
-			this.sprite = SpritePack.Tiles.Sprites.ROCK_0;
+	if (this.hasGrowingCrop) {
+		if (this.data.humidity < 0.2) {
+			this.sprite = SpritePack.Tiles.Sprites.SOIL_0;
+		} else if (this.data.humidity < 0.4) {
+			this.sprite = SpritePack.Tiles.Sprites.SOIL_1;
+		} else if (this.data.humidity < 0.6) {
+			this.sprite = SpritePack.Tiles.Sprites.SOIL_2;
+		} else if (this.data.humidity < 0.8) {
+			this.sprite = SpritePack.Tiles.Sprites.SOIL_3;
+		} else {
+			this.sprite = SpritePack.Tiles.Sprites.SOIL_4;
 		}
-		else if (this.data.fertility < 0.5) {
-			this.sprite = SpritePack.Tiles.Sprites.LEAVE;
+	} else {
+		if (this.data.humidity < 0.3) {
+			if (this.data.fertility < 0.5) {
+				this.sprite = SpritePack.Tiles.Sprites.ROCK_0;
+			}
+			else {
+				this.sprite = SpritePack.Tiles.Sprites.LEAVE;
+			}
+		}
+		else if (this.data.humidity < 0.5) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_1;
+		}
+		else if (this.data.humidity < 0.55) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_0;
+		}
+		else if (this.data.humidity < 0.6) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_2;
+		}
+		else if (this.data.humidity < 0.7) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_3;
+		}
+		else if (this.data.humidity < 0.8) {
+			this.sprite = SpritePack.Tiles.Sprites.WATER_0;
+		}
+		else if (this.data.humidity < 0.9) {
+			this.sprite = SpritePack.Tiles.Sprites.WATER_1;
 		}
 		else {
-			this.sprite = SpritePack.Tiles.Sprites.SOIL;
+			this.sprite = SpritePack.Tiles.Sprites.WATER_2;
 		}
-	}
-	else if (this.data.humidity < 0.5) {
-		this.sprite = SpritePack.Tiles.Sprites.GRASS_1;
-	}
-	else if (this.data.humidity < 0.55) {
-		this.sprite = SpritePack.Tiles.Sprites.GRASS_0;
-	}
-	else if (this.data.humidity < 0.6) {
-		this.sprite = SpritePack.Tiles.Sprites.GRASS_2;
-	}
-	else if (this.data.humidity < 0.7) {
-		this.sprite = SpritePack.Tiles.Sprites.GRASS_3;
-	}
-	else if (this.data.humidity < 0.8) {
-		this.sprite = SpritePack.Tiles.Sprites.WATER_0;
-	}
-	else if (this.data.humidity < 0.9) {
-		this.sprite = SpritePack.Tiles.Sprites.WATER_1;
-	}
-	else {
-		this.sprite = SpritePack.Tiles.Sprites.WATER_2;
 	}
 };
 
