@@ -7,15 +7,29 @@ var NetworkModule = {
 		// Persist the GameState to the database
 		save: function (connection, request, data, callback) {
 			//WARNING : Debug/admin function
-			Chat.broadcastServerMessage(connection.farmer.nickname + " forced GameState persist");
-			var PM = require('../../persistence_manager');
-			PM.persist(PM.defaultPersistCallback);
+			if(connection.farmer.admin) {
+				Chat.broadcastServerMessage(connection.farmer.nickname + " forced GameState persist");
+				var PM = require('../../persistence_manager');
+				PM.persist(PM.defaultPersistCallback);
+			} else {
+				connection.send("game.error", {
+					title: null,
+					message: "This command is only for administrators."
+				});
+			}
 		},
 		clearSavedGame: function  (connection, request, data, callback) {
 			//WARNING : Debug/admin function
-			Chat.broadcastServerMessage(connection.farmer.nickname + " DELETED GAME DATA");
-			var PM = require('../../persistence_manager');
-			PM.clear();
+			if(connection.farmer.admin) {
+				Chat.broadcastServerMessage(connection.farmer.nickname + " DELETED GAME DATA");
+				var PM = require('../../persistence_manager');
+				PM.clear();
+			} else {
+				connection.send("game.error", {
+					title: null,
+					message: "This command is only for administrators."
+				});
+			}
 		},
 		updateMap: function () {
 
