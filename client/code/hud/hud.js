@@ -325,6 +325,8 @@ CrymeEngine.hud.chat = {
 						message: 'Help : "/raw <module.command> <JSON args>" Send raw command to server. DANGEROUS'
 					}
 					CrymeEngine.hud.chat.append(messageData);
+				} else if (msg.beginsWith("/reload")) {
+					window.location = '';
 				} else if (msg.beginsWith("/raw ")) {
 					try {
 						var splitMsg = msg.split(" ", 2);
@@ -384,11 +386,11 @@ CrymeEngine.hud.chat = {
 				classText = "player";
 				// Easter eeeeeg
 				var targetFarmer = null;
-				if(GameState.player.nickname.toLowerCase() == messageData.player.toLowerCase()) {
+				if (GameState.player.nickname.toLowerCase() == messageData.player.toLowerCase()) {
 					targetFarmer = GameState.player;
 				} else {
 					GameState.online_players.forEach(function (onlinePlayer) {
-						if(onlinePlayer.nickname.toLowerCase() == messageData.player.toLowerCase())
+						if (onlinePlayer.nickname.toLowerCase() == messageData.player.toLowerCase())
 							targetFarmer = onlinePlayer;
 					});
 				}

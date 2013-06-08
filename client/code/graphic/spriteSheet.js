@@ -78,11 +78,11 @@ function LoadSpritePack() {
 	SpritePack.Crops.Sprites.TOMATO_3 = new Sprite('tomato_3', 135, 112);
 	SpritePack.Crops.Sprites.TOMATO_4 = new Sprite('tomato_4', 134, 117);
 	SpritePack.Crops.Sprites.CORN_WHITE = new Sprite('corn_white', 116, 88);
-	SpritePack.Crops.Sprites.CORN_0 = new Sprite('corn_0', 105, 77);
-	SpritePack.Crops.Sprites.CORN_1 = new Sprite('corn_1', 120, 77);
-	SpritePack.Crops.Sprites.CORN_2 = new Sprite('corn_2', 115, 85);
-	SpritePack.Crops.Sprites.CORN_3 = new Sprite('corn_3', 115, 90);
-	SpritePack.Crops.Sprites.CORN_4 = new Sprite('corn_4', 115, 97);
+	SpritePack.Crops.Sprites.CORN_0 = new Sprite('corn_0', 105, 81);
+	SpritePack.Crops.Sprites.CORN_1 = new Sprite('corn_1', 118, 82);
+	SpritePack.Crops.Sprites.CORN_2 = new Sprite('corn_2', 116, 88);
+	SpritePack.Crops.Sprites.CORN_3 = new Sprite('corn_3', 114, 96);
+	SpritePack.Crops.Sprites.CORN_4 = new Sprite('corn_4', 114, 101);
 
 	SpritePack.Tiles.Sprites.SOIL_0 = new Sprite('soil_0');
 	SpritePack.Tiles.Sprites.SOIL_1 = new Sprite('soil_1');
