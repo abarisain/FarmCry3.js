@@ -111,7 +111,7 @@ var initLogin = function () {
 			loadingPanel.style.display = "none";
 			document.querySelector("body").removeChild(document.querySelector("#login"));
 		} else {
-			progressFake += 0.01;
+			progressFake += 0.1;
 			setProgressbarValue(loadingProgressSpan, 0.5 + Math.min(progressFake, 0.5));
 			setTimeout(networkEngine.onLoadingAnimationFinished, 500);
 		}
