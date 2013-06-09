@@ -293,6 +293,13 @@ var EventManager = {
 				// If you attack a tile with a building on it, you will (read not implemented yet) inherit the building and what's in it
 				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
 				if (targetTile.isNeutral()) {
+					if (!this.substractMoney(farmer, GameState.settings.tileCost)) {
+						NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+							title: null,
+							message: "You need at least " + GameState.settings.tileCost + " to buy this tile."
+						});
+						return false;
+					}
 					this.changeTileOwner(targetTile, farmer);
 				} else if (!targetTile.isOwnedBy(farmer)) {
 					var healthLossMine = 10 + Math.ceil(10 * Math.random()) * 5;
