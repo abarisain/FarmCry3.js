@@ -162,7 +162,7 @@ module.exports = {
 					//Fertile ground output a max fertility of 70-100%
 					//Non fertile is 2-32%
 					tile.max_fertility = (lowFertility ? 0.02 : 0.70) + Math.random() * 0.3;
-					tile.fertility = 0;//tile.max_fertility;
+					tile.fertility = tile.max_fertility;
 					tile.humidity = (highHumidity ? (0.70 + Math.random() * 0.3) :
 						(0.30 + Math.random() * 0.4));
 					line.push(tile);
