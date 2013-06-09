@@ -34,8 +34,9 @@ module.exports = {
 	rain: {
 		isRaining: false,
 		timeLeft: 0,
-		defaultDuration: 72, // 3 minutes of rain
-		interval: 360 // 15 minutes of good weather
+		defaultDuration: 70, // 3 minutes of rain
+		interval: 360, // 15 minutes of good weather
+		humidification: 0.1 // How much humidity rises per 2 tick
 	},
 	board: {
 		size: {

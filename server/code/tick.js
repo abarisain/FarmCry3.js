@@ -70,9 +70,9 @@ module.exports = function () {
 				continue;
 			}
 
-			// If it's raining, humidify the tiles, but not more than 80%
-			if(GameState.rain.isRaining && tile.humidity < 8) {
-				tile.humidity = Math.min(0.8, tile.humidity + 0.01);
+			// If it's raining, every 10 ticks, humidify the tiles, but not more than 80%. Also, keep relative humidity
+			if(GameState.tickCount % 10 == 0 && GameState.rain.isRaining && (tile.humidity + GameState.rain.humidification <= 8)) {
+				tile.humidity = Math.min(0.8, tile.humidity + GameState.rain.humidification);
 				if (updatedTiles.indexOf(tile) <= 0)
 					updatedTiles.push(tile);
 			}
