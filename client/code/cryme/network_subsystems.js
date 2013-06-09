@@ -16,8 +16,8 @@ networkEngine.subsystems.player = {
 			CE.Sound.sounds.action.buy_building.play();
 			networkEngine.call('player', 'buyBuilding', {buildingType: buildingType});
 		},
-		destroyBuilding: function () {
-			networkEngine.call('player', 'destroyBuilding', {});
+		sellBuilding: function () {
+			networkEngine.call('player', 'sellBuilding', {});
 		},
 		takeCurrentTile: function () {
 			CE.Sound.sounds.wololo.play();

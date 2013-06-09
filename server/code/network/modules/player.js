@@ -32,9 +32,9 @@ var NetworkModule = {
 				connection.send("player.buyBuildingDenied", data);
 			}
 		},
-		destroyBuilding: function (connection, request, data, callback) {
-			if (!EventManager.subsystems.player.destroyBuilding(connection.farmer)) {
-				connection.send("player.destroyBuildingDenied", data);
+		sellBuilding: function (connection, request, data, callback) {
+			if (!EventManager.subsystems.player.sellBuilding(connection.farmer)) {
+				connection.send("player.sellBuildingDenied", data);
 			}
 		},
 		takeCurrentTile: function (connection, request, data, callback) {

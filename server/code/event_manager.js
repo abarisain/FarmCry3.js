@@ -262,7 +262,7 @@ var EventManager = {
 				});
 				return true;
 			},
-			destroyBuilding: function (farmer) {
+			sellBuilding: function (farmer) {
 				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
 				if (targetTile.isOwnedBy(farmer) && targetTile.hasBuilding()) {
 					if (targetTile.hasStoredCrops()) {
