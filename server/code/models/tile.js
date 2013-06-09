@@ -59,7 +59,7 @@ Tile.prototype = {
 	 @return {boolean}
 	 */
 	hasBuilding: function () {
-		return this.building != null;
+		return this.isAliasOf == null && this.building != null;
 	},
 
 	/**

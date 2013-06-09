@@ -16,6 +16,8 @@ module.exports = {
 	lastPersistDate: 0,
 	tickCount: 0,
 	settings: {
+		fertilizerCost: 20,
+		wateringCost: 5,
 		healPerSecond: 1,
 		inventorySize: 5, //Max items a farmer can carry
 		tickRate: 2500, //Time between ticks in mS

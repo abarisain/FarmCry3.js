@@ -1,5 +1,4 @@
 MapItems.TileItems.Crop = function (data, col, line) {
-	this.type = MapItems.TileItems.Crop.Type[data.codename];
 	this.data = data;
 	this.maturity = 0;
 	this.health = 0;
@@ -23,7 +22,7 @@ MapItems.TileItems.Crop.prototype.updateValues = function () {
 	if (this.data.harvested_quantity > 0) {
 		this.maturity = 1;
 	} else {
-		var maturationTime = GameState.crops[this.type.codename].maturation_time;
+		var maturationTime = GameState.crops[this.data.codename].maturation_time;
 		this.maturity = (maturationTime - this.data.time_left) / maturationTime;
 	}
 	this.health = this.data.time_left;
@@ -48,7 +47,7 @@ MapItems.TileItems.Crop.prototype.showInformation = function () {
 
 MapItems.TileItems.Crop.prototype.updateImage = function () {
 	this.updateValues();
-	switch (this.type.codename) {
+	switch (this.data.codename) {
 		case 'corn':
 			if (this.maturity > 0.8) {
 				this.sprite = SpritePack.Crops.Sprites.CORN_4;
@@ -91,10 +90,4 @@ MapItems.TileItems.Crop.prototype.updateImage = function () {
 	}
 	this.updateImageCoord();
 	CE.mapInvalidated = true;
-}
-
-MapItems.TileItems.Crop.Type = {
-	corn: { codename: 'corn', sprite: {}, spriteBarrel: {}, spriteBox: {}, spriteIceBox: {}},
-	wheat: { codename: 'wheat', sprite: {}, spriteBarrel: {}, spriteBox: {}, spriteIceBox: {}},
-	tomato: { codename: 'tomato', sprite: {}, spriteBarrel: {}, spriteBox: {}, spriteIceBox: {}}
 }
