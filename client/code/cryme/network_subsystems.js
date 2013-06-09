@@ -128,7 +128,7 @@ networkEngine.subsystems.game = {
 				crop.selling_price = updatedCrop.selling_price;
 				crop.seed_price = updatedCrop.seed_price;
 			});
-			CE.hud.events.refreshInventory();
+			CE.hud.events.cropsPriceUpdated();
 		},
 		tileOwnerUpdated: function (data) {
 			GameState.updateTileOwner(data, data.col, data.line);
