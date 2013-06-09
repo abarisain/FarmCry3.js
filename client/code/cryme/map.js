@@ -103,9 +103,9 @@ var Map = {
 		for (var i = 0; i < Math.min(this.tiles.length * progress, this.tiles.length); i++) {
 			this.tiles[i].drawLoading(progress);
 		}
-		for (var key in this.mapItems) {
-			this.mapItems[key].drawLoading(progress);
-		}
+		/*for (var key in this.mapItems) {
+		 this.mapItems[key].drawLoading(progress);
+		 }*/
 	},
 	drawMap: function () {
 		//Todo séparer l'update du draw

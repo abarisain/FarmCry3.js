@@ -79,7 +79,7 @@ CrymeEngine.Environment = {
 	},
 	addSmoke: function (col, line) {
 		var explosion = new MapItems.Effect(col, line);
-		explosion.effect = new ParticlesEmitter(SpritePack.Effects.Sprites.BLUR, explosion.x, explosion.y, 60, 180, 60);
+		explosion.effect = new ParticlesEmitter(SpritePack.Effects.Sprites.LIGHT_WHITE, explosion.x, explosion.y, 60, 180, 60);
 		//explosion.effect.gravity = -0.05;
 		explosion.effect.scatteringX = tileWidth * 2 / 3;
 		explosion.effect.scatteringY = tileHeight * 2 / 3;
