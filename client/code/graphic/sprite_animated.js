@@ -14,6 +14,11 @@ Sprites.Animation = function (name, centerX, centerY, frameCount, frameTimer, sc
 
 Sprites.Animation.prototype = new Sprite();
 Sprites.Animation.prototype.constructor = Sprites.Animation;
+
+Sprites.Animation.prototype.reset = function () {
+	this.currentFrame = 0;
+}
+
 Sprites.Animation.prototype.loadingEnded = function () {
 	currentLoadingCount++;
 	this.updateWidthHeight();

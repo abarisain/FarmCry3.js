@@ -20,12 +20,14 @@ MapItems.Character.prototype.constructor = MapItems.Character;
 
 MapItems.Character.prototype.waters = function () {
 	if (!this.transitions.fertilizes.started) {
+		SpritePack.Characters.Sprites.ANIM_WATERS.reset();
 		this.transitions.waters.start(Transition.Direction.IN, true);
 	}
 }
 
 MapItems.Character.prototype.fertilizes = function () {
 	if (!this.transitions.waters.started) {
+		SpritePack.Characters.Sprites.ANIM_FERTLIZES.reset();
 		this.transitions.fertilizes.start(Transition.Direction.IN, true);
 	}
 }
