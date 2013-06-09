@@ -57,7 +57,9 @@ var Map = {
 		}
 	},
 	updateHud: function () {
-		CE.hud.events.updateActionAvailables(this.getTile(this.player.col, this.player.line));
+		if (this.player != null) {
+			CE.hud.events.updateActionAvailables(this.getTile(this.player.col, this.player.line));
+		}
 	},
 	removePlayer: function (nickname) {
 		if (this.player != null && nickname == this.player.farmer.nickname)

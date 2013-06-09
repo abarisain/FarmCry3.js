@@ -79,7 +79,7 @@ CrymeEngine.Environment = {
 	},
 	addSmoke: function (col, line) {
 		var explosion = new MapItems.Effect(col, line);
-		explosion.effect = new ParticlesEmitter(SpritePack.Effects.Sprites.LIGHT_WHITE, explosion.x, explosion.y, 60, 180, 60);
+		explosion.effect = new ParticlesEmitter(SpritePack.Effects.Sprites.BLUR, explosion.x, explosion.y, 60, 180, 60);
 		//explosion.effect.gravity = -0.05;
 		explosion.effect.scatteringX = tileWidth * 2 / 3;
 		explosion.effect.scatteringY = tileHeight * 2 / 3;
@@ -88,6 +88,13 @@ CrymeEngine.Environment = {
 		 CE.Environment.remove(this);
 		 }.bind(explosion.effect);*/
 		this.effects.push(explosion);
+	},
+	addHalo: function (col, line) {
+		console.log('add halo ' + col + ', ' + line);
+		var particle = new MapItems.Effect(col, line);
+		particle.effect = new ParticlesEmitter(SpritePack.Effects.Sprites.HALO, particle.x, particle.y, 0.1, 2, 30);
+		particle.effect.start(1, 0, -Math.PI * 90 / 180, 0, 0.5, 0);
+		this.effects.push(particle);
 	},
 	remove: function (effect) {
 		this.effects.removeItem(effect);

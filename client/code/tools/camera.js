@@ -1,5 +1,5 @@
 function Camera() {
-	this.position = {x: -1000, y: -1000 };
+	this.position = {x: 0, y: 0 };
 	this.movement = { finalPosition: { x: 0, y: 0}, startPosition: { x: 0, y: 0}};
 	this.movementTransition = new Transition(0, 1, 80, function () {
 	});
@@ -59,5 +59,23 @@ Camera.prototype = {
 		}
 		Map.refreshMapVisibility();
 		this.movementTransition.start(Transition.Direction.IN, true);
+	},
+	centerCameraInit: function () {
+		this.position.x = -Map.player.x + canvasWidth / 2;
+		if (this.position.x > -Map.rect.x) {
+			this.position.x = -Map.rect.x;
+		}
+		if (this.position.x < -(Map.rect.x + Map.rect.dx - canvasWidth)) {
+			this.position.x = -(Map.rect.x + Map.rect.dx - canvasWidth);
+		}
+
+		this.position.y = -Map.player.y + 100 + canvasHeight / 2;
+		if (this.position.y > -Map.rect.y) {
+			this.position.y = -Map.rect.y;
+		}
+		if (this.position.y < -(Map.rect.y + Map.rect.dy - canvasHeight)) {
+			this.position.y = -(Map.rect.y + Map.rect.dy - canvasHeight);
+		}
+		this.centerCamera(Map.player.x, Map.player.y);
 	}
 };

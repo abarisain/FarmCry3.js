@@ -70,7 +70,6 @@ var CrymeEngine = {
 		networkEngine.onLoadingAnimationFinished();
 		loadingComplete = true;
 		CE.mapInvalidated = true;
-		CrymeEngine.camera.centerCamera(Map.player.x, Map.player.y);
 	},
 	Draw: {
 		Loading: function () {
@@ -329,6 +328,7 @@ var CrymeEngine = {
 							}
 						}
 						if (moved) {
+							CE.Environment.addHalo(Map.player.col + data.col, Map.player.line + data.line);
 							networkEngine.call('player', 'move', data);
 						}
 					}
@@ -453,11 +453,12 @@ function CreateMap() {
 	CE.hud.panels.lifebar.setProgress(GameState.player.health);
 	Map.addPlayer(tmpFarmer);
 
+	CrymeEngine.camera.centerCameraInit();
+
 	Map.initMap();
 	CE.Environment.init(initialData);
 
 	CE.transitionMapCreation = new Transition(0, 1, 80, CrymeEngine.onLoadingAnimationFinished)
 	CE.transitionMapCreation.smoothing = true;
 	CE.transitionMapCreation.start(Transition.Direction.IN);
-
 }

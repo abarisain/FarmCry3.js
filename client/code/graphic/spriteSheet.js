@@ -108,7 +108,9 @@ function LoadSpritePack() {
 	SpritePack.Effects.Sprites.RAIN = new Sprite('rain', 256, 256);
 	SpritePack.Effects.Sprites.FIRE = new Sprite('fire', 102, 103);
 	SpritePack.Effects.Sprites.SMOKE = new Sprite('smoke', 32, 32);
-	SpritePack.Effects.Sprites.LIGHT_WHITE = new Sprite('light_white', 6, 6);
+	SpritePack.Effects.Sprites.LIGHT_WHITE = new Sprite('light_white', 20, 50);
+	SpritePack.Effects.Sprites.BLUR = new Sprite('blur', 28, 28);
+	SpritePack.Effects.Sprites.HALO = new Sprite('halo', 76, 58);
 
 	SpritePack.Battle.Sprites.BACKGROUND = new Sprite('background', 0, 0);
 	SpritePack.Battle.Sprites.ACTION = new Sprite('action', 42, 40);
