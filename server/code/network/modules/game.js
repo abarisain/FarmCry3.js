@@ -6,6 +6,19 @@ var NetworkModule = {
 	name: "game",
 	functions: {
 		// Persist the GameState to the database
+		uptime: function (connection, request, data, callback) {
+			//WARNING : Debug/admin function
+			if(connection.farmer.admin) {
+				Chat.broadcastServerMessage(connection.farmer.nickname + " asked for uptime. Good question ! I've been up for "
+					+ Math.ceil((Date.now() - GameState.startDate)/60000) + " minutes, and ticked at least " + GameState.tickCount + " times. I tick every "
+					+ GameState.settings.tickRate + " ms.");
+			} else {
+				connection.send("game.error", {
+					title: null,
+					message: "This command is only for administrators."
+				});
+			}
+		},
 		save: function (connection, request, data, callback) {
 			//WARNING : Debug/admin function
 			if(connection.farmer.admin) {
