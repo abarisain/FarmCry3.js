@@ -70,6 +70,14 @@ Tile.prototype = {
 	},
 
 	/**
+	 * A growing crop is maturing if there is a growing crop, it's not rotten and harvested_quantity equals 0
+	 @return {boolean}
+	 */
+	isGrowingCropMaturing: function () {
+		return this.hasGrowingCrop() && !this.growingCrop.rotten && this.growingCrop.harvested_quantity == 0;
+	},
+
+	/**
 	 @return {boolean}
 	 */
 	hasStoredCrops: function () {

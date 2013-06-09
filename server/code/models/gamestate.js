@@ -84,11 +84,11 @@ module.exports = {
 
 		//Inits a 8x8 grid
 		init: function () {
-			//We tell the board that it is already 8 tiles long
+			//We tell the board that it is already 16 tiles long
 			//But it's not, since it's size_y is 0
 			//Grow Y will take care of filling everything without any hack this way
-			this.size.x = 12;
-			GameState.board.growY(12);
+			this.size.x = 16;
+			GameState.board.growY(16);
 		},
 		grow: function (x, y) {
 			this.growX(x);
