@@ -28,6 +28,9 @@ networkEngine.subsystems.player = {
 		},
 		fertilizesTile: function () {
 			networkEngine.call('player', 'fertilizesTile', {});
+		},
+		sellStoredCrop: function (id) {
+			networkEngine.call('player', 'sellStoredCrop', {id: id});
 		}
 	},
 	events: {
