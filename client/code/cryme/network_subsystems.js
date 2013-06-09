@@ -24,11 +24,9 @@ networkEngine.subsystems.player = {
 			networkEngine.call('player', 'takeCurrentTile', {});
 		},
 		watersTile: function () {
-			CE.Sound.sounds.action.waters.play();
 			networkEngine.call('player', 'watersTile', {});
 		},
 		fertilizesTile: function () {
-			CE.Sound.sounds.action.fertilize.play();
 			networkEngine.call('player', 'fertilizesTile', {});
 		}
 	},
@@ -80,11 +78,13 @@ networkEngine.subsystems.player = {
 			CE.Event.launchBattle(data);
 		},
 		tileFertilized: function (data) {
+			CE.Sound.sounds.action.fertilize.play();
 			Map.player.fertilizes();
 			GameState.updateTile(data, data.col, data.line);
 			CE.mapInvalidated = true;
 		},
 		tileWatered: function (data) {
+			CE.Sound.sounds.action.waters.play();
 			Map.player.waters();
 			GameState.updateTile(data, data.col, data.line);
 			CE.mapInvalidated = true;
