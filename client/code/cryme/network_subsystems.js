@@ -30,7 +30,7 @@ networkEngine.subsystems.player = {
 			networkEngine.call('player', 'fertilizesTile', {});
 		},
 		sellStoredCrop: function (id) {
-			networkEngine.call('player', 'sellStoredCrop', {id: id});
+			networkEngine.call('player', 'sellStoredCrop', {storedCropId: id});
 		}
 	},
 	events: {
