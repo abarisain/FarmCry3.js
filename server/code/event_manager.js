@@ -335,8 +335,9 @@ var EventManager = {
 					});
 					return false;
 				}
+				// Manual fertilization can go over max_fertility ! It's only a limit for natural healing
 				if (this.substractMoney(farmer, GameState.settings.fertilizerCost)) {
-					targetTile.fertility = Math.min(targetTile.fertility + 0.2, targetTile.max_fertility);
+					targetTile.fertility = Math.min(targetTile.fertility + 0.2, 1);
 				}
 				NetworkEngine.clients.broadcast("player.tileFertilized", {
 					fertility: targetTile.fertility,
