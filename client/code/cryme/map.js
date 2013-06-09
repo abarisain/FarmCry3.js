@@ -193,14 +193,4 @@ var Map = {
 			}
 		}
 	},
-	//Vieux hack de merde pour forcer le joueur a pop au dessus d'un bâtiment si il est dessus
-	getPlayerCoordinate: function (x, y) {
-		var coord = Map.coordinatesFromMousePosition(x, y)
-		for (var key in this.mapItems) {
-			if (this.mapItems[key].match(coord.col, coord.line)) {
-				return { col: this.mapItems[key].col, line: this.mapItems[key].line, building: true };
-			}
-		}
-		return { col: coord.col, line: coord.line, building: false };
-	}
 };
