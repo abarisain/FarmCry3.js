@@ -243,7 +243,7 @@ var EventManager = {
 							// We can't buy anything here, this is bat country
 							NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
 								title: null,
-								message: "You cannot buy a building on a land you don't own (you need to own the adjacent tiles) or that is not free !"
+								message: "You cannot buy a building on a land that is not free or that you don't own (you need to own the adjacent tiles) !"
 							});
 							return false;
 						}
