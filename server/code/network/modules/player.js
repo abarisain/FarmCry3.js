@@ -51,6 +51,21 @@ var NetworkModule = {
 			if (!EventManager.subsystems.player.fertilizesTile(connection.farmer)) {
 				connection.send("player.fertilizesTileDenied", data);
 			}
+		},
+		depositStoredCrop: function (connection, request, data, callback) {
+			if (!EventManager.subsystems.player.depositStoredCrop(connection.farmer, data.storedCropId)) {
+				connection.send("player.depositStoredCropDenied", data);
+			}
+		},
+		pickupStoredCrop: function (connection, request, data, callback) {
+			if (!EventManager.subsystems.player.pickupStoredCrop(connection.farmer, data.storedCropId)) {
+				connection.send("player.pickupStoredCropDenied", data);
+			}
+		},
+		sellStoredCrop: function (connection, request, data, callback) {
+			if (!EventManager.subsystems.player.sellStoredCrop(connection.farmer, data.storedCropId)) {
+				connection.send("player.sellStoredCropDenied", data);
+			}
 		}
 	}
 };
