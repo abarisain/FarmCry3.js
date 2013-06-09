@@ -162,9 +162,13 @@ var CrymeEngine = {
 			CrymeEngine.canvas.animation.context.scale(scaleFactor, scaleFactor);
 			CrymeEngine.canvas.animation.context.translate(CrymeEngine.camera.position.x, CrymeEngine.camera.position.y);
 
+			if (CE.displayType == CE.DisplayType.STANDARD) {
+				CE.Environment.drawPreEffects();
+			}
+			CE.canvas.animation.context.globalAlpha = 1;
 			Map.drawAnimation();
 			if (CE.displayType == CE.DisplayType.STANDARD) {
-				CE.Environment.draw();
+				CE.Environment.drawPostEffects();
 			}
 
 			CrymeEngine.canvas.animation.context.restore();

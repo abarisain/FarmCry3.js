@@ -1,6 +1,9 @@
 MapItems.TileItems.Building = function (data, col, line) {
 	this.type = MapItems.TileItems.Building.Type[data.codename];
 	MapItems.TileItem.call(this, this.type.sprite, col, line);
+	if (this.type == MapItems.TileItems.Building.Type.cold_storage) {
+		CE.Environment.addColdStorageEffect(col, line);
+	}
 	this.data = data;
 	this.storedCrops = {};
 	this.informations = new MapItems.TileItemInfos(this.x + this.type.positionInfo.x, this.y + this.type.positionInfo.y);
