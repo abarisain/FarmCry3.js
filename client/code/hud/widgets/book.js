@@ -17,6 +17,12 @@ HudElements.Book = function () {
 	this.rightPage.anchor = HudElement.Anchors.BOTTOM_RIGHT;
 	this.addChild(this.leftPage);
 	this.addChild(this.rightPage);
+
+	this.refresh = (function () {
+		this.leftPage.refresh();
+		this.rightPage.refresh();
+	}).bind(this);
+
 	var tmpCloseBtn = HudElements.Button.Premade.close(15, -15, HudElement.Anchors.TOP_RIGHT);
 	tmpCloseBtn.onClick = (function() {
 		this.close();
@@ -52,6 +58,7 @@ HudElements.BookPage = function () {
 	this.height = 510;
 	this.anchor = HudElement.Anchors.BOTTOM_LEFT;
 	this.title = " ";
+	this.refresh = function () {};
 }
 
 HudElements.BookPage.prototype = new HudElement();

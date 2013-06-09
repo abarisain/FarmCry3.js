@@ -78,13 +78,8 @@ HudElements.Book.Premade.Inventory = function () {
 		networkEngine.subsystems.player.actions.sellStoredCrop(item.id);
 	};
 
-	var tmpInventoryData = [];
-	for (var key in GameState.player.inventory) {
-		tmpInventoryData.push(GameState.player.inventory[key]);
-	}
-
 	var inventoryItemList = new HudElements.List(470, 460, 0, 0, HudElement.Anchors.TOP_LEFT,
-		tmpInventoryData,
+		[],
 		inventoryItemLayout,
 		function (layout, index, item) {
 			layout.viewbag.icon.image = 'stored_' + item.crop;
@@ -97,12 +92,22 @@ HudElements.Book.Premade.Inventory = function () {
 	inventory.rightPage.viewbag.list = inventoryItemList;
 
 	inventory.rightPage.viewbag.inventoryFillMeter = new HudElements.ProgressBar(200, 32, 0, 0, HudElement.Anchors.BOTTOM_CENTER);
-	inventory.rightPage.viewbag.inventoryFillMeter.setProgress(tmpInventoryData.length);
-	inventory.rightPage.viewbag.inventoryFillMeter.setMaxProgress(GameState.inventorySize);
-	inventory.rightPage.viewbag.inventoryFillMeter.setText(tmpInventoryData.length + " / " + GameState.inventorySize);
 
 	inventory.rightPage.addChild(inventory.rightPage.viewbag.list);
 	inventory.rightPage.addChild(inventory.rightPage.viewbag.inventoryFillMeter);
+
+	inventory.rightPage.refresh = (function () {
+		var tmpInventoryData = [];
+		for (var key in GameState.player.inventory) {
+			tmpInventoryData.push(GameState.player.inventory[key]);
+		}
+		this.viewbag.list.setData(tmpInventoryData);
+		this.viewbag.inventoryFillMeter.setProgress(tmpInventoryData.length);
+		this.viewbag.inventoryFillMeter.setMaxProgress(GameState.inventorySize);
+		this.viewbag.inventoryFillMeter.setText(tmpInventoryData.length + " / " + GameState.inventorySize);
+	}).bind(inventory.rightPage);
+
+	inventory.refresh();
 
 	return inventory;
 };
