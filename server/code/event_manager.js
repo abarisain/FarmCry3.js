@@ -358,7 +358,7 @@ var EventManager = {
 					line: targetTile.position.y
 				});
 				// Tick update tiles contains fertilization/humidity
-				NetworkEngine.clients.broadcast("game.tileDataUpdated", {
+				NetworkEngine.clients.broadcast("game.tilesDataUpdated", {
 					tiles: [
 						targetTile.getTickUpdateTile()
 					]
@@ -391,7 +391,7 @@ var EventManager = {
 					line: targetTile.position.y
 				});
 				// Tick update tiles contains fertilization/humidity
-				NetworkEngine.clients.broadcast("game.tileDataUpdated", {
+				NetworkEngine.clients.broadcast("game.tilesDataUpdated", {
 					tiles: [
 						targetTile.getTickUpdateTile()
 					]

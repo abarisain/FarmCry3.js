@@ -169,7 +169,7 @@ module.exports = function () {
 		updatedTiles.forEach(function (updatedTile) {
 			smallUpdatedTiles.push(updatedTile.getTickUpdateTile());
 		});
-		NetworkEngine.clients.broadcast("game.tileDataUpdated", {
+		NetworkEngine.clients.broadcast("game.tilesDataUpdated", {
 			tiles: smallUpdatedTiles
 		});
 	}
