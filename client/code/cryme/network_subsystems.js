@@ -42,14 +42,16 @@ networkEngine.subsystems.player = {
 			var target = null;
 			if (data.nickname == GameState.player.nickname) {
 				target = Map.player;
+				target.move(data.col, data.line);
+				Map.updateHud();
 			} else {
 				for (var i = 0; i < Map.players.length; i++) {
-					if (Map.players[i].farmer.nickname == data.nickname)
+					if (Map.players[i].farmer.nickname == data.nickname) {
 						target = Map.players[i];
+						target.move(data.col, data.line);
+						break;
+					}
 				}
-			}
-			if (target != null) {
-				target.move(data.col, data.line);
 			}
 			target.invalidate();
 		},
@@ -58,6 +60,7 @@ networkEngine.subsystems.player = {
 		 */
 		buildingUpdated: function (data) {
 			GameState.updateBuilding(data.building, data.col, data.line);
+			Map.updateHud();
 		},
 		moneyUpdated: function (data) {
 			if (GameState.player != null)
@@ -102,6 +105,7 @@ networkEngine.subsystems.game = {
 		},
 		tileOwnerUpdated: function (data) {
 			GameState.updateTileOwner(data, data.col, data.line);
+			Map.updateHud();
 		},
 		/**
 		 @param {array} data
@@ -123,6 +127,7 @@ networkEngine.subsystems.game = {
 		 */
 		growingCropUpdated: function (data) {
 			GameState.updateGrowingCrop(data.growingCrop, data.col, data.line);
+			Map.updateHud();
 		},
 		storedCropUpdated: function (data) {
 			GameState.updateStoredCrop(data.storedCrop);

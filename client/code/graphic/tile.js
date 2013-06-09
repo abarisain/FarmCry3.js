@@ -119,6 +119,7 @@ MapItems.Tile.prototype.updateImage = function () {
 			this.sprite = SpritePack.Tiles.Sprites.WATER_2;
 		}
 	}
+	CE.mapInvalidated = true;
 };
 
 MapItems.Tile.prototype.drawLoading = function (progress) {

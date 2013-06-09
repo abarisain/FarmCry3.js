@@ -119,9 +119,9 @@ CrymeEngine.hud = {
 		/*		Small panel for non owend tile or owned tile with building or nothing	*/
 
 		//TODO modifier l'action bar pour afficher la petite à la place
-		this.panels.actionBarSmall = new HudElement("actionBarSmall", 'action_bar', 298, 94, 0, -150, HudElement.Anchors.BOTTOM_CENTER);
+		this.panels.actionBarSmall = new HudElement("actionBarSmall", 'action_bar_small', 95, 95, 0, 0, HudElement.Anchors.BOTTOM_CENTER);
 
-		this.panels.actionBarSmall.viewbag.buy = new HudElement('buy', 'action_buy', 56, 48, 0, -100, HudElement.Anchors.CENTER);
+		this.panels.actionBarSmall.viewbag.buy = new HudElement('buy', 'action_buy', 56, 48, 0, 0, HudElement.Anchors.CENTER);
 		this.panels.actionBarSmall.viewbag.buy.onClick = (function () {
 			if (CE.hud.panels.market == null) {
 				CE.hud.panels.market = HudElements.Book.Premade.Market();
@@ -138,18 +138,17 @@ CrymeEngine.hud = {
 		}
 		this.panels.actionBarSmall.addChild(this.panels.actionBarSmall.viewbag.attack);
 
-		this.panels.actionBarSmall.viewbag.open_building = new HudElement('open', 'action_open', 56, 48, 0, 100, HudElement.Anchors.CENTER);
-		this.panels.actionBarSmall.viewbag.open_building.onClick = function () {
-			CE.hud.chat.toggleVisibility(null);
-		};
-
-		this.panels.actionBarSmall.addChild(this.panels.actionBarSmall.viewbag.open_building);
+		/*this.panels.actionBarSmall.viewbag.open_building = new HudElement('open', 'action_open', 56, 48, 0, 0, HudElement.Anchors.CENTER);
+		 this.panels.actionBarSmall.viewbag.open_building.onClick = function () {
+		 CE.hud.chat.toggleVisibility(null);
+		 };
+		 this.panels.actionBarSmall.addChild(this.panels.actionBarSmall.viewbag.open_building);*/
 
 		this.rootHudElement.addChild(this.panels.actionBarSmall);
 
 		/*		Big panel for own tile with crop	*/
 
-		this.panels.actionBar = new HudElement("actionBar", 'action_bar', 298, 95, 0, 150, HudElement.Anchors.BOTTOM_CENTER);
+		this.panels.actionBar = new HudElement("actionBar", 'action_bar', 298, 95, 0, 0, HudElement.Anchors.BOTTOM_CENTER);
 
 		this.panels.actionBar.viewbag.harvest = new HudElement('harvest', 'action_harvests', 56, 48, 0, -100, HudElement.Anchors.CENTER);
 		this.panels.actionBar.viewbag.harvest.onClick = (function () {
@@ -230,7 +229,6 @@ CrymeEngine.hud = {
 		filter.visible = false;
 		CE.hud.panels.filter_buttons.push(filter);
 		this.rootHudElement.addChild(filter);
-
 	},
 	loadTextures: function () {
 		var textureList = Object.keys(this.textures);
@@ -267,6 +265,22 @@ CrymeEngine.hud = {
 			CE.hud.rootHudElement.viewbag.filter_text.setText('No filter');
 			for (var i = 0; i < CE.hud.panels.filter_buttons.length; i++) {
 				CE.hud.panels.filter_buttons[i].visible = false;
+			}
+		},
+		updateActionAvailables: function (tile) {
+			if (tile.data.owner != Map.player.farmer.nickname) {//attack
+				CE.hud.panels.actionBarSmall.visible = true;
+				CE.hud.panels.actionBar.visible = false;
+				CE.hud.panels.actionBarSmall.viewbag.attack.visible = true;
+				CE.hud.panels.actionBarSmall.viewbag.buy.visible = false;
+			} else if (tile.hasGrowingCrop) {//fertilizes, waters and harvest
+				CE.hud.panels.actionBarSmall.visible = false;
+				CE.hud.panels.actionBar.visible = true;
+			} else {//buy
+				CE.hud.panels.actionBarSmall.visible = true;
+				CE.hud.panels.actionBar.visible = false;
+				CE.hud.panels.actionBarSmall.viewbag.attack.visible = false;
+				CE.hud.panels.actionBarSmall.viewbag.buy.visible = true;
 			}
 		}
 	},
