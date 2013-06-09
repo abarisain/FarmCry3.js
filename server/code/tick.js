@@ -68,6 +68,15 @@ module.exports = function () {
 				// The stored crops are whithered somewhere else, stop processing this tile
 				continue;
 			}
+
+			// If it's raining, humidify the tiles, but not more than 80%
+			if(GameState.rain.isRaining && tile.humidity < 8) {
+				tileValueUpdated = true;
+				tile.humidity = Math.min(0.8, tile.humidity + 0.01);
+				if (updatedTiles.indexOf(tile) <= 0)
+					updatedTiles.push(tile);
+			}
+
 			if (tile.hasGrowingCrop()) {
 				// If it's rotten, there is nothing to do
 				if (!tile.growingCrop.rotten) {
@@ -129,6 +138,7 @@ module.exports = function () {
 			 - Does not have a building
 			 - Does not have a growing crop
 			 Everything implied by any of these cases has already been taken care of
+			 DO NOT FORGET THAT THE CODE IS SKIPPED IF THE CONDITIONS ARE NOT MET
 			 */
 
 			// So now, make it more fertile over time, but only if it is owned
@@ -138,11 +148,13 @@ module.exports = function () {
 				tileValueUpdated = true;
 				tile.fertility = Math.min(tile.max_fertility, tile.fertility + 0.01);
 			}
-			// If it's raining, humidify the tiles
-			if(GameState.rain.isRaining && tile.humidity < 1) {
+
+			// Every 4 ticks, decrease the humidity naturally, (if there is no growing crop of course)
+			if (GameState.tickCount % 4 == 0) {
 				tileValueUpdated = true;
-				tile.humidity = Math.min(1, tile.humidity + 0.01);
+				tile.humidity = Math.max(0, tile.humidity - 0.01);
 			}
+
 			if (tileValueUpdated && updatedTiles.indexOf(tile) <= 0) {
 				updatedTiles.push(tile);
 			}
