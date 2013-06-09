@@ -32,7 +32,7 @@ module.exports = {
 		buildings: Building.Types
 	},
 	rain: {
-		isRaining: false,
+		isRaining: true, // For init purposes, first tick will correct it
 		timeLeft: 0,
 		defaultDuration: 70, // 3 minutes of rain
 		interval: 360, // 15 minutes of good weather

@@ -11,14 +11,14 @@ module.exports = function () {
 	// Only decrement if > 0, -1 means forced rain
 	if(GameState.rain.timeLeft > 0) {
 		GameState.rain.timeLeft--;
-		if(GameState.rain.timeLeft == 0) {
-			if(GameState.rain.isRaining) {
-				// It was raining, no time left, stops raining
-				EventManager.subsystems.game.rainStop(false);
-			} else {
-				// It was not raining, no time left, starts raining
-				EventManager.subsystems.game.rainStart(false);
-			}
+	}
+	if(GameState.rain.timeLeft == 0) {
+		if(GameState.rain.isRaining) {
+			// It was raining, no time left, stops raining
+			EventManager.subsystems.game.rainStop(false);
+		} else {
+			// It was not raining, no time left, starts raining
+			EventManager.subsystems.game.rainStart(false);
 		}
 	}
 

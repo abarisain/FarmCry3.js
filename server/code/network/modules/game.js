@@ -19,6 +19,18 @@ var NetworkModule = {
 				});
 			}
 		},
+		rainInfo: function (connection, request, data, callback) {
+			//WARNING : Debug/admin function
+			if(connection.farmer.admin) {
+				Chat.broadcastServerMessage(connection.farmer.nickname + " asked for rain info. It is " + (GameState.rain.isRaining) ? "" : "not "
+					+ "raining. Ticks left before rain state change : " + GameState.rain.timeLeft);
+			} else {
+				connection.send("game.error", {
+					title: null,
+					message: "This command is only for administrators."
+				});
+			}
+		},
 		save: function (connection, request, data, callback) {
 			//WARNING : Debug/admin function
 			if(connection.farmer.admin) {
