@@ -70,6 +70,13 @@ Tile.prototype = {
 	},
 
 	/**
+	 @return {boolean}
+	 */
+	hasStoredCrops: function () {
+		return this.storedCrops.length > 0;
+	},
+
+	/**
 	 @param {Crop} crop
 	 */
 	initGrowingCrop: function (crop) {

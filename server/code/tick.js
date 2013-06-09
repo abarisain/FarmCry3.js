@@ -62,8 +62,9 @@ module.exports = function () {
 				continue;
 			}
 			if (tile.hasBuilding()) {
-				// Buildings are ticked every 24 ticks
-				if(GameState.tickCount%24 == 0)
+				// Buildings are ticked every 24 ticks.
+				// Buildings with no storedCrop do not subtract any money
+				if(GameState.tickCount % 24 == 0 && tile.hasStoredCrops())
 					EventManager.subsystems.player.substractMoney(tile.owner, tile.building.price_tick);
 				// The stored crops are whithered somewhere else, stop processing this tile
 				continue;
