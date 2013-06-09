@@ -98,6 +98,11 @@ CrymeEngine.keyboard = {
 			}
 			CE.hud.chat.append(messageData);
 		}
+
+		// Disable keypress if alt/ctrl/meta key is pressed
+		if (event.ctrlKey || event.altKey || event.metaKey)
+			return true;
+
 		switch (event.keyCode) {
 			case CE.keyboard.Keys.ESCAPE.code:
 				if (CE.hud.rootHudElement != null)
