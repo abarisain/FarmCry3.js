@@ -61,6 +61,7 @@ networkEngine.subsystems.player = {
 		buildingUpdated: function (data) {
 			GameState.updateBuilding(data.building, data.col, data.line);
 			Map.updateHud();
+			CE.mapInvalidated = true;
 		},
 		moneyUpdated: function (data) {
 			if (GameState.player != null)
@@ -77,10 +78,12 @@ networkEngine.subsystems.player = {
 		tileFertilized: function (data) {
 			Map.player.fertilizes();
 			GameState.updateTile(data, data.col, data.line);
+			CE.mapInvalidated = true;
 		},
 		tileWatered: function (data) {
 			Map.player.waters();
 			GameState.updateTile(data, data.col, data.line);
+			CE.mapInvalidated = true;
 		}
 	}
 };
@@ -106,6 +109,7 @@ networkEngine.subsystems.game = {
 		tileOwnerUpdated: function (data) {
 			GameState.updateTileOwner(data, data.col, data.line);
 			Map.updateHud();
+			CE.mapInvalidated = true;
 		},
 		/**
 		 @param {array} data
@@ -114,6 +118,7 @@ networkEngine.subsystems.game = {
 			for (var i = 0; i < data.tiles.length; i++) {
 				GameState.updateTile(data.tiles[i], data.tiles[i].col, data.tiles[i].line);
 			}
+			CE.mapInvalidated = true;
 		},
 		error: function (data) {
 			if (data.title == null)
@@ -128,6 +133,7 @@ networkEngine.subsystems.game = {
 		growingCropUpdated: function (data) {
 			GameState.updateGrowingCrop(data.growingCrop, data.col, data.line);
 			Map.updateHud();
+			CE.mapInvalidated = true;
 		},
 		storedCropUpdated: function (data) {
 			GameState.updateStoredCrop(data.storedCrop);

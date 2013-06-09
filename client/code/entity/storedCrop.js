@@ -64,5 +64,4 @@ MapItems.StoredCrop.prototype.updateImage = function () {
 			break;
 	}
 	this.updateImageCoord();
-	CE.mapInvalidated = true;
 }

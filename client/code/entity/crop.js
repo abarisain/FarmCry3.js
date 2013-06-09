@@ -89,5 +89,4 @@ MapItems.TileItems.Crop.prototype.updateImage = function () {
 			break;
 	}
 	this.updateImageCoord();
-	CE.mapInvalidated = true;
 }
