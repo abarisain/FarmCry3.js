@@ -121,7 +121,7 @@ networkEngine.subsystems.game = {
 		/**
 		 @param {array} data
 		 */
-		tileDataUpdated: function (data) {
+		tilesDataUpdated: function (data) {
 			for (var i = 0; i < data.tiles.length; i++) {
 				GameState.updateTile(data.tiles[i], data.tiles[i].col, data.tiles[i].line);
 			}
@@ -141,6 +141,9 @@ networkEngine.subsystems.game = {
 			GameState.updateGrowingCrop(data.growingCrop, data.col, data.line);
 			Map.updateHud();
 			CE.mapInvalidated = true;
+		},
+		tileStoredCropsUpdated: function (data) {
+
 		},
 		storedCropUpdated: function (data) {
 			GameState.updateStoredCrop(data.storedCrop);
