@@ -119,6 +119,15 @@ networkEngine.subsystems.game = {
 			if (data.isRaining)
 				CrymeEngine.Environment.startRain();
 		},
+		cropsPriceUpdated: function (data) {
+			var crop;
+			data.crops.forEach(function (updatedCrop) {
+				crop = GameState.crops[updatedCrop.codename];
+				crop.selling_price = updatedCrop.selling_price;
+				crop.seed_price = updatedCrop.seed_price;
+			});
+			CE.hud.events.refreshInventory();
+		},
 		tileOwnerUpdated: function (data) {
 			GameState.updateTileOwner(data, data.col, data.line);
 			Map.updateHud();
