@@ -89,7 +89,7 @@ MapItems.Tile.prototype.updateImage = function () {
 			this.sprite = SpritePack.Tiles.Sprites.SOIL_4;
 		}
 	} else {
-		if (this.data.humidity < 0.3) {
+		if (this.data.humidity < 0.2) {
 			if (this.data.fertility < 0.5) {
 				this.sprite = SpritePack.Tiles.Sprites.ROCK_0;
 			}
@@ -97,22 +97,31 @@ MapItems.Tile.prototype.updateImage = function () {
 				this.sprite = SpritePack.Tiles.Sprites.LEAVE;
 			}
 		}
-		else if (this.data.humidity < 0.5) {
-			this.sprite = SpritePack.Tiles.Sprites.GRASS_1;
-		}
-		else if (this.data.humidity < 0.55) {
+		else if (this.data.humidity < 0.34) {
 			this.sprite = SpritePack.Tiles.Sprites.GRASS_0;
 		}
-		else if (this.data.humidity < 0.6) {
+		else if (this.data.humidity < 0.48) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_1;
+		}
+		else if (this.data.humidity < 0.5) {
 			this.sprite = SpritePack.Tiles.Sprites.GRASS_2;
 		}
-		else if (this.data.humidity < 0.7) {
+		else if (this.data.humidity < 0.64) {
 			this.sprite = SpritePack.Tiles.Sprites.GRASS_3;
 		}
+		else if (this.data.humidity < 0.78) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_4;
+		}
 		else if (this.data.humidity < 0.8) {
-			this.sprite = SpritePack.Tiles.Sprites.WATER_0;
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_5;
 		}
 		else if (this.data.humidity < 0.9) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_6;
+		}
+		else if (this.data.humidity < 0.95) {
+			this.sprite = SpritePack.Tiles.Sprites.WATER_0;
+		}
+		else if (this.data.humidity < 0.97) {
 			this.sprite = SpritePack.Tiles.Sprites.WATER_1;
 		}
 		else {
