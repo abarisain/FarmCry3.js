@@ -55,7 +55,7 @@ CrymeEngine.hud = {
 	init: function () {
 		this.rootHudElement.resize();
 
-		if(isIOS) {
+		if (isIOS) {
 			CE.hud.chat.toggleVisibility(false);
 		}
 
@@ -153,18 +153,19 @@ CrymeEngine.hud = {
 
 		this.panels.actionBar.viewbag.harvest = new HudElement('harvest', 'action_harvests', 56, 48, 0, -100, HudElement.Anchors.CENTER);
 		this.panels.actionBar.viewbag.harvest.onClick = (function () {
+			networkEngine.subsystems.player.actions.harvestCrop();
 		}).bind(this);
 		this.panels.actionBar.addChild(this.panels.actionBar.viewbag.harvest);
 
 		this.panels.actionBar.viewbag.fertlizes = new HudElement('harvest', 'action_fertilizes', 56, 48, 0, 0, HudElement.Anchors.CENTER);
 		this.panels.actionBar.viewbag.fertlizes.onClick = (function () {
-			Map.player.fertilizes();
+			networkEngine.subsystems.player.actions.fertilizesTile();
 		}).bind(this);
 		this.panels.actionBar.addChild(this.panels.actionBar.viewbag.fertlizes);
 
 		this.panels.actionBar.viewbag.waters = new HudElement('harvest', 'action_waters', 56, 48, 0, 105, HudElement.Anchors.CENTER);
 		this.panels.actionBar.viewbag.waters.onClick = (function () {
-			Map.player.waters();
+			networkEngine.subsystems.player.actions.watersTile();
 		}).bind(this);
 		this.panels.actionBar.addChild(this.panels.actionBar.viewbag.waters);
 

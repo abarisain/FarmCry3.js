@@ -20,6 +20,12 @@ networkEngine.subsystems.player = {
 		takeCurrentTile: function () {
 			CE.Sound.sounds.wololo.play();
 			networkEngine.call('player', 'takeCurrentTile', {});
+		},
+		watersTile: function () {
+			networkEngine.call('player', 'watersTile', {});
+		},
+		fertilizesTile: function () {
+			networkEngine.call('player', 'fertilizesTile', {});
 		}
 	},
 	events: {
@@ -64,6 +70,14 @@ networkEngine.subsystems.player = {
 		},
 		launchBattle: function (data) {
 			CE.Event.launchBattle(data);
+		},
+		tileFertilized: function (data) {
+			Map.player.fertilizes();
+			GameState.updateTile(data, data.col, data.line);
+		},
+		tileWatered: function (data) {
+			Map.player.waters();
+			GameState.updateTile(data, data.col, data.line);
 		}
 	}
 };
@@ -83,7 +97,7 @@ networkEngine.subsystems.game = {
 			CrymeEngine.init();
 			currentLoadingCount++;
 			console.log("Initial data ok");
-			if(data.isRaining)
+			if (data.isRaining)
 				CrymeEngine.Environment.startRain();
 		},
 		tileOwnerUpdated: function (data) {
@@ -110,8 +124,11 @@ networkEngine.subsystems.game = {
 		growingCropUpdated: function (data) {
 			GameState.updateGrowingCrop(data.growingCrop, data.col, data.line);
 		},
+		storedCropUpdated: function (data) {
+			GameState.updateStoredCrop(data.storedCrop);
+		},
 		rainChanged: function (data) {
-			if(data.isRaining) {
+			if (data.isRaining) {
 				CrymeEngine.Environment.startRain();
 			} else {
 				CrymeEngine.Environment.stopRain();

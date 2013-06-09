@@ -169,22 +169,23 @@ function initSpriteEnums() {
 	}
 
 	//MapItems.TileItems.Crop.Type.corn.sprite = SpritePack.Crops.Sprites.CORN;
-	MapItems.TileItems.Crop.Type.corn.spriteBarrel = SpritePack.Storages.Sprites.BARREL_CORN;
-	MapItems.TileItems.Crop.Type.corn.spriteBox = SpritePack.Storages.Sprites.BOX_CORN;
-	MapItems.TileItems.Crop.Type.corn.spriteIceBox = SpritePack.Storages.Sprites.ICE_BOX_CORN;
+	/*MapItems.TileItems.Crop.Type.corn.spriteBarrel = SpritePack.Storages.Sprites.BARREL_CORN;
+	 MapItems.TileItems.Crop.Type.corn.spriteBox = SpritePack.Storages.Sprites.BOX_CORN;
+	 MapItems.TileItems.Crop.Type.corn.spriteIceBox = SpritePack.Storages.Sprites.ICE_BOX_CORN;
 
-	//MapItems.TileItems.Crop.Type.tomato.sprite = SpritePack.Crops.Sprites.TOMATO;
-	MapItems.TileItems.Crop.Type.tomato.spriteBarrel = SpritePack.Storages.Sprites.BARREL_TOMATO;
-	MapItems.TileItems.Crop.Type.tomato.spriteBox = SpritePack.Storages.Sprites.BOX_TOMATO;
-	MapItems.TileItems.Crop.Type.tomato.spriteIceBox = SpritePack.Storages.Sprites.ICE_BOX_TOMATO;
+	 //MapItems.TileItems.Crop.Type.tomato.sprite = SpritePack.Crops.Sprites.TOMATO;
+	 MapItems.TileItems.Crop.Type.tomato.spriteBarrel = SpritePack.Storages.Sprites.BARREL_TOMATO;
+	 MapItems.TileItems.Crop.Type.tomato.spriteBox = SpritePack.Storages.Sprites.BOX_TOMATO;
+	 MapItems.TileItems.Crop.Type.tomato.spriteIceBox = SpritePack.Storages.Sprites.ICE_BOX_TOMATO;
 
-	//MapItems.TileItems.Crop.Type.wheat.sprite = SpritePack.Crops.Sprites.WHEAT;
-	MapItems.TileItems.Crop.Type.wheat.spriteBarrel = SpritePack.Storages.Sprites.BARREL_WHEAT;
-	MapItems.TileItems.Crop.Type.wheat.spriteBox = SpritePack.Storages.Sprites.BOX_WHEAT;
-	MapItems.TileItems.Crop.Type.wheat.spriteIceBox = SpritePack.Storages.Sprites.ICE_BOX_WHEAT;
-
+	 //MapItems.TileItems.Crop.Type.wheat.sprite = SpritePack.Crops.Sprites.WHEAT;
+	 MapItems.TileItems.Crop.Type.wheat.spriteBarrel = SpritePack.Storages.Sprites.BARREL_WHEAT;
+	 MapItems.TileItems.Crop.Type.wheat.spriteBox = SpritePack.Storages.Sprites.BOX_WHEAT;
+	 MapItems.TileItems.Crop.Type.wheat.spriteIceBox = SpritePack.Storages.Sprites.ICE_BOX_WHEAT;
+	 */
 	//SpritePack.Buildings.Type.HOME.sprite = SpritePack.Buildings.Sprites.HOME;
 	MapItems.TileItems.Building.Type.barn.sprite = SpritePack.Buildings.Sprites.BARN;
 	MapItems.TileItems.Building.Type.cold_storage.sprite = SpritePack.Buildings.Sprites.COLD_STORAGE;
 	MapItems.TileItems.Building.Type.silo.sprite = SpritePack.Buildings.Sprites.SILO;
+
 }
