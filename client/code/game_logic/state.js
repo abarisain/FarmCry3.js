@@ -41,8 +41,6 @@ GameState = {
 	 * @param data
 	 */
 	updateStoredCrop: function (data) {
-		var storedCrop = this.logicItems.storedCrops[data.id];
-		storedCrop = data;
 		data.healthPercent = data.time_left / GameState.crops[data.crop].maturationTime;
 		if (data.healthPercent < 0.2) {
 			data.healthStatus = 'Critical';
@@ -52,9 +50,12 @@ GameState = {
 			data.healthStatus = 'Good';
 		}
 
+		this.logicItems.storedCrops[data.id] = data;
 		if (data.parent_tile == null) {//if storedCrop is in inventory
 			//nothing special happens here for now
-			GameState.player.inventory[data.id] = data;
+			if (GameState.player) {
+				GameState.player.inventory[data.id] = data;
+			}
 		} else {
 			var key = Map.getMapItemKey(data.parent_tile.position.col, data.parent_tile.position.line);
 			Map.mapItems[key].updateStoredCrop(data);
