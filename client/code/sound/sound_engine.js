@@ -12,7 +12,8 @@ CrymeEngine.Sound = {
 			thunder: new Sound("ambiant/thunder", "ambiant/thunder.wav", true, 0)
 		},
 		action: {
-			buy: new Sound("action/buy", "action/buy.wav"),
+			buy_building: new Sound("action/buy_building", "action/buy_building.wav"),
+			buy_crop: new Sound("action/buy_crop", "action/buy_crop.wav"),
 			fertilize: new Sound("action/fertilize", "action/fertilize.wav"),
 			sell: new Sound("action/sell", "action/sell.wav"),
 			waters: new Sound("action/waters", "action/waters.wav")
