@@ -208,28 +208,38 @@ var EventManager = {
 			buyBuilding: function (farmer, buildingType) {
 				var targetTile = GameState.board.getTileForFarmer(farmer);
 				var buildingInfo = GameState.settings.buildings[buildingType];
-				if (buildingInfo.size.x > 1 || buildingInfo.size.y > 1) {
-					var tmpTile;
-					// We need to check if he is the owner. I know we check one tile once but heh
-					for (var i = 0; i < buildingInfo.size.y; i++) {
-						for (var j = 0; j < buildingInfo.size.x; j++) {
-							tmpTile = GameState.board.tiles[targetTile.y + i][targetTile.x + j];
-							if(tmpTile.isAliasOf != null || !tmpTile.isOwnedBy(farmer) ||
-								tmpTile.hasGrowingCrop() || tmpTile.hasBuilding()) {
-								// We can't buy anything here, this is bat country
-								NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
-									title: null,
-									message: "You cannot buy a building on a land you don't own (you need to own the adjacent tiles) or that is not free !"
-								});
-								return false;
-							}
+				var tmpTile;
+				var tmpY;
+				var tmpX;
+				// We need to check if he is the owner. I know we check one tile once but heh
+				for (var i = 0; i < buildingInfo.size.y; i++) {
+					for (var j = 0; j < buildingInfo.size.x; j++) {
+						tmpY = targetTile.position.y + i;
+						tmpX = targetTile.position.x + j;
+						if(tmpY >= GameState.board.size.y || tmpX >= GameState.board.size.y || tmpY < 0 || tmpX < 0) {
+							// Outside of the map
+							NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+								title: null,
+								message: "The building doesn't fit on the map !"
+							});
+							return false;
+						}
+						tmpTile = GameState.board.tiles[tmpY][tmpX];
+						if(tmpTile.isAliasOf != null || !tmpTile.isOwnedBy(farmer) ||
+							tmpTile.hasGrowingCrop() || tmpTile.hasBuilding()) {
+							// We can't buy anything here, this is bat country
+							NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+								title: null,
+								message: "You cannot buy a building on a land you don't own (you need to own the adjacent tiles) or that is not free !"
+							});
+							return false;
 						}
 					}
-					for (var i = 0; i < buildingInfo.size.y; i++) {
-						for (var j = 0; j < buildingInfo.size.x; j++) {
-							if (i != 0 || j != 0) {
-								GameState.board.tiles[targetTile.y + i][targetTile.x + j].isAliasOf = targetTile;
-							}
+				}
+				for (var i = 0; i < buildingInfo.size.y; i++) {
+					for (var j = 0; j < buildingInfo.size.x; j++) {
+						if (i != 0 || j != 0) {
+							GameState.board.tiles[targetTile.position.y + i][targetTile.position.x + j].isAliasOf = targetTile;
 						}
 					}
 				}
@@ -256,6 +266,18 @@ var EventManager = {
 				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
 				if (targetTile.isOwnedBy(farmer) && targetTile.hasBuilding()) {
 					// TODO : Take care of the storedCrops. Forbid building removal or just do something.
+					// Clear the aliases
+					var tmpX;
+					var tmpY;
+					for (var i = 0; i < targetTile.building.size.y; i++) {
+						for (var j = 0; j < targetTile.building.size.x; j++) {
+							tmpY = targetTile.position.y + i;
+							tmpX = targetTile.position.x + j;
+							if(tmpY >= GameState.board.size.y || tmpX >= GameState.board.size.y || tmpY < 0 || tmpX < 0)
+								continue;
+							GameState.board.tiles[tmpY][tmpX].isAliasOf = null;
+						}
+					}
 					targetTile.building = null;
 					NetworkEngine.clients.broadcast("player.buildingUpdated", {
 						nickname: farmer.nickname,
