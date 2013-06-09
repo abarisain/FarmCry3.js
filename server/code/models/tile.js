@@ -33,9 +33,9 @@ Tile.prototype = {
 		// Check if the alias target had a building on it. If not, it should not be aliased so log it and correct it
 		if (this.isAliasOf != null) {
 			if (this.isAliasOf.building == null) {
-				this.isAliasOf == null;
 				console.log("ERROR : Tile " + this.position.x + "," + this.position.y + " is aliased to " + +this.isAliasOf.position.x + "," + this.isAliasOf.position.y
 					+ " but the alias target has no building on it. Fixing.");
+				this.isAliasOf = null;
 			} else {
 				return this.isAliasOf;
 			}
@@ -140,7 +140,7 @@ Tile.prototype = {
 		if (this.building == null) {
 			tmpTile.building = "dummy";
 		} else {
-			tmpTile.building = this.building;
+			tmpTile.building = this.building.codename;
 		}
 		var tmpArray = [];
 		this.storedCrops.forEach(function (storedCrop) {
@@ -148,6 +148,14 @@ Tile.prototype = {
 		});
 		tmpTile.storedCrops = JSON.stringify(tmpArray);
 		tmpTile.growingCrop = JSON.stringify(this.growingCrop);
+		if (this.isAliasOf == null) {
+			tmpTile.isAliasOf = null;
+		} else {
+			tmpTile.isAliasOf = JSON.stringify({
+				x: this.isAliasOf.position.x,
+				y: this.isAliasOf.position.y
+			});
+		}
 		return tmpTile;
 	}
 };

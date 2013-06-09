@@ -203,8 +203,13 @@ module.exports = {
 				tmpTile.max_fertility = parseFloat(tile.max_fertility);
 				tmpTile.maturity = parseFloat(tile.maturity);
 				tmpTile.growingCrop = JSON.parse(tile.growingCrop);
-				// Don't forget to fix it later
+				// Don't forget to fix them later
 				tmpTile.storedCrops = JSON.parse(tile.storedCrops);
+				if(tile.isAliasOf == "null") {
+					tmpTile.isAliasOf = null;
+				} else {
+					tmpTile.isAliasOf = JSON.parse(tile.isAliasOf);
+				}
 
 				if(tile.owner != "dummy") {
 					// We consider that the database is consistent bla bla
@@ -250,6 +255,9 @@ module.exports = {
 					tmpStoredCrops.forEach(function (storedCropId) {
 						tmpTile.storedCrops.push(GameState.board.storedCrops[storedCropId]);
 					});
+					if(tmpTile.isAliasOf != null) {
+						tmpTile.isAliasOf = GameState.board.tiles[tmpTile.isAliasOf.y][tmpTile.isAliasOf.x];
+					}
 				}
 			}
 
