@@ -182,9 +182,9 @@ Battle.Sequences.Fighter.prototype.addDamage = function (begin, damage) {
 	);
 };
 
-Battle.Sequences.Fighter.prototype.addAnimation = function (begin, name) {
+Battle.Sequences.Fighter.prototype.addAnimation = function (begin, name, duration) {
 	this.keyFrames.push(
-		new Battle.KeyFrame(begin, 1, null,
+		new Battle.KeyFrame(begin, duration || 1, null,
 			function (progress) {//action
 				this.spriteAnimation = SpritePack.Fight.Sprites[name];
 				this.state = Battle.Sequences.Fighter.State.ANIMATED;
@@ -251,7 +251,7 @@ Battle.Sequences.Player = function (name, x, y, life, damage) {
 	);
 	this.addAnimation(3, 'PLAYER_INTRO');
 	this.addAnimation(4, 'PLAYER_FORK');
-	this.addAnimation(5 + dodgeDelay, 'PLAYER_HIT');
+	this.addAnimation(5 + dodgeDelay, 'PLAYER_HIT', 1 - dodgeDelay);
 	this.addDamage(5 + dodgeDelay, 20);
 	this.addAnimation(6, 'PLAYER_DODGE');
 	this.addAnimation(7, 'PLAYER_FORK');
@@ -293,10 +293,10 @@ Battle.Sequences.Opponent = function (name, x, y, life, damage) {
 		)
 	);
 	this.addAnimation(3, 'OPPONENT_INTRO');
-	this.addAnimation(4 + dodgeDelay, 'OPPONENT_DODGE');
+	this.addAnimation(4 + dodgeDelay, 'OPPONENT_DODGE', 1 - dodgeDelay);
 	this.addAnimation(5, 'OPPONENT_FORK');
 	this.addAnimation(6, 'OPPONENT_FORK');
-	this.addAnimation(7 + dodgeDelay, 'OPPONENT_HIT');
+	this.addAnimation(7 + dodgeDelay, 'OPPONENT_HIT', 1 - dodgeDelay);
 	this.addDamage(7 + dodgeDelay, 30);
 	this.initialized = true;
 }

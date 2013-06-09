@@ -6,6 +6,7 @@ MapItems.TileItems.Building = function (data, col, line) {
 	}
 	this.data = data;
 	this.storedCrops = {};
+	this.storedCropCount = 0;
 	this.informations = new MapItems.TileItemInfos(this.x + this.type.positionInfo.x, this.y + this.type.positionInfo.y);
 }
 
@@ -17,7 +18,8 @@ MapItems.TileItems.Building.prototype.showInformation = function () {
 	this.informations.visible = true;
 	switch (CE.filterType) {
 		case CE.FilterType.STORAGE_AVAILABLE:
-			this.informations.value = Gamestate.buildings[this.data.codename].capacity * 5;//shared instance
+			var capacity = GameState.buildings[this.data.codename].capacity;
+			this.informations.value = (capacity - this.storedCropCount) / capacity * 100;//shared instance
 			break;
 		default:
 			this.informations.value = 0;
@@ -43,6 +45,7 @@ MapItems.TileItems.Building.prototype.refreshStoredCropCoord = function () {
 	for (var key in this.storedCrops) {
 		this.storedCrops[key].updateCoord(i++);
 	}
+	this.storedCropCount = i;
 }
 
 MapItems.TileItems.Building.prototype.draw = function () {

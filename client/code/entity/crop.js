@@ -25,15 +25,11 @@ MapItems.TileItems.Crop.prototype.updateValues = function () {
 		var maturationTime = GameState.crops[this.data.codename].maturation_time;
 		this.maturity = (maturationTime - this.data.time_left) / maturationTime;
 	}
-	this.health = this.data.time_left;
 }
 
 MapItems.TileItems.Crop.prototype.showInformation = function () {
 	this.informations.visible = true;
 	switch (CE.filterType) {
-		case CE.FilterType.HEALTH:
-			this.informations.value = this.health / 10;
-			break;
 		case CE.FilterType.MATURITY:
 			this.informations.value = this.maturity * 100;
 			break;
@@ -49,39 +45,39 @@ MapItems.TileItems.Crop.prototype.updateImage = function () {
 	this.updateValues();
 	switch (this.data.codename) {
 		case 'corn':
-			if (this.maturity > 0.8) {
+			if (this.harvest_quantity > 0) {
 				this.sprite = SpritePack.Crops.Sprites.CORN_4;
-			} else if (this.maturity > 0.6) {
+			} else if (this.maturity > 0.75) {
 				this.sprite = SpritePack.Crops.Sprites.CORN_3;
-			} else if (this.maturity > 0.4) {
+			} else if (this.maturity > 0.5) {
 				this.sprite = SpritePack.Crops.Sprites.CORN_2;
-			} else if (this.maturity > 0.2) {
+			} else if (this.maturity > 0.25) {
 				this.sprite = SpritePack.Crops.Sprites.CORN_1;
 			} else {
 				this.sprite = SpritePack.Crops.Sprites.CORN_0;
 			}
 			break;
 		case 'tomato':
-			if (this.maturity > 0.8) {
+			if (this.harvest_quantity > 0) {
 				this.sprite = SpritePack.Crops.Sprites.TOMATO_4;
-			} else if (this.maturity > 0.6) {
+			} else if (this.maturity > 0.75) {
 				this.sprite = SpritePack.Crops.Sprites.TOMATO_3;
-			} else if (this.maturity > 0.4) {
+			} else if (this.maturity > 0.5) {
 				this.sprite = SpritePack.Crops.Sprites.TOMATO_2;
-			} else if (this.maturity > 0.2) {
+			} else if (this.maturity > 0.25) {
 				this.sprite = SpritePack.Crops.Sprites.TOMATO_1;
 			} else {
 				this.sprite = SpritePack.Crops.Sprites.TOMATO_0;
 			}
 			break;
 		case 'wheat':
-			if (this.maturity > 0.8) {
+			if (this.harvest_quantity > 0) {
 				this.sprite = SpritePack.Crops.Sprites.WHEAT_4;
-			} else if (this.maturity > 0.6) {
+			} else if (this.maturity > 0.75) {
 				this.sprite = SpritePack.Crops.Sprites.WHEAT_3;
-			} else if (this.maturity > 0.4) {
+			} else if (this.maturity > 0.5) {
 				this.sprite = SpritePack.Crops.Sprites.WHEAT_2;
-			} else if (this.maturity > 0.2) {
+			} else if (this.maturity > 0.25) {
 				this.sprite = SpritePack.Crops.Sprites.WHEAT_1;
 			} else {
 				this.sprite = SpritePack.Crops.Sprites.WHEAT_0;

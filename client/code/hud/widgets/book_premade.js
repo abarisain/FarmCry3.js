@@ -76,7 +76,6 @@ HudElements.Book.Premade.Inventory = function () {
 	var inventoryItemLayout = HudElements.List.PremadeLayouts.inventoryItem(null);
 	inventoryItemLayout.viewbag.sell.onClick = function (x, y, index, item) {
 		networkEngine.subsystems.player.actions.sellStoredCrop(item.id);
-		CE.hud.panels.inventory.close();
 	};
 
 	var tmpInventoryData = [];
