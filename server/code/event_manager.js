@@ -30,6 +30,19 @@ var EventManager = {
 				NetworkEngine.clients.broadcast("game.rainChanged", {
 					isRaining: GameState.rain.isRaining
 				});
+			},
+
+			randomizeMarketPrices: function () {
+				var updatedCrops = [];
+				var crop;
+				for(var key in GameState.settings.crops) {
+					crop = GameState.settings.crops[key];
+					crop.randomizePrices();
+					updatedCrops.push(crop.getSmallPriceUpdate());
+				}
+				NetworkEngine.clients.broadcast("game.cropsPriceUpdated", {
+					crops: updatedCrops
+				});
 			}
 		},
 		player: {

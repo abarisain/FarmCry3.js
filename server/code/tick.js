@@ -7,6 +7,11 @@ StoredCrop = require('./models/storedCrop');
 module.exports = function () {
 	var tickStart = Date.now();
 
+	// Every 10 minutes, refresh the market prices
+	if(GameState.tickCount % 240) {
+		EventManager.subsystems.game.randomizeMarketPrices();
+	}
+
 	// TODO : Add Tornados
 	// Only decrement if > 0, -1 means forced rain
 	if(GameState.rain.timeLeft > 0) {
