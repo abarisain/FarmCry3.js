@@ -77,8 +77,8 @@ module.exports = function () {
 					updatedTiles.push(tile);
 			}
 
-			// Every 15 ticks, if not raining, decrease the humidity naturally, (unless there is a non-mature/non-rotten growing crop of course)
-			if (GameState.tickCount % 15 == 0 && !GameState.rain.isRaining && !tile.isGrowingCropMaturing()) {
+			// Every 15 ticks, if not raining, if not too humid, decrease the humidity naturally, (unless there is a non-mature/non-rotten growing crop of course)
+			if (GameState.tickCount % 15 == 0 && !GameState.rain.isRaining && !tile.isGrowingCropMaturing() && tile.humidity < 0.8) {
 				tile.humidity = Math.max(0, tile.humidity - 0.01);
 				if (updatedTiles.indexOf(tile) <= 0) {
 					updatedTiles.push(tile);
