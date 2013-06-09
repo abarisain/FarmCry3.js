@@ -93,13 +93,15 @@ function LoadSpritePack() {
 	SpritePack.Tiles.Sprites.GRASS_1 = new Sprite('grass_1');
 	SpritePack.Tiles.Sprites.GRASS_2 = new Sprite('grass_2');
 	SpritePack.Tiles.Sprites.GRASS_3 = new Sprite('grass_3');
+	SpritePack.Tiles.Sprites.GRASS_4 = new Sprite('grass_4');
+	SpritePack.Tiles.Sprites.GRASS_5 = new Sprite('grass_5');
+	SpritePack.Tiles.Sprites.GRASS_6 = new Sprite('grass_6');
 	SpritePack.Tiles.Sprites.ROCK_0 = new Sprite('rock_0');
 	SpritePack.Tiles.Sprites.ROCK_1 = new Sprite('rock_1');
 	SpritePack.Tiles.Sprites.LEAVE = new Sprite('leave');
 	SpritePack.Tiles.Sprites.WATER_0 = new Sprite('water_0');
 	SpritePack.Tiles.Sprites.WATER_1 = new Sprite('water_1');
 	SpritePack.Tiles.Sprites.WATER_2 = new Sprite('water_2');
-	SpritePack.Tiles.Sprites.WHITE = new Sprite('white');
 
 	SpritePack.Effects.Sprites.CLOUD = new Sprite('cloud', 545, 427);
 	SpritePack.Effects.Sprites.TORNADO = new Sprites.Animation('tornado_animated', 150, 420, 23, 46);
