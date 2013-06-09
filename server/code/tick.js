@@ -72,10 +72,17 @@ module.exports = function () {
 
 			// If it's raining, humidify the tiles, but not more than 80%
 			if(GameState.rain.isRaining && tile.humidity < 8) {
-				tileValueUpdated = true;
 				tile.humidity = Math.min(0.8, tile.humidity + 0.01);
 				if (updatedTiles.indexOf(tile) <= 0)
 					updatedTiles.push(tile);
+			}
+
+			// Every 8 ticks, if not raining, decrease the humidity naturally, (unless there is a non-mature/non-rotten growing crop of course)
+			if (GameState.tickCount % 8 == 0 && !GameState.rain.isRaining && !tile.isGrowingCropMaturing()) {
+				tile.humidity = Math.max(0, tile.humidity - 0.01);
+				if (updatedTiles.indexOf(tile) <= 0) {
+					updatedTiles.push(tile);
+				}
 			}
 
 			if (tile.hasGrowingCrop()) {
@@ -148,12 +155,6 @@ module.exports = function () {
 			if (!tile.isNeutral() && tile.fertility < tile.max_fertility) {
 				tileValueUpdated = true;
 				tile.fertility = Math.min(tile.max_fertility, tile.fertility + 0.01);
-			}
-
-			// Every 8 ticks, if not raining, decrease the humidity naturally, (if there is no growing crop of course)
-			if (GameState.tickCount % 8 == 0 && !GameState.rain.isRaining) {
-				tileValueUpdated = true;
-				tile.humidity = Math.max(0, tile.humidity - 0.01);
 			}
 
 			if (tileValueUpdated && updatedTiles.indexOf(tile) <= 0) {
