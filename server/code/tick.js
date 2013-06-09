@@ -112,8 +112,8 @@ module.exports = function () {
 
 					// We need to check that again. Because time_left might have been changed by the maturation logic
 					// If it is still maturing, suck the tile's ressources
-					// No need to check for rottenness, since rotten means tha time_left equals 0
-					if (tile.growingCrop.time_left > 0) {
+					// No need to check for rottenness, since rotten means that time_left equals 0
+					if (tile.growingCrop.time_left > 0 && tile.growingCrop.harvested_quantity == 0) {
 						// Hey its still alive ! Let's suck some ressources
 						tileValueUpdated = false;
 						if (tile.humidity > 0) {
