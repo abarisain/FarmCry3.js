@@ -150,8 +150,8 @@ module.exports = function () {
 				tile.fertility = Math.min(tile.max_fertility, tile.fertility + 0.01);
 			}
 
-			// Every 4 ticks, decrease the humidity naturally, (if there is no growing crop of course)
-			if (GameState.tickCount % 4 == 0) {
+			// Every 8 ticks, decrease the humidity naturally, (if there is no growing crop of course)
+			if (GameState.tickCount % 8 == 0) {
 				tileValueUpdated = true;
 				tile.humidity = Math.max(0, tile.humidity - 0.01);
 			}

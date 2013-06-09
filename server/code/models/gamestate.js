@@ -19,6 +19,7 @@ module.exports = {
 		fertilizerCost: 20,
 		wateringCost: 5,
 		healPerSecond: 1,
+		tileCost: 100, //Price for taking a neutral tile
 		inventorySize: 5, //Max items a farmer can carry
 		tickRate: 2500, //Time between ticks in mS
 		startMoney: 1000, //Still dollars
