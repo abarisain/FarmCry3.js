@@ -51,8 +51,13 @@ var Map = {
 		this.removePlayer(player.nickname);
 		var tmpPlayer = new MapItems.Character(player);
 		this.players.push(tmpPlayer);
-		if (player.constructor == LogicItems.PlayableFarmer)
+		if (player.constructor == LogicItems.PlayableFarmer) {
 			this.player = tmpPlayer;
+			CE.hud.events.updateActionAvailables(this.getTile(this.player.col, this.player.line));
+		}
+	},
+	updateHud: function () {
+		CE.hud.events.updateActionAvailables(this.getTile(this.player.col, this.player.line));
 	},
 	removePlayer: function (nickname) {
 		if (this.player != null && nickname == this.player.farmer.nickname)
