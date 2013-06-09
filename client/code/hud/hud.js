@@ -278,9 +278,15 @@ CrymeEngine.hud = {
 				CE.hud.panels.actionBarSmall.viewbag.buy.visible = true;
 			}
 		},
+		refreshCharacter: function () {
+			if (CE.hud.panels.inventory) {
+				CE.hud.panels.inventory.leftPage.refresh();
+			}
+			CE.hud.panels.lifebar.setProgress(GameState.player.health);
+		},
 		refreshInventory: function () {
 			if (CE.hud.panels.inventory) {
-				CE.hud.panels.inventory.refresh();
+				CE.hud.panels.inventory.rightPage.refresh();
 			}
 		}
 	},

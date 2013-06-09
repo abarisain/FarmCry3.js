@@ -71,11 +71,13 @@ networkEngine.subsystems.player = {
 		moneyUpdated: function (data) {
 			if (GameState.player != null)
 				GameState.player.money = data.money;
+			CE.hud.events.refreshCharacter();
 		},
 		healthUpdated: function (data) {
 			if (GameState.player != null)
 				GameState.player.health = data.health;
 			CE.hud.panels.lifebar.setProgress(GameState.player.health);
+			CE.hud.events.refreshCharacter();
 		},
 		launchBattle: function (data) {
 			CE.Event.launchBattle(data);
