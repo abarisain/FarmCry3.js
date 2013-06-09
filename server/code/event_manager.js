@@ -11,7 +11,7 @@ var EventManager = {
 			 */
 			rainStart: function (force) {
 				GameState.rain.isRaining = true;
-				if(force) {
+				if (force) {
 					GameState.rain.timeLeft = -1;
 				} else {
 					GameState.rain.timeLeft = GameState.rain.defaultDuration;
@@ -216,7 +216,7 @@ var EventManager = {
 					for (var j = 0; j < buildingInfo.size.x; j++) {
 						tmpY = targetTile.position.y + i;
 						tmpX = targetTile.position.x + j;
-						if(tmpY >= GameState.board.size.y || tmpX >= GameState.board.size.y || tmpY < 0 || tmpX < 0) {
+						if (tmpY >= GameState.board.size.y || tmpX >= GameState.board.size.y || tmpY < 0 || tmpX < 0) {
 							// Outside of the map
 							NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
 								title: null,
@@ -225,7 +225,7 @@ var EventManager = {
 							return false;
 						}
 						tmpTile = GameState.board.tiles[tmpY][tmpX];
-						if(tmpTile.isAliasOf != null || !tmpTile.isOwnedBy(farmer) ||
+						if (tmpTile.isAliasOf != null || !tmpTile.isOwnedBy(farmer) ||
 							tmpTile.hasGrowingCrop() || tmpTile.hasBuilding()) {
 							// We can't buy anything here, this is bat country
 							NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
@@ -273,7 +273,7 @@ var EventManager = {
 						for (var j = 0; j < targetTile.building.size.x; j++) {
 							tmpY = targetTile.position.y + i;
 							tmpX = targetTile.position.x + j;
-							if(tmpY >= GameState.board.size.y || tmpX >= GameState.board.size.y || tmpY < 0 || tmpX < 0)
+							if (tmpY >= GameState.board.size.y || tmpX >= GameState.board.size.y || tmpY < 0 || tmpX < 0)
 								continue;
 							GameState.board.tiles[tmpY][tmpX].isAliasOf = null;
 						}
@@ -315,6 +315,48 @@ var EventManager = {
 						this.changeTileOwner(targetTile, farmer);
 					}
 				}
+				return true;
+			},
+			fertilizesTile: function (farmer) {
+				var targetTile = GameState.board.getTileForFarmer(farmer);
+				if (targetTile.hasBuilding())
+					return false;
+				if (!targetTile.isOwnedBy(farmer)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "You do not own this tile !"
+					});
+					return false;
+				}
+				if (this.substractMoney(farmer, GameState.settings.fertilizerCost)) {
+					targetTile.fertility = Math.min(targetTile.fertility + 0.2, targetTile.max_fertility);
+				}
+				NetworkEngine.clients.broadcast("player.tileFertilized", {
+					fertility: targetTile.fertility,
+					col: targetTile.position.x,
+					line: targetTile.position.y
+				});
+				return true;
+			},
+			watersTile: function (farmer) {
+				var targetTile = GameState.board.getTileForFarmer(farmer);
+				if (targetTile.hasBuilding())
+					return false;
+				if (!targetTile.isOwnedBy(farmer)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "You do not own this tile !"
+					});
+					return false;
+				}
+				if (this.substractMoney(farmer, GameState.settings.wateringCost)) {
+					targetTile.humidity = Math.min(targetTile.humidity + 0.2, 1);
+				}
+				NetworkEngine.clients.broadcast("player.tileWatered", {
+					humidity: targetTile.humidity,
+					col: targetTile.position.x,
+					line: targetTile.position.y
+				});
 				return true;
 			},
 			changeTileOwner: function (tile, farmer) {

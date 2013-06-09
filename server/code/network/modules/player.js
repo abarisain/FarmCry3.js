@@ -41,6 +41,16 @@ var NetworkModule = {
 			if (!EventManager.subsystems.player.takeCurrentTile(connection.farmer)) {
 				connection.send("player.takeCurrentTileDenied", data);
 			}
+		},
+		watersTile: function (connection, request, data, callback) {
+			if (!EventManager.subsystems.player.watersTile(connection.farmer)) {
+				connection.send("player.watersTileDenied", data);
+			}
+		},
+		fertilizesTile: function (connection, request, data, callback) {
+			if (!EventManager.subsystems.player.fertilizesTile(connection.farmer)) {
+				connection.send("player.fertilizesTileDenied", data);
+			}
 		}
 	}
 };
