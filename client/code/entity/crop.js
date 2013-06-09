@@ -45,7 +45,7 @@ MapItems.TileItems.Crop.prototype.updateImage = function () {
 	this.updateValues();
 	switch (this.data.codename) {
 		case 'corn':
-			if (this.harvest_quantity > 0) {
+			if (this.data.harvested_quantity > 0) {
 				this.sprite = SpritePack.Crops.Sprites.CORN_4;
 			} else if (this.maturity > 0.75) {
 				this.sprite = SpritePack.Crops.Sprites.CORN_3;
@@ -58,7 +58,7 @@ MapItems.TileItems.Crop.prototype.updateImage = function () {
 			}
 			break;
 		case 'tomato':
-			if (this.harvest_quantity > 0) {
+			if (this.data.harvested_quantity > 0) {
 				this.sprite = SpritePack.Crops.Sprites.TOMATO_4;
 			} else if (this.maturity > 0.75) {
 				this.sprite = SpritePack.Crops.Sprites.TOMATO_3;
@@ -71,7 +71,7 @@ MapItems.TileItems.Crop.prototype.updateImage = function () {
 			}
 			break;
 		case 'wheat':
-			if (this.harvest_quantity > 0) {
+			if (this.data.harvested_quantity > 0) {
 				this.sprite = SpritePack.Crops.Sprites.WHEAT_4;
 			} else if (this.maturity > 0.75) {
 				this.sprite = SpritePack.Crops.Sprites.WHEAT_3;
