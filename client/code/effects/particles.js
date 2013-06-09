@@ -94,13 +94,15 @@ ParticlesEmitter.prototype = {
 				this.endEvent();
 				return false;
 			}
-			for (i = 0; i < this.particles.length; i++) {
-				if (!this.particles[i].update(this.gravity))//if particle is dead
-				{
-					if (this.amountMax == -1) {//for infinite emittor only
-						this.amount--;
+			if (this.visible) {
+				for (i = 0; i < this.particles.length; i++) {
+					if (!this.particles[i].update(this.gravity))//if particle is dead
+					{
+						if (this.amountMax == -1) {//for infinite emittor only
+							this.amount--;
+						}
+						this.particles.removeItemAtIndex(i);//enfin on supprime les particules haha
 					}
-					this.particles.removeItemAtIndex(i);//enfin on supprime les particules haha
 				}
 			}
 			return true;
