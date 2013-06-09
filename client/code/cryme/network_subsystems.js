@@ -122,6 +122,7 @@ networkEngine.subsystems.game = {
 		tileOwnerUpdated: function (data) {
 			GameState.updateTileOwner(data, data.col, data.line);
 			Map.updateHud();
+			Map.player.wololo();
 			CE.mapInvalidated = true;
 		},
 		/**

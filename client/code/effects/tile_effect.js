@@ -2,10 +2,11 @@ MapItems.Effect = function (col, line) {
 	MapItem.call(this, null, col, line);
 	this.updateCoord();
 	this.imageLeft = this.x - tileWidth / 2;
-	this.imageRight = this.y + tileWidth / 2;
-	this.imageTop = this.y - tileWidth / 2;
-	this.imageBottom = this.y + tileWidth / 2;
+	this.imageRight = this.x + tileWidth / 2;
+	this.imageTop = this.y - tileHeight / 2;
+	this.imageBottom = this.y + tileHeight / 2;
 	this.effects = [];
+	this.checkVisibility();
 }
 
 MapItems.Effect.prototype = new MapItem();

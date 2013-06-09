@@ -70,10 +70,12 @@ CrymeEngine.Environment = {
 	},
 	addExplosion: function (col, line) {
 		var particle = new MapItems.Effect(col, line);
-		var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.FIRE, particle.x, particle.y, 60, 120, 30);
-		effect.start(2, 1, 0, Math.PI * 2, 0.5, 0.5);
-		particle.addEffect(effect);
-		this.postEffects.push(particle);
+		if (particle.visible) {
+			var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.FIRE, particle.x, particle.y, 60, 120, 30);
+			effect.start(2, 1, 0, Math.PI * 2, 0.5, 0.5);
+			particle.addEffect(effect);
+			this.postEffects.push(particle);
+		}
 	},
 	addColdStorageEffect: function (col, line) {
 		var particle = new MapItems.Effect(col, line);
@@ -93,23 +95,27 @@ CrymeEngine.Environment = {
 	},
 	addSmoke: function (col, line) {
 		var particle = new MapItems.Effect(col, line);
-		var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.LIGHT_WHITE, particle.x, particle.y, 60, 180, 60);
-		//explosion.effect.gravity = -0.05;
-		effect.scatteringX = tileWidth * 2 / 3;
-		effect.scatteringY = tileHeight * 2 / 3;
-		effect.start(1, 1, -Math.PI * 90 / 180, 0, 0.2, 0);
-		particle.addEffect(effect);
-		/*explosion.effect.endEvent = function() {
-		 CE.Environment.remove(this);
-		 }.bind(explosion.effect);*/
-		this.postEffects.push(particle);
+		if (particle.visible) {
+			var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.LIGHT_WHITE, particle.x, particle.y, 60, 180, 60);
+			//explosion.effect.gravity = -0.05;
+			effect.scatteringX = tileWidth * 2 / 3;
+			effect.scatteringY = tileHeight * 2 / 3;
+			effect.start(1, 1, -Math.PI * 90 / 180, 0, 0.2, 0);
+			particle.addEffect(effect);
+			/*explosion.effect.endEvent = function() {
+			 CE.Environment.remove(this);
+			 }.bind(explosion.effect);*/
+			this.postEffects.push(particle);
+		}
 	},
 	addHalo: function (col, line) {
 		var particle = new MapItems.Effect(col, line);
-		var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.HALO, particle.x, particle.y, 0.1, 2, 30);
-		effect.start(1, 0, -Math.PI * 90 / 180, 0, 0.5, 0);
-		particle.addEffect(effect);
-		this.postEffects.push(particle);
+		if (particle.visible) {
+			var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.HALO, particle.x, particle.y, 0.1, 2, 30);
+			effect.start(1, 0, -Math.PI * 90 / 180, 0, 0.5, 0);
+			particle.addEffect(effect);
+			this.postEffects.push(particle);
+		}
 	},
 	removePreEffect: function (effect) {
 		this.preEffects.removeItem(effect);
