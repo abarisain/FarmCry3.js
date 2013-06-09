@@ -6,6 +6,18 @@ var NetworkModule = {
 	name: "game",
 	functions: {
 		// Persist the GameState to the database
+		randomizeMarketPrices: function (connection, request, data, callback) {
+			//WARNING : Debug/admin function
+			if(connection.farmer.admin) {
+				Chat.broadcastServerMessage(connection.farmer.nickname + " randomized crop prices.");
+				EventManager.subsystems.game.randomizeMarketPrices();
+			} else {
+				connection.send("game.error", {
+					title: null,
+					message: "This command is only for administrators."
+				});
+			}
+		},
 		uptime: function (connection, request, data, callback) {
 			//WARNING : Debug/admin function
 			if(connection.farmer.admin) {

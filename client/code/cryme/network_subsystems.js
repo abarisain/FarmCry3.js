@@ -71,11 +71,13 @@ networkEngine.subsystems.player = {
 		moneyUpdated: function (data) {
 			if (GameState.player != null)
 				GameState.player.money = data.money;
+			CE.hud.events.refreshCharacter();
 		},
 		healthUpdated: function (data) {
 			if (GameState.player != null)
 				GameState.player.health = data.health;
 			CE.hud.panels.lifebar.setProgress(GameState.player.health);
+			CE.hud.events.refreshCharacter();
 		},
 		launchBattle: function (data) {
 			CE.Event.launchBattle(data);
@@ -118,6 +120,15 @@ networkEngine.subsystems.game = {
 			console.log("Initial data ok");
 			if (data.isRaining)
 				CrymeEngine.Environment.startRain();
+		},
+		cropsPriceUpdated: function (data) {
+			var crop;
+			data.crops.forEach(function (updatedCrop) {
+				crop = GameState.crops[updatedCrop.codename];
+				crop.selling_price = updatedCrop.selling_price;
+				crop.seed_price = updatedCrop.seed_price;
+			});
+			CE.hud.events.refreshInventory();
 		},
 		tileOwnerUpdated: function (data) {
 			GameState.updateTileOwner(data, data.col, data.line);
