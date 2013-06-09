@@ -8,7 +8,7 @@ module.exports = function () {
 	var tickStart = Date.now();
 
 	// Every 10 minutes, refresh the market prices
-	if(GameState.tickCount % 240) {
+	if(GameState.tickCount % 240 == 0) {
 		EventManager.subsystems.game.randomizeMarketPrices();
 	}
 
