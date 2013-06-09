@@ -52,4 +52,26 @@ StoredCrop.prototype.getPersistable = function () {
 	return tmp;
 }
 
+/**
+ @param {Farmer} targetFarmer
+ @return {boolean}
+ */
+StoredCrop.prototype.isOwnedBy = function (targetFarmer) {
+	return (this.owner == targetFarmer);
+}
+
+/**
+ @return {boolean}
+ */
+StoredCrop.prototype.isInInventory = function () {
+	return (this.parent_tile == null);
+}
+
+/**
+ @return {boolean}
+ */
+StoredCrop.prototype.isRotten = function () {
+	return (this.time_left <= 0);
+}
+
 module.exports = StoredCrop;

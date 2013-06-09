@@ -457,6 +457,194 @@ var EventManager = {
 					}
 				}
 				return false;
+			},
+
+			sellStoredCrop: function (farmer, storedCropId) {
+				var targetStoredCrop = GameState.board.storedCrops[storedCropId];
+				if (typeof targetStoredCrop == 'undefined') {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "Internal error : StoredCrop " + storedCropId + " does not exist."
+					});
+					return false;
+				}
+				if (!targetStoredCrop.isOwnedBy(farmer)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "Internal error : You don't own storedCrop " + storedCropId + "."
+					});
+					return false;
+				}
+
+				// Remove from tile from the right location
+				if (targetStoredCrop.isInInventory()) {
+					if (!this.removeFromInventory(farmer, targetStoredCrop)) {
+						NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+							title: null,
+							message: "Internal error : StoredCrop " + storedCropId + " is not in your inventory."
+						});
+						return false;
+					}
+				} else {
+					if (!this.removeStoredCropFromTile(farmer, targetStoredCrop.parent_tile, targetStoredCrop))
+						return false;
+				}
+
+				if (!targetStoredCrop.isRotten()) {
+					this.addMoney(farmer, targetStoredCrop.crop.selling_price * targetStoredCrop.harvested_quantity);
+				}
+				GameState.board.removeStoredCrop(targetStoredCrop);
+			},
+
+			/**
+			 * NOTE : This does not check anything. You should do the checks yourself beforehand
+			 * @param {Farmer} farmer
+			 * @param {Tile} tile
+			 * @param {StoredCrop} storedCrop
+			 */
+			addStoredCropToTile: function (farmer, tile, storedCrop) {
+				var storedCropsLength = tile.storedCrops.length;
+				var itemFound = false;
+				for (var i = 0; i < storedCropsLength; i++) {
+					if (tile.storedCrops[i].id === storedCrop.id) {
+						itemFound = true;
+						break;
+					}
+				}
+				if (itemFound)
+					return true;
+				tile.storedCrops.push(storedCrop);
+				NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.tileStoredCropsUpdated", {
+					col: tile.position.x,
+					line: tile.position.y,
+					storedCrops: tile.getSmallStoredCrops()
+				});
+				return true;
+			},
+
+			/**
+			 * NOTE : This does not check anything. You should do the checks yourself beforehand
+			 * @param {Farmer} farmer
+			 * @param {Tile} tile
+			 * @param {StoredCrop} storedCrop
+			 */
+			removeStoredCropFromTile: function (farmer, tile, storedCrop) {
+				var storedCropsLength = tile.storedCrops.length;
+				var itemIndex = -1;
+				for (var i = 0; i < storedCropsLength; i++) {
+					if (tile.storedCrops[i].id === storedCrop.id) {
+						itemIndex = i;
+						break;
+					}
+				}
+				if (itemIndex < 0) {
+					var msg = "Internal error : " + farmer.nickname + "'s StoredCrop " + storedCrop.id + " could not be found on tile " + JSON.stringify(tile.position);
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: msg
+					});
+					console.log(msg);
+					return false;
+				}
+				tile.storedCrops.removeItem(storedCrop);
+				NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.tileStoredCropsUpdated", {
+					col: tile.position.x,
+					line: tile.position.y,
+					storedCrops: tile.getSmallStoredCrops()
+				});
+				return true;
+			},
+
+			/**
+			 * Move a stored crop from the inventory to a tile
+			 * @param {Farmer} farmer
+			 * @param {string} storedCropId
+			 */
+			depositStoredCrop: function (farmer, storedCropId) {
+				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
+				if (!targetTile.isOwnedBy(farmer)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "You cannot deposit a crop on a tile you don't own."
+					});
+					return false;
+				}
+				if (!targetTile.hasBuilding()) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "You cannot deposit a crop on a tile without a building."
+					});
+					return false;
+				}
+				if (targetTile.isBuildingFull()) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "You cannot deposit a crop on this tile because the building is full."
+					});
+					return false;
+				}
+
+				var targetStoredCrop = GameState.board.storedCrops[storedCropId];
+				if (typeof targetStoredCrop == 'undefined') {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "Internal error : StoredCrop " + storedCropId + " does not exist."
+					});
+					return false;
+				}
+				if (!targetStoredCrop.isOwnedBy(farmer)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "Internal error : You don't own storedCrop " + storedCropId + "."
+					});
+					return false;
+				}
+				if (!this.removeFromInventory(farmer, targetStoredCrop)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "Internal error : StoredCrop " + storedCropId + " is not in your inventory."
+					});
+					return false;
+				}
+				if (!this.addStoredCropToTile(farmer, targetTile, targetStoredCrop))
+					return false;
+				targetStoredCrop.parent_tile = targetTile;
+			},
+
+			/**
+			 * Move a stored crop from a tile to the inventory
+			 * @param {Farmer} farmer
+			 * @param {string} storedCropId
+			 */
+			pickupStoredCrop: function (farmer, storedCropId) {
+				var targetStoredCrop = GameState.board.storedCrops[storedCropId];
+				if (typeof targetStoredCrop == 'undefined') {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "Internal error : StoredCrop " + storedCropId + " does not exist."
+					});
+					return false;
+				}
+				if (!targetStoredCrop.isOwnedBy(farmer)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "Internal error : You don't own storedCrop " + storedCropId + "."
+					});
+					return false;
+				}
+				if (!targetStoredCrop.parent_tile.isOwnedBy(farmer)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "You can't remove a crop from a tile that you don't own."
+					});
+					return false;
+				}
+
+				if (!this.addToInventory(farmer, targetStoredCrop))
+					return false;
+				if (!this.removeStoredCropFromTile(farmer, targetStoredCrop.parent_tile, targetStoredCrop))
+					return false;
+				targetStoredCrop.parent_tile = null;
 			}
 		}
 	}

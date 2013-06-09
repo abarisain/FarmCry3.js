@@ -63,6 +63,14 @@ Tile.prototype = {
 	},
 
 	/**
+	 * Returns if the building is full. If there is no building, consider the tile full
+	 @return {boolean}
+	 */
+	isBuildingFull: function () {
+		return (!this.hasBuilding()) || this.storedCrops.length >= this.building.capacity;
+	},
+
+	/**
 	 @return {boolean}
 	 */
 	hasGrowingCrop: function () {
@@ -137,11 +145,15 @@ Tile.prototype = {
 		}
 		tmpTile.owner = this.owner.nickname;
 		tmpTile.health = this.getHealth();
-		tmpTile.storedCrops = [];
-		this.storedCrops.forEach(function (storedCrop) {
-			tmpTile.storedCrops.push(storedCrop.id);
-		});
+		tmpTile.storedCrops = this.getSmallStoredCrops();
 		return tmpTile;
+	},
+	getSmallStoredCrops: function () {
+		var tmpStoredCrops = [];
+		this.storedCrops.forEach(function (storedCrop) {
+			tmpStoredCrops.storedCrops.push(storedCrop.id);
+		});
+		return tmpStoredCrops;
 	},
 	getPersistable: function () {
 		var tmpTile = {};
