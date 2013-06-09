@@ -53,6 +53,7 @@ var Map = {
 		this.players.push(tmpPlayer);
 		if (player.constructor == LogicItems.PlayableFarmer) {
 			this.player = tmpPlayer;
+			GameState.loadPlayer();
 			CE.hud.events.updateActionAvailables(this.getTile(this.player.col, this.player.line));
 		}
 	},

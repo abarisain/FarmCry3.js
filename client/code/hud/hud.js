@@ -111,7 +111,7 @@ CrymeEngine.hud = {
 
 		var chatPanel = new HudElement("chatPanel", 'action_bar_small', 95, 95, 0, 0, HudElement.Anchors.BOTTOM_RIGHT);
 
-		var hide_chat = new HudElement('hide_chat', 'action_hide_chat', 56, 48, 0, 0, HudElement.Anchors.CENTER);
+		var hide_chat = new HudElement('hide_chat', 'action_hide_chat', 54, 44, 0, 0, HudElement.Anchors.CENTER);
 		hide_chat.onClick = function () {
 			CE.hud.chat.toggleVisibility(null);
 		};
@@ -249,10 +249,6 @@ CrymeEngine.hud = {
 	},
 	events: {
 		showFilter: function (name) {
-			//CE.hud.panels.lifebar.visible = false;
-			//CE.hud.panels.inventorybar.visible = false;
-			//CE.hud.panels.actionBar.visible = false;
-			//CE.hud.panels.actionBarSmall.visible = false;
 			CE.hud.rootHudElement.viewbag.filter_header.visible = true;
 			CE.hud.rootHudElement.viewbag.filter_text.setText(name);
 			for (var i = 0; i < CE.hud.panels.filter_buttons.length; i++) {
@@ -260,10 +256,6 @@ CrymeEngine.hud = {
 			}
 		},
 		removeFilter: function () {
-			//CE.hud.panels.lifebar.visible = true;
-			//CE.hud.panels.inventorybar.visible = true;
-			//CE.hud.panels.actionBar.visible = true;
-			//CE.hud.panels.actionBarSmall.visible = true;
 			CE.hud.rootHudElement.viewbag.filter_header.visible = false;
 			CE.hud.rootHudElement.viewbag.filter_text.setText('No filter');
 			for (var i = 0; i < CE.hud.panels.filter_buttons.length; i++) {
@@ -284,6 +276,11 @@ CrymeEngine.hud = {
 				CE.hud.panels.actionBar.visible = false;
 				CE.hud.panels.actionBarSmall.viewbag.attack.visible = false;
 				CE.hud.panels.actionBarSmall.viewbag.buy.visible = true;
+			}
+		},
+		refreshInventory: function () {
+			if (CE.hud.panels.inventory) {
+				CE.hud.panels.inventory.refresh();
 			}
 		}
 	},
