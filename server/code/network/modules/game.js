@@ -109,6 +109,7 @@ var NetworkModule = {
 				stored_crops: tmpStoredCrops,
 				online_farmers: tmpFarmers,
 				raining: GameState.rain.isRaining,
+				tick_rate: GameState.settings.tickRate,
 				inventory_size: GameState.settings.inventorySize,
 				weapons: GameState.settings.weapons,//I'm going to use this later
 				crops: GameState.settings.crops,//TODO implement the use of these values in the client market
