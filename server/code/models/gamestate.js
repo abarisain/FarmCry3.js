@@ -12,6 +12,7 @@ module.exports = {
 	autoPersisterId: null,
 	pauseAutoPersistence: false,
 	paused: false,
+	startDate: Date.now(),
 	lastPersistDate: 0,
 	tickCount: 0,
 	settings: {
