@@ -10,6 +10,12 @@ CrymeEngine.Sound = {
 		ambiant: {
 			rain: new Sound("ambiant/rain", "ambiant/rain.wav", true, true),
 			thunder: new Sound("ambiant/thunder", "ambiant/thunder.wav", true, 0)
+		},
+		action: {
+			buy: new Sound("action/buy", "action/buy.wav"),
+			fertilize: new Sound("action/fertilize", "action/fertilize.wav"),
+			sell: new Sound("action/sell", "action/sell.wav"),
+			waters: new Sound("action/waters", "action/waters.wav")
 		}
 	},
 	init: function () {
