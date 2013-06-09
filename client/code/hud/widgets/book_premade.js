@@ -91,7 +91,7 @@ HudElements.Book.Premade.Inventory = function () {
 			layout.viewbag.icon.image = 'stored_' + item.crop;
 			// I know that ticks aren't seconds, but we can't use that ...
 			layout.viewbag.status.setText(item.healthStatus);
-			layout.viewbag.price.setText(GameState.crops[item.crop].selling_price);
+			layout.viewbag.price.setText(GameState.crops[item.crop].selling_price * item.harvested_quantity);
 		}
 	);
 	inventory.rightPage.title = "Inventory";
