@@ -37,6 +37,9 @@ CrymeEngine.hud = {
 		progressbar_green: null,
 		progressbar_red: null,
 		progressbar_life: null,
+		stored_corn: null,
+		stored_tomato: null,
+		stored_wheat: null,
 		topbar: null,
 		book: null,
 		coin: null
@@ -364,7 +367,7 @@ CrymeEngine.hud.chat = {
 				} else if (msg.beginsWith("/reload")) {
 					document.location.reload();
 				} else if (msg.beginsWith("/mute")) {
-						CE.Sound.mute(true);
+					CE.Sound.mute(true);
 				} else if (msg.beginsWith("/unmute")) {
 					CE.Sound.mute(false);
 				} else if (msg.beginsWith("/raw ")) {

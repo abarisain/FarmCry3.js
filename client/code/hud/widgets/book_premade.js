@@ -5,12 +5,12 @@ HudElements.Book.Premade = {};
 
 HudElements.Book.Premade.Market = function () {
 	var book = new HudElements.Book();
-	book.close = (function() {
+	book.close = (function () {
 		CE.hud.panels.market = null;
 		book.baseClose();
 	}).bind(book);
 	var tmpBuildingsData = [];
-	for(var key in GameState.buildings) {
+	for (var key in GameState.buildings) {
 		tmpBuildingsData.push(GameState.buildings[key]);
 	}
 	var buildingsLayout = HudElements.List.PremadeLayouts.buildingMarketItem(null);
@@ -33,7 +33,7 @@ HudElements.Book.Premade.Market = function () {
 	book.leftPage.addChild(buildingsList);
 
 	var tmpCropsData = [];
-	for(var key in GameState.crops) {
+	for (var key in GameState.crops) {
 		tmpCropsData.push(GameState.crops[key]);
 	}
 	var cropsLayout = HudElements.List.PremadeLayouts.cropMarketItem(null);
@@ -61,39 +61,46 @@ HudElements.Book.Premade.Market = function () {
 
 HudElements.Book.Premade.Inventory = function () {
 	var inventory = new HudElements.Book();
-	inventory.close = (function() {
+	inventory.close = (function () {
 		CE.hud.panels.inventory = null;
 		inventory.baseClose();
 	}).bind(inventory);
 
 	inventory.leftPage.title = "Character";
 
-	var tmpInventoryData = ["j","j","j","j","j","j","j","j"];
-	GameState.player.inventory.forEach(function (inventoryItem) {
-		tmpInventoryData.push(GameState.stored_crops[inventoryItem]);
-	});
+	/*var tmpInventoryData = ["j","j","j","j","j","j","j","j"];
+	 GameState.player.inventory.forEach(function (inventoryItem) {
+	 tmpInventoryData.push(GameState.logicItems[inventoryItem]);
+	 });*/
 
-	var inventoryItemLayout = HudElements.List.PremadeLayouts.cropMarketItem(null);
-	inventoryItemLayout.viewbag.buy.onClick = function (x, y, index, item) {
-		networkEngine.subsystems.player.actions.buyCrop(item.codename);
+	var inventoryItemLayout = HudElements.List.PremadeLayouts.inventoryItem(null);
+	inventoryItemLayout.viewbag.sell.onClick = function (x, y, index, item) {
+		networkEngine.subsystems.player.actions.sellStoredCrop(item.id);
 		CE.hud.panels.inventory.close();
 	};
+
+	var tmpInventoryData = [];
+	for (var key in GameState.player.inventory) {
+		tmpInventoryData.push(GameState.player.inventory[key]);
+	}
+
 	var inventoryItemList = new HudElements.List(470, 460, 0, 0, HudElement.Anchors.TOP_LEFT,
 		tmpInventoryData,
 		inventoryItemLayout,
 		function (layout, index, item) {
-			layout.viewbag.icon.image = "market_silo";
+			layout.viewbag.icon.image = 'stored_' + item.crop;
 			// I know that ticks aren't seconds, but we can't use that ...
-			layout.viewbag.maturation.setText(" s");
+			layout.viewbag.status.setText(item.healthStatus);
+			layout.viewbag.price.setText(GameState.crops[item.crop].selling_price);
 		}
 	);
 	inventory.rightPage.title = "Inventory";
 	inventory.rightPage.viewbag.list = inventoryItemList;
 
 	inventory.rightPage.viewbag.inventoryFillMeter = new HudElements.ProgressBar(200, 32, 0, 0, HudElement.Anchors.BOTTOM_CENTER);
-	inventory.rightPage.viewbag.inventoryFillMeter.setProgress(GameState.player.inventory.length);
+	inventory.rightPage.viewbag.inventoryFillMeter.setProgress(tmpInventoryData.length);
 	inventory.rightPage.viewbag.inventoryFillMeter.setMaxProgress(GameState.inventorySize);
-	inventory.rightPage.viewbag.inventoryFillMeter.setText(GameState.player.inventory.length + " / " + GameState.inventorySize);
+	inventory.rightPage.viewbag.inventoryFillMeter.setText(tmpInventoryData.length + " / " + GameState.inventorySize);
 
 	inventory.rightPage.addChild(inventory.rightPage.viewbag.list);
 	inventory.rightPage.addChild(inventory.rightPage.viewbag.inventoryFillMeter);
