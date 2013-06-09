@@ -338,7 +338,7 @@ CrymeEngine.hud.chat = {
 	},
 	send: function () {
 		if (this.divs.input.value != "") {
-			//TODO : Parse /commands here
+			var messageData;
 			var msg = this.divs.input.value;
 			if (msg.beginsWith("/")) {
 				if (msg.beginsWith("/help")) {
