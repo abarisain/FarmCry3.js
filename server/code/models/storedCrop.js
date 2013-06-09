@@ -24,8 +24,8 @@ StoredCrop.prototype.getSmallStoredCrop = function () {
 	tmp.time_left = this.time_left;
 	if(this.parent_tile != null) {
 		tmp.parent_tile = {
-			x: this.parent_tile.position.x,
-			y: this.parent_tile.position.y
+			col: this.parent_tile.position.x,
+			line: this.parent_tile.position.y
 		}
 	} else {
 		tmp.parent_tile = null;
