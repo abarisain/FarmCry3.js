@@ -70,15 +70,15 @@ module.exports = function () {
 				continue;
 			}
 
-			// If it's raining, every 10 ticks, humidify the tiles, but not more than 80%. Also, keep relative humidity
-			if(GameState.tickCount % 10 == 0 && GameState.rain.isRaining && (tile.humidity + GameState.rain.humidification) <= 0.8) {
+			// If it's raining, every 20 ticks, humidify the tiles, but not more than 80%. Also, keep relative humidity
+			if(GameState.tickCount % 20 == 0 && GameState.rain.isRaining && (tile.humidity + GameState.rain.humidification) <= 0.8) {
 				tile.humidity = Math.min(0.8, tile.humidity + GameState.rain.humidification);
 				if (updatedTiles.indexOf(tile) <= 0)
 					updatedTiles.push(tile);
 			}
 
-			// Every 60 ticks, if not raining, decrease the humidity naturally, (unless there is a non-mature/non-rotten growing crop of course)
-			if (GameState.tickCount % 50 == 0 && !GameState.rain.isRaining && !tile.isGrowingCropMaturing()) {
+			// Every 25 ticks, if not raining, decrease the humidity naturally, (unless there is a non-mature/non-rotten growing crop of course)
+			if (GameState.tickCount % 25 == 0 && !GameState.rain.isRaining && !tile.isGrowingCropMaturing()) {
 				tile.humidity = Math.max(0, tile.humidity - 0.01);
 				if (updatedTiles.indexOf(tile) <= 0) {
 					updatedTiles.push(tile);
