@@ -5,6 +5,7 @@ networkEngine.subsystems.player = {
 		},
 		//cropType doit être le codename correspondant au serveur
 		buyCrop: function (cropType) {
+			CE.Sound.sounds.action.buy.play();
 			networkEngine.call('player', 'buyCrop', {cropType: cropType});
 		},
 		harvestCrop: function () {
@@ -12,6 +13,7 @@ networkEngine.subsystems.player = {
 		},
 		//buildingType doit être le codename correspondant au serveur
 		buyBuilding: function (buildingType) {
+			CE.Sound.sounds.action.buy.play();
 			networkEngine.call('player', 'buyBuilding', {buildingType: buildingType});
 		},
 		destroyBuilding: function () {
@@ -22,9 +24,11 @@ networkEngine.subsystems.player = {
 			networkEngine.call('player', 'takeCurrentTile', {});
 		},
 		watersTile: function () {
+			CE.Sound.sounds.action.waters.play();
 			networkEngine.call('player', 'watersTile', {});
 		},
 		fertilizesTile: function () {
+			CE.Sound.sounds.action.fertilize.play();
 			networkEngine.call('player', 'fertilizesTile', {});
 		}
 	},
