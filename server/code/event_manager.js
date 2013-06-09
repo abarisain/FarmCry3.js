@@ -206,35 +206,51 @@ var EventManager = {
 				return false;
 			},
 			buyBuilding: function (farmer, buildingType) {
-				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
-				if (!targetTile.isOwnedBy(farmer)) {
+				var targetTile = GameState.board.getTileForFarmer(farmer);
+				var buildingInfo = GameState.settings.buildings[buildingType];
+				if (buildingInfo.size.x > 1 || buildingInfo.size.y > 1) {
+					var tmpTile;
+					// We need to check if he is the owner. I know we check one tile once but heh
+					for (var i = 0; i < buildingInfo.size.y; i++) {
+						for (var j = 0; j < buildingInfo.size.x; j++) {
+							tmpTile = GameState.board.tiles[targetTile.y + i][targetTile.x + j];
+							if(tmpTile.isAliasOf != null || !tmpTile.isOwnedBy(farmer) ||
+								tmpTile.hasGrowingCrop() || tmpTile.hasBuilding()) {
+								// We can't buy anything here, this is bat country
+								NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+									title: null,
+									message: "You cannot buy a building on a land you don't own (you need to own the adjacent tiles) or that is not free !"
+								});
+								return false;
+							}
+						}
+					}
+					for (var i = 0; i < buildingInfo.size.y; i++) {
+						for (var j = 0; j < buildingInfo.size.x; j++) {
+							if (i != 0 || j != 0) {
+								GameState.board.tiles[targetTile.y + i][targetTile.x + j].isAliasOf = targetTile;
+							}
+						}
+					}
+				}
+
+				if (!this.substractMoney(farmer, buildingInfo.price)) {
 					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
 						title: null,
-						message: "You cannot buy a building on a land you don't own !"
+						message: "You do not have enough money for this building !"
 					});
 					return false;
 				}
-				if (!targetTile.hasGrowingCrop() && !targetTile.hasBuilding()) {
-					var buildingInfo = GameState.settings.buildings[buildingType];
-					if (!this.substractMoney(farmer, buildingInfo.price)) {
-						NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
-							title: null,
-							message: "You do not have enough money for this building !"
-						});
-						return false;
-					}
-					this.substractMoney(buildingInfo.price);
-					targetTile.building = GameState.settings.buildings[buildingType];
-					targetTile.storedCrops = []; // This should not be polluted but clear it anyway, just to be safe
-					NetworkEngine.clients.broadcast("player.buildingUpdated", {
-						nickname: farmer.nickname,
-						building: { codename: targetTile.building.codename },
-						col: targetTile.position.x,
-						line: targetTile.position.y
-					});
-					return true;
-				}
-				return false;
+				this.substractMoney(buildingInfo.price);
+				targetTile.building = GameState.settings.buildings[buildingType];
+				targetTile.storedCrops = []; // This should not be polluted but clear it anyway, just to be safe
+				NetworkEngine.clients.broadcast("player.buildingUpdated", {
+					nickname: farmer.nickname,
+					building: { codename: targetTile.building.codename },
+					col: targetTile.position.x,
+					line: targetTile.position.y
+				});
+				return true;
 			},
 			destroyBuilding: function (farmer) {
 				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
