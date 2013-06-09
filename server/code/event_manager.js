@@ -343,14 +343,26 @@ var EventManager = {
 					return false;
 				}
 				// Manual fertilization can go over max_fertility ! It's only a limit for natural healing
-				if (this.substractMoney(farmer, GameState.settings.fertilizerCost)) {
-					targetTile.fertility = Math.min(targetTile.fertility + 0.2, 1);
+				if (!this.substractMoney(farmer, GameState.settings.fertilizerCost)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "You don't have enough money !"
+					});
+					return false;
 				}
-				NetworkEngine.clients.broadcast("player.tileFertilized", {
+				targetTile.fertility = Math.min(targetTile.fertility + 0.2, 1);
+				var farmerConnection = NetworkEngine.clients.getConnectionForFarmer(farmer);
+				farmerConnection.send("player.tileFertilized", {
 					fertility: targetTile.fertility,
 					col: targetTile.position.x,
 					line: targetTile.position.y
 				});
+				// Tick update tiles contains fertilization/humidity
+				NetworkEngine.clients.broadcast("game.tileDataUpdated", {
+					tiles: [
+						targetTile.getTickUpdateTile()
+					]
+				}, true, farmerConnection);
 				return true;
 			},
 			watersTile: function (farmer) {
@@ -364,14 +376,26 @@ var EventManager = {
 					});
 					return false;
 				}
-				if (this.substractMoney(farmer, GameState.settings.wateringCost)) {
-					targetTile.humidity = Math.min(targetTile.humidity + 0.2, 1);
+				if (!this.substractMoney(farmer, GameState.settings.wateringCost)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "You don't have enough money !"
+					});
+					return false;
 				}
-				NetworkEngine.clients.broadcast("player.tileWatered", {
+				targetTile.humidity = Math.min(targetTile.humidity + 0.2, 1);
+				var farmerConnection = NetworkEngine.clients.getConnectionForFarmer(farmer);
+				farmerConnection.send("player.tileWatered", {
 					humidity: targetTile.humidity,
 					col: targetTile.position.x,
 					line: targetTile.position.y
 				});
+				// Tick update tiles contains fertilization/humidity
+				NetworkEngine.clients.broadcast("game.tileDataUpdated", {
+					tiles: [
+						targetTile.getTickUpdateTile()
+					]
+				}, true, farmerConnection);
 				return true;
 			},
 			changeTileOwner: function (tile, farmer) {
