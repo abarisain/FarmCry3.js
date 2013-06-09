@@ -265,7 +265,13 @@ var EventManager = {
 			destroyBuilding: function (farmer) {
 				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
 				if (targetTile.isOwnedBy(farmer) && targetTile.hasBuilding()) {
-					// TODO : Take care of the storedCrops. Forbid building removal or just do something.
+					if (targetTile.hasStoredCrops()) {
+						NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+							title: null,
+							message: "The stored crops must be removed before you sell the building !"
+						});
+						return false;
+					}
 					// Clear the aliases
 					var tmpX;
 					var tmpY;
