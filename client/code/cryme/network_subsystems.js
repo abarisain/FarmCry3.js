@@ -91,6 +91,12 @@ networkEngine.subsystems.player = {
 			Map.player.waters();
 			GameState.updateTile(data, data.col, data.line);
 			CE.mapInvalidated = true;
+		},
+		inventoryItemAdded: function (data) {
+			GameState.inventoryItemAdded(data.id);
+		},
+		inventoryItemRemoved: function (data) {
+			GameState.inventoryItemRemoved(data.id);
 		}
 	}
 };

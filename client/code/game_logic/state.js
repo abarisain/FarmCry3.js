@@ -27,6 +27,11 @@ GameState = {
 			break;
 		}
 	},
+	loadPlayer: function () {
+		for (var i = 0; i < initialData.player_farmer.inventory.length; i++) {
+			this.inventoryItemAdded(initialData.player_farmer.inventory[i]);
+		}
+	},
 	updateTile: function (data, col, line) {
 		var tile = Map.getTile(col, line);
 		tile.updateData(data);
@@ -35,6 +40,14 @@ GameState = {
 		var tile = Map.getTile(col, line);
 		tile.updateOwner(data);
 		CE.Environment.addSmoke(col, line);
+	},
+	inventoryItemAdded: function (id) {
+		GameState.player.inventory.push(id);
+		CE.hud.events.refreshInventory();
+	},
+	inventoryItemRemoved: function (id) {
+		GameState.player.inventory.removeItem(id);
+		CE.hud.events.refreshInventory();
 	},
 	/**
 	 * Add or update storedCrop
@@ -53,9 +66,6 @@ GameState = {
 		this.logicItems.storedCrops[data.id] = data;
 		if (data.parent_tile == null) {//if storedCrop is in inventory
 			//nothing special happens here for now
-			if (GameState.player) {
-				GameState.player.inventory[data.id] = data;
-			}
 		} else {
 			var key = Map.getMapItemKey(data.parent_tile.position.col, data.parent_tile.position.line);
 			Map.mapItems[key].updateStoredCrop(data);

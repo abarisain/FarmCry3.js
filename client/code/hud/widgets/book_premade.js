@@ -98,8 +98,8 @@ HudElements.Book.Premade.Inventory = function () {
 
 	inventory.rightPage.refresh = (function () {
 		var tmpInventoryData = [];
-		for (var key in GameState.player.inventory) {
-			tmpInventoryData.push(GameState.player.inventory[key]);
+		for (var i = 0; i < GameState.player.inventory.length; i++) {
+			tmpInventoryData.push(GameState.logicItems.storedCrops[GameState.player.inventory[i]]);
 		}
 		this.viewbag.list.setData(tmpInventoryData);
 		this.viewbag.inventoryFillMeter.setProgress(tmpInventoryData.length);
