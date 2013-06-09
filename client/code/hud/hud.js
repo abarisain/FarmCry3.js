@@ -111,7 +111,7 @@ CrymeEngine.hud = {
 
 		var chatPanel = new HudElement("chatPanel", 'action_bar_small', 95, 95, 0, 0, HudElement.Anchors.BOTTOM_RIGHT);
 
-		var hide_chat = new HudElement('hide_chat', 'action_hide_chat', 56, 48, 0, 0, HudElement.Anchors.CENTER);
+		var hide_chat = new HudElement('hide_chat', 'action_hide_chat', 54, 44, 0, 0, HudElement.Anchors.CENTER);
 		hide_chat.onClick = function () {
 			CE.hud.chat.toggleVisibility(null);
 		};
