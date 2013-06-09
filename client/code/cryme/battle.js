@@ -46,6 +46,9 @@ CrymeEngine.Battle = {
 		this.damageOpponent = data.health_loss_theirs;
 		this.init();
 	},
+	launchFight: function () {
+		this.fightPhase = CE.Battle.FightPhase.FIGHT;
+	},
 	stopBattle: function () {
 		CE.hud.chat.toggleVisibility(this.oldChatVisibility);
 		CE.gameState = CE.GameState.FARMING;

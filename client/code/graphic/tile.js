@@ -62,10 +62,12 @@ MapItems.Tile.prototype.showInformation = function () {
 			}
 			break;
 		case CE.FilterType.HUMIDITY:
+			this.infoColor.copyColor(ColorHelper.Templates.WHITE);
 			this.informations.value = this.data.humidity * 100;
 			break;
 		case CE.FilterType.HEALTH:
-			this.infoColor.createColorFactor(ColorHelper.Templates.WHITE, ColorHelper.Templates.BLUE, this.data.humidity);
+			this.infoColor.copyColor(ColorHelper.Templates.WHITE);
+			this.informations.value = this.data.humidity * this.data.fertility * 100;
 			break;
 		case CE.FilterType.FERTILITY:
 			this.informations.value = this.data.fertility * 100;
