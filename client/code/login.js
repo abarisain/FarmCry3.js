@@ -44,13 +44,16 @@ var initLogin = function () {
 		}
 		loginPanel.style.display = "none";
 		loadingPanel.style.visibility = "visible";
-		document.querySelector("#login").style.backgroundImage = "url('src/login/bf.jpg')";
 		document.querySelector("#bf-audio").play();
 		document.querySelector("#login_game_title").style.display = "none";
 		//Fake a small login delay, remove this later
 		setTimeout(function () {
-			networkEngine.init(document.querySelector("#login_server").value,
-				loginEmailField.value, loginPasswordField.value);
+			setProgressbarValue(loadingProgressSpan, 1);
+			bfMenuOutfader();
+			setTimeout(function () {
+				networkEngine.init(document.querySelector("#login_server").value,
+					loginEmailField.value, loginPasswordField.value);
+			}, 500);
 		}, 2000);
 		return true;
 	};
@@ -99,7 +102,7 @@ var initLogin = function () {
 	};
 
 	networkEngine.onLoadingProgress = function (current, total) {
-		setProgressbarValue(loadingProgressSpan, 0.5*(current / total));
+		setProgressbarValue(loadingProgressSpan, 0.2*(current / total));
 	};
 
 	networkEngine.onLoadingFinished = function () {
@@ -111,7 +114,7 @@ var initLogin = function () {
 	var progressFake = 0;
 
 	networkEngine.onLoadingAnimationFinished = function () {
-		if(progressFake >= 0.8) {
+		if(progressFake >= 1.1) {
 			loadingPanel.style.display = "none";
 			document.querySelector("body").removeChild(document.querySelector("#login"));
 			if(isIOS) {
@@ -121,7 +124,7 @@ var initLogin = function () {
 			}
 		} else {
 			progressFake += 0.1;
-			setProgressbarValue(loadingProgressSpan, 0.5 + Math.min(progressFake, 0.5));
+			setProgressbarValue(loadingProgressSpan, 0.8 + Math.min(progressFake, 0.2));
 			setTimeout(networkEngine.onLoadingAnimationFinished, 500);
 		}
 	};

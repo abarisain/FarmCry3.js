@@ -30,4 +30,15 @@ window.onload = function () {
 			document.querySelector("#bf-audio").pause();
 		}
 	}
+
+	var bfMenuOutfaderValue = 1;
+	bfMenuOutfader = function() {
+		bfMenuOutfaderValue -= 0.1;
+		document.querySelector("#login_menu_bg").style.opacity = Math.max(0, bfMenuOutfaderValue);
+		if(bfMenuOutfaderValue > 0) {
+			setTimeout(bfMenuOutfader, 50);
+		} else {
+			document.querySelector("#login").removeChild(document.querySelector("#login_menu_bg"));
+		}
+	}
 };
