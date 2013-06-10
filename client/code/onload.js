@@ -18,4 +18,16 @@ window.onload = function () {
 		}
 
 	}, false);
+
+
+	var bfOutfaderValue = 1;
+	bfOutfader = function() {
+		bfOutfaderValue -= 0.01;
+		document.querySelector("#bf-audio").volume = Math.max(0, bfOutfaderValue);
+		if(bfOutfaderValue > 0) {
+			setTimeout(bfOutfader, 100);
+		} else {
+			document.querySelector("#bf-audio").pause();
+		}
+	}
 };

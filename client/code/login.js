@@ -114,6 +114,11 @@ var initLogin = function () {
 		if(progressFake >= 0.8) {
 			loadingPanel.style.display = "none";
 			document.querySelector("body").removeChild(document.querySelector("#login"));
+			if(isIOS) {
+				document.querySelector("#bf-audio").pause();
+			} else {
+				bfOutfader();
+			}
 		} else {
 			progressFake += 0.1;
 			setProgressbarValue(loadingProgressSpan, 0.5 + Math.min(progressFake, 0.5));
