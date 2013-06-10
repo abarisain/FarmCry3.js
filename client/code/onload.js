@@ -22,6 +22,7 @@ window.onload = function () {
 
 	var bfOutfaderValue = 1;
 	bfOutfader = function() {
+		// This is not ran on iOS !
 		bfOutfaderValue -= 0.01;
 		document.querySelector("#bf-audio").volume = Math.max(0, bfOutfaderValue);
 		if(bfOutfaderValue > 0) {

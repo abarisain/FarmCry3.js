@@ -118,7 +118,7 @@ var initLogin = function () {
 			loadingPanel.style.display = "none";
 			document.querySelector("body").removeChild(document.querySelector("#login"));
 			if(isIOS) {
-				document.querySelector("#bf-audio").pause();
+				document.querySelector("#login").removeChild(document.querySelector("#bf-audio"));
 			} else {
 				bfOutfader();
 			}
