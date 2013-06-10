@@ -27,7 +27,7 @@ window.onload = function () {
 		if(bfOutfaderValue > 0) {
 			setTimeout(bfOutfader, 50);
 		} else {
-			document.querySelector("#bf-audio").src = "";
+			document.querySelector("#login").removeChild(document.querySelector("#bf-audio"));
 		}
 	}
 
