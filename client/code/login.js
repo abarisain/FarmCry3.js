@@ -102,7 +102,7 @@ var initLogin = function () {
 	};
 
 	networkEngine.onLoadingProgress = function (current, total) {
-		setProgressbarValue(loadingProgressSpan, 0.2*(current / total));
+		setProgressbarValue(loadingProgressSpan, 0.1*(current / total));
 	};
 
 	networkEngine.onLoadingFinished = function () {
@@ -124,7 +124,7 @@ var initLogin = function () {
 			}
 		} else {
 			progressFake += 0.1;
-			setProgressbarValue(loadingProgressSpan, 0.8 + Math.min(progressFake, 0.2));
+			setProgressbarValue(loadingProgressSpan, 0.9 + Math.min(progressFake, 0.1));
 			setTimeout(networkEngine.onLoadingAnimationFinished, 500);
 		}
 	};
