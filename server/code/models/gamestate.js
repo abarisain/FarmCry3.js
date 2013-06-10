@@ -12,10 +12,14 @@ module.exports = {
 	autoPersisterId: null,
 	pauseAutoPersistence: false,
 	paused: false,
+	startDate: Date.now(),
 	lastPersistDate: 0,
 	tickCount: 0,
 	settings: {
+		fertilizerCost: 20,
+		wateringCost: 5,
 		healPerSecond: 1,
+		tileCost: 100, //Price for taking a neutral tile
 		inventorySize: 5, //Max items a farmer can carry
 		tickRate: 2500, //Time between ticks in mS
 		startMoney: 1000, //Still dollars
@@ -28,10 +32,11 @@ module.exports = {
 		buildings: Building.Types
 	},
 	rain: {
-		isRaining: false,
+		isRaining: true, // For init purposes, first tick will correct it
 		timeLeft: 0,
-		defaultDuration: 72, // 3 minutes of rain
-		interval: 168 // 7 minutes of good weather
+		defaultDuration: 70, // 3 minutes of rain
+		interval: 360, // 15 minutes of good weather
+		humidification: 0.1 // How much humidity rises per 2 tick
 	},
 	board: {
 		size: {
@@ -80,11 +85,11 @@ module.exports = {
 
 		//Inits a 8x8 grid
 		init: function () {
-			//We tell the board that it is already 8 tiles long
+			//We tell the board that it is already 16 tiles long
 			//But it's not, since it's size_y is 0
 			//Grow Y will take care of filling everything without any hack this way
-			this.size.x = 12;
-			GameState.board.growY(12);
+			this.size.x = 16;
+			GameState.board.growY(16);
 		},
 		grow: function (x, y) {
 			this.growX(x);
@@ -159,7 +164,7 @@ module.exports = {
 					//Fertile ground output a max fertility of 70-100%
 					//Non fertile is 2-32%
 					tile.max_fertility = (lowFertility ? 0.02 : 0.70) + Math.random() * 0.3;
-					tile.fertility = 0;//tile.max_fertility;
+					tile.fertility = tile.max_fertility;
 					tile.humidity = (highHumidity ? (0.70 + Math.random() * 0.3) :
 						(0.30 + Math.random() * 0.4));
 					line.push(tile);

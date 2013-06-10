@@ -8,8 +8,15 @@ CrymeEngine.Sound = {
 	sounds: {
 		wololo: new Sound("wololo", "wololo.wav"),
 		ambiant: {
-			rain: new Sound("ambiant/rain", "ambiant/rain.mp3", true, true),
-			thunder: new Sound("ambiant/thunder", "ambiant/thunder.mp3", true)
+			rain: new Sound("ambiant/rain", "ambiant/rain.wav", true, true),
+			thunder: new Sound("ambiant/thunder", "ambiant/thunder.wav", true, 0)
+		},
+		action: {
+			buy_building: new Sound("action/buy_building", "action/buy_building.wav"),
+			buy_crop: new Sound("action/buy_crop", "action/buy_crop.wav"),
+			fertilize: new Sound("action/fertilize", "action/fertilize.wav"),
+			sell: new Sound("action/sell", "action/sell.wav"),
+			waters: new Sound("action/waters", "action/waters.wav")
 		}
 	},
 	init: function () {

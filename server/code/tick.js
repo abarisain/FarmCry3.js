@@ -7,18 +7,23 @@ StoredCrop = require('./models/storedCrop');
 module.exports = function () {
 	var tickStart = Date.now();
 
+	// Every 10 minutes, refresh the market prices
+	if(GameState.tickCount % 240 == 0) {
+		EventManager.subsystems.game.randomizeMarketPrices();
+	}
+
 	// TODO : Add Tornados
 	// Only decrement if > 0, -1 means forced rain
 	if(GameState.rain.timeLeft > 0) {
 		GameState.rain.timeLeft--;
-		if(GameState.rain.timeLeft == 0) {
-			if(GameState.rain.isRaining) {
-				// It was raining, no time left, stops raining
-				EventManager.subsystems.game.rainStop(false);
-			} else {
-				// It was not raining, no time left, starts raining
-				EventManager.subsystems.game.rainStart(false);
-			}
+	}
+	if(GameState.rain.timeLeft == 0) {
+		if(GameState.rain.isRaining) {
+			// It was raining, no time left, stops raining
+			EventManager.subsystems.game.rainStop(false);
+		} else {
+			// It was not raining, no time left, starts raining
+			EventManager.subsystems.game.rainStart(false);
 		}
 	}
 
@@ -62,12 +67,29 @@ module.exports = function () {
 				continue;
 			}
 			if (tile.hasBuilding()) {
-				// Buildings are ticked every 24 ticks
-				if(GameState.tickCount%24 == 0)
+				// Buildings are ticked every 24 ticks.
+				// Buildings with no storedCrop do not subtract any money
+				if(GameState.tickCount % 24 == 0 && tile.hasStoredCrops())
 					EventManager.subsystems.player.substractMoney(tile.owner, tile.building.price_tick);
 				// The stored crops are whithered somewhere else, stop processing this tile
 				continue;
 			}
+
+			// If it's raining, every 15 ticks, humidify the tiles, but not more than 80%. Also, keep relative humidity
+			if(GameState.tickCount % 15 == 0 && GameState.rain.isRaining && (tile.humidity + GameState.rain.humidification) <= 0.8) {
+				tile.humidity = Math.min(0.8, tile.humidity + GameState.rain.humidification);
+				if (updatedTiles.indexOf(tile) <= 0)
+					updatedTiles.push(tile);
+			}
+
+			// Every 15 ticks, if not raining, if not too humid, decrease the humidity naturally, (unless there is a non-mature/non-rotten growing crop of course)
+			if (GameState.tickCount % 15 == 0 && !GameState.rain.isRaining && !tile.isGrowingCropMaturing() && tile.humidity < 0.8) {
+				tile.humidity = Math.max(0, tile.humidity - 0.01);
+				if (updatedTiles.indexOf(tile) <= 0) {
+					updatedTiles.push(tile);
+				}
+			}
+
 			if (tile.hasGrowingCrop()) {
 				// If it's rotten, there is nothing to do
 				if (!tile.growingCrop.rotten) {
@@ -103,17 +125,17 @@ module.exports = function () {
 
 					// We need to check that again. Because time_left might have been changed by the maturation logic
 					// If it is still maturing, suck the tile's ressources
-					// No need to check for rottenness, since rotten means tha time_left equals 0
-					if (tile.growingCrop.time_left > 0) {
+					// No need to check for rottenness, since rotten means that time_left equals 0
+					if (tile.isGrowingCropMaturing()) {
 						// Hey its still alive ! Let's suck some ressources
 						tileValueUpdated = false;
 						if (tile.humidity > 0) {
 							tileValueUpdated = true;
-							tile.humidity = Math.max(0, tile.humidity - 0.001);
+							tile.humidity = Math.max(0, tile.humidity - 0.01);
 						}
 						if (tile.fertility > 0) {
 							tileValueUpdated = true;
-							tile.fertility = Math.max(0, tile.fertility - 0.001);
+							tile.fertility = Math.max(0, tile.fertility - 0.01);
 						}
 						if (tileValueUpdated && updatedTiles.indexOf(tile) <= 0) {
 							updatedTiles.push(tile);
@@ -129,19 +151,17 @@ module.exports = function () {
 			 - Does not have a building
 			 - Does not have a growing crop
 			 Everything implied by any of these cases has already been taken care of
+			 DO NOT FORGET THAT THE CODE IS SKIPPED IF THE CONDITIONS ARE NOT MET
 			 */
 
-			// So now, make it more fertile over time
+			// So now, make it more fertile over time, but only if it is owned
+			// Otherwise, the map maxes out too fast
 			tileValueUpdated = false;
-			/* Todo : check if raining
-			 if(tile.humidity < 1) {
-			 tileValueUpdated = true;
-			 tile.humidity = Math.min(1, tile.humidity + 0.01);
-			 }*/
-			if (tile.fertility < tile.max_fertility) {
+			if (!tile.isNeutral() && tile.fertility < tile.max_fertility) {
 				tileValueUpdated = true;
 				tile.fertility = Math.min(tile.max_fertility, tile.fertility + 0.01);
 			}
+
 			if (tileValueUpdated && updatedTiles.indexOf(tile) <= 0) {
 				updatedTiles.push(tile);
 			}
@@ -154,7 +174,7 @@ module.exports = function () {
 		updatedTiles.forEach(function (updatedTile) {
 			smallUpdatedTiles.push(updatedTile.getTickUpdateTile());
 		});
-		NetworkEngine.clients.broadcast("game.tileDataUpdated", {
+		NetworkEngine.clients.broadcast("game.tilesDataUpdated", {
 			tiles: smallUpdatedTiles
 		});
 	}

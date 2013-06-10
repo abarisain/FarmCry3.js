@@ -1,7 +1,3 @@
-//TODO : faire une classe networkEngineSubsystem qui gère les erreurs et tout ...
-//Pour l'instant il faut les recoder à chaque fois, ce n'est pas optimisé, mais il faut bien tester rapidement !
-//(En fait j'ai juste aucune idée de comment l'implémenter)
-
 var networkEngine = {
 	manual_disconnect: false,
 	socket: null,

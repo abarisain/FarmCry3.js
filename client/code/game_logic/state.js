@@ -2,13 +2,12 @@ GameState = {
 	player: null,
 	online_players: [],
 	logicItems: {
-		growingCrops: {},
-		storedCrops: {},
-		buildings: {}
+		growingCrops: {},//data from server
+		storedCrops: {},//data from server
+		buildings: {}//data from server
 	},
-	buildings: {},
-	weapons: {},
-	stored_crops: {},
+	buildings: {},//reference from server
+	weapons: {},//reference from server
 	inventorySize: 5,
 	addPlayer: function (player) {
 		this.removePlayer(player.nickname);
@@ -28,6 +27,11 @@ GameState = {
 			break;
 		}
 	},
+	loadPlayer: function () {
+		for (var i = 0; i < initialData.player_farmer.inventory.length; i++) {
+			this.inventoryItemAdded(initialData.player_farmer.inventory[i]);
+		}
+	},
 	updateTile: function (data, col, line) {
 		var tile = Map.getTile(col, line);
 		tile.updateData(data);
@@ -37,25 +41,58 @@ GameState = {
 		tile.updateOwner(data);
 		CE.Environment.addSmoke(col, line);
 	},
+	inventoryItemAdded: function (id) {
+		GameState.player.inventory.push(id);
+		CE.hud.events.refreshInventory();
+	},
+	inventoryItemRemoved: function (id) {
+		GameState.player.inventory.removeItem(id);
+		CE.hud.events.refreshInventory();
+	},
+	/**
+	 * Add or update storedCrop
+	 * @param data
+	 */
+	updateStoredCrop: function (data) {
+		data.healthPercent = data.time_left / GameState.crops[data.crop].maturationTime;
+		if (data.healthPercent < 0.2) {
+			data.healthStatus = 'Critical';
+		} else if (data.healthPercent < 0.4) {
+			data.healthStatus = 'Medium';
+		} else {
+			data.healthStatus = 'Good';
+		}
+
+		this.logicItems.storedCrops[data.id] = data;
+		if (data.parent_tile == null) {//if storedCrop is in inventory
+			//nothing special happens here for now
+		} else {
+			var key = Map.getMapItemKey(data.parent_tile.position.col, data.parent_tile.position.line);
+			Map.mapItems[key].updateStoredCrop(data);
+			CE.Environment.addSmoke(data.parent_tile.position.col, data.parent_tile.position.line);
+		}
+	},
 	/** Add, update or delete growingCrop
 	 * @param {GrowingCrop} data
 	 * */
 	updateGrowingCrop: function (data, col, line) {
 		var key = Map.getMapItemKey(col, line);
 		var growingCrop = this.logicItems.growingCrops[key];
+
 		var mapItem = {}
 		if (data == null) {
 			//Remove growingCrop if data null
-			mapItem = Map.mapItems[key];
-			delete growingCrop;
-			delete mapItem;
+			delete this.logicItems.growingCrops[key];
+			delete Map.mapItems[key];
 			Map.getTile(col, line).setHasGrowingCrop(false);
+			CE.Environment.addSmoke(col, line);
 		} else {
 			if (growingCrop == undefined) {
 				//add growingCrop if growingCrop don't exist
 				this.logicItems.growingCrops[key] = data;
 				Map.mapItems[key] = new MapItems.TileItems.Crop(data, col, line);
 				Map.getTile(col, line).setHasGrowingCrop(true);
+				CE.Environment.addSmoke(col, line);
 			} else {
 				//update growingCrop if exist
 				mapItem = Map.mapItems[key];
@@ -64,7 +101,6 @@ GameState = {
 				Map.getTile(col, line).setHasGrowingCrop(true);
 			}
 		}
-		CE.mapInvalidated = true;
 	},
 	/** Add or delete growingCrop
 	 * @param {Building} data
@@ -75,21 +111,20 @@ GameState = {
 		var mapItem = {}
 		if (data == null) {
 			//Remove building if data null
-			mapItem = Map.mapItems[key];
-			delete building;
-			delete mapItem;
-
+			delete this.logicItems.buildings[key];
+			delete Map.mapItems[key];
+			CE.Environment.addSmoke(col, line);
 		} else {
 			if (building == undefined) {
 				//add growingCrop if growingCrop don't exist
 				this.logicItems.buildings[key] = data;
 				Map.mapItems[key] = new MapItems.TileItems.Building(data, col, line);
+				CE.Environment.addSmoke(col, line);
 			} else {
 				//update building if exist
 				//TODO add update building here
 			}
 		}
-		CE.mapInvalidated = true;
 	}
 	//TODO : Add weapons and stuff
 }

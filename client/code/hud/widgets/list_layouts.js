@@ -3,9 +3,44 @@
  */
 HudElements.List.PremadeLayouts = {};
 
+HudElements.List.PremadeLayouts.inventoryItem = function (name) {
+	var tmpLayout = new HudElement(name || "inventoryItemLayout", null, 1, 80);
+	tmpLayout.viewbag.icon = new HudElement("inventoryItemIcon", "action_fertilizes", 64, 64, 0, 35, HudElement.Anchors.CENTER_LEFT);
+
+	tmpLayout.viewbag.name = new HudElements.Text("");
+	tmpLayout.viewbag.name.anchor = HudElement.Anchors.CENTER_LEFT;
+	tmpLayout.viewbag.name.verticalMargin = 0;
+	tmpLayout.viewbag.name.horizontalMargin = 75;
+
+	tmpLayout.viewbag.statusLabel = new HudElements.Text("Status : ");
+	tmpLayout.viewbag.statusLabel.anchor = HudElement.Anchors.TOP_LEFT;
+	tmpLayout.viewbag.statusLabel.verticalMargin = 10;
+	tmpLayout.viewbag.statusLabel.horizontalMargin = tmpLayout.viewbag.icon.horizontalMargin + tmpLayout.viewbag.icon.width + 10;
+
+	tmpLayout.viewbag.status = new HudElements.Text(" ");
+	tmpLayout.viewbag.status.anchor = HudElement.Anchors.TOP_LEFT;
+	tmpLayout.viewbag.status.verticalMargin = tmpLayout.viewbag.statusLabel._y + tmpLayout.viewbag.statusLabel.height + 20;
+	tmpLayout.viewbag.status.horizontalMargin = tmpLayout.viewbag.statusLabel.horizontalMargin + 40;
+
+	tmpLayout.viewbag.price = new HudElements.Text("");
+	tmpLayout.viewbag.price.anchor = HudElement.Anchors.CENTER_RIGHT;
+	tmpLayout.viewbag.price.verticalMargin = 0;
+	tmpLayout.viewbag.price.horizontalMargin = -45;
+
+	tmpLayout.viewbag.sell = HudElements.Button.Premade.buy(0, 0, HudElement.Anchors.CENTER_RIGHT);
+
+	tmpLayout.addChild(tmpLayout.viewbag.icon);
+	tmpLayout.addChild(tmpLayout.viewbag.name);
+	tmpLayout.addChild(tmpLayout.viewbag.statusLabel);
+	tmpLayout.addChild(tmpLayout.viewbag.status);
+	tmpLayout.addChild(tmpLayout.viewbag.price);
+	tmpLayout.addChild(tmpLayout.viewbag.sell);
+	return tmpLayout;
+}
+
 HudElements.List.PremadeLayouts.marketItem = function (name, height) {
 	var tmpLayout = new HudElement(name || "marketListItemLayout", null, 1, height);
-	tmpLayout.viewbag.icon = new HudElements.Button(64, 64, 0, 5, " ", HudElement.Anchors.CENTER_LEFT);
+	tmpLayout.viewbag.icon = new HudElement("marketItemIcon", null, 64, 64, 0, 5, HudElement.Anchors.CENTER_LEFT);
 
 	tmpLayout.viewbag.name = new HudElements.Text("");
 	tmpLayout.viewbag.name.anchor = HudElement.Anchors.CENTER_LEFT;

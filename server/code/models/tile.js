@@ -33,9 +33,9 @@ Tile.prototype = {
 		// Check if the alias target had a building on it. If not, it should not be aliased so log it and correct it
 		if (this.isAliasOf != null) {
 			if (this.isAliasOf.building == null) {
-				this.isAliasOf == null;
 				console.log("ERROR : Tile " + this.position.x + "," + this.position.y + " is aliased to " + +this.isAliasOf.position.x + "," + this.isAliasOf.position.y
 					+ " but the alias target has no building on it. Fixing.");
+				this.isAliasOf = null;
 			} else {
 				return this.isAliasOf;
 			}
@@ -59,7 +59,15 @@ Tile.prototype = {
 	 @return {boolean}
 	 */
 	hasBuilding: function () {
-		return this.building != null;
+		return this.isAliasOf == null && this.building != null;
+	},
+
+	/**
+	 * Returns if the building is full. If there is no building, consider the tile full
+	 @return {boolean}
+	 */
+	isBuildingFull: function () {
+		return (!this.hasBuilding()) || this.storedCrops.length >= this.building.capacity;
 	},
 
 	/**
@@ -67,6 +75,21 @@ Tile.prototype = {
 	 */
 	hasGrowingCrop: function () {
 		return this.growingCrop.codename != null;
+	},
+
+	/**
+	 * A growing crop is maturing if there is a growing crop, it's not rotten and harvested_quantity equals 0
+	 @return {boolean}
+	 */
+	isGrowingCropMaturing: function () {
+		return this.hasGrowingCrop() && !this.growingCrop.rotten && this.growingCrop.harvested_quantity == 0;
+	},
+
+	/**
+	 @return {boolean}
+	 */
+	hasStoredCrops: function () {
+		return this.storedCrops.length > 0;
 	},
 
 	/**
@@ -122,11 +145,15 @@ Tile.prototype = {
 		}
 		tmpTile.owner = this.owner.nickname;
 		tmpTile.health = this.getHealth();
-		tmpTile.storedCrops = [];
-		this.storedCrops.forEach(function (storedCrop) {
-			tmpTile.storedCrops.push(storedCrop.id);
-		});
+		tmpTile.storedCrops = this.getSmallStoredCrops();
 		return tmpTile;
+	},
+	getSmallStoredCrops: function () {
+		var tmpStoredCrops = [];
+		this.storedCrops.forEach(function (storedCrop) {
+			tmpStoredCrops.storedCrops.push(storedCrop.id);
+		});
+		return tmpStoredCrops;
 	},
 	getPersistable: function () {
 		var tmpTile = {};
@@ -140,7 +167,7 @@ Tile.prototype = {
 		if (this.building == null) {
 			tmpTile.building = "dummy";
 		} else {
-			tmpTile.building = this.building;
+			tmpTile.building = this.building.codename;
 		}
 		var tmpArray = [];
 		this.storedCrops.forEach(function (storedCrop) {
@@ -148,6 +175,14 @@ Tile.prototype = {
 		});
 		tmpTile.storedCrops = JSON.stringify(tmpArray);
 		tmpTile.growingCrop = JSON.stringify(this.growingCrop);
+		if (this.isAliasOf == null) {
+			tmpTile.isAliasOf = null;
+		} else {
+			tmpTile.isAliasOf = JSON.stringify({
+				x: this.isAliasOf.position.x,
+				y: this.isAliasOf.position.y
+			});
+		}
 		return tmpTile;
 	}
 };

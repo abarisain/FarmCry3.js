@@ -30,7 +30,7 @@ var CrymeEngine = {
 		HUMIDITY: {index: 1, name: 'Humidity', tiles: true, tileBorders: true, mapItems: false, color: ColorHelper.Color.BLUE},
 		FERTILITY: {index: 2, name: 'Fertility', tiles: true, tileBorders: false, mapItems: false, color: ColorHelper.Color.GREEN},
 		MATURITY: {index: 3, name: 'Maturity', tiles: false, tileBorders: true, mapItems: true, color: ColorHelper.Color.YELLOW},
-		HEALTH: {index: 4, name: 'Health', tiles: false, tileBorders: false, mapItems: true, color: ColorHelper.Color.WHITE},
+		HEALTH: {index: 4, name: 'Health', tiles: true, tileBorders: false, mapItems: false, color: ColorHelper.Color.WHITE},
 		STORAGE_AVAILABLE: {index: 5, name: 'Space available', tiles: false, tileBorders: true, mapItems: true, color: ColorHelper.Color.BROWN},
 		STORAGE_USED: {index: 6, name: 'Space used', tiles: false, tileBorders: true, mapItems: true, color: ColorHelper.Color.VIOLET}
 	},
@@ -70,7 +70,6 @@ var CrymeEngine = {
 		networkEngine.onLoadingAnimationFinished();
 		loadingComplete = true;
 		CE.mapInvalidated = true;
-		CrymeEngine.camera.centerCamera(Map.player.x, Map.player.y);
 	},
 	Draw: {
 		Loading: function () {
@@ -163,9 +162,13 @@ var CrymeEngine = {
 			CrymeEngine.canvas.animation.context.scale(scaleFactor, scaleFactor);
 			CrymeEngine.canvas.animation.context.translate(CrymeEngine.camera.position.x, CrymeEngine.camera.position.y);
 
+			if (CE.displayType == CE.DisplayType.STANDARD) {
+				CE.Environment.drawPreEffects();
+			}
+			CE.canvas.animation.context.globalAlpha = 1;
 			Map.drawAnimation();
 			if (CE.displayType == CE.DisplayType.STANDARD) {
-				CE.Environment.draw();
+				CE.Environment.drawPostEffects();
 			}
 
 			CrymeEngine.canvas.animation.context.restore();
@@ -313,28 +316,23 @@ var CrymeEngine = {
 					if (!Options.Debug.Graphic.enabled && CE.gameState == CE.GameState.FARMING) {
 						var x = event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x;
 						var y = event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y;
-						var coord = Map.getPlayerCoordinate(x, y);
-						var data = {col: 0, line: 0};
+						var coord = Map.coordinatesFromMousePosition(x, y);
 						var moved = true;
 						coord.col -= Map.player.col;
 						coord.line -= Map.player.line;
-						if (coord.building) {
-							//Vieux hack de merde pour forcer le joueur a entrer dans un building, part 2
-							data.col = coord.col;
-							data.line = coord.line;
+						var delta = {col: coord.col / Math.abs(coord.col), line: coord.line / Math.abs(coord.line)};//delta entre -1 et 1
+						var data = {col: 0, line: 0};
+						if (delta.col == 0 && delta.line == 0) {
+							moved = false;
 						} else {
-							var delta = {col: coord.col / Math.abs(coord.col), line: coord.line / Math.abs(coord.line)};//delta entre -1 et 1
-							if (delta.col == 0 && delta.line == 0) {
-								moved = false;
+							if (Math.abs(coord.col) > Math.abs(coord.line)) {
+								data.col = delta.col;
 							} else {
-								if (Math.abs(coord.col) > Math.abs(coord.line)) {
-									data.col = delta.col;
-								} else {
-									data.line = delta.line;
-								}
+								data.line = delta.line;
 							}
 						}
 						if (moved) {
+							CE.Environment.addHalo(Map.player.col + data.col, Map.player.line + data.line);
 							networkEngine.call('player', 'move', data);
 						}
 					}
@@ -352,7 +350,8 @@ var CrymeEngine = {
 					}
 				}
 			}
-		};
+		}
+		;
 
 		window.onkeydown = function (event) {
 			CE.keyboard.keyPressed(event);
@@ -458,11 +457,12 @@ function CreateMap() {
 	CE.hud.panels.lifebar.setProgress(GameState.player.health);
 	Map.addPlayer(tmpFarmer);
 
+	CrymeEngine.camera.centerCameraInit();
+
 	Map.initMap();
 	CE.Environment.init(initialData);
 
 	CE.transitionMapCreation = new Transition(0, 1, 80, CrymeEngine.onLoadingAnimationFinished)
 	CE.transitionMapCreation.smoothing = true;
 	CE.transitionMapCreation.start(Transition.Direction.IN);
-
 }

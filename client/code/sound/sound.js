@@ -1,10 +1,11 @@
-function Sound(name, src, unique, loop) {
+function Sound(name, src, unique, loop, loopOffset) {
 	this.name = name;
 	this.src = src;
 	this.volume = 1;
 	this.mute = false;
 	this.buffer = null;
 	this.loop = loop || false;
+	this.loopOffset = loopOffset || 0;
 	this.unique = unique || false; // Can this sound be played many times or must it stop the other instance ?
 	this.nodes = {
 		buffer: null,
@@ -27,6 +28,7 @@ Sound.prototype.initWithBuffer = function (buffer) {
 Sound.prototype.setupBufferNode = function () {
 	this.nodes.buffer = CE.Sound.context.createBufferSource();
 	this.nodes.buffer.loop = this.loop;
+	this.nodes.buffer.loopStart = this.loopOffset;
 	// 1st buffer is the "buffer node", then it's the internal buffer, then it's the buffer we loaded
 	this.nodes.buffer.buffer = this.buffer;
 	if(!this.nodes.buffer.stop)

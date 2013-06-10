@@ -77,7 +77,6 @@ CrymeEngine.keyboard = {
 		CE.keyboard.Shortcuts.ATTACK_FORK = CE.keyboard.Keys.KEY_A;
 		CE.keyboard.Shortcuts.ATTACK_FLAMETHROWER = CE.keyboard.Keys.KEY_Z;
 		CE.keyboard.Shortcuts.ATTACK_AK = CE.keyboard.Keys.KEY_E;
-		CE.keyboard.Shortcuts.NATURAL_RAIN = CE.keyboard.Keys.KEY_I;
 		CE.keyboard.Shortcuts.NATURAL_TORNADO = CE.keyboard.Keys.KEY_J;
 		CE.keyboard.Shortcuts.STOP_BATTLE = CE.keyboard.Keys.KEY_P;
 		CE.keyboard.Shortcuts.SHOW_KEY_MAP = CE.keyboard.Keys.TAB;
@@ -92,13 +91,18 @@ CrymeEngine.keyboard = {
 		if (document.activeElement == CE.hud.chat.divs.input && event.keyCode != CE.keyboard.Shortcuts.CHAT.code) {
 			return true;
 		}
-		if(this.debugKeyPresses) {
+		if (this.debugKeyPresses) {
 			var messageData = {
 				kind: CE.hud.chat.Kind.LOCAL,
 				message: 'Keyboard debug : key - ' + event.keyCode
 			}
 			CE.hud.chat.append(messageData);
 		}
+
+		// Disable keypress if alt/ctrl/meta key is pressed
+		if (event.ctrlKey || event.altKey || event.metaKey)
+			return true;
+
 		switch (event.keyCode) {
 			case CE.keyboard.Keys.ESCAPE.code:
 				if (CE.hud.rootHudElement != null)
@@ -136,9 +140,6 @@ CrymeEngine.keyboard = {
 				break;
 			case CE.keyboard.Shortcuts.NATURAL_TORNADO.code:
 				CE.Environment.addTornado(Map.player.col, Map.player.line);
-				break;
-			case CE.keyboard.Shortcuts.NATURAL_RAIN.code:
-				CE.Environment.startRain();
 				break;
 			case CE.keyboard.Shortcuts.ATTACK_FORK.code:
 				CE.gameState = CE.GameState.BATTLE;

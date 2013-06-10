@@ -60,6 +60,8 @@ function LoadSpritePack() {
 	SpritePack.Characters.Sprites.ANIM_AURA = new Sprites.Animation('aura', 50, 36, 20, 40);
 	SpritePack.Characters.Sprites.ANIM_WATERS = new Sprites.Animation('farmer_waters', 18, 85, 47, 120);
 	SpritePack.Characters.Sprites.ANIM_FERTLIZES = new Sprites.Animation('farmer_fertilizes', 16, 89, 23, 60);
+	SpritePack.Characters.Sprites.ANIM_WOLOLO = new Sprites.Animation('farmer_wololo', 13, 48, 23, 60);
+
 	SpritePack.Characters.Sprites.ANIM_TOP_LEFT = new Sprites.Animation('farmer_top_left', 18, 42, 23, 30);
 	SpritePack.Characters.Sprites.ANIM_TOP_RIGHT = new Sprites.Animation('farmer_top_right', 12, 34, 23, 30);
 	SpritePack.Characters.Sprites.ANIM_BOTTOM_LEFT = new Sprites.Animation('farmer_bottom_left', 10, 49, 23, 30);
@@ -93,19 +95,25 @@ function LoadSpritePack() {
 	SpritePack.Tiles.Sprites.GRASS_1 = new Sprite('grass_1');
 	SpritePack.Tiles.Sprites.GRASS_2 = new Sprite('grass_2');
 	SpritePack.Tiles.Sprites.GRASS_3 = new Sprite('grass_3');
+	SpritePack.Tiles.Sprites.GRASS_4 = new Sprite('grass_4');
+	SpritePack.Tiles.Sprites.GRASS_5 = new Sprite('grass_5');
+	SpritePack.Tiles.Sprites.GRASS_6 = new Sprite('grass_6');
 	SpritePack.Tiles.Sprites.ROCK_0 = new Sprite('rock_0');
 	SpritePack.Tiles.Sprites.ROCK_1 = new Sprite('rock_1');
 	SpritePack.Tiles.Sprites.LEAVE = new Sprite('leave');
 	SpritePack.Tiles.Sprites.WATER_0 = new Sprite('water_0');
 	SpritePack.Tiles.Sprites.WATER_1 = new Sprite('water_1');
 	SpritePack.Tiles.Sprites.WATER_2 = new Sprite('water_2');
-	SpritePack.Tiles.Sprites.WHITE = new Sprite('white');
 
 	SpritePack.Effects.Sprites.CLOUD = new Sprite('cloud', 545, 427);
 	SpritePack.Effects.Sprites.TORNADO = new Sprites.Animation('tornado_animated', 150, 420, 23, 46);
 	SpritePack.Effects.Sprites.RAIN = new Sprite('rain', 256, 256);
 	SpritePack.Effects.Sprites.FIRE = new Sprite('fire', 102, 103);
 	SpritePack.Effects.Sprites.SMOKE = new Sprite('smoke', 32, 32);
+	SpritePack.Effects.Sprites.ICE = new Sprite('ice', 62, 41);
+	SpritePack.Effects.Sprites.LIGHT_WHITE = new Sprite('light_white', 7, 7);
+	SpritePack.Effects.Sprites.BLUR = new Sprite('blur', 28, 28);
+	SpritePack.Effects.Sprites.HALO = new Sprite('halo', 76, 58);
 
 	SpritePack.Battle.Sprites.BACKGROUND = new Sprite('background', 0, 0);
 	SpritePack.Battle.Sprites.ACTION = new Sprite('action', 42, 40);
@@ -169,22 +177,23 @@ function initSpriteEnums() {
 	}
 
 	//MapItems.TileItems.Crop.Type.corn.sprite = SpritePack.Crops.Sprites.CORN;
-	MapItems.TileItems.Crop.Type.corn.spriteBarrel = SpritePack.Storages.Sprites.BARREL_CORN;
-	MapItems.TileItems.Crop.Type.corn.spriteBox = SpritePack.Storages.Sprites.BOX_CORN;
-	MapItems.TileItems.Crop.Type.corn.spriteIceBox = SpritePack.Storages.Sprites.ICE_BOX_CORN;
+	/*MapItems.TileItems.Crop.Type.corn.spriteBarrel = SpritePack.Storages.Sprites.BARREL_CORN;
+	 MapItems.TileItems.Crop.Type.corn.spriteBox = SpritePack.Storages.Sprites.BOX_CORN;
+	 MapItems.TileItems.Crop.Type.corn.spriteIceBox = SpritePack.Storages.Sprites.ICE_BOX_CORN;
 
-	//MapItems.TileItems.Crop.Type.tomato.sprite = SpritePack.Crops.Sprites.TOMATO;
-	MapItems.TileItems.Crop.Type.tomato.spriteBarrel = SpritePack.Storages.Sprites.BARREL_TOMATO;
-	MapItems.TileItems.Crop.Type.tomato.spriteBox = SpritePack.Storages.Sprites.BOX_TOMATO;
-	MapItems.TileItems.Crop.Type.tomato.spriteIceBox = SpritePack.Storages.Sprites.ICE_BOX_TOMATO;
+	 //MapItems.TileItems.Crop.Type.tomato.sprite = SpritePack.Crops.Sprites.TOMATO;
+	 MapItems.TileItems.Crop.Type.tomato.spriteBarrel = SpritePack.Storages.Sprites.BARREL_TOMATO;
+	 MapItems.TileItems.Crop.Type.tomato.spriteBox = SpritePack.Storages.Sprites.BOX_TOMATO;
+	 MapItems.TileItems.Crop.Type.tomato.spriteIceBox = SpritePack.Storages.Sprites.ICE_BOX_TOMATO;
 
-	//MapItems.TileItems.Crop.Type.wheat.sprite = SpritePack.Crops.Sprites.WHEAT;
-	MapItems.TileItems.Crop.Type.wheat.spriteBarrel = SpritePack.Storages.Sprites.BARREL_WHEAT;
-	MapItems.TileItems.Crop.Type.wheat.spriteBox = SpritePack.Storages.Sprites.BOX_WHEAT;
-	MapItems.TileItems.Crop.Type.wheat.spriteIceBox = SpritePack.Storages.Sprites.ICE_BOX_WHEAT;
-
+	 //MapItems.TileItems.Crop.Type.wheat.sprite = SpritePack.Crops.Sprites.WHEAT;
+	 MapItems.TileItems.Crop.Type.wheat.spriteBarrel = SpritePack.Storages.Sprites.BARREL_WHEAT;
+	 MapItems.TileItems.Crop.Type.wheat.spriteBox = SpritePack.Storages.Sprites.BOX_WHEAT;
+	 MapItems.TileItems.Crop.Type.wheat.spriteIceBox = SpritePack.Storages.Sprites.ICE_BOX_WHEAT;
+	 */
 	//SpritePack.Buildings.Type.HOME.sprite = SpritePack.Buildings.Sprites.HOME;
 	MapItems.TileItems.Building.Type.barn.sprite = SpritePack.Buildings.Sprites.BARN;
 	MapItems.TileItems.Building.Type.cold_storage.sprite = SpritePack.Buildings.Sprites.COLD_STORAGE;
 	MapItems.TileItems.Building.Type.silo.sprite = SpritePack.Buildings.Sprites.SILO;
+
 }

@@ -51,8 +51,16 @@ var Map = {
 		this.removePlayer(player.nickname);
 		var tmpPlayer = new MapItems.Character(player);
 		this.players.push(tmpPlayer);
-		if (player.constructor == LogicItems.PlayableFarmer)
+		if (player.constructor == LogicItems.PlayableFarmer) {
 			this.player = tmpPlayer;
+			GameState.loadPlayer();
+			CE.hud.events.updateActionAvailables(this.getTile(this.player.col, this.player.line));
+		}
+	},
+	updateHud: function () {
+		if (this.player != null) {
+			CE.hud.events.updateActionAvailables(this.getTile(this.player.col, this.player.line));
+		}
 	},
 	removePlayer: function (nickname) {
 		if (this.player != null && nickname == this.player.farmer.nickname)
@@ -96,9 +104,9 @@ var Map = {
 		for (var i = 0; i < Math.min(this.tiles.length * progress, this.tiles.length); i++) {
 			this.tiles[i].drawLoading(progress);
 		}
-		for (var key in this.mapItems) {
-			this.mapItems[key].drawLoading(progress);
-		}
+		/*for (var key in this.mapItems) {
+		 this.mapItems[key].drawLoading(progress);
+		 }*/
 	},
 	drawMap: function () {
 		//Todo séparer l'update du draw
@@ -193,14 +201,4 @@ var Map = {
 			}
 		}
 	},
-	//Vieux hack de merde pour forcer le joueur a pop au dessus d'un bâtiment si il est dessus
-	getPlayerCoordinate: function (x, y) {
-		var coord = Map.coordinatesFromMousePosition(x, y)
-		for (var key in this.mapItems) {
-			if (this.mapItems[key].match(coord.col, coord.line)) {
-				return { col: this.mapItems[key].col, line: this.mapItems[key].line, building: true };
-			}
-		}
-		return { col: coord.col, line: coord.line, building: false };
-	}
 };

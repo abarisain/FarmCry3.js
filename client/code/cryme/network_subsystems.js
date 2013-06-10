@@ -5,6 +5,7 @@ networkEngine.subsystems.player = {
 		},
 		//cropType doit être le codename correspondant au serveur
 		buyCrop: function (cropType) {
+			CE.Sound.sounds.action.buy_crop.play();
 			networkEngine.call('player', 'buyCrop', {cropType: cropType});
 		},
 		harvestCrop: function () {
@@ -12,14 +13,24 @@ networkEngine.subsystems.player = {
 		},
 		//buildingType doit être le codename correspondant au serveur
 		buyBuilding: function (buildingType) {
+			CE.Sound.sounds.action.buy_building.play();
 			networkEngine.call('player', 'buyBuilding', {buildingType: buildingType});
 		},
-		destroyBuilding: function () {
-			networkEngine.call('player', 'destroyBuilding', {});
+		sellBuilding: function () {
+			networkEngine.call('player', 'sellBuilding', {});
 		},
 		takeCurrentTile: function () {
 			CE.Sound.sounds.wololo.play();
 			networkEngine.call('player', 'takeCurrentTile', {});
+		},
+		watersTile: function () {
+			networkEngine.call('player', 'watersTile', {});
+		},
+		fertilizesTile: function () {
+			networkEngine.call('player', 'fertilizesTile', {});
+		},
+		sellStoredCrop: function (id) {
+			networkEngine.call('player', 'sellStoredCrop', {storedCropId: id});
 		}
 	},
 	events: {
@@ -36,14 +47,16 @@ networkEngine.subsystems.player = {
 			var target = null;
 			if (data.nickname == GameState.player.nickname) {
 				target = Map.player;
+				target.move(data.col, data.line);
+				Map.updateHud();
 			} else {
 				for (var i = 0; i < Map.players.length; i++) {
-					if (Map.players[i].farmer.nickname == data.nickname)
+					if (Map.players[i].farmer.nickname == data.nickname) {
 						target = Map.players[i];
+						target.move(data.col, data.line);
+						break;
+					}
 				}
-			}
-			if (target != null) {
-				target.move(data.col, data.line);
 			}
 			target.invalidate();
 		},
@@ -52,18 +65,40 @@ networkEngine.subsystems.player = {
 		 */
 		buildingUpdated: function (data) {
 			GameState.updateBuilding(data.building, data.col, data.line);
+			Map.updateHud();
+			CE.mapInvalidated = true;
 		},
 		moneyUpdated: function (data) {
 			if (GameState.player != null)
 				GameState.player.money = data.money;
+			CE.hud.events.refreshCharacter();
 		},
 		healthUpdated: function (data) {
 			if (GameState.player != null)
 				GameState.player.health = data.health;
 			CE.hud.panels.lifebar.setProgress(GameState.player.health);
+			CE.hud.events.refreshCharacter();
 		},
 		launchBattle: function (data) {
 			CE.Event.launchBattle(data);
+		},
+		tileFertilized: function (data) {
+			CE.Sound.sounds.action.fertilize.play();
+			Map.player.fertilizes();
+			GameState.updateTile(data, data.col, data.line);
+			CE.mapInvalidated = true;
+		},
+		tileWatered: function (data) {
+			CE.Sound.sounds.action.waters.play();
+			Map.player.waters();
+			GameState.updateTile(data, data.col, data.line);
+			CE.mapInvalidated = true;
+		},
+		inventoryItemAdded: function (data) {
+			GameState.inventoryItemAdded(data.id);
+		},
+		inventoryItemRemoved: function (data) {
+			GameState.inventoryItemRemoved(data.id);
 		}
 	}
 };
@@ -83,19 +118,32 @@ networkEngine.subsystems.game = {
 			CrymeEngine.init();
 			currentLoadingCount++;
 			console.log("Initial data ok");
-			if(data.isRaining)
+			if (data.isRaining)
 				CrymeEngine.Environment.startRain();
+		},
+		cropsPriceUpdated: function (data) {
+			var crop;
+			data.crops.forEach(function (updatedCrop) {
+				crop = GameState.crops[updatedCrop.codename];
+				crop.selling_price = updatedCrop.selling_price;
+				crop.seed_price = updatedCrop.seed_price;
+			});
+			CE.hud.events.cropsPriceUpdated();
 		},
 		tileOwnerUpdated: function (data) {
 			GameState.updateTileOwner(data, data.col, data.line);
+			Map.updateHud();
+			Map.player.wololo();
+			CE.mapInvalidated = true;
 		},
 		/**
 		 @param {array} data
 		 */
-		tileDataUpdated: function (data) {
+		tilesDataUpdated: function (data) {
 			for (var i = 0; i < data.tiles.length; i++) {
 				GameState.updateTile(data.tiles[i], data.tiles[i].col, data.tiles[i].line);
 			}
+			CE.mapInvalidated = true;
 		},
 		error: function (data) {
 			if (data.title == null)
@@ -109,9 +157,19 @@ networkEngine.subsystems.game = {
 		 */
 		growingCropUpdated: function (data) {
 			GameState.updateGrowingCrop(data.growingCrop, data.col, data.line);
+			Map.updateHud();
+			CE.mapInvalidated = true;
+		},
+		tileStoredCropsUpdated: function (data) {
+			for (var i = 0; i < data.storedCrop.length; i++) {
+				GameState.updateStoredCrop(data.storedCrop[i]);
+			}
+		},
+		storedCropUpdated: function (data) {
+			GameState.updateStoredCrop(data.storedCrop);
 		},
 		rainChanged: function (data) {
-			if(data.isRaining) {
+			if (data.isRaining) {
 				CrymeEngine.Environment.startRain();
 			} else {
 				CrymeEngine.Environment.stopRain();

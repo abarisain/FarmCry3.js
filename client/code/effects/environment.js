@@ -3,7 +3,8 @@
  */
 CrymeEngine.Environment = {
 	clouds: [],
-	effects: [],
+	postEffects: [],
+	preEffects: [],
 	wind: {x: -4, y: 0 },
 	transitionThunder: new Transition(0, 1200, 1200, function () {
 	}),
@@ -17,7 +18,7 @@ CrymeEngine.Environment = {
 		for (var i = 0; i < colSize / 4; i++) {
 			for (var j = 0; j < lineSize / 4; j++) {
 				this.clouds.push(new MapItems.Cloud(j * 4, i * 4));
-				this.effects.push(this.clouds[this.clouds.length - 1]);
+				this.postEffects.push(this.clouds[this.clouds.length - 1]);
 			}
 		}
 		this.movementTransition.smoothing = true;
@@ -37,8 +38,8 @@ CrymeEngine.Environment = {
 		 } else {
 		 this.movementTransition.start(Transition.Direction.FADE_IN, false);
 		 }*/
-		for (var i = 0; i < this.effects.length; i++) {
-			this.effects[i].move(this.wind.x, this.wind.y);
+		for (var i = 0; i < this.postEffects.length; i++) {
+			this.postEffects[i].move(this.wind.x, this.wind.y);
 		}
 	},
 	startRain: function () {
@@ -65,36 +66,69 @@ CrymeEngine.Environment = {
 	addTornado: function (col, line) {
 		var tornado = new MapItems.Tornado(col, line);
 		tornado.move(Math.random() * 5 + 3, Math.random() * 5 + 3);
-		this.effects.push(tornado);
+		this.postEffects.push(tornado);
 	},
 	addExplosion: function (col, line) {
-		var explosion = new MapItems.Effect(col, line);
-		explosion.effect = new ParticlesEmitter(SpritePack.Effects.Sprites.FIRE, explosion.x, explosion.y, 60, 120, 30);
-		//explosion.effect.gravity = -0.05;
-		explosion.effect.start(2, 1, 0, Math.PI * 2, 0.5, 0.5);
-		/*explosion.effect.endEvent = function() {
-		 CE.Environment.remove(this);
-		 }.bind(explosion.effect);*/
-		this.effects.push(explosion);
+		var particle = new MapItems.Effect(col, line);
+		if (particle.visible) {
+			var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.FIRE, particle.x, particle.y, 60, 120, 30);
+			effect.start(2, 1, 0, Math.PI * 2, 0.5, 0.5);
+			particle.addEffect(effect);
+			this.postEffects.push(particle);
+		}
+	},
+	addColdStorageEffect: function (col, line) {
+		var particle = new MapItems.Effect(col, line);
+		var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.ICE, particle.x, particle.y - 5, 0.004, -1, 300, 120);
+		effect.start(0, 0, 0, 0, 0.1, 0, 0.005);
+		particle.addEffect(effect);
+		var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.ICE, particle.x + 185, particle.y - 140, 0.004, -1, 300, 120);
+		effect.start(0, 0, 0, 0, 0.1, 0, 0.005);
+		particle.addEffect(effect);
+		var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.ICE, particle.x + 85, particle.y + 55, 0.004, -1, 300, 120);
+		effect.start(0, 0, 0, 0, 0.1, 0, 0.005);
+		particle.addEffect(effect);
+		var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.ICE, particle.x + 270, particle.y - 90, 0.004, -1, 300, 120);
+		effect.start(0, 0, 0, 0, 0.1, 0, 0.005);
+		particle.addEffect(effect);
+		this.preEffects.push(particle);
 	},
 	addSmoke: function (col, line) {
-		var explosion = new MapItems.Effect(col, line);
-		explosion.effect = new ParticlesEmitter(SpritePack.Effects.Sprites.SMOKE, explosion.x, explosion.y, 60, 180, 60);
-		//explosion.effect.gravity = -0.05;
-		explosion.effect.scatteringX = tileWidth * 2 / 3;
-		explosion.effect.scatteringY = tileHeight * 2 / 3;
-		explosion.effect.start(1, 1, -Math.PI * 90 / 180, 0, 0.2, 0);
-		/*explosion.effect.endEvent = function() {
-		 CE.Environment.remove(this);
-		 }.bind(explosion.effect);*/
-		this.effects.push(explosion);
+		var particle = new MapItems.Effect(col, line);
+		if (particle.visible) {
+			var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.LIGHT_WHITE, particle.x, particle.y, 60, 180, 60);
+			//explosion.effect.gravity = -0.05;
+			effect.scatteringX = tileWidth * 2 / 3;
+			effect.scatteringY = tileHeight * 2 / 3;
+			effect.start(1, 1, -Math.PI * 90 / 180, 0, 0.2, 0);
+			particle.addEffect(effect);
+			/*explosion.effect.endEvent = function() {
+			 CE.Environment.remove(this);
+			 }.bind(explosion.effect);*/
+			this.postEffects.push(particle);
+		}
 	},
-	remove: function (effect) {
-		this.effects.removeItem(effect);
+	addHalo: function (col, line) {
+		var particle = new MapItems.Effect(col, line);
+		if (particle.visible) {
+			var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.HALO, particle.x, particle.y, 0.1, 2, 30);
+			effect.start(1, 0, -Math.PI * 90 / 180, 0, 0.5, 0);
+			particle.addEffect(effect);
+			this.postEffects.push(particle);
+		}
+	},
+	removePreEffect: function (effect) {
+		this.preEffects.removeItem(effect);
+	},
+	removePostEffect: function (effect) {
+		this.postEffects.removeItem(effect);
 	},
 	refreshWeatherVisibility: function () {//appelé quand la caméra bouge pour optimiser
-		for (var i = 0; i < this.effects.length; i++) {
-			this.effects[i].checkVisibility();
+		for (var i = 0; i < this.preEffects.length; i++) {
+			this.preEffects[i].checkVisibility();
+		}
+		for (var i = 0; i < this.postEffects.length; i++) {
+			this.postEffects[i].checkVisibility();
 		}
 	},
 	update: function () {
@@ -105,13 +139,24 @@ CrymeEngine.Environment = {
 		} else {
 			this.thunderAlpha = 0;
 		}
-		for (var i = 0; i < this.effects.length; i++) {
-			this.effects[i].update(this.thunderAlpha);//je suis obligé de séparé pour la suppression des tornades
+		for (var i = 0; i < this.preEffects.length; i++) {
+			this.preEffects[i].update();
+		}
+		for (var i = 0; i < this.postEffects.length; i++) {
+			this.postEffects[i].update(this.thunderAlpha);//je suis obligé de séparé pour la suppression des tornades
 		}
 	},
-	draw: function () {
-		for (var i = 0; i < this.effects.length; i++) {
-			this.effects[i].draw();
+	/**
+	 * every effect drawn before building
+	 */
+	drawPreEffects: function () {
+		for (var i = 0; i < this.preEffects.length; i++) {
+			this.preEffects[i].draw();
+		}
+	},
+	drawPostEffects: function () {
+		for (var i = 0; i < this.postEffects.length; i++) {
+			this.postEffects[i].draw();
 		}
 	}
 }

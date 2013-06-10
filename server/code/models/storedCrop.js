@@ -24,8 +24,8 @@ StoredCrop.prototype.getSmallStoredCrop = function () {
 	tmp.time_left = this.time_left;
 	if(this.parent_tile != null) {
 		tmp.parent_tile = {
-			x: this.parent_tile.position.x,
-			y: this.parent_tile.position.y
+			col: this.parent_tile.position.x,
+			line: this.parent_tile.position.y
 		}
 	} else {
 		tmp.parent_tile = null;
@@ -50,6 +50,28 @@ StoredCrop.prototype.getPersistable = function () {
 		tmp.parent_tile = "null";
 	}
 	return tmp;
+}
+
+/**
+ @param {Farmer} targetFarmer
+ @return {boolean}
+ */
+StoredCrop.prototype.isOwnedBy = function (targetFarmer) {
+	return (this.owner == targetFarmer);
+}
+
+/**
+ @return {boolean}
+ */
+StoredCrop.prototype.isInInventory = function () {
+	return (this.parent_tile == null);
+}
+
+/**
+ @return {boolean}
+ */
+StoredCrop.prototype.isRotten = function () {
+	return (this.time_left <= 0);
 }
 
 module.exports = StoredCrop;

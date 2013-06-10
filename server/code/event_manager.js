@@ -11,7 +11,7 @@ var EventManager = {
 			 */
 			rainStart: function (force) {
 				GameState.rain.isRaining = true;
-				if(force) {
+				if (force) {
 					GameState.rain.timeLeft = -1;
 				} else {
 					GameState.rain.timeLeft = GameState.rain.defaultDuration;
@@ -29,6 +29,19 @@ var EventManager = {
 				GameState.rain.timeLeft = GameState.rain.interval;
 				NetworkEngine.clients.broadcast("game.rainChanged", {
 					isRaining: GameState.rain.isRaining
+				});
+			},
+
+			randomizeMarketPrices: function () {
+				var updatedCrops = [];
+				var crop;
+				for(var key in GameState.settings.crops) {
+					crop = GameState.settings.crops[key];
+					crop.randomizePrices();
+					updatedCrops.push(crop.getSmallPriceUpdate());
+				}
+				NetworkEngine.clients.broadcast("game.cropsPriceUpdated", {
+					crops: updatedCrops
 				});
 			}
 		},
@@ -206,40 +219,85 @@ var EventManager = {
 				return false;
 			},
 			buyBuilding: function (farmer, buildingType) {
-				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
-				if (!targetTile.isOwnedBy(farmer)) {
+				var targetTile = GameState.board.getTileForFarmer(farmer);
+				var buildingInfo = GameState.settings.buildings[buildingType];
+				var tmpTile;
+				var tmpY;
+				var tmpX;
+				// We need to check if he is the owner. I know we check one tile once but heh
+				for (var i = 0; i < buildingInfo.size.y; i++) {
+					for (var j = 0; j < buildingInfo.size.x; j++) {
+						tmpY = targetTile.position.y + i;
+						tmpX = targetTile.position.x + j;
+						if (tmpY >= GameState.board.size.y || tmpX >= GameState.board.size.y || tmpY < 0 || tmpX < 0) {
+							// Outside of the map
+							NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+								title: null,
+								message: "The building doesn't fit on the map !"
+							});
+							return false;
+						}
+						tmpTile = GameState.board.tiles[tmpY][tmpX];
+						if (tmpTile.isAliasOf != null || !tmpTile.isOwnedBy(farmer) ||
+							tmpTile.hasGrowingCrop() || tmpTile.hasBuilding()) {
+							// We can't buy anything here, this is bat country
+							NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+								title: null,
+								message: "You cannot buy a building on a land that is not free or that you don't own (you need to own the adjacent tiles) !"
+							});
+							return false;
+						}
+					}
+				}
+				for (var i = 0; i < buildingInfo.size.y; i++) {
+					for (var j = 0; j < buildingInfo.size.x; j++) {
+						if (i != 0 || j != 0) {
+							GameState.board.tiles[targetTile.position.y + i][targetTile.position.x + j].isAliasOf = targetTile;
+						}
+					}
+				}
+
+				if (!this.substractMoney(farmer, buildingInfo.price)) {
 					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
 						title: null,
-						message: "You cannot buy a building on a land you don't own !"
+						message: "You do not have enough money for this building !"
 					});
 					return false;
 				}
-				if (!targetTile.hasGrowingCrop() && !targetTile.hasBuilding()) {
-					var buildingInfo = GameState.settings.buildings[buildingType];
-					if (!this.substractMoney(farmer, buildingInfo.price)) {
+				this.substractMoney(buildingInfo.price);
+				targetTile.building = GameState.settings.buildings[buildingType];
+				targetTile.storedCrops = []; // This should not be polluted but clear it anyway, just to be safe
+				NetworkEngine.clients.broadcast("player.buildingUpdated", {
+					nickname: farmer.nickname,
+					building: { codename: targetTile.building.codename },
+					col: targetTile.position.x,
+					line: targetTile.position.y
+				});
+				return true;
+			},
+			sellBuilding: function (farmer) {
+				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
+				if (targetTile.isOwnedBy(farmer) && targetTile.hasBuilding()) {
+					if (targetTile.hasStoredCrops()) {
 						NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
 							title: null,
-							message: "You do not have enough money for this building !"
+							message: "The stored crops must be removed before you sell the building !"
 						});
 						return false;
 					}
-					farmer.money -= buildingInfo.price;
-					targetTile.building = GameState.settings.buildings[buildingType];
-					targetTile.storedCrops = []; // This should not be polluted but clear it anyway, just to be safe
-					NetworkEngine.clients.broadcast("player.buildingUpdated", {
-						nickname: farmer.nickname,
-						building: { codename: targetTile.building.codename },
-						col: targetTile.position.x,
-						line: targetTile.position.y
-					});
-					return true;
-				}
-				return false;
-			},
-			destroyBuilding: function (farmer) {
-				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
-				if (targetTile.isOwnedBy(farmer) && targetTile.hasBuilding()) {
-					// TODO : Take care of the storedCrops. Forbid building removal or just do something.
+					// Clear the aliases
+					var tmpX;
+					var tmpY;
+					for (var i = 0; i < targetTile.building.size.y; i++) {
+						for (var j = 0; j < targetTile.building.size.x; j++) {
+							tmpY = targetTile.position.y + i;
+							tmpX = targetTile.position.x + j;
+							if (tmpY >= GameState.board.size.y || tmpX >= GameState.board.size.y || tmpY < 0 || tmpX < 0)
+								continue;
+							GameState.board.tiles[tmpY][tmpX].isAliasOf = null;
+						}
+					}
+					this.addMoney(farmer, Math.ceil(targetTile.building.price / 4));
 					targetTile.building = null;
 					NetworkEngine.clients.broadcast("player.buildingUpdated", {
 						nickname: farmer.nickname,
@@ -255,6 +313,13 @@ var EventManager = {
 				// If you attack a tile with a building on it, you will (read not implemented yet) inherit the building and what's in it
 				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
 				if (targetTile.isNeutral()) {
+					if (!this.substractMoney(farmer, GameState.settings.tileCost)) {
+						NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+							title: null,
+							message: "You need at least " + GameState.settings.tileCost + " to buy this tile."
+						});
+						return false;
+					}
 					this.changeTileOwner(targetTile, farmer);
 				} else if (!targetTile.isOwnedBy(farmer)) {
 					var healthLossMine = 10 + Math.ceil(10 * Math.random()) * 5;
@@ -277,6 +342,73 @@ var EventManager = {
 						this.changeTileOwner(targetTile, farmer);
 					}
 				}
+				return true;
+			},
+			fertilizesTile: function (farmer) {
+				var targetTile = GameState.board.getTileForFarmer(farmer);
+				if (targetTile.hasBuilding())
+					return false;
+				if (!targetTile.isOwnedBy(farmer)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "You do not own this tile !"
+					});
+					return false;
+				}
+				// Manual fertilization can go over max_fertility ! It's only a limit for natural healing
+				if (!this.substractMoney(farmer, GameState.settings.fertilizerCost)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "You don't have enough money !"
+					});
+					return false;
+				}
+				targetTile.fertility = Math.min(targetTile.fertility + 0.2, 1);
+				var farmerConnection = NetworkEngine.clients.getConnectionForFarmer(farmer);
+				farmerConnection.send("player.tileFertilized", {
+					fertility: targetTile.fertility,
+					col: targetTile.position.x,
+					line: targetTile.position.y
+				});
+				// Tick update tiles contains fertilization/humidity
+				NetworkEngine.clients.broadcast("game.tilesDataUpdated", {
+					tiles: [
+						targetTile.getTickUpdateTile()
+					]
+				}, true, farmerConnection);
+				return true;
+			},
+			watersTile: function (farmer) {
+				var targetTile = GameState.board.getTileForFarmer(farmer);
+				if (targetTile.hasBuilding())
+					return false;
+				if (!targetTile.isOwnedBy(farmer)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "You do not own this tile !"
+					});
+					return false;
+				}
+				if (!this.substractMoney(farmer, GameState.settings.wateringCost)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "You don't have enough money !"
+					});
+					return false;
+				}
+				targetTile.humidity = Math.min(targetTile.humidity + 0.2, 1);
+				var farmerConnection = NetworkEngine.clients.getConnectionForFarmer(farmer);
+				farmerConnection.send("player.tileWatered", {
+					humidity: targetTile.humidity,
+					col: targetTile.position.x,
+					line: targetTile.position.y
+				});
+				// Tick update tiles contains fertilization/humidity
+				NetworkEngine.clients.broadcast("game.tilesDataUpdated", {
+					tiles: [
+						targetTile.getTickUpdateTile()
+					]
+				}, true, farmerConnection);
 				return true;
 			},
 			changeTileOwner: function (tile, farmer) {
@@ -338,6 +470,194 @@ var EventManager = {
 					}
 				}
 				return false;
+			},
+
+			sellStoredCrop: function (farmer, storedCropId) {
+				var targetStoredCrop = GameState.board.storedCrops[storedCropId];
+				if (typeof targetStoredCrop == 'undefined') {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "Internal error : StoredCrop " + storedCropId + " does not exist."
+					});
+					return false;
+				}
+				if (!targetStoredCrop.isOwnedBy(farmer)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "Internal error : You don't own storedCrop " + storedCropId + "."
+					});
+					return false;
+				}
+
+				// Remove from tile from the right location
+				if (targetStoredCrop.isInInventory()) {
+					if (!this.removeFromInventory(farmer, targetStoredCrop)) {
+						NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+							title: null,
+							message: "Internal error : StoredCrop " + storedCropId + " is not in your inventory."
+						});
+						return false;
+					}
+				} else {
+					if (!this.removeStoredCropFromTile(farmer, targetStoredCrop.parent_tile, targetStoredCrop))
+						return false;
+				}
+
+				if (!targetStoredCrop.isRotten()) {
+					this.addMoney(farmer, targetStoredCrop.crop.selling_price * targetStoredCrop.harvested_quantity);
+				}
+				GameState.board.removeStoredCrop(targetStoredCrop);
+			},
+
+			/**
+			 * NOTE : This does not check anything. You should do the checks yourself beforehand
+			 * @param {Farmer} farmer
+			 * @param {Tile} tile
+			 * @param {StoredCrop} storedCrop
+			 */
+			addStoredCropToTile: function (farmer, tile, storedCrop) {
+				var storedCropsLength = tile.storedCrops.length;
+				var itemFound = false;
+				for (var i = 0; i < storedCropsLength; i++) {
+					if (tile.storedCrops[i].id === storedCrop.id) {
+						itemFound = true;
+						break;
+					}
+				}
+				if (itemFound)
+					return true;
+				tile.storedCrops.push(storedCrop);
+				NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.tileStoredCropsUpdated", {
+					col: tile.position.x,
+					line: tile.position.y,
+					storedCrops: tile.getSmallStoredCrops()
+				});
+				return true;
+			},
+
+			/**
+			 * NOTE : This does not check anything. You should do the checks yourself beforehand
+			 * @param {Farmer} farmer
+			 * @param {Tile} tile
+			 * @param {StoredCrop} storedCrop
+			 */
+			removeStoredCropFromTile: function (farmer, tile, storedCrop) {
+				var storedCropsLength = tile.storedCrops.length;
+				var itemIndex = -1;
+				for (var i = 0; i < storedCropsLength; i++) {
+					if (tile.storedCrops[i].id === storedCrop.id) {
+						itemIndex = i;
+						break;
+					}
+				}
+				if (itemIndex < 0) {
+					var msg = "Internal error : " + farmer.nickname + "'s StoredCrop " + storedCrop.id + " could not be found on tile " + JSON.stringify(tile.position);
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: msg
+					});
+					console.log(msg);
+					return false;
+				}
+				tile.storedCrops.removeItem(storedCrop);
+				NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.tileStoredCropsUpdated", {
+					col: tile.position.x,
+					line: tile.position.y,
+					storedCrops: tile.getSmallStoredCrops()
+				});
+				return true;
+			},
+
+			/**
+			 * Move a stored crop from the inventory to a tile
+			 * @param {Farmer} farmer
+			 * @param {string} storedCropId
+			 */
+			depositStoredCrop: function (farmer, storedCropId) {
+				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
+				if (!targetTile.isOwnedBy(farmer)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "You cannot deposit a crop on a tile you don't own."
+					});
+					return false;
+				}
+				if (!targetTile.hasBuilding()) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "You cannot deposit a crop on a tile without a building."
+					});
+					return false;
+				}
+				if (targetTile.isBuildingFull()) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "You cannot deposit a crop on this tile because the building is full."
+					});
+					return false;
+				}
+
+				var targetStoredCrop = GameState.board.storedCrops[storedCropId];
+				if (typeof targetStoredCrop == 'undefined') {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "Internal error : StoredCrop " + storedCropId + " does not exist."
+					});
+					return false;
+				}
+				if (!targetStoredCrop.isOwnedBy(farmer)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "Internal error : You don't own storedCrop " + storedCropId + "."
+					});
+					return false;
+				}
+				if (!this.removeFromInventory(farmer, targetStoredCrop)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "Internal error : StoredCrop " + storedCropId + " is not in your inventory."
+					});
+					return false;
+				}
+				if (!this.addStoredCropToTile(farmer, targetTile, targetStoredCrop))
+					return false;
+				targetStoredCrop.parent_tile = targetTile;
+			},
+
+			/**
+			 * Move a stored crop from a tile to the inventory
+			 * @param {Farmer} farmer
+			 * @param {string} storedCropId
+			 */
+			pickupStoredCrop: function (farmer, storedCropId) {
+				var targetStoredCrop = GameState.board.storedCrops[storedCropId];
+				if (typeof targetStoredCrop == 'undefined') {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "Internal error : StoredCrop " + storedCropId + " does not exist."
+					});
+					return false;
+				}
+				if (!targetStoredCrop.isOwnedBy(farmer)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "Internal error : You don't own storedCrop " + storedCropId + "."
+					});
+					return false;
+				}
+				if (!targetStoredCrop.parent_tile.isOwnedBy(farmer)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "You can't remove a crop from a tile that you don't own."
+					});
+					return false;
+				}
+
+				if (!this.addToInventory(farmer, targetStoredCrop))
+					return false;
+				if (!this.removeStoredCropFromTile(farmer, targetStoredCrop.parent_tile, targetStoredCrop))
+					return false;
+				targetStoredCrop.parent_tile = null;
 			}
 		}
 	}

@@ -1,14 +1,12 @@
 MapItems.TileItems.Building = function (data, col, line) {
 	this.type = MapItems.TileItems.Building.Type[data.codename];
 	MapItems.TileItem.call(this, this.type.sprite, col, line);
-	this.data = data;
-	this.storages = [];
-	for (var i = 0; (i + 1) * 3 < this.type.positionAvailable.length; i++) {
-		this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.corn, this.type, 3 * i, this.x, this.y));
-		this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.tomato, this.type, 3 * i + 1, this.x, this.y));
-		this.storages.push(new MapItems.Storage(MapItems.TileItems.Crop.Type.wheat, this.type, 3 * i + 2, this.x, this.y));
+	if (this.type == MapItems.TileItems.Building.Type.cold_storage) {
+		CE.Environment.addColdStorageEffect(col, line);
 	}
-
+	this.data = data;
+	this.storedCrops = {};
+	this.storedCropCount = 0;
 	this.informations = new MapItems.TileItemInfos(this.x + this.type.positionInfo.x, this.y + this.type.positionInfo.y);
 }
 
@@ -19,14 +17,9 @@ MapItems.TileItems.Building.prototype.drawParent = MapItems.TileItems.Building.p
 MapItems.TileItems.Building.prototype.showInformation = function () {
 	this.informations.visible = true;
 	switch (CE.filterType) {
-		case CE.FilterType.HEALTH:
-			this.informations.value = 0;
-			break;
 		case CE.FilterType.STORAGE_AVAILABLE:
-			this.informations.value = this.data.capacity * 5;
-			break;
-		case CE.FilterType.STORAGE_USED:
-			this.informations.value = this.data.size * 20;
+			var capacity = GameState.buildings[this.data.codename].capacity;
+			this.informations.value = (capacity - this.storedCropCount) / capacity * 100;//shared instance
 			break;
 		default:
 			this.informations.value = 0;
@@ -36,11 +29,30 @@ MapItems.TileItems.Building.prototype.showInformation = function () {
 	this.informations.loadInformations();
 };
 
+MapItems.TileItems.Building.prototype.updateStoredCrop = function (data) {
+	var storedCrop = this.storedCrops[data.id];
+	if (storedCrop == null) {
+		this.storedCrops[data.id] = new MapItems.StoredCrop(data.crop, this.data.codename, this.x, this.y);
+	} else {
+		storedCrop.updateStoredCrop(data);
+	}
+	this.refreshStoredCropCoord();
+};
+
+//this method is not really optimized, but for now it will work
+MapItems.TileItems.Building.prototype.refreshStoredCropCoord = function () {
+	var i = 0;
+	for (var key in this.storedCrops) {
+		this.storedCrops[key].updateCoord(i++);
+	}
+	this.storedCropCount = i;
+}
+
 MapItems.TileItems.Building.prototype.draw = function () {
 	if (this.visible) {
 		this.drawParent();
-		for (var i = 0; i < this.storages.length; i++) {
-			this.storages[i].draw(i);
+		for (var key in this.storedCrops) {
+			this.storedCrops[key].draw();
 		}
 	}
 };

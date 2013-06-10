@@ -11,6 +11,8 @@ MapItems.Character = function (targetFarmer) {
 		waters: new Transition(0, 1, 119, function () {
 		}),//la durée doit correspondre à la durée de l'animation pour éviter les boucles
 		fertilizes: new Transition(0, 1, 59, function () {
+		}),//la durée doit correspondre à la durée de l'animation pour éviter les boucles
+		wololo: new Transition(0, 1, 59, function () {
 		})//la durée doit correspondre à la durée de l'animation pour éviter les boucles
 	}
 };
@@ -20,13 +22,25 @@ MapItems.Character.prototype.constructor = MapItems.Character;
 
 MapItems.Character.prototype.waters = function () {
 	if (!this.transitions.fertilizes.started) {
+		SpritePack.Characters.Sprites.ANIM_WATERS.reset();
 		this.transitions.waters.start(Transition.Direction.IN, true);
 	}
 }
 
 MapItems.Character.prototype.fertilizes = function () {
 	if (!this.transitions.waters.started) {
+		SpritePack.Characters.Sprites.ANIM_FERTLIZES.reset();
 		this.transitions.fertilizes.start(Transition.Direction.IN, true);
+	}
+}
+
+/*
+ * désolé pour le nom, j'en ai marre
+ */
+MapItems.Character.prototype.wololo = function () {
+	if (!this.transitions.wololo.started) {
+		SpritePack.Characters.Sprites.ANIM_WOLOLO.reset();
+		this.transitions.wololo.start(Transition.Direction.IN, true);
 	}
 }
 
@@ -80,6 +94,9 @@ MapItems.Character.prototype.draw = function () {
 			} else if (this.transitions.fertilizes.started) {
 				this.transitions.fertilizes.updateProgress();
 				SpritePack.Characters.Sprites.ANIM_FERTLIZES.draw(this.x, this.y);
+			} else if (this.transitions.wololo.started) {
+				this.transitions.wololo.updateProgress();
+				SpritePack.Characters.Sprites.ANIM_WOLOLO.draw(this.x, this.y);
 			} else {
 				CE.canvas.animation.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
 			}

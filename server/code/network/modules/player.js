@@ -32,14 +32,39 @@ var NetworkModule = {
 				connection.send("player.buyBuildingDenied", data);
 			}
 		},
-		destroyBuilding: function (connection, request, data, callback) {
-			if (!EventManager.subsystems.player.destroyBuilding(connection.farmer)) {
-				connection.send("player.destroyBuildingDenied", data);
+		sellBuilding: function (connection, request, data, callback) {
+			if (!EventManager.subsystems.player.sellBuilding(connection.farmer)) {
+				connection.send("player.sellBuildingDenied", data);
 			}
 		},
 		takeCurrentTile: function (connection, request, data, callback) {
 			if (!EventManager.subsystems.player.takeCurrentTile(connection.farmer)) {
 				connection.send("player.takeCurrentTileDenied", data);
+			}
+		},
+		watersTile: function (connection, request, data, callback) {
+			if (!EventManager.subsystems.player.watersTile(connection.farmer)) {
+				connection.send("player.watersTileDenied", data);
+			}
+		},
+		fertilizesTile: function (connection, request, data, callback) {
+			if (!EventManager.subsystems.player.fertilizesTile(connection.farmer)) {
+				connection.send("player.fertilizesTileDenied", data);
+			}
+		},
+		depositStoredCrop: function (connection, request, data, callback) {
+			if (!EventManager.subsystems.player.depositStoredCrop(connection.farmer, data.storedCropId)) {
+				connection.send("player.depositStoredCropDenied", data);
+			}
+		},
+		pickupStoredCrop: function (connection, request, data, callback) {
+			if (!EventManager.subsystems.player.pickupStoredCrop(connection.farmer, data.storedCropId)) {
+				connection.send("player.pickupStoredCropDenied", data);
+			}
+		},
+		sellStoredCrop: function (connection, request, data, callback) {
+			if (!EventManager.subsystems.player.sellStoredCrop(connection.farmer, data.storedCropId)) {
+				connection.send("player.sellStoredCropDenied", data);
 			}
 		}
 	}
