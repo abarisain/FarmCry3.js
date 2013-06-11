@@ -51,13 +51,19 @@ MapItems.Tile.prototype.updateOwner = function (data) {
 };
 
 MapItems.Tile.prototype.showInformation = function () {
+	this.informations.text = null;
+	this.informations.value = 0;
 	switch (CE.filterType) {
 		case CE.FilterType.OWNER:
+
 			if (this.data.owner == 'dummy') {
+				this.informations.text = 'Free';
 				this.infoColor.copyColor(ColorHelper.Templates.WHITE);
 			} else if (this.data.owner == GameState.player.nickname) {
+				this.informations.text = this.data.owner;
 				this.infoColor.copyColor(ColorHelper.Templates.ORANGE);
 			} else {
+				this.informations.text = this.data.owner;
 				this.infoColor.copyColor(ColorHelper.Templates.RED);
 			}
 			break;
