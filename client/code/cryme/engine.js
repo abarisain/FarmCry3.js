@@ -191,6 +191,7 @@ var CrymeEngine = {
 			CrymeEngine.canvas.map.clear();
 			CrymeEngine.canvas.hud.clear();
 			CrymeEngine.canvas.animation.clear();
+			CrymeEngine.canvas.information.clear();
 			CrymeEngine.canvas.animation.context.save();
 			//j'epsère que ce n'est pas trop lent
 			CE.canvas.animation.setFont("bold 50pt berlin,Calibri,Geneva,Arial");
