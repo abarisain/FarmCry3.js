@@ -41,7 +41,7 @@ HudElements.Book.Premade.Market = function () {
 		networkEngine.subsystems.player.actions.buyCrop(item.codename);
 		CE.hud.panels.market.close();
 	};
-	var cropsList = new HudElements.List(470, 510, 0, 0, HudElement.Anchors.TOP_LEFT,
+	book.rightPage.viewbag.list = new HudElements.List(470, 510, 0, 0, HudElement.Anchors.TOP_LEFT,
 		tmpCropsData,
 		cropsLayout,
 		function (layout, index, item) {
@@ -54,7 +54,13 @@ HudElements.Book.Premade.Market = function () {
 		}
 	);
 	book.rightPage.title = "Crops";
-	book.rightPage.addChild(cropsList);
+	book.rightPage.addChild(book.rightPage.viewbag.list);
+
+	book.rightPage.refresh = (function () {
+		this.viewbag.list.invalidate();
+	}).bind(book.rightPage);
+
+	book.refresh();
 
 	return book;
 };

@@ -303,6 +303,12 @@ CrymeEngine.hud = {
 			if (CE.hud.panels.inventory) {
 				CE.hud.panels.inventory.rightPage.refresh();
 			}
+		},
+		cropsPriceUpdated: function () {
+			this.refreshInventory();
+			if (CE.hud.panels.market) {
+				CE.hud.panels.market.refresh();
+			}
 		}
 	},
 	draw: function () {
