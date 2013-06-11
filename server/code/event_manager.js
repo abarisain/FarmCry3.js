@@ -104,10 +104,13 @@ var EventManager = {
 				farmer.last_pos.x = newX;
 				farmer.last_pos.y = newY;
 				//TODO : Send events only to people in the viewport
+				var tmpTile = GameState.board.getAliasableTileForFarmer(farmer);
+				var isFarmerOnOwnedBuilding = tmpTile.hasBuilding() && tmpTile.isOwnedBy(farmer);
 				NetworkEngine.clients.broadcast("player.moved", {
 					nickname: farmer.nickname,
 					col: farmer.last_pos.x,
-					line: farmer.last_pos.y
+					line: farmer.last_pos.y,
+					isOnOwnedBuilding: isFarmerOnOwnedBuilding
 				});
 				return true;
 			},
@@ -273,6 +276,12 @@ var EventManager = {
 					col: targetTile.position.x,
 					line: targetTile.position.y
 				});
+				NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.moved", {
+					nickname: farmer.nickname,
+					col: farmer.last_pos.x,
+					line: farmer.last_pos.y,
+					isOnOwnedBuilding: true
+				});
 				return true;
 			},
 			sellBuilding: function (farmer) {
@@ -304,6 +313,12 @@ var EventManager = {
 						building: null,
 						col: targetTile.position.x,
 						line: targetTile.position.y
+					});
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.moved", {
+						nickname: farmer.nickname,
+						col: farmer.last_pos.x,
+						line: farmer.last_pos.y,
+						isOnOwnedBuilding: false
 					});
 					return true;
 				}
