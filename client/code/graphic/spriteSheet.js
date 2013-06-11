@@ -137,7 +137,7 @@ function LoadSpritePack() {
 	SpritePack.Battle.Sprites.WEAPON_FORK = new Sprite('fork', 212, 189);
 	SpritePack.Battle.Sprites.WEAPON_FLAMETHROWER = new Sprite('flamethrower', 212, 189);
 	SpritePack.Battle.Sprites.WEAPON_AK = new Sprite('ak', 240, 200);
-	SpritePack.Battle.Sprites.LIGHTNING = new Sprite('lightning', 480, 0);
+	SpritePack.Battle.Sprites.LIGHTNING = new Sprite('lightning', 450, 0);
 	SpritePack.Battle.Sprites.HIT_POINT = new Sprite('hit_point', 25, 26);
 	SpritePack.Battle.Sprites.GROUND = new Sprite('ground', 288, 76);
 	SpritePack.Battle.Sprites.GROUND.scale = 1.2;

@@ -162,6 +162,8 @@ var CrymeEngine = {
 			CrymeEngine.canvas.animation.context.save();
 			CrymeEngine.canvas.animation.context.scale(scaleFactor, scaleFactor);
 			CrymeEngine.canvas.animation.context.translate(CrymeEngine.camera.position.x, CrymeEngine.camera.position.y);
+			//j'espère que ce n'est pas trop lent
+			CE.canvas.animation.setFont("bold 15pt berlin,Calibri,Geneva,Arial");
 
 			if (CE.displayType == CE.DisplayType.STANDARD) {
 				CE.Environment.drawPreEffects();
@@ -190,6 +192,8 @@ var CrymeEngine = {
 			CrymeEngine.canvas.hud.clear();
 			CrymeEngine.canvas.animation.clear();
 			CrymeEngine.canvas.animation.context.save();
+			//j'epsère que ce n'est pas trop lent
+			CE.canvas.animation.setFont("bold 50pt berlin,Calibri,Geneva,Arial");
 
 			CrymeEngine.canvas.animation.context.textAlign = 'center';
 
@@ -276,7 +280,6 @@ var CrymeEngine = {
 		this.canvas.debug = new CrymeCanvas('#canvasDebug');
 		this.canvas.map.setFont("normal 12pt stanberry");
 		this.canvas.hud.setFont("bold 13pt stanberry,Calibri,Geneva,Arial");
-		this.canvas.animation.setFont("bold 100pt Berlin Sans FB Demi,Calibri,Geneva,Arial");
 		this.canvas.resizeAll(canvasWidth, canvasHeight);
 
 		CE.keyboard.init();
