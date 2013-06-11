@@ -70,6 +70,7 @@ var CrymeEngine = {
 		networkEngine.onLoadingAnimationFinished();
 		loadingComplete = true;
 		CE.mapInvalidated = true;
+		Map.updateHud();
 	},
 	Draw: {
 		Loading: function () {

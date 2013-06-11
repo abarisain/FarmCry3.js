@@ -113,6 +113,9 @@ CrymeEngine.Environment = {
 		if (particle.visible) {
 			var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.HALO, particle.x, particle.y, 0.1, 2, 30);
 			effect.start(1, 0, -Math.PI * 90 / 180, 0, 0.5, 0);
+			effect.endEvent = function () {
+				CE.Environment.removePostEffect(particle);
+			}
 			particle.addEffect(effect);
 			this.postEffects.push(particle);
 		}
