@@ -46,7 +46,7 @@ Building.Types = {
 	cold_storage: new Building("cold_storage",
 		"Cold Storage",
 		6,
-		20,//20 barrels
+		16,//16 barrels
 		1400,
 		1,
 		true,
