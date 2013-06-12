@@ -45,7 +45,7 @@ module.exports = function () {
 			continue;
 		}
 		storedCrop.time_left--;
-		NetworkEngine.clients.broadcast("game.storedCropUpdated", {
+		NetworkEngine.clients.getConnectionForFarmer(storedCrop.owner).send("game.storedCropUpdated", {
 			storedCrop: storedCrop.getSmallStoredCrop()
 		});
 	}

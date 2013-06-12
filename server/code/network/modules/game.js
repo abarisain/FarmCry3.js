@@ -119,10 +119,10 @@ var NetworkModule = {
 			}
 
 			var tmpStoredCrops = [];
-			for (var i = 0; i < GameState.board.storedCrops.length; i++) {
-				if (GameState.board.storedCrops[i].owner != connection.farmer)
+			for (var key in GameState.board.storedCrops) {
+				if (!GameState.board.storedCrops[key].isOwnedBy(connection.farmer))
 					continue;
-				tmpStoredCrops.push(GameState.board.storedCrops[i]);
+				tmpStoredCrops.push(GameState.board.storedCrops[key].getSmallStoredCrop());
 			}
 
 			connection.send("game.initialData", {
