@@ -19,6 +19,9 @@ networkEngine.subsystems.player = {
 		sellBuilding: function () {
 			networkEngine.call('player', 'sellBuilding', {});
 		},
+		openBuilding: function () {
+			networkEngine.call('player', 'openBuilding', {});
+		},
 		takeCurrentTile: function () {
 			CE.Sound.sounds.wololo.play();
 			networkEngine.call('player', 'takeCurrentTile', {});
@@ -31,6 +34,12 @@ networkEngine.subsystems.player = {
 		},
 		sellStoredCrop: function (id) {
 			networkEngine.call('player', 'sellStoredCrop', {storedCropId: id});
+		},
+		depositStoredCrop: function (id) {
+			networkEngine.call('player', 'depositStoredCrop', {storedCropId: id});
+		},
+		pickupStoredCrop: function (id) {
+			networkEngine.call('player', 'pickupStoredCrop', {storedCropId: id});
 		}
 	},
 	events: {
@@ -99,6 +108,9 @@ networkEngine.subsystems.player = {
 		},
 		inventoryItemRemoved: function (data) {
 			GameState.inventoryItemRemoved(data.id);
+		},
+		buildingOpened: function (data) {
+			CE.hud.events.buildingOpened(Map.mapItems[Map.getMapItemKey(data.col, data.line)]);
 		}
 	}
 };

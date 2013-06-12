@@ -47,6 +47,13 @@ HudElements.Button.Premade = {
 		tmpBtn.removeAllChildren();
 		return tmpBtn;
 	},
+	switch: function (verticalMargin, horizontalMargin, anchor) {
+		var tmpBtn = new HudElements.Button(41, 39, verticalMargin, horizontalMargin, null, anchor);
+		tmpBtn.ninepatch.enabled = false;
+		tmpBtn.image = "button_switch";
+		tmpBtn.removeAllChildren();
+		return tmpBtn;
+	},
 	close: function (verticalMargin, horizontalMargin, anchor) {
 		var tmpBtn = new HudElements.Button(41, 39, verticalMargin, horizontalMargin, null, anchor);
 		tmpBtn.ninepatch.enabled = false;
