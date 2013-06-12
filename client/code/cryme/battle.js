@@ -50,6 +50,7 @@ CrymeEngine.Battle = {
 	launchFight: function () {
 		this.fightPhase = CE.Battle.FightPhase.FIGHT;
 		this.elements = [];
+		CrymeEngine.Sound.sounds.music.fight.play(300);
 	},
 	stopBattle: function () {
 		CE.hud.chat.toggleVisibility(this.oldChatVisibility);

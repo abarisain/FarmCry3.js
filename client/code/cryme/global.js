@@ -36,7 +36,8 @@ Options.Graphic = {
 	clouds: true,
 	advancedEffects: true,
 	refreshRate: 60,
-	refreshRateReference: 60//default
+	refreshRateReference: 60,//default,
+	timeSpeed: 1//for battle only
 };
 
 Options.Sound = {

@@ -17,6 +17,9 @@ CrymeEngine.Sound = {
 			fertilize: new Sound("action/fertilize", "action/fertilize.wav"),
 			sell: new Sound("action/sell", "action/sell.wav"),
 			waters: new Sound("action/waters", "action/waters.wav")
+		},
+		music: {
+			fight: new Sound("music/fight", "music/fight.mp3")
 		}
 	},
 	init: function () {
@@ -35,7 +38,7 @@ CrymeEngine.Sound = {
 		this.mainOutput.connect(this.context.destination);
 	},
 	load: function () {
-		if(this.unsupportedBrowser)
+		if (this.unsupportedBrowser)
 			return;
 		this.loadLiteral(this.sounds);
 	},
@@ -44,7 +47,7 @@ CrymeEngine.Sound = {
 		buffersList.forEach((function (bufferName) {
 			var target = literal[bufferName];
 			// Not a perfect check but good enough for us, we just need to know if it's not a Sound
-			if(target != null && Object.getPrototypeOf(target) == Object.prototype) {
+			if (target != null && Object.getPrototypeOf(target) == Object.prototype) {
 				// Recursive loading
 				this.loadLiteral(target);
 				return;
@@ -55,14 +58,14 @@ CrymeEngine.Sound = {
 			request.responseType = 'arraybuffer';
 
 			// Decode asynchronously
-			request.onload = (function() {
-				this.context.decodeAudioData(request.response, function(buffer) {
+			request.onload = (function () {
+				this.context.decodeAudioData(request.response, function (buffer) {
 					target.initWithBuffer(buffer);
 					currentLoadingCount++;
 				}, function (err) {
 					console.log("SoundEngine - Error while loading " + bufferName);
 					console.log(err);
-					if(CE.Sound.enabled) {
+					if (CE.Sound.enabled) {
 						console.log("SoundEngine - Sound disabled");
 						CE.Sound.unsupportedBrowser = true;
 						CE.Sound.enabled = false;
@@ -78,7 +81,7 @@ CrymeEngine.Sound = {
 	 * @param {boolean} forceState
 	 */
 	mute: function (forceState) {
-		if(typeof forceState != 'undefined') {
+		if (typeof forceState != 'undefined') {
 			this.muted = forceState ? true : false; // Sanitize the type
 		} else {
 			this.muted = !this.muted;
@@ -90,11 +93,11 @@ CrymeEngine.Sound = {
 	 */
 	unlockAudio: function () {
 		// Thanks http://paulbakaus.com/tutorials/html5/web-audio-on-ios/
-		if(this.context != null && !this.isAudioUnlocked) {
+		if (this.context != null && !this.isAudioUnlocked) {
 			console.log("Unlocking iOS audio");
 			var buffer = this.context.createBuffer(1, 1, 22050);
 			var source = this.context.createBufferSource();
-			if(!source.start)
+			if (!source.start)
 				source.start = source.noteOn;
 			source.buffer = buffer;
 
@@ -106,8 +109,8 @@ CrymeEngine.Sound = {
 
 			CE.Sound.isAudioUnlocked = true; // Assume unlocked
 			// By checking the play state after some time, we know if we're really unlocked
-			setTimeout(function() {
-				if((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
+			setTimeout(function () {
+				if ((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
 					CE.Sound.isAudioUnlocked = true;
 				} else {
 					CE.Sound.isAudioUnlocked = false;

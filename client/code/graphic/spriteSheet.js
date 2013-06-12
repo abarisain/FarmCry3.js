@@ -151,19 +151,25 @@ function LoadSpritePack() {
 	SpritePack.Battle.Sprites.WEAPON_FLAMETHROWER = new Sprite('flamethrower', 212, 189);
 	SpritePack.Battle.Sprites.WEAPON_AK = new Sprite('ak', 240, 200);
 	SpritePack.Battle.Sprites.LIGHTNING = new Sprite('lightning', 450, 0);
+	SpritePack.Battle.Sprites.EXPLOSION = new Sprite('explosion', 605, 353);
+	SpritePack.Battle.Sprites.SHOCKWAVE = new Sprite('shockwave', 410, 250);
 	SpritePack.Battle.Sprites.HIT_POINT = new Sprite('hit_point', 25, 26);
 	SpritePack.Battle.Sprites.GROUND = new Sprite('ground', 288, 76);
 	SpritePack.Battle.Sprites.GROUND.scale = 1.2;
 
 	SpritePack.Fight.Sprites.PLAYER_INTRO = new Sprites.Animation('player_intro', 40, 176, 25, 60, 2);
 	SpritePack.Fight.Sprites.PLAYER_FORK = new Sprites.Animation('player_fork', 190, 210, 23, 60, 2);
+	SpritePack.Fight.Sprites.PLAYER_AK = new Sprites.Animation('player_ak', 227, 121, 23, 120, 2);
 	SpritePack.Fight.Sprites.PLAYER_DODGE = new Sprites.Animation('player_dodge', 83, 182, 23, 60, 2);
-	SpritePack.Fight.Sprites.PLAYER_HIT = new Sprites.Animation('player_hit', 51, 120, 23, 40, 2);
+	SpritePack.Fight.Sprites.PLAYER_DODGE_AK = new Sprites.Animation('player_dodge_ak', 49, 108, 23, 120, 2);
+	SpritePack.Fight.Sprites.PLAYER_HIT = new Sprites.Animation('player_hit', 51, 120, 23, 100, 2);
 
 	SpritePack.Fight.Sprites.OPPONENT_INTRO = new Sprites.Animation('opponent_intro', 203, 167, 25, 60, 2);
 	SpritePack.Fight.Sprites.OPPONENT_FORK = new Sprites.Animation('opponent_fork', 211, 259, 23, 60, 2);
+	SpritePack.Fight.Sprites.OPPONENT_AK = new Sprites.Animation('opponent_ak', 170, 247, 24, 120, 2);
 	SpritePack.Fight.Sprites.OPPONENT_DODGE = new Sprites.Animation('opponent_dodge', 108, 116, 23, 60, 2);
-	SpritePack.Fight.Sprites.OPPONENT_HIT = new Sprites.Animation('opponent_hit', 102, 124, 23, 40, 2);
+	SpritePack.Fight.Sprites.OPPONENT_DODGE_AK = new Sprites.Animation('opponent_dodge_AK', 131, 114, 23, 120, 2);
+	SpritePack.Fight.Sprites.OPPONENT_HIT = new Sprites.Animation('opponent_hit', 102, 124, 23, 100, 2);
 
 	SpritePack.Background.Sprites.TOP_LEFT = new Sprite('bkg_top_left', 0, 0, false, ".jpg");
 	SpritePack.Background.Sprites.TOP_RIGHT = new Sprite('bkg_top_right', 1920, 0, false, ".jpg");
@@ -189,22 +195,6 @@ function initSpriteEnums() {
 		}
 	}
 
-	//MapItems.TileItems.Crop.Type.corn.sprite = SpritePack.Crops.Sprites.CORN;
-	/*MapItems.TileItems.Crop.Type.corn.spriteBarrel = SpritePack.Storages.Sprites.BARREL_CORN;
-	 MapItems.TileItems.Crop.Type.corn.spriteBox = SpritePack.Storages.Sprites.BOX_CORN;
-	 MapItems.TileItems.Crop.Type.corn.spriteIceBox = SpritePack.Storages.Sprites.ICE_BOX_CORN;
-
-	 //MapItems.TileItems.Crop.Type.tomato.sprite = SpritePack.Crops.Sprites.TOMATO;
-	 MapItems.TileItems.Crop.Type.tomato.spriteBarrel = SpritePack.Storages.Sprites.BARREL_TOMATO;
-	 MapItems.TileItems.Crop.Type.tomato.spriteBox = SpritePack.Storages.Sprites.BOX_TOMATO;
-	 MapItems.TileItems.Crop.Type.tomato.spriteIceBox = SpritePack.Storages.Sprites.ICE_BOX_TOMATO;
-
-	 //MapItems.TileItems.Crop.Type.wheat.sprite = SpritePack.Crops.Sprites.WHEAT;
-	 MapItems.TileItems.Crop.Type.wheat.spriteBarrel = SpritePack.Storages.Sprites.BARREL_WHEAT;
-	 MapItems.TileItems.Crop.Type.wheat.spriteBox = SpritePack.Storages.Sprites.BOX_WHEAT;
-	 MapItems.TileItems.Crop.Type.wheat.spriteIceBox = SpritePack.Storages.Sprites.ICE_BOX_WHEAT;
-	 */
-	//SpritePack.Buildings.Type.HOME.sprite = SpritePack.Buildings.Sprites.HOME;
 	MapItems.TileItems.Building.Type.barn.sprite = SpritePack.Buildings.Sprites.BARN;
 	MapItems.TileItems.Building.Type.cold_storage.sprite = SpritePack.Buildings.Sprites.COLD_STORAGE;
 	MapItems.TileItems.Building.Type.silo.sprite = SpritePack.Buildings.Sprites.SILO;
