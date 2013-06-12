@@ -673,6 +673,21 @@ var EventManager = {
 				if (!this.removeStoredCropFromTile(farmer, targetStoredCrop.parent_tile, targetStoredCrop))
 					return false;
 				targetStoredCrop.parent_tile = null;
+			},
+
+			openBuilding: function (farmer) {
+				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
+				if (!targetTile.isOwnedBy(farmer)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "You cannot open a tile you don't own."
+					});
+					return false;
+				}
+				NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.buildingOpened", {
+					col: targetTile.position.x,
+					line: targetTile.position.y
+				});
 			}
 		}
 	}

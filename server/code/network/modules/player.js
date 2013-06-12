@@ -66,6 +66,11 @@ var NetworkModule = {
 			if (!EventManager.subsystems.player.sellStoredCrop(connection.farmer, data.storedCropId)) {
 				connection.send("player.sellStoredCropDenied", data);
 			}
+		},
+		openBuilding:  function (connection, request, data, callback) {
+			if (!EventManager.subsystems.player.openBuilding(connection.farmer)) {
+				connection.send("player.openBuildingDenied", data);
+			}
 		}
 	}
 };
