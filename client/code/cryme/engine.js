@@ -449,7 +449,7 @@ function InitLoading() {
 
 //fonction pour placer des trucs sur la map pour test le rendu
 function CreateMap() {
-	CE.filterType = CE.FilterType.HUMIDITY;
+	CE.filterType = CE.FilterType.OWNER;
 	var tmpFarmer;
 	for (var i = 0; i < initialData.online_farmers.length; i++) {
 		tmpFarmer = new LogicItems.Farmer();
