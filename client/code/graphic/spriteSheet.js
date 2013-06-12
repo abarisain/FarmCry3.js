@@ -121,7 +121,7 @@ function LoadSpritePack() {
 	SpritePack.Effects.Sprites.LIGHT_WHITE = new Sprite('light_white', 7, 7);
 	SpritePack.Effects.Sprites.BLUR = new Sprite('blur', 28, 28);
 	SpritePack.Effects.Sprites.HALO = new Sprite('halo', 76, 58);
-	SpritePack.Effects.Sprites.REQUIRED = new Sprite('required', 92, 14);
+	SpritePack.Effects.Sprites.GHOST = new Sprite('ghost', 133, 97);
 
 	SpritePack.Battle.Sprites.BACKGROUND = new Sprite('background', 0, 0);
 	SpritePack.Battle.Sprites.ACTION = new Sprite('action', 42, 40);

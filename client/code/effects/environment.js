@@ -125,8 +125,8 @@ CrymeEngine.Environment = {
 		for (var j = 0; j <= Math.ceil(building.size / 2 - 1); j++) {
 			for (var i = 0; i <= (building.size + 1) % 2; i++) {
 				var particle = new MapItems.Effect(col + j, line + i);
-				var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.REQUIRED, particle.x, particle.y, 1, 1, 300, 60);
-				effect.start(0.1, 0, -Math.PI * 90 / 180, 0, 1, 0);
+				var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.GHOST, particle.x, particle.y, 1, 1, 300, 60);
+				effect.start(0, 0, -Math.PI * 90 / 180, 0, 1, 0);
 				effect.endEvent = function () {
 					CE.Environment.removePostEffect(particle);
 				}
