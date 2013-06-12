@@ -1,0 +1,495 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+body {
+	line-height: 1;
+}
+
+ol, ul {
+	list-style: none;
+}
+
+blockquote, q {
+	quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+@font-face {
+	font-family: 'stanberry';
+	src: url('src/fonts/stanberry-webfont.eot?#iefix') format('embedded-opentype'), url('src/fonts/stanberry-webfont.woff') format('woff'), url('src/fonts/stanberry-webfont.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'berlin';
+	src: url('src/fonts/berlin.eot?#iefix') format('embedded-opentype'), url('src/fonts/berlin.woff') format('woff'), url('src/fonts/berlin.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+html {
+	height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+body {
+	font-family: Arial, sans-serif;
+	font-size: 14pt;
+	border: none;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+a {
+	text-align: center;
+	padding-top: 10px;
+	display: block;
+	color: #555;
+	font-size: 13px;
+}
+
+a:hover {
+	color: #777;
+}
+
+.topLeft {
+	position: fixed;
+	left: 0;
+	top: 0;
+}
+
+.canvasDrawable {
+	width: 100%;
+	height: 100%;
+	min-width: 400px;
+	min-height: 400px;
+	margin: 0;
+	padding: 0;
+}
+
+/* Login */
+
+#login,
+#register {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 100;
+	height: 100%;
+	width: 100%;
+	background-image: url('src/login/bf.jpg');
+	background-size: cover;
+	min-height: 700px;
+}
+
+#login_menu_bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-image: url('src/login/bf_menu.jpg');
+    background-size: cover;
+    min-height: 700px;
+}
+
+#wait {
+    padding-top: 50px;
+    padding-left: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 300;
+    height: 100%;
+    width: 100%;
+    min-height: 700px;
+}
+#login_game_title,
+#register_game_title {
+    display: none;
+	text-align: center;
+	position: absolute;
+	top: 5%;
+	left: 50%;
+	margin-left: -183px; /*Image is 367x107*/
+}
+
+#login_panel,
+#register_panel {
+	height: 400px;
+	width: 400px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -200px;
+	margin-top: -185px;
+	box-shadow: 0 0 80px #222;
+}
+
+#login_panel input[type="text"],
+#register_panel input[type="text"],
+#login_panel input[type="password"],
+#register_panel input[type="password"]{
+	margin-left: 10px;
+	width: 320px;
+}
+
+#login_panel input[type="checkbox"],
+#register_panel input[type="checkbox"] {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	margin-left: 10px;
+}
+
+.login_field_text,
+.register_field_text {
+	margin-left: 12px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
+#register_connect_button {
+    margin-left: 25px;
+    margin-top: 10px;
+    padding: 10px 100px 10px;
+    margin-bottom: 10px;
+    width: 110px;
+}
+
+.bf_button {
+    background-image: url('src/login/bf_login_button.png');
+    background-repeat: no-repeat;
+    width: 105px;
+    height: 23px;
+    margin: auto;
+    margin-bottom: 45px;
+}
+
+/* Loading */
+
+#loading_panel {
+	z-index: 101;
+	visibility: hidden;
+	height: 36px;
+	width: 290px;
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	margin-left: -145px;
+	margin-top: -134px;
+}
+
+#escape {
+    padding-top: 20px;
+    color: white;
+    font-weight: normal;
+    opacity: 0.8;
+}
+
+#loading_progress {
+	margin-top: 12px;
+}
+
+#login_remember_me, #login_remember_me_label {
+	visibility: hidden;
+}
+
+/* Chat */
+
+#hud_chat {
+	z-index: 12;
+	height: 245px;
+	width: 360px;
+	position: absolute;
+	top: 100%;
+	margin-top: -245px;
+	background-color: rgba(0, 0, 0, 0.7);
+	font-family: 'stanberry', sans-serif;
+	font-weight: normal;
+	font-size: 14px;
+	border-style: none;
+	color: white;
+}
+
+#hud_chat_messages {
+	padding: 5px;
+	height: 205px;
+	width: 350px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	border-bottom: solid 1px rgba(255, 255, 255, 0.15);
+}
+
+#hud_chat .chat_text {
+
+}
+
+#hud_chat .server {
+
+}
+
+#hud_chat .player {
+
+}
+
+#hud_chat .local {
+	font-family: sans-serif;
+	font-style: oblique;
+	color: rgb(255, 129, 129);
+}
+
+#hud_chat .self {
+
+}
+
+#hud_chat input[type="text"] {
+	padding: 4px;
+	background-color: transparent;
+	outline: none;
+	font-family: 'stanberry', sans-serif;
+	font-weight: normal;
+	font-size: 14px;
+	color: white;
+	border: none;
+	height: 20px;
+	width: 270px;
+	position: absolute;
+	top: 216px;
+}
+
+#hud_chat_send {
+	padding: 2px;
+	padding-top: 4px;
+	display: inline-block;
+	outline: none;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	font-weight: normal;
+	color: white;
+	font: 14px 'stanberry', Arial, Helvetica, sans-serif;
+	background-color: transparent;
+	height: 23px;
+	width: 75px;
+	position: absolute;
+	top: 216px;
+	left: 281px;
+	border-left: solid 1px rgba(255, 255, 255, 0.15);
+}
+
+/* Shared styles */
+
+.center {
+	text-align: center;
+}
+
+.small_text {
+	font-size: 12px;
+}
+
+.normal_text {
+	font-size: 14px;
+}
+
+.big_text {
+	font-size: 12px;
+}
+
+.huge_text {
+	font-size: 12px;
+}
+
+.hidden {
+	visibility: hidden;
+}
+
+.fc_window {
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: 5px;
+    border-style:solid;
+    border-color: #868780;
+    border-width:5px;
+    border-top-width: 24px;
+    color: white;
+}
+
+.fc_window_content {
+	padding-top: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.fc_window2 {
+    background-image: linear-gradient(bottom, rgb(193, 185, 156) 0%, rgb(243, 233, 196) 100%);
+    background-image: -o-linear-gradient(bottom, rgb(193, 185, 156) 0%, rgb(243, 233, 196) 100%);
+    background-image: -moz-linear-gradient(bottom, rgb(193, 185, 156) 0%, rgb(243, 233, 196) 100%);
+    background-image: -webkit-linear-gradient(bottom, rgb(193, 185, 156) 0%, rgb(243, 233, 196) 100%);
+    background-image: -ms-linear-gradient(bottom, rgb(193, 185, 156) 0%, rgb(243, 233, 196) 100%);
+    border-radius: 10px;
+    box-shadow: 0 0 15px #222;
+}
+
+#loading_panel .fc_window_content {
+    margin-top: -25px;
+    padding-left: 12px;
+    color: black;
+    font-family: arial;
+    text-align: left;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.fc_window input[type="text"],
+.fc_window input[type="password"]{
+	margin-top: 4px;
+	margin-bottom: 4px;
+	padding: 8px;
+	border-radius: 8px;
+	background-color: white;
+	outline: none;
+	font-family: 'stanberry', sans-serif;
+	font-size: 16px;
+	border-style: none;
+	box-shadow: 0 0 8px #888;
+}
+
+.fc_window .button {
+	display: inline-block;
+	outline: none;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	font-weight: bold;
+	color: white;
+	font: 17px 'stanberry', Arial, Helvetica, sans-serif;
+	padding: 5px 10px 5px;
+	text-shadow: 0 0 6px black;
+	border-radius: 8px;
+	box-shadow: 0 0 8px #333;
+}
+
+.fc_window .button:hover {
+
+}
+
+.fc_window .button:active {
+
+}
+
+.fc_window .button.green {
+	background-image: linear-gradient(bottom, #67D210 50%, #A2F261 100%);
+	background-image: -o-linear-gradient(bottom, #67D210 50%, #A2F261 100%);
+	background-image: -moz-linear-gradient(bottom, #67D210 50%, #A2F261 100%);
+	background-image: -webkit-linear-gradient(bottom, #67D210 50%, #A2F261 100%);
+	background-image: -ms-linear-gradient(bottom, #67D210 50%, #A2F261 100%);
+}
+
+.fc_window .button.green:active {
+	background-image: linear-gradient(bottom, #A2F261 10%, #67D210 100%);
+	background-image: -o-linear-gradient(bottom, #A2F261 10%, #67D210 100%);
+	background-image: -moz-linear-gradient(bottom, #A2F261 10%, #67D210 100%);
+	background-image: -webkit-linear-gradient(bottom, #A2F261 10%, #67D210 100%);
+	background-image: -ms-linear-gradient(bottom, #A2F261 10%, #67D210 100%);
+}
+
+.fc_window .button.disabled {
+	background-image: linear-gradient(bottom, rgba(156, 156, 156, 0.42) 50%, rgba(103, 104, 102, 0.19) 100%);
+	background-image: -o-linear-gradient(bottom, rgba(156, 156, 156, 0.42) 50%, rgba(103, 104, 102, 0.19) 100%);
+	background-image: -moz-linear-gradient(bottom, rgba(156, 156, 156, 0.42) 50%, rgba(103, 104, 102, 0.19) 100%);
+	background-image: -webkit-linear-gradient(bottom, rgba(156, 156, 156, 0.42) 50%, rgba(103, 104, 102, 0.19) 100%);
+	background-image: -ms-linear-gradient(bottom, rgba(156, 156, 156, 0.42) 50%, rgba(103, 104, 102, 0.19) 100%);
+	box-shadow: 0 0 8px #777;
+	color: gray;
+	text-shadow: none;
+}
+
+.fc_window .button.disabled:hover {
+	cursor: not-allowed;
+}
+
+.fc_window .progress-bar {
+	background-color: #1a1a1a;
+	text-align: left;
+	height: 18px;
+	width: 259px;
+	margin-top: -100px;
+    border-style: solid;
+    border-color: #8b8b8b;
+    border-width: 1px;
+    padding: 1px;
+}
+
+.fc_window .progress-bar span {
+	display: inline-block;
+	height: 100%;
+}
+
+.fc_window .blue span {
+	background-color: #34c2e3;
+}
+
+.fc_window .green span {
+	background-color: #847d4a;
+}
+
+.fc_window .stripes-animated span {
+	-webkit-animation: animate-stripes 3s linear infinite;
+	-moz-animation: animate-stripes 3s linear infinite;
+}
+
+@-webkit-keyframes animate-stripes {
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: 60px 0;
+	}
+}
+
+@-moz-keyframes animate-stripes {
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: 60px 0;
+	}
+}

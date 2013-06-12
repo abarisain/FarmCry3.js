@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="viewport" content="initial-scale = 1, user-scalable = no">
+	<link rel="stylesheet" type="text/css" media="screen" href="style_bf.css"/>
+	<script src="/socket.io/socket.io.js" type="text/javascript"></script>
+	<script src="libs/date.format.js" type="text/javascript"></script>
+	<script src="cryme/global.js" type="text/javascript"></script>
+	<script src="graphic/sprite.js" type="text/javascript"></script>
+	<script src="graphic/sprite_animated.js" type="text/javascript"></script>
+	<script src="graphic/spriteSheet.js" type="text/javascript"></script>
+	<script src="game_logic/models.js" type="text/javascript"></script>
+	<script src="game_logic/character_logic.js" type="text/javascript"></script>
+	<script src="game_logic/state.js" type="text/javascript"></script>
+	<script src="tools/transition.js" type="text/javascript"></script>
+	<script src="tools/camera.js" type="text/javascript"></script>
+	<script src="tools/colorHelper.js" type="text/javascript"></script>
+	<script src="cryme/canvas.js" type="text/javascript"></script>
+	<script src="cryme/engine.js" type="text/javascript"></script>
+	<script src="cryme/battle.js" type="text/javascript"></script>
+	<script src="cryme/keyboard.js" type="text/javascript"></script>
+	<script src="cryme/network.js" type="text/javascript"></script>
+	<script src="cryme/network_subsystems.js" type="text/javascript"></script>
+	<script src="cryme/map.js" type="text/javascript"></script>
+	<script src="graphic/texture.js" type="text/javascript"></script>
+	<script src="effects/particles.js" type="text/javascript"></script>
+	<script src="graphic/battleElement.js" type="text/javascript"></script>
+	<script src="graphic/battleTimeline.js" type="text/javascript"></script>
+	<script src="graphic/battleSequence.js" type="text/javascript"></script>
+	<script src="hud/hud_element.js" type="text/javascript"></script>
+	<script src="hud/widgets/root.js" type="text/javascript"></script>
+	<script src="hud/widgets/text.js" type="text/javascript"></script>
+	<script src="hud/widgets/button.js" type="text/javascript"></script>
+	<script src="hud/widgets/book.js" type="text/javascript"></script>
+	<script src="hud/widgets/book_premade.js" type="text/javascript"></script>
+	<script src="hud/widgets/list.js" type="text/javascript"></script>
+	<script src="hud/widgets/list_layouts.js" type="text/javascript"></script>
+	<script src="hud/widgets/popup.js" type="text/javascript"></script>
+	<script src="hud/widgets/progressbar.js" type="text/javascript"></script>
+	<script src="hud/hud.js" type="text/javascript"></script>
+	<script src="hud/notification.js" type="text/javascript"></script>
+	<script src="graphic/map_item.js" type="text/javascript"></script>
+	<script src="graphic/tile_item_infos.js" type="text/javascript"></script>
+	<script src="graphic/tile.js" type="text/javascript"></script>
+	<script src="graphic/tile_item.js" type="text/javascript"></script>
+	<script src="effects/cloud.js" type="text/javascript"></script>
+	<script src="effects/tornado.js" type="text/javascript"></script>
+	<script src="effects/tile_effect.js" type="text/javascript"></script>
+	<script src="effects/environment.js" type="text/javascript"></script>
+	<script src="entity/crop.js" type="text/javascript"></script>
+	<script src="entity/storedCrop.js" type="text/javascript"></script>
+	<script src="entity/building.js" type="text/javascript"></script>
+	<script src="entity/character.js" type="text/javascript"></script>
+	<script src="sound/sound.js" type="text/javascript"></script>
+	<script src="sound/sound_engine.js" type="text/javascript"></script>
+	<!--<script src="particles.js" type="text/javascript"></script>-->
+	<script src="bf/login_bf.js" type="text/javascript"></script>
+	<script src="bf/onload_bf.js" type="text/javascript"></script>
+	<title>FarmCry</title>
+	<link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body id="body">
+<canvas id="canvas" class="topLeft canvasDrawable" style="z-index: 0;" oncontextmenu="return false;">
+	<p>Désolé, votre navigateur ne supporte pas Canvas. Mettez-vous à jour</p>
+</canvas>
+<canvas id="canvasAnimation" class="topLeft canvasDrawable" style="z-index: 1;" oncontextmenu="return false;">
+</canvas>
+<canvas id="canvasDebug" class="topLeft canvasDrawable" style="z-index: 2;" oncontextmenu="return false;">
+</canvas>
+<canvas id="canvasInformation" class="topLeft canvasDrawable" style="z-index: 3;" oncontextmenu="return false;">
+</canvas>
+<canvas id="canvasHud" class="topLeft canvasDrawable" style="z-index: 10;" oncontextmenu="return false;">
+</canvas>
+
+<audio controls id="bf-audio" style="display: none" preload="auto" autobuffer>
+    <source src="src/sounds/bf.mp3" type="audio/mpeg">
+</audio>
+
+<audio controls id="bf-menu-audio" style="display: none" preload="auto" autobuffer>
+    <source src="src/sounds/bf_menu.mp3" type="audio/mpeg">
+</audio>
+
+<div id="hud_chat">
+	<div id="hud_chat_messages"></div>
+	<input id="hud_chat_message" name="hud_chat_message" type="text"/>
+	<a href="#" id="hud_chat_send">Send</a>
+</div>
+<div id="loading_panel" class="fc_window">
+	<div class="fc_window_content">
+		LOADING FARMCRY
+		<div id="loading_progress" class="progress-bar green">
+			<span style="width: 0%"></span>
+		</div>
+        <div class="center" id="escape">PRESS ESCAPE TO CANCEL</div>
+	</div>
+</div>
+<div id="login">
+    <div id="login_menu_bg">
+    </div>
+	<img id="login_game_title" src="src/login/game_title.png" alt="Farmcry"/>
+
+	<div id="login_panel" class="fc_window">
+		<div class="fc_window_content huge_text">
+			<div class="login_field_text">EMAIL :</div>
+			<input id="login_email" name="login_email" type="text" size="35"/>
+
+			<div class="login_field_text">PASSWORD :</div>
+			<input id="login_password" name="login_password" type="password" size="35"/>
+
+			<div class="login_field_text">SERVER :</div>
+			<input id="login_server" name="login_server" type="text" size="35" value="http://localhost:8088">
+			<input type="checkbox" id="login_remember_me" name="login_remember_me" value="remember_email"/>
+			<label id="login_remember_me_label" for="login_remember_me">
+				<span class="normal_text">REMEMBER ME</span>
+			</label>
+			<a href="#" id="login_connect_button" class="bf_button"></a>
+			DON'T HAVE AN ACCOUNT YET ? TOO BAD !
+            <a href="#" id="disable_login_music_button">DISABLE MUSIC</a>
+		</div>
+
+	</div>
+</div>
+</body>
+</html> 
