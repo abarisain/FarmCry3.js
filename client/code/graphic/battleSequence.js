@@ -192,11 +192,12 @@ Battle.Sequences.Fighter.prototype.addDamage = function (begin, damage) {
 
 Battle.Sequences.Fighter.prototype.addAnimation = function (begin, name, duration) {
 	this.keyFrames.push(
-		new Battle.KeyFrame(begin, duration || 1, null,
-			function (progress) {//action
-				this.spriteAnimation = SpritePack.Fight.Sprites[name];
-				this.state = Battle.Sequences.Fighter.State.ANIMATED;
-			}.bind(this),
+		new Battle.KeyFrame(begin, duration || 1, function () {
+			this.spriteAnimation = SpritePack.Fight.Sprites[name];
+			this.state = Battle.Sequences.Fighter.State.ANIMATED;
+			this.spriteAnimation.reset();
+		}.bind(this),
+			null,
 			function (progress) {//end
 				this.state = Battle.Sequences.Fighter.State.IDLE;
 			}.bind(this)
@@ -264,11 +265,11 @@ Battle.Sequences.Player = function (name, x, y, life, damage) {
 		)
 	);
 	this.addAnimation(3, 'PLAYER_INTRO');
-	this.addAnimation(4, 'PLAYER_AK', 2);
-	this.addAnimation(6 + dodgeDelay, 'PLAYER_HIT', 2 - dodgeDelay);
-	this.addDamage(6 + dodgeDelay, 20);
-	this.addAnimation(8, 'PLAYER_DODGE_AK', 2);
-	this.addAnimation(10, 'PLAYER_AK', 2);
+	this.addAnimation(4, 'PLAYER_AK');
+	this.addAnimation(5 + dodgeDelay, 'PLAYER_HIT', 1 - dodgeDelay);
+	this.addDamage(5 + dodgeDelay, 20);
+	this.addAnimation(6, 'PLAYER_DODGE_AK');
+	this.addAnimation(7, 'PLAYER_AK');
 	this.initialized = true;
 }
 
@@ -309,7 +310,7 @@ Battle.Sequences.Opponent = function (name, x, y, life, damage) {
 		)
 	);
 	this.keyFrames.push(
-		new Battle.KeyFrame(3.2, 0.3, null, null, null,
+		new Battle.KeyFrame(3.2, 0.4, null, null, null,
 			function (progress) {//action
 				CE.canvas.animation.context.globalAlpha = progress;
 				SpritePack.Battle.Sprites.SHOCKWAVE.drawOnAnimation(this.finalX, this.finalY - 100);
@@ -318,11 +319,11 @@ Battle.Sequences.Opponent = function (name, x, y, life, damage) {
 		)
 	);
 	this.addAnimation(3, 'OPPONENT_INTRO');
-	this.addAnimation(4 + dodgeDelay, 'OPPONENT_DODGE_AK', 2 - dodgeDelay);
-	this.addAnimation(6, 'OPPONENT_AK', 2);
-	this.addAnimation(8, 'OPPONENT_AK', 2);
-	this.addAnimation(10 + dodgeDelay, 'OPPONENT_HIT', 2 - dodgeDelay);
-	this.addDamage(10 + dodgeDelay, 30);
+	this.addAnimation(4 + dodgeDelay, 'OPPONENT_DODGE_AK', 1 - dodgeDelay);
+	this.addAnimation(5, 'OPPONENT_AK');
+	this.addAnimation(6, 'OPPONENT_AK');
+	this.addAnimation(7 + dodgeDelay, 'OPPONENT_HIT', 1 - dodgeDelay);
+	this.addDamage(7 + dodgeDelay, 30);
 	this.initialized = true;
 }
 

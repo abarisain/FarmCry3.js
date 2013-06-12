@@ -24,7 +24,7 @@ CE.Battle.Timeline = {
 		CE.Battle.stopBattle();
 	},
 	update: function () {
-		this.currentFrame++;
+		this.currentFrame += Options.Graphic.timeSpeed;
 		if (this.currentFrame >= this.frameCount) {
 			this.started = false;
 			this.eventEnd();

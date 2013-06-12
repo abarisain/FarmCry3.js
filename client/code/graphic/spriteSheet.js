@@ -159,17 +159,17 @@ function LoadSpritePack() {
 
 	SpritePack.Fight.Sprites.PLAYER_INTRO = new Sprites.Animation('player_intro', 40, 176, 25, 60, 2);
 	SpritePack.Fight.Sprites.PLAYER_FORK = new Sprites.Animation('player_fork', 190, 210, 23, 60, 2);
-	SpritePack.Fight.Sprites.PLAYER_AK = new Sprites.Animation('player_ak', 227, 121, 23, 120, 2);
+	SpritePack.Fight.Sprites.PLAYER_AK = new Sprites.Animation('player_ak', 227, 121, 23, 60, 2);
 	SpritePack.Fight.Sprites.PLAYER_DODGE = new Sprites.Animation('player_dodge', 83, 182, 23, 60, 2);
-	SpritePack.Fight.Sprites.PLAYER_DODGE_AK = new Sprites.Animation('player_dodge_ak', 49, 108, 23, 120, 2);
-	SpritePack.Fight.Sprites.PLAYER_HIT = new Sprites.Animation('player_hit', 51, 120, 23, 100, 2);
+	SpritePack.Fight.Sprites.PLAYER_DODGE_AK = new Sprites.Animation('player_dodge_ak', 49, 108, 23, 60, 2);
+	SpritePack.Fight.Sprites.PLAYER_HIT = new Sprites.Animation('player_hit', 51, 120, 23, 40, 2);
 
 	SpritePack.Fight.Sprites.OPPONENT_INTRO = new Sprites.Animation('opponent_intro', 203, 167, 25, 60, 2);
 	SpritePack.Fight.Sprites.OPPONENT_FORK = new Sprites.Animation('opponent_fork', 211, 259, 23, 60, 2);
-	SpritePack.Fight.Sprites.OPPONENT_AK = new Sprites.Animation('opponent_ak', 170, 247, 24, 120, 2);
+	SpritePack.Fight.Sprites.OPPONENT_AK = new Sprites.Animation('opponent_ak', 170, 247, 24, 60, 2);
 	SpritePack.Fight.Sprites.OPPONENT_DODGE = new Sprites.Animation('opponent_dodge', 108, 116, 23, 60, 2);
-	SpritePack.Fight.Sprites.OPPONENT_DODGE_AK = new Sprites.Animation('opponent_dodge_AK', 131, 114, 23, 120, 2);
-	SpritePack.Fight.Sprites.OPPONENT_HIT = new Sprites.Animation('opponent_hit', 102, 124, 23, 100, 2);
+	SpritePack.Fight.Sprites.OPPONENT_DODGE_AK = new Sprites.Animation('opponent_dodge_AK', 131, 114, 23, 60, 2);
+	SpritePack.Fight.Sprites.OPPONENT_HIT = new Sprites.Animation('opponent_hit', 102, 124, 23, 40, 2);
 
 	SpritePack.Background.Sprites.TOP_LEFT = new Sprite('bkg_top_left', 0, 0, false, ".jpg");
 	SpritePack.Background.Sprites.TOP_RIGHT = new Sprite('bkg_top_right', 1920, 0, false, ".jpg");

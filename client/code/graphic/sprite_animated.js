@@ -37,7 +37,7 @@ Sprites.Animation.prototype.copyAnimation = function (animation) {
 //on dessine toujours une animation sur le canvas animation
 Sprites.Animation.prototype.draw = function (x, y) {
 	//TODO dupliquer ces paramètres de la texture, car actuellement je modifie toutes les tornades ici
-	this.currentFrame = (this.currentFrame + this.frameSpeed) % this.frameCount;
+	this.currentFrame = (this.currentFrame + this.frameSpeed * Options.Graphic.timeSpeed) % this.frameCount;
 	if (this.scale == 1) {
 		CE.canvas.animation.context.drawImage(this.image, Math.floor(this.currentFrame) * this.frameWidth, 0,
 			this.frameWidth, this.height, x - this.centerX, y - this.centerY, this.frameWidth, this.height);

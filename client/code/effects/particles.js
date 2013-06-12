@@ -72,9 +72,9 @@ ParticlesEmitter.prototype = {
 				if (this.amount < this.amountMax || this.amountMax == -1) {
 					var newParticleCount = 0;
 					if (this.amountMax == -1) {
-						newParticleCount = this.growth;
+						newParticleCount = this.growth * Options.Graphic.timeSpeed;
 					} else {
-						newParticleCount = Math.min(this.amountMax - this.amount, this.growth);
+						newParticleCount = Math.min(this.amountMax - this.amount, this.growth * Options.Graphic.timeSpeed);
 					}
 					if (this.growth >= 1) {
 						for (var i = 0; i < newParticleCount; i++) {
@@ -145,12 +145,12 @@ function Particle(scatteringX, scatteringY, speed, speedDelta, scale, scaleDelta
 
 Particle.prototype = {
 	update: function (gravity) {
-		this.lifetime--;
-		this.speedY -= gravity;
-		this.x += this.speedX;
-		this.y += this.speedY;
+		this.lifetime -= Options.Graphic.timeSpeed;
+		this.speedY -= gravity * Options.Graphic.timeSpeed;
+		this.x += this.speedX * Options.Graphic.timeSpeed;
+		this.y += this.speedY * Options.Graphic.timeSpeed;
 		if (this.apparitionAlpha < 1) {
-			this.apparitionAlpha += 0.05;
+			this.apparitionAlpha += 0.05 * Options.Graphic.timeSpeed;
 			this.alpha = this.apparitionAlpha;
 		} else if (this.lifetime < this.extinctionDuration) {
 			this.alpha = this.lifetime / this.extinctionDuration;
@@ -161,7 +161,7 @@ Particle.prototype = {
 			return false;
 		}
 		this.rotation += this.rotationSpeed;
-		this.scale += this.scaleSpeed;
+		this.scale += this.scaleSpeed * Options.Graphic.timeSpeed;
 		return true;
 	},
 	draw: function (sprite, maxAlpha) {

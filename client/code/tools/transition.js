@@ -52,10 +52,10 @@ Transition.prototype = {
 		if (this.started) {
 			if (this.direction === Transition.Direction.IN) {
 				if (this.smoothing) {
-					this.smoothingProgress += 1 / this.duration;
+					this.smoothingProgress += Options.Graphic.timeSpeed / this.duration;
 					this.progress = getBezier(this.smoothingProgress);
 				} else {
-					this.progress += this.progressRate;
+					this.progress += this.progressRate * Options.Graphic.timeSpeed;
 				}
 				if ((this.smoothing && this.smoothingProgress >= 1) || (!this.smoothing && Math.abs(this.progress) >= Math.abs(this.progressMax))) {
 					this.progress = this.progressMax;
