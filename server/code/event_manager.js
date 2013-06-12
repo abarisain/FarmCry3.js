@@ -325,7 +325,7 @@ var EventManager = {
 				return false;
 			},
 			takeCurrentTile: function (farmer) {
-				// If you attack a tile with a building on it, you will (read not implemented yet) inherit the building and what's in it
+				// If you attack a tile with a building on it, well ... you can't for 1.0
 				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
 				if (targetTile.isNeutral()) {
 					if (!this.substractMoney(farmer, GameState.settings.tileCost)) {
@@ -337,6 +337,13 @@ var EventManager = {
 					}
 					this.changeTileOwner(targetTile, farmer);
 				} else if (!targetTile.isOwnedBy(farmer)) {
+					if (targetTile.hasBuilding()) {
+						NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+							title: null,
+							message: "You cannot attack a tile with a building on it (yet). Sorry :("
+						});
+						return false;
+					}
 					var healthLossMine = 10 + Math.ceil(10 * Math.random()) * 5;
 					var healthLossTheirs = 10 + Math.ceil(10 * Math.random()) * 5;
 					this.substractHealth(farmer, healthLossMine);
