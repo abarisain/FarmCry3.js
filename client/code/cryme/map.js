@@ -88,7 +88,18 @@ var Map = {
 		return this.getTile(this.player.col, this.player.line);
 	},
 	getPlayerMapItem: function () {
-		return this.mapItems[this.getMapItemKey(this.player.col, this.player.line)];
+		var mapItem = this.mapItems[this.getMapItemKey(this.player.col, this.player.line)];
+		if (mapItem != undefined) {
+			return mapItem;
+		}
+		//for building aliases
+		for (var key in this.mapItems) {
+			if (this.mapItems[key].constructor == MapItems.TileItems.Building) {
+				if (this.mapItems[key].match(this.player.col, this.player.line)) {
+					return this.mapItems[key];
+				}
+			}
+		}
 	},
 	getMapItemKey: function (col, line) {
 		return '_' + col + '_' + line;
@@ -202,6 +213,20 @@ var Map = {
 				if (key != exHighlighted) {
 					this.transitionInformationDetailed.start(Transition.Direction.IN, true);
 					CrymeEngine.mapInvalidated = true;
+				}
+			} else {//if it's a building we have to check every thing
+				for (var key in this.mapItems) {
+					if (this.mapItems[key].constructor == MapItems.TileItems.Building) {
+						if (this.mapItems[key].match(coord.col, coord.line)) {
+							this.tileHighLighted.col = coord.col;
+							this.tileHighLighted.line = coord.line;
+							this.tileHighLighted.index = key;
+							if (key != exHighlighted) {
+								this.transitionInformationDetailed.start(Transition.Direction.IN, true);
+								CrymeEngine.mapInvalidated = true;
+							}
+						}
+					}
 				}
 			}
 		}
