@@ -328,7 +328,7 @@ CrymeEngine.hud = {
 				CE.hud.panels.market.refresh();
 			}
 			if (CE.hud.panels.building_content) {
-				CE.hud.panels.building_content.leftPage.refresh();
+				CE.hud.panels.building_content.refresh();
 			}
 		}
 	},
