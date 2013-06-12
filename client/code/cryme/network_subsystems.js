@@ -69,6 +69,9 @@ networkEngine.subsystems.player = {
 			}
 			target.invalidate();
 		},
+		buyBuildingDenied: function (data) {
+			CE.Environment.addBuildingGhost(data, Map.player.col, Map.player.line);
+		},
 		/*
 		 this method add, update or remove a building
 		 */
@@ -177,7 +180,7 @@ networkEngine.subsystems.game = {
 			var missingKeys = [];
 			//Remove missing stored crops
 			for (var key in tile.storedCrops) {
-				if(data.storedCrops.indexOf(key) == -1)
+				if (data.storedCrops.indexOf(key) == -1)
 					missingKeys.push(key);
 			}
 			missingKeys.forEach(function (key) {
