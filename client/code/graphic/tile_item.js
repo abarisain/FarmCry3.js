@@ -37,7 +37,7 @@ MapItems.TileItem.prototype.draw = function () {
 		if (CE.displayType == CE.DisplayType.STANDARD) {
 			CE.canvas.map.context.drawImage(this.sprite.image, this.imageLeft, this.imageTop);
 		} else {
-			CE.canvas.map.context.drawImage(this.sprite.imageInfo, this.imageLeft, this.imageTop);
+			this.sprite.draw(this.x, this.y);//to easily draw info
 		}
 		if (Options.Debug.Graphic.enabled) {
 			CE.canvas.debug.context.fillStyle = "rgb(29, 82, 161)";

@@ -181,11 +181,11 @@ function initSpriteEnums() {
 	//pour tout initialiser bien comme il faut, sans dupliquer les textures
 	for (var i = 0; i < SpritePack.Crops.spriteList.length; i++) {
 		if (SpritePack.Crops.spriteList[i].name.match('corn')) {
-			SpritePack.Crops.spriteList[i].imageInfo = SpritePack.Crops.Sprites.CORN_WHITE.image;
+			SpritePack.Crops.spriteList[i].setImageInfo(SpritePack.Crops.Sprites.CORN_WHITE);
 		} else if (SpritePack.Crops.spriteList[i].name.match('tomato')) {
-			SpritePack.Crops.spriteList[i].imageInfo = SpritePack.Crops.Sprites.TOMATO_WHITE.image;
+			SpritePack.Crops.spriteList[i].setImageInfo(SpritePack.Crops.Sprites.TOMATO_WHITE);
 		} else if (SpritePack.Crops.spriteList[i].name.match('wheat')) {
-			SpritePack.Crops.spriteList[i].imageInfo = SpritePack.Crops.Sprites.WHEAT_WHITE.image;
+			SpritePack.Crops.spriteList[i].setImageInfo(SpritePack.Crops.Sprites.WHEAT_WHITE);
 		}
 	}
 

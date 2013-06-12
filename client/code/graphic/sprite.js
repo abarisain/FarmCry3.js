@@ -12,6 +12,8 @@ function Sprite(name, centerX, centerY, textureInfo, extension, scale) {
 	}
 	this.image = {};
 	this.imageInfo = {};
+	this.imageInfoCenterX = this.centerX;//moche
+	this.imageInfoCenterY = this.centerY;
 	if (textureInfo === undefined || textureInfo === null) {
 		this.textureInfo = false;
 	} else {
@@ -59,6 +61,12 @@ Sprite.prototype = {
 		this.width = sprite.width;
 		this.height = sprite.height;
 	},
+	setImageInfo: function (sprite) {
+		this.textureInfo = true;
+		this.imageInfo = sprite.image;
+		this.imageInfoCenterX = sprite.centerX;
+		this.imageInfoCenterY = sprite.centerY;
+	},
 	updateWidthHeight: function () {
 		this.width = this.image.width;
 		this.height = this.image.height;
@@ -72,7 +80,7 @@ Sprite.prototype = {
 			if (CrymeEngine.displayType == CrymeEngine.DisplayType.STANDARD) {
 				CE.canvas.map.context.drawImage(this.image, x - this.centerX, y - this.centerY);
 			} else {
-				CE.canvas.map.context.drawImage(this.imageInfo, x - this.centerX, y - this.centerY);
+				CE.canvas.map.context.drawImage(this.imageInfo, x - this.imageInfoCenterX, y - this.imageInfoCenterY);
 			}
 		} else {
 			if (CrymeEngine.displayType == CrymeEngine.DisplayType.STANDARD) {
