@@ -81,6 +81,7 @@ HudElements.Popup = function (title, text) {
 	}).bind(this));
 	tmpTitle.verticalMargin = 22;
 	tmpTitle.horizontalMargin = 0;
+	tmpTitle.setStroke(true);
 	tmpTitle.anchor = HudElement.Anchors.TOP_CENTER;
 
 	var tmpText = new HudElements.Text();
@@ -98,6 +99,7 @@ HudElements.Popup = function (title, text) {
 		this.close();
 	}).bind(this);
 	tmpOkBtn.verticalMargin = -14;
+	tmpOkBtn.setTextStroke(true, "rgba(0, 0, 0, 0.4)", 6);
 
 	this.addChild(tmpCloseBtn);
 	this.addChild(tmpTitle);
