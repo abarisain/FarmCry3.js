@@ -54,7 +54,7 @@ GameState = {
 	 * @param data
 	 */
 	updateStoredCrop: function (data) {
-		data.healthPercent = data.time_left / GameState.crops[data.crop].maturationTime;
+		data.healthPercent = data.time_left / GameState.crops[data.crop].maturation_time;
 		if (data.healthPercent < 0.2) {
 			data.healthStatus = 'Critical';
 		} else if (data.healthPercent < 0.4) {
@@ -63,13 +63,17 @@ GameState = {
 			data.healthStatus = 'Good';
 		}
 
-		this.logicItems.storedCrops[data.id] = data;
-		if (data.parent_tile == null) {//if storedCrop is in inventory
-			//nothing special happens here for now
-		} else {
-			var key = Map.getMapItemKey(data.parent_tile.position.col, data.parent_tile.position.line);
-			Map.mapItems[key].updateStoredCrop(data);
-			CE.Environment.addSmoke(data.parent_tile.position.col, data.parent_tile.position.line);
+		if (this.logicItems.storedCrops[data.id] == undefined) {
+			this.logicItems.storedCrops[data.id] = data;
+			if (data.parent_tile == null) {//if storedCrop is in inventory
+				//nothing special happens here for now
+			} else {
+				// The target building
+				var mapItem = Map.mapItems[Map.getMapItemKey(data.parent_tile.col, data.parent_tile.line)];
+				mapItem.updateStoredCrop(data.id);
+				mapItem.refreshStoredCropCoord();
+				CE.Environment.addSmoke(data.parent_tile.col, data.parent_tile.line);
+			}
 		}
 	},
 	/** Add, update or delete growingCrop

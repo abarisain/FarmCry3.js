@@ -173,9 +173,20 @@ networkEngine.subsystems.game = {
 			CE.mapInvalidated = true;
 		},
 		tileStoredCropsUpdated: function (data) {
-			for (var i = 0; i < data.storedCrops.length; i++) {
-				GameState.updateStoredCrop(data.storedCrops[i]);
+			var tile = Map.mapItems[Map.getMapItemKey(data.col, data.line)];
+			var missingKeys = [];
+			//Remove missing stored crops
+			for (var key in tile.storedCrops) {
+				if(data.storedCrops.indexOf(key) == -1)
+					missingKeys.push(key);
 			}
+			missingKeys.forEach(function (key) {
+				delete tile.storedCrops[key];
+			});
+			for (var i = 0; i < data.storedCrops.length; i++) {
+				tile.updateStoredCrop(data.storedCrops[i]);
+			}
+			tile.refreshStoredCropCoord();
 		},
 		storedCropUpdated: function (data) {
 			GameState.updateStoredCrop(data.storedCrop);
