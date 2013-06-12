@@ -54,6 +54,8 @@ GameState = {
 	 * @param data
 	 */
 	updateStoredCrop: function (data) {
+		if (!loadingComplete)
+			return;
 		data.healthPercent = data.time_left / GameState.crops[data.crop].maturation_time;
 		if (data.healthPercent < 0.2) {
 			data.healthStatus = 'Critical';
