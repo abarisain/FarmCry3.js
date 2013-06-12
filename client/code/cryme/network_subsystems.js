@@ -70,7 +70,7 @@ networkEngine.subsystems.player = {
 			target.invalidate();
 		},
 		buyBuildingDenied: function (data) {
-			CE.Environment.addBuildingGhost(data, Map.player.col, Map.player.line);
+			CE.Environment.addBuildingGhost(data.buildingType, Map.player.col, Map.player.line);
 		},
 		/*
 		 this method add, update or remove a building

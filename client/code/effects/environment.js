@@ -113,9 +113,9 @@ CrymeEngine.Environment = {
 			effect.scatteringY = tileHeight * 2 / 3;
 			effect.start(1, 1, -Math.PI * 90 / 180, 0, 0.2, 0);
 			particle.addEffect(effect);
-			/*explosion.effect.endEvent = function() {
-			 CE.Environment.remove(this);
-			 }.bind(explosion.effect);*/
+			effect.endEvent = function () {
+				CE.Environment.removePostEffect(particle);
+			}
 			this.postEffects.push(particle);
 		}
 	},
@@ -131,8 +131,49 @@ CrymeEngine.Environment = {
 			this.postEffects.push(particle);
 		}
 	},
-	addBuildingGhost: function (data, col, line) {
-		var building = MapItems.TileItems.Building.Type[data.buildingType];
+	addBuildingSmoke: function (codename, col, line) {
+		var particle = new MapItems.Effect(col, line);
+		if (particle.visible) {
+			var building = MapItems.TileItems.Building.Type[codename];
+			var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.LIGHT_WHITE, particle.x + building.positionInfo.x, particle.y + building.positionInfo.y, 60, 180, 60);
+			effect.scatteringX = tileWidth * 2 / 3;
+			effect.scatteringY = tileHeight * 2 / 3;
+			effect.start(1, 1, -Math.PI * 90 / 180, 0, 0.2, 0);
+			particle.addEffect(effect);
+			effect.endEvent = function () {
+				CE.Environment.removePostEffect(particle);
+			}
+			this.postEffects.push(particle);
+		}
+	},
+	addInitEffect: function (codename, col, line) {//better performance than lights effect
+		if (codename == null) {
+			var particle = new MapItems.Effect(col, line);
+			var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.GHOST, particle.x, particle.y, 1, 1, 180, 120);
+			effect.start(0, 0, -Math.PI * 90 / 180, 0, 1, 0);
+			effect.endEvent = function () {
+				CE.Environment.removePreEffect(particle);
+			}
+			particle.addEffect(effect);
+			this.preEffects.push(particle);
+		} else {
+			var building = MapItems.TileItems.Building.Type[codename];
+			for (var j = 0; j <= Math.ceil(building.size / 2 - 1); j++) {
+				for (var i = 0; i <= (building.size + 1) % 2; i++) {
+					var particle = new MapItems.Effect(col + j, line + i);
+					var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.GHOST, particle.x, particle.y, 1, 1, 180, 120);
+					effect.start(0, 0, -Math.PI * 90 / 180, 0, 1, 0);
+					effect.endEvent = function () {
+						CE.Environment.removePreEffect(particle);
+					}
+					particle.addEffect(effect);
+					this.preEffects.push(particle);
+				}
+			}
+		}
+	},
+	addBuildingGhost: function (codename, col, line) {
+		var building = MapItems.TileItems.Building.Type[codename];
 		for (var j = 0; j <= Math.ceil(building.size / 2 - 1); j++) {
 			for (var i = 0; i <= (building.size + 1) % 2; i++) {
 				var particle = new MapItems.Effect(col + j, line + i);

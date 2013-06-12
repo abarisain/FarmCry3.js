@@ -295,30 +295,30 @@ var CrymeEngine = {
 					if (CE.hud.onClick(event.pageX, event.pageY))
 						return;
 
-					//pour du debug de position d'image
-					CrymeEngine.mousePosition.x = event.pageX / scaleFactor - this.offsetLeft;
-					CrymeEngine.mousePosition.y = event.pageY / scaleFactor - this.offsetTop;
-					var objectSelected = false;
-					for (var key in Map.mapItems) {//en gérant par la fin, on sélectionne l'élément au premier plan
-						if (Map.mapItems[key].mouseIntersect(CE.mousePosition.x - CE.camera.position.x, CE.mousePosition.y - CE.camera.position.y)) {
-							if (CE.highlightedItem != -1 && CE.highlightedItem != key) {
-								Map.mapItems[CE.highlightedItem].highlighted = false;
+					if (Options.Debug.Graphic.enabled) {
+						//pour du debug de position d'image
+						CrymeEngine.mousePosition.x = event.pageX / scaleFactor - this.offsetLeft;
+						CrymeEngine.mousePosition.y = event.pageY / scaleFactor - this.offsetTop;
+						var objectSelected = false;
+						for (var key in Map.mapItems) {//en gérant par la fin, on sélectionne l'élément au premier plan
+							if (Map.mapItems[key].mouseIntersect(CE.mousePosition.x - CE.camera.position.x, CE.mousePosition.y - CE.camera.position.y)) {
+								if (CE.highlightedItem != -1 && CE.highlightedItem != key) {
+									Map.mapItems[CE.highlightedItem].highlighted = false;
+								}
+								CE.highlightedItem = key;
+								objectSelected = true;
+								break;
 							}
-							CE.highlightedItem = key;
-							objectSelected = true;
-							break;
 						}
-					}
-					//si on ne sélectionne rien, on déselectionne
-					if (!objectSelected) {
-						if (CE.highlightedItem != -1) {
-							Map.mapItems[CE.highlightedItem].highlighted = false;
-							CE.highlightedItem = -1;
-							CrymeEngine.mapInvalidated = true;
+						//si on ne sélectionne rien, on déselectionne
+						if (!objectSelected) {
+							if (CE.highlightedItem != -1) {
+								Map.mapItems[CE.highlightedItem].highlighted = false;
+								CE.highlightedItem = -1;
+								CrymeEngine.mapInvalidated = true;
+							}
 						}
-					}
-
-					if (!Options.Debug.Graphic.enabled && CE.gameState == CE.GameState.FARMING) {
+					} else if (CE.gameState == CE.GameState.FARMING) {
 						var x = event.pageX / scaleFactor - this.offsetLeft - CE.camera.position.x;
 						var y = event.pageY / scaleFactor - this.offsetTop - CE.camera.position.y;
 						var coord = Map.coordinatesFromMousePosition(x, y);

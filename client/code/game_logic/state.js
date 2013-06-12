@@ -98,7 +98,7 @@ GameState = {
 				this.logicItems.growingCrops[key] = data;
 				Map.mapItems[key] = new MapItems.TileItems.Crop(data, col, line);
 				Map.getTile(col, line).setHasGrowingCrop(true);
-				CE.Environment.addSmoke(col, line);
+				CE.Environment.addInitEffect(null, col, line);
 			} else {
 				//update growingCrop if exist
 				mapItem = Map.mapItems[key];
@@ -125,7 +125,7 @@ GameState = {
 				//add growingCrop if growingCrop don't exist
 				this.logicItems.buildings[key] = data;
 				Map.mapItems[key] = new MapItems.TileItems.Building(data, col, line);
-				CE.Environment.addSmoke(col, line);
+				CE.Environment.addInitEffect(data.codename, col, line);
 			} else {
 				//update building if exist
 				//TODO add update building here
