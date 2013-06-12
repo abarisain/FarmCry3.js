@@ -2,6 +2,7 @@ MapItems.TileItems.Crop = function (data, col, line) {
 	this.data = data;
 	this.maturity = 0;
 	this.health = 0;
+	this.health = 1;
 	this.updateImage();
 	MapItems.TileItem.call(this, this.sprite, col, line);
 	this.informations = new MapItems.TileItemInfos(this.x, this.y);
@@ -20,8 +21,11 @@ MapItems.TileItem.prototype.updateData = function (data) {
 
 MapItems.TileItems.Crop.prototype.updateValues = function () {
 	if (this.data.harvested_quantity > 0) {
+		var decayTime = GameState.crops[this.data.codename].decay_time;
+		this.health = this.data.time_left / decayTime;
 		this.maturity = 1;
 	} else {
+		this.health = 1;
 		var maturationTime = GameState.crops[this.data.codename].maturation_time;
 		this.maturity = (maturationTime - this.data.time_left) / maturationTime;
 	}
@@ -32,6 +36,9 @@ MapItems.TileItems.Crop.prototype.showInformation = function () {
 	switch (CE.filterType) {
 		case CE.FilterType.MATURITY:
 			this.informations.value = this.maturity * 100;
+			break;
+		case CE.FilterType.HEALTH:
+			this.informations.value = this.health * 100;
 			break;
 		default:
 			this.informations.value = 0;

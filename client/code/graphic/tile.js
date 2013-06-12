@@ -72,11 +72,6 @@ MapItems.Tile.prototype.showInformation = function () {
 			this.infoColor.copyColor(ColorHelper.Templates.WHITE);
 			this.informations.value = this.data.humidity * 100;
 			break;
-		case CE.FilterType.HEALTH:
-			this.infoColor.copyColor(ColorHelper.Templates.WHITE);
-			this.informations.value = this.data.humidity * this.data.fertility * 100;
-
-			break;
 		case CE.FilterType.FERTILITY:
 			this.informations.value = this.data.fertility * 100;
 			this.informations.valueMax = this.data.max_fertility * 100;

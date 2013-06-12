@@ -59,27 +59,29 @@ MapItems.TileItemInfos.prototype = {
 					if (Map.transitionInformation.started) {
 						topMax = this.valueMax * Map.transitionInformation.percentage();
 					}
-					CE.canvas.information.context.fillStyle = ColorHelper.Color.YELLOW.left;
+					CE.canvas.information.context.globalAlpha = 0.75;
+					CE.canvas.information.context.fillStyle = this.color.left;
 					CE.canvas.information.context.beginPath();
 					CE.canvas.information.context.moveTo(this.x, this.y - top + diagramSizeY / 2);
 					CE.canvas.information.context.lineTo(this.x - diagramSizeX / 2, this.y - top);
 					CE.canvas.information.context.lineTo(this.x - diagramSizeX / 2, this.y - topMax);
 					CE.canvas.information.context.lineTo(this.x, this.y - topMax + diagramSizeY / 2);
 					CE.canvas.information.context.fill();
-					CE.canvas.information.context.fillStyle = ColorHelper.Color.YELLOW.right;
+					CE.canvas.information.context.fillStyle = this.color.right;
 					CE.canvas.information.context.beginPath();
 					CE.canvas.information.context.moveTo(this.x, this.y - top + diagramSizeY / 2);
 					CE.canvas.information.context.lineTo(this.x + diagramSizeX / 2, this.y - top);
 					CE.canvas.information.context.lineTo(this.x + diagramSizeX / 2, this.y - topMax);
 					CE.canvas.information.context.lineTo(this.x, this.y - topMax + diagramSizeY / 2);
 					CE.canvas.information.context.fill();
-					CE.canvas.information.context.fillStyle = ColorHelper.Color.YELLOW.top;
+					CE.canvas.information.context.fillStyle = this.color.top;
 					CE.canvas.information.context.beginPath();
 					CE.canvas.information.context.lineTo(this.x - diagramSizeX / 2, this.y - topMax);
 					CE.canvas.information.context.lineTo(this.x, this.y - topMax + diagramSizeY / 2);
 					CE.canvas.information.context.lineTo(this.x + diagramSizeX / 2, this.y - topMax);
 					CE.canvas.information.context.lineTo(this.x, this.y - topMax - diagramSizeY / 2);
 					CE.canvas.information.context.fill();
+					CE.canvas.information.context.globalAlpha = 1;
 				}
 			}
 		}
