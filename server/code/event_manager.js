@@ -306,7 +306,7 @@ var EventManager = {
 							GameState.board.tiles[tmpY][tmpX].isAliasOf = null;
 						}
 					}
-					this.addMoney(farmer, Math.ceil(targetTile.building.price / 4));
+					this.addMoney(farmer, targetTile.building.selling_price);
 					targetTile.building = null;
 					NetworkEngine.clients.broadcast("player.buildingUpdated", {
 						nickname: farmer.nickname,
