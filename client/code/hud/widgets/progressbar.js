@@ -69,6 +69,10 @@ HudElements.ProgressBar.prototype.setTextColor = function (textColor) {
 	this._text.setColor(textColor);
 }
 
+HudElements.ProgressBar.prototype.setTextStroke = function (enable, color, width) {
+	this._text.setStroke(enable, color, width);
+}
+
 /**
  * @param {string} image
  */

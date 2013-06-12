@@ -32,6 +32,14 @@ HudElements.Button.prototype.setText = function (text) {
 	this._text.setText(text);
 }
 
+HudElements.Button.prototype.setTextColor = function (color) {
+	this._text.setColor(color);
+}
+
+HudElements.Button.prototype.setTextStroke = function (enable, color, width) {
+	this._text.setStroke(enable, color, width);
+}
+
 /*
  Set a text function. To remove it set it to null. This function will be called on each draw() call.
  */
