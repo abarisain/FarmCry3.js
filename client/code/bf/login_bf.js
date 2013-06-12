@@ -64,7 +64,7 @@ var initLogin = function () {
 		document.querySelector("#loading_progress").classList.remove("stripes-animated");
 	}
 
-    document.querySelector("#login_server").value = document.location;
+    document.querySelector("#login_server").value = new String(document.location).replace("index_bf.html", "");
 	//Check if local storage is supported
 	loginEmailField.focus();
 	if (supports_html5_storage()) {
