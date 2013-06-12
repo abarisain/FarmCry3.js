@@ -53,8 +53,8 @@ GameState = {
 	 * Add or update storedCrop
 	 * @param data
 	 */
-	updateStoredCrop: function (data) {
-		if (!loadingComplete)
+	updateStoredCrop: function (data, force) {
+		if (!loadingComplete && !force)
 			return;
 		data.healthPercent = data.time_left / GameState.crops[data.crop].maturation_time;
 		if (data.healthPercent < 0.2) {
