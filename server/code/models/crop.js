@@ -50,7 +50,7 @@ Crop.Types = {
 		200,
 		30,
 		80,
-		200000),
+		20),
 	corn: new Crop("corn",
 		"Corn",
 		36,
@@ -60,7 +60,7 @@ Crop.Types = {
 		400,
 		100,
 		150,
-		354000),
+		35),
 	wheat: new Crop("wheat",
 		"Wheat",
 		26,
@@ -70,7 +70,7 @@ Crop.Types = {
 		100,
 		10,
 		40,
-		580000)
+		58)
 	//désolé mais j'ai pas du tout envie d'en faire plus que ce qui est dans le sujet de ce côté là
 	/*crops.push(new Crop("weed",
 	 "Weed",
