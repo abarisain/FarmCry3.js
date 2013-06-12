@@ -77,6 +77,13 @@ CrymeEngine.Environment = {
 			this.postEffects.push(particle);
 		}
 	},
+	addRottenEffect: function (col, line) {
+		var particle = new MapItems.Effect(col, line);
+		var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.ROTTEN_SMOKE, particle.x, particle.y - 5, 0.004, -1, 240, 160);
+		effect.start(0, 0, 0, 0, 0.1, 0.2, 0.01);
+		particle.addEffect(effect);
+		this.preEffects.push(particle);
+	},
 	addColdStorageEffect: function (col, line) {
 		var particle = new MapItems.Effect(col, line);
 		var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.ICE, particle.x, particle.y - 5, 0.004, -1, 300, 120);

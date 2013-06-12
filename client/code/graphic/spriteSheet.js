@@ -9,7 +9,11 @@ SpriteSheet.prototype = {
 	constructor: SpriteSheet,
 	loadSprites: function () {
 		for (var key in this.Sprites) {
-			this.Sprites[key].textureInfo = this.textureInfo;
+			if (!this.Sprites[key].textureInfo) {//to not override the textureInfo parameter
+				this.Sprites[key].textureInfo = this.textureInfo;
+			} else {
+				totalLoadingCount++;
+			}
 			this.spriteList.push(this.Sprites[key]);
 		}
 		if (this.textureInfo) {
@@ -85,7 +89,7 @@ function LoadSpritePack() {
 	SpritePack.Crops.Sprites.CORN_2 = new Sprite('corn_2', 116, 88);
 	SpritePack.Crops.Sprites.CORN_3 = new Sprite('corn_3', 114, 96);
 	SpritePack.Crops.Sprites.CORN_4 = new Sprite('corn_4', 114, 101);
-	SpritePack.Crops.Sprites.ROTTEN = new Sprite('rotten', 134, 94, true);
+	SpritePack.Crops.Sprites.ROTTEN = new Sprite('rotten', 103, 95, true);
 
 	SpritePack.Tiles.Sprites.SOIL_0 = new Sprite('soil_0');
 	SpritePack.Tiles.Sprites.SOIL_1 = new Sprite('soil_1');
@@ -121,6 +125,7 @@ function LoadSpritePack() {
 	SpritePack.Effects.Sprites.LIGHT_WHITE = new Sprite('light_white', 7, 7);
 	SpritePack.Effects.Sprites.BLUR = new Sprite('blur', 28, 28);
 	SpritePack.Effects.Sprites.HALO = new Sprite('halo', 76, 58);
+	SpritePack.Effects.Sprites.ROTTEN_SMOKE = new Sprite('rotten_smoke', 90, 63);
 	SpritePack.Effects.Sprites.GHOST = new Sprite('ghost', 133, 97);
 
 	SpritePack.Battle.Sprites.BACKGROUND = new Sprite('background', 0, 0);

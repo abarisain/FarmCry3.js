@@ -3,6 +3,8 @@ MapItems.TileItems.Crop = function (data, col, line) {
 	this.maturity = 0;
 	this.health = 0;
 	this.health = 1;
+	this.col = col;//needed for the rotten smoke
+	this.line = line;
 	this.updateImage();
 	MapItems.TileItem.call(this, this.sprite, col, line);
 	this.informations = new MapItems.TileItemInfos(this.x, this.y);
@@ -52,6 +54,7 @@ MapItems.TileItems.Crop.prototype.updateImage = function () {
 	this.updateValues();
 	if (this.data.rotten) {
 		this.sprite = SpritePack.Crops.Sprites.ROTTEN;
+		CE.Environment.addRottenEffect(this.col, this.line);
 	} else {
 		switch (this.data.codename) {
 			case 'corn':
