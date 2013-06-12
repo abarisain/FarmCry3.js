@@ -187,6 +187,7 @@ networkEngine.subsystems.game = {
 				tile.updateStoredCrop(data.storedCrops[i]);
 			}
 			tile.refreshStoredCropCoord();
+			CE.hud.events.refreshStoredCrop(data.col, data.line);
 		},
 		storedCropUpdated: function (data) {
 			GameState.updateStoredCrop(data.storedCrop);

@@ -309,7 +309,13 @@ CrymeEngine.hud = {
 				CE.hud.panels.inventory.rightPage.refresh();
 			}
 			if (CE.hud.panels.building_content) {
-				CE.hud.panels.building_content.rightPage.refresh();
+				CE.hud.panels.building_content.refresh();
+			}
+		},
+		refreshStoredCrop: function (col, line) {
+			if (CE.hud.panels.building_content) {
+				if (CE.hud.panels.building_content._building.match(col, line))
+					CE.hud.panels.building_content.refresh();
 			}
 		},
 		cropsPriceUpdated: function () {

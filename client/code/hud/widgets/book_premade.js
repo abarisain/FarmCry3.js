@@ -138,10 +138,9 @@ HudElements.Book.Premade.Building = function (building) {
 		[],
 		buildingItemLayout,
 		function (layout, index, item) {
-			layout.viewbag.icon.image = 'stored_' + item.logicStoredCrop.crop;
+			layout.viewbag.icon.image = 'stored_' + item.crop;
 			layout.viewbag.status.setText(item.healthStatus);
-			console.debug(item.logicStoredCrop);
-			layout.viewbag.price.setText(GameState.crops[item.logicStoredCrop.crop].selling_price * item.harvested_quantity);
+			layout.viewbag.price.setText(GameState.crops[item.crop].selling_price * item.harvested_quantity);
 		}
 	);
 
@@ -151,23 +150,25 @@ HudElements.Book.Premade.Building = function (building) {
 
 	inventory.leftPage.viewbag.buildingFillMeter = new HudElements.ProgressBar(200, 32, 0, 0, HudElement.Anchors.BOTTOM_CENTER);
 
-	inventory.leftPage.viewbag.sellBuilding = HudElements.Button.Premade.buy(0, 0, HudElement.Anchors.CENTER_LEFT);
+	inventory.leftPage.viewbag.sellBuilding = HudElements.Button.Premade.buy(0, 0, HudElement.Anchors.BOTTOM_LEFT);
 	inventory.leftPage.viewbag.sellBuilding.onClick = function (x, y, index, item) {
 		networkEngine.subsystems.player.actions.sellBuilding();
 	};
 
 	inventory.leftPage.viewbag.sellBuildingPrice = new HudElements.Text("");
-	inventory.leftPage.viewbag.sellBuildingPrice = HudElement.Anchors.CENTER_RIGHT;
-	inventory.leftPage.viewbag.sellBuildingPrice = 0;
-	inventory.leftPage.viewbag.sellBuildingPrice = 45;
+	inventory.leftPage.viewbag.sellBuildingPrice.anchor = HudElement.Anchors.BOTTOM_LEFT;
+	inventory.leftPage.viewbag.sellBuildingPrice.verticalMargin = 0;
+	inventory.leftPage.viewbag.sellBuildingPrice.horizontalMargin = 45;
 
+	inventory.leftPage.addChild(inventory.leftPage.viewbag.sellBuilding);
+	inventory.leftPage.addChild(inventory.leftPage.viewbag.sellBuildingPrice);
 	inventory.leftPage.addChild(inventory.leftPage.viewbag.list);
 	inventory.leftPage.addChild(inventory.leftPage.viewbag.buildingFillMeter);
 
 	inventory.leftPage.refresh = (function () {
 		var tmpBuildingData = [];
 		for (var key in this._building.storedCrops) {
-			tmpBuildingData.push(this._building.storedCrops[key]);
+			tmpBuildingData.push(this._building.storedCrops[key].logicStoredCrop);
 		}
 
 		if(GameState.player.inventory.length >= GameState.inventorySize) {
@@ -177,7 +178,7 @@ HudElements.Book.Premade.Building = function (building) {
 		}
 		this.leftPage.viewbag.list.setData(tmpBuildingData);
 		var buildingInfo = GameState.buildings[this._building.data.codename];
-		this.leftPage.viewbag.sellBuildingPrice = buildingInfo.selling_price;
+		this.leftPage.viewbag.sellBuildingPrice.setText(buildingInfo.selling_price);
 		this.leftPage.viewbag.buildingFillMeter.setProgress(this._building.storedCropCount);
 		this.leftPage.viewbag.buildingFillMeter.setMaxProgress(buildingInfo.capacity);
 		this.leftPage.viewbag.buildingFillMeter.setText(this._building.storedCropCount + " / " + buildingInfo.capacity);
@@ -198,7 +199,6 @@ HudElements.Book.Premade.Building = function (building) {
 		[],
 		inventoryItemLayout,
 		function (layout, index, item) {
-			console.debug(item);
 			layout.viewbag.icon.image = 'stored_' + item.crop;
 			layout.viewbag.status.setText(item.healthStatus);
 		}
