@@ -207,8 +207,9 @@ HudElements.Book.Premade.Building = function (building) {
 	inventoryItemLayout.viewbag.switch.onClick = function (x, y, index, item) {
 		networkEngine.subsystems.player.actions.depositStoredCrop(item.id);
 	};
-	inventoryItemLayout.viewbag.price.visible = false;
-	inventoryItemLayout.viewbag.sell.visible = false;
+	inventoryItemLayout.viewbag.sell.onClick = function (x, y, index, item) {
+		networkEngine.subsystems.player.actions.sellStoredCrop(item.id);
+	};
 
 	var inventoryItemList = new HudElements.List(470, 460, 0, 0, HudElement.Anchors.TOP_LEFT,
 		[],
@@ -216,6 +217,8 @@ HudElements.Book.Premade.Building = function (building) {
 		function (layout, index, item) {
 			layout.viewbag.icon.image = 'stored_' + item.crop;
 			layout.viewbag.status.setText(item.healthStatus);
+			layout.viewbag.price.setText(GameState.crops[item.crop].selling_price * item.harvested_quantity);
+			layout.viewbag.sell.image = (item.time_left > 0 ? "button_buy" : "button_close");
 		}
 	);
 	inventory.rightPage.title = "Inventory";
