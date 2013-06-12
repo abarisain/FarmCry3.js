@@ -120,18 +120,11 @@ CrymeEngine.Environment = {
 			this.postEffects.push(particle);
 		}
 	},
-	addBuildingGhost: function (codename, col, line) {
-		var particle = new MapItems.Effect(col, line);
-		if (particle.visible) {
-			var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.REQUIRED, particle.x, particle.y, 1, 1, 300, 60);
-			effect.start(0.1, 0, -Math.PI * 90 / 180, 0, 1, 0);
-			effect.endEvent = function () {
-				CE.Environment.removePostEffect(particle);
-			}
-			particle.addEffect(effect);
-			this.postEffects.push(particle);
-			//ça va être moche
-			if (codename != 'silo') {
+	addBuildingGhost: function (data, col, line) {
+		var building = MapItems.TileItems.Building.Type[data.buildingType];
+		for (var j = 0; j <= Math.ceil(building.size / 2 - 1); j++) {
+			for (var i = 0; i <= (building.size + 1) % 2; i++) {
+				var particle = new MapItems.Effect(col + j, line + i);
 				var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.REQUIRED, particle.x, particle.y, 1, 1, 300, 60);
 				effect.start(0.1, 0, -Math.PI * 90 / 180, 0, 1, 0);
 				effect.endEvent = function () {
@@ -140,7 +133,6 @@ CrymeEngine.Environment = {
 				particle.addEffect(effect);
 				this.postEffects.push(particle);
 			}
-
 		}
 	},
 	removePreEffect: function (effect) {
