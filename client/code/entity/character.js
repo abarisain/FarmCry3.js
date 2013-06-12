@@ -72,18 +72,24 @@ MapItems.Character.prototype.move = function (col, line) {
 
 MapItems.Character.prototype.draw = function () {
 	if (this.visible) {
+		CE.canvas.animation.context.textAlign = 'center';
 		if (this.transitions.movement.started) {
 			this.transitions.movement.updateProgress();
 			this.x = this.movement.startPosition.x + (this.movement.finalPosition.x - this.movement.startPosition.x) * this.transitions.movement.progress;
 			this.y = this.movement.startPosition.y + (this.movement.finalPosition.y - this.movement.startPosition.y) * this.transitions.movement.progress;
 			this.updateImageCoord();
 			//je suis obligé d'attendre l'update de coordonnée en cas d'animation
+			CE.canvas.animation.context.fillStyle = "#fff";
+			CE.canvas.animation.context.fillText(this.farmer.nickname, this.x, this.y - 20 - this.sprite.centerY);
 			SpritePack.Characters.Sprites.SHADOW.drawOnAnimation(this.x, this.y);
 			if (this.isPlayer) {
 				SpritePack.Characters.Sprites.ANIM_AURA.draw(this.x, this.y);
 			}
 			this.movement.sprite.draw(this.x, this.y);
+
 		} else {
+			CE.canvas.animation.context.fillStyle = "#fff";
+			CE.canvas.animation.context.fillText(this.farmer.nickname, this.x, this.imageTop - 20);
 			SpritePack.Characters.Sprites.SHADOW.drawOnAnimation(this.x, this.y);
 			if (this.isPlayer) {
 				SpritePack.Characters.Sprites.ANIM_AURA.draw(this.x, this.y);

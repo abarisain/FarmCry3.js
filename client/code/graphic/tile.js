@@ -51,13 +51,19 @@ MapItems.Tile.prototype.updateOwner = function (data) {
 };
 
 MapItems.Tile.prototype.showInformation = function () {
+	this.informations.text = null;
+	this.informations.value = 0;
 	switch (CE.filterType) {
 		case CE.FilterType.OWNER:
+
 			if (this.data.owner == 'dummy') {
+				this.informations.text = 'Free';
 				this.infoColor.copyColor(ColorHelper.Templates.WHITE);
 			} else if (this.data.owner == GameState.player.nickname) {
+				this.informations.text = this.data.owner;
 				this.infoColor.copyColor(ColorHelper.Templates.ORANGE);
 			} else {
+				this.informations.text = this.data.owner;
 				this.infoColor.copyColor(ColorHelper.Templates.RED);
 			}
 			break;
@@ -100,25 +106,43 @@ MapItems.Tile.prototype.updateImage = function () {
 			}
 		}
 		else if (this.data.humidity < 0.3) {
-			this.sprite = SpritePack.Tiles.Sprites.GRASS_0;
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_LIGHT_0;
+		}
+		else if (this.data.humidity < 0.37) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_LIGHT_1;
 		}
 		else if (this.data.humidity < 0.45) {
-			this.sprite = SpritePack.Tiles.Sprites.GRASS_1;
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_LIGHT_2;
 		}
-		else if (this.data.humidity < 0.52) {
-			this.sprite = SpritePack.Tiles.Sprites.GRASS_2;
+		else if (this.data.humidity < 0.47) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_LIGHT_3;
 		}
-		else if (this.data.humidity < 0.55) {
-			this.sprite = SpritePack.Tiles.Sprites.GRASS_3;
+		else if (this.data.humidity < 0.5) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_LIGHT_4;
 		}
-		else if (this.data.humidity < 0.72) {
-			this.sprite = SpritePack.Tiles.Sprites.GRASS_4;
+		else if (this.data.humidity < 0.57) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_MEDIUM_0;
 		}
-		else if (this.data.humidity < 0.75) {
-			this.sprite = SpritePack.Tiles.Sprites.GRASS_5;
+		else if (this.data.humidity < 0.65) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_MEDIUM_1;
+		}
+		else if (this.data.humidity < 0.67) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_MEDIUM_2;
+		}
+		else if (this.data.humidity < 0.70) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_MEDIUM_3;
+		}
+		else if (this.data.humidity < 0.73) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_HEAVY_0;
+		}
+		else if (this.data.humidity < 0.77) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_HEAVY_1;
+		}
+		else if (this.data.humidity < 0.78) {
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_HEAVY_2;
 		}
 		else if (this.data.humidity < 0.8) {
-			this.sprite = SpritePack.Tiles.Sprites.GRASS_6;
+			this.sprite = SpritePack.Tiles.Sprites.GRASS_HEAVY_3;
 		}
 		else if (this.data.humidity < 0.90) {
 			this.sprite = SpritePack.Tiles.Sprites.WATER_0;

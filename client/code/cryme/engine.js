@@ -26,7 +26,7 @@ var CrymeEngine = {
 	//TODO ptet faire une classe pour gérer ça correctement parce que finalement ça devient le bordel
 	//Je sais que j'aurai passé beaucoup de temps sur cette partie, mais ça peut être vraiment super pratique pour l'utilisateur
 	FilterType: {//Filter to display informations
-		OWNER: {index: 0, name: 'Owner', tiles: false, tileBorders: false, mapItems: false, color: ColorHelper.Color.RED},
+		OWNER: {index: 0, name: 'Owner', tiles: true, tileBorders: false, mapItems: false, color: ColorHelper.Color.RED},
 		HUMIDITY: {index: 1, name: 'Humidity', tiles: true, tileBorders: true, mapItems: false, color: ColorHelper.Color.BLUE},
 		FERTILITY: {index: 2, name: 'Fertility', tiles: true, tileBorders: false, mapItems: false, color: ColorHelper.Color.GREEN},
 		MATURITY: {index: 3, name: 'Maturity', tiles: false, tileBorders: true, mapItems: true, color: ColorHelper.Color.YELLOW},
@@ -70,6 +70,7 @@ var CrymeEngine = {
 		networkEngine.onLoadingAnimationFinished();
 		loadingComplete = true;
 		CE.mapInvalidated = true;
+		Map.updateHud();
 	},
 	Draw: {
 		Loading: function () {
@@ -161,6 +162,8 @@ var CrymeEngine = {
 			CrymeEngine.canvas.animation.context.save();
 			CrymeEngine.canvas.animation.context.scale(scaleFactor, scaleFactor);
 			CrymeEngine.canvas.animation.context.translate(CrymeEngine.camera.position.x, CrymeEngine.camera.position.y);
+			//j'espère que ce n'est pas trop lent
+			CE.canvas.animation.setFont("bold 15pt berlin,Calibri,Geneva,Arial");
 
 			if (CE.displayType == CE.DisplayType.STANDARD) {
 				CE.Environment.drawPreEffects();
@@ -188,7 +191,10 @@ var CrymeEngine = {
 			CrymeEngine.canvas.map.clear();
 			CrymeEngine.canvas.hud.clear();
 			CrymeEngine.canvas.animation.clear();
+			CrymeEngine.canvas.information.clear();
 			CrymeEngine.canvas.animation.context.save();
+			//j'epsère que ce n'est pas trop lent
+			CE.canvas.animation.setFont("bold 50pt berlin,Calibri,Geneva,Arial");
 
 			CrymeEngine.canvas.animation.context.textAlign = 'center';
 
@@ -275,7 +281,6 @@ var CrymeEngine = {
 		this.canvas.debug = new CrymeCanvas('#canvasDebug');
 		this.canvas.map.setFont("normal 12pt stanberry");
 		this.canvas.hud.setFont("bold 13pt stanberry,Calibri,Geneva,Arial");
-		this.canvas.animation.setFont("bold 100pt Berlin Sans FB Demi,Calibri,Geneva,Arial");
 		this.canvas.resizeAll(canvasWidth, canvasHeight);
 
 		CE.keyboard.init();

@@ -54,12 +54,11 @@ var Map = {
 		if (player.constructor == LogicItems.PlayableFarmer) {
 			this.player = tmpPlayer;
 			GameState.loadPlayer();
-			CE.hud.events.updateActionAvailables(this.getTile(this.player.col, this.player.line));
 		}
 	},
 	updateHud: function () {
 		if (this.player != null) {
-			CE.hud.events.updateActionAvailables(this.getTile(this.player.col, this.player.line));
+			CE.hud.events.updateActionAvailables(this.getPlayerTile(), this.getPlayerMapItem());
 		}
 	},
 	removePlayer: function (nickname) {
@@ -84,6 +83,12 @@ var Map = {
 	getTile: function (col, line) {
 		//TODO à vérifier
 		return this.tiles[col + (lineSize - 1 - line) * (lineSize)];
+	},
+	getPlayerTile: function () {
+		return this.getTile(this.player.col, this.player.line);
+	},
+	getPlayerMapItem: function () {
+		return this.mapItems[this.getMapItemKey(this.player.col, this.player.line)];
 	},
 	getMapItemKey: function (col, line) {
 		return '_' + col + '_' + line;

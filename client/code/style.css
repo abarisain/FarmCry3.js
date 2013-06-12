@@ -55,6 +55,13 @@ table {
 	font-style: normal;
 }
 
+@font-face {
+	font-family: 'berlin';
+	src: url('src/fonts/berlin.eot?#iefix') format('embedded-opentype'), url('src/fonts/berlin.woff') format('woff'), url('src/fonts/berlin.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
 html {
 	height: 100%;
     width: 100%;
@@ -465,8 +472,8 @@ a:hover {
 }
 
 .fc_window .stripes-animated span {
-    -webkit-animation: animate-stripes 3s linear infinite;
-    -moz-animation: animate-stripes 3s linear infinite;
+	-webkit-animation: animate-stripes 3s linear infinite;
+	-moz-animation: animate-stripes 3s linear infinite;
 }
 
 @-webkit-keyframes animate-stripes {

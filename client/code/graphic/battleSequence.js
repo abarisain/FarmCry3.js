@@ -111,6 +111,12 @@ Battle.Sequences.MainTimeline = function (playerName, opponentName) {
 			}
 		)
 	);
+	this.keyFrames.push(
+		new Battle.KeyFrame(3, 0.1, function (progress) {//drawAction
+				CE.Battle.launchFight();
+			},
+			null, null)
+	);
 }
 
 Battle.Sequences.MainTimeline.prototype = new Battle.Sequence();
@@ -131,6 +137,8 @@ Battle.Sequences.Fighter = function (name, x, y, life, damage) {
 	this.name = name;
 	this.x = x;
 	this.y = y;
+	this.finalX = 0;
+	this.finalY = 0;
 	this.textX = this.x;
 	this.textY = this.y - 200;
 	this.life = life;
@@ -201,6 +209,10 @@ Battle.Sequences.Fighter.prototype.draw = function () {//cette fonction devras Ã
 	if (this.initialized) {
 		this.drawParent();
 		CE.canvas.animation.context.globalAlpha = 1;
+		if (CE.Battle.fightPhase == CE.Battle.FightPhase.FIGHT) {
+			SpritePack.Battle.Sprites.GROUND.drawOnAnimation(this.finalX, this.finalY + 110);
+		}
+
 		CE.canvas.animation.context.fillStyle = '#fff';
 		CE.canvas.animation.context.fillText(this.name, this.textX, this.textY);
 		switch (this.state) {
@@ -223,6 +235,8 @@ Battle.Sequences.Player = function (name, x, y, life, damage) {
 	this.hit_points.init(5, 3, -Math.PI * 100 / 180, 45 * Math.PI / 180, 1, 0.8);
 	this.spriteIntro = SpritePack.Battle.Sprites.PLAYER_FLYING;
 	this.spriteIdle = SpritePack.Battle.Sprites.PLAYER_IDLE;
+	this.finalX = canvasWidth / 2 + 150;
+	this.finalY = this.y;
 	this.textX = canvasWidth * 3 / 4;
 	this.keyFrames.push(
 		new Battle.KeyFrame(0, 0.5, null,
@@ -266,6 +280,8 @@ Battle.Sequences.Opponent = function (name, x, y, life, damage) {
 	this.hit_points.init(5, 3, -Math.PI * 80 / 180, 45 * Math.PI / 180, 1, 0.8);
 	this.spriteIntro = SpritePack.Battle.Sprites.OPPONENT_FLYING;
 	this.spriteIdle = SpritePack.Battle.Sprites.OPPONENT_IDLE;
+	this.finalX = canvasWidth / 2 - 150;
+	this.finalY = this.y;
 	this.textX = canvasWidth * 1 / 4;
 	this.keyFrames.push(
 		new Battle.KeyFrame(0, 0.5, null,

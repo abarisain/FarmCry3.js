@@ -141,11 +141,16 @@ CrymeEngine.hud = {
 		}
 		this.panels.actionBarSmall.addChild(this.panels.actionBarSmall.viewbag.attack);
 
-		/*this.panels.actionBarSmall.viewbag.open_building = new HudElement('open', 'action_open', 56, 48, 0, 0, HudElement.Anchors.CENTER);
-		 this.panels.actionBarSmall.viewbag.open_building.onClick = function () {
-		 CE.hud.chat.toggleVisibility(null);
-		 };
-		 this.panels.actionBarSmall.addChild(this.panels.actionBarSmall.viewbag.open_building);*/
+		this.panels.actionBarSmall.viewbag.open = new HudElement('open', 'action_open', 56, 48, 0, 0, HudElement.Anchors.CENTER);
+		this.panels.actionBarSmall.viewbag.open.onClick = function () {
+			if (CE.hud.panels.inventory == null) {
+				CE.hud.panels.inventory = HudElements.Book.Premade.Inventory();
+				this.rootHudElement.addChild(CE.hud.panels.inventory);
+			} else {
+				CE.hud.panels.inventory.visible = true;
+			}
+		}.bind(this);
+		this.panels.actionBarSmall.addChild(this.panels.actionBarSmall.viewbag.open);
 
 		this.rootHudElement.addChild(this.panels.actionBarSmall);
 
@@ -262,20 +267,30 @@ CrymeEngine.hud = {
 				CE.hud.panels.filter_buttons[i].visible = false;
 			}
 		},
-		updateActionAvailables: function (tile) {
+		//c'est un peu moche tout ça
+		//TODO clean un peu ce massacre
+		updateActionAvailables: function (tile, mapItem) {
 			if (tile.data.owner != Map.player.farmer.nickname) {//attack
 				CE.hud.panels.actionBarSmall.visible = true;
 				CE.hud.panels.actionBar.visible = false;
 				CE.hud.panels.actionBarSmall.viewbag.attack.visible = true;
 				CE.hud.panels.actionBarSmall.viewbag.buy.visible = false;
+				CE.hud.panels.actionBarSmall.viewbag.open.visible = false;
 			} else if (tile.hasGrowingCrop) {//fertilizes, waters and harvest
 				CE.hud.panels.actionBarSmall.visible = false;
 				CE.hud.panels.actionBar.visible = true;
+			} else if (mapItem != null && mapItem.constructor == MapItems.TileItems.Building) {//building
+				CE.hud.panels.actionBarSmall.visible = true;
+				CE.hud.panels.actionBar.visible = false;
+				CE.hud.panels.actionBarSmall.viewbag.attack.visible = false;
+				CE.hud.panels.actionBarSmall.viewbag.buy.visible = false;
+				CE.hud.panels.actionBarSmall.viewbag.open.visible = true;
 			} else {//buy
 				CE.hud.panels.actionBarSmall.visible = true;
 				CE.hud.panels.actionBar.visible = false;
 				CE.hud.panels.actionBarSmall.viewbag.attack.visible = false;
 				CE.hud.panels.actionBarSmall.viewbag.buy.visible = true;
+				CE.hud.panels.actionBarSmall.viewbag.open.visible = false;
 			}
 		},
 		refreshCharacter: function () {

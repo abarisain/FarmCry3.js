@@ -5,7 +5,7 @@ HudElements.List.PremadeLayouts = {};
 
 HudElements.List.PremadeLayouts.inventoryItem = function (name) {
 	var tmpLayout = new HudElement(name || "inventoryItemLayout", null, 1, 80);
-	tmpLayout.viewbag.icon = new HudElement("inventoryItemIcon", "action_fertilizes", 64, 64, 0, 35, HudElement.Anchors.CENTER_LEFT);
+	tmpLayout.viewbag.icon = new HudElement("inventoryItemIcon", null, 67, 67, 0, 32, HudElement.Anchors.CENTER_LEFT);
 
 	tmpLayout.viewbag.name = new HudElements.Text("");
 	tmpLayout.viewbag.name.anchor = HudElement.Anchors.CENTER_LEFT;

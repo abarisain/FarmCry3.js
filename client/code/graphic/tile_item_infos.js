@@ -9,6 +9,7 @@ MapItems.TileItemInfos = function (x, y) {
 	this.color = null;//de type Color
 	this.gradient = null;
 	this.value = 0;
+	this.text = null;
 	this.visible = true;
 }
 
@@ -26,31 +27,33 @@ MapItems.TileItemInfos.prototype = {
 			if (this.gradient == null) {
 				this.loadInformations();
 			}
-			var top = this.value;
-			if (Map.transitionInformation.started) {
-				top = this.value * Map.transitionInformation.percentage();
+			if (this.text == null) {//for the owners
+				var top = this.value;
+				if (Map.transitionInformation.started) {
+					top = this.value * Map.transitionInformation.percentage();
+				}
+				CE.canvas.information.context.fillStyle = this.color.left;
+				CE.canvas.information.context.beginPath();
+				CE.canvas.information.context.moveTo(this.x, this.y + diagramSizeY / 2);
+				CE.canvas.information.context.lineTo(this.x - diagramSizeX / 2, this.y);
+				CE.canvas.information.context.lineTo(this.x - diagramSizeX / 2, this.y - top);
+				CE.canvas.information.context.lineTo(this.x, this.y - top + diagramSizeY / 2);
+				CE.canvas.information.context.fill();
+				CE.canvas.information.context.fillStyle = this.color.right;
+				CE.canvas.information.context.beginPath();
+				CE.canvas.information.context.moveTo(this.x, this.y + diagramSizeY / 2);
+				CE.canvas.information.context.lineTo(this.x + diagramSizeX / 2, this.y);
+				CE.canvas.information.context.lineTo(this.x + diagramSizeX / 2, this.y - top);
+				CE.canvas.information.context.lineTo(this.x, this.y - top + diagramSizeY / 2);
+				CE.canvas.information.context.fill();
+				CE.canvas.information.context.fillStyle = this.color.top;
+				CE.canvas.information.context.beginPath();
+				CE.canvas.information.context.lineTo(this.x - diagramSizeX / 2, this.y - top);
+				CE.canvas.information.context.lineTo(this.x, this.y - top + diagramSizeY / 2);
+				CE.canvas.information.context.lineTo(this.x + diagramSizeX / 2, this.y - top);
+				CE.canvas.information.context.lineTo(this.x, this.y - top - diagramSizeY / 2);
+				CE.canvas.information.context.fill();
 			}
-			CE.canvas.information.context.fillStyle = this.color.left;
-			CE.canvas.information.context.beginPath();
-			CE.canvas.information.context.moveTo(this.x, this.y + diagramSizeY / 2);
-			CE.canvas.information.context.lineTo(this.x - diagramSizeX / 2, this.y);
-			CE.canvas.information.context.lineTo(this.x - diagramSizeX / 2, this.y - top);
-			CE.canvas.information.context.lineTo(this.x, this.y - top + diagramSizeY / 2);
-			CE.canvas.information.context.fill();
-			CE.canvas.information.context.fillStyle = this.color.right;
-			CE.canvas.information.context.beginPath();
-			CE.canvas.information.context.moveTo(this.x, this.y + diagramSizeY / 2);
-			CE.canvas.information.context.lineTo(this.x + diagramSizeX / 2, this.y);
-			CE.canvas.information.context.lineTo(this.x + diagramSizeX / 2, this.y - top);
-			CE.canvas.information.context.lineTo(this.x, this.y - top + diagramSizeY / 2);
-			CE.canvas.information.context.fill();
-			CE.canvas.information.context.fillStyle = this.color.top;
-			CE.canvas.information.context.beginPath();
-			CE.canvas.information.context.lineTo(this.x - diagramSizeX / 2, this.y - top);
-			CE.canvas.information.context.lineTo(this.x, this.y - top + diagramSizeY / 2);
-			CE.canvas.information.context.lineTo(this.x + diagramSizeX / 2, this.y - top);
-			CE.canvas.information.context.lineTo(this.x, this.y - top - diagramSizeY / 2);
-			CE.canvas.information.context.fill();
 		}
 	},
 	drawInformationDetailed: function () {
@@ -66,7 +69,11 @@ MapItems.TileItemInfos.prototype = {
 			CE.canvas.information.context.lineCap = 'round';
 			CE.canvas.information.context.strokeRect(0, 0, diagramDetailWidth, 22);
 			CE.canvas.information.context.fillStyle = this.color.textColor;
-			CE.canvas.information.context.fillText(CE.filterType.name + ' ' + Math.floor(this.value) + '%', 10, 17);
+			if (this.text == null) {//for the owners
+				CE.canvas.information.context.fillText(CE.filterType.name + ' ' + Math.floor(this.value) + '%', 10, 17);
+			} else {
+				CE.canvas.information.context.fillText(this.text, 10, 17);
+			}
 			CE.canvas.information.context.translate(-(this.x + diagramSizeX / 2 + 2), -(this.y - (this.value / 2) - (diagramDeltaY)));//remise en place du context
 			if (Map.transitionInformationDetailed.started) {
 				CE.canvas.information.context.globalAlpha = 1;
