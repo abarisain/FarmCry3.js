@@ -44,6 +44,7 @@ var initLogin = function () {
 		}
 		loginPanel.style.display = "none";
 		loadingPanel.style.visibility = "visible";
+		document.querySelector("body").removeChild(document.querySelector("#bf-menu-audio"));
 		document.querySelector("#bf-audio").play();
 		document.querySelector("#login_game_title").style.display = "none";
 		//Fake a small login delay, remove this later
@@ -130,4 +131,9 @@ var initLogin = function () {
 	};
 
 	loginConnectButton.onclick = startLogin;
+
+	document.querySelector("#disable_login_music_button").onclick = function () {
+		document.querySelector("#bf-menu-audio").src = "";
+		return true;
+	};
 };

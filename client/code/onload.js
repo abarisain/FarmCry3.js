@@ -19,6 +19,9 @@ window.onload = function () {
 
 	}, false);
 
+	var menuAudio = document.querySelector("#bf-menu-audio");
+	menuAudio.volume = 0.5;
+	menuAudio.play();
 
 	var bfOutfaderValue = 1;
 	bfOutfader = function() {
