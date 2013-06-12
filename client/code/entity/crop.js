@@ -43,46 +43,50 @@ MapItems.TileItems.Crop.prototype.showInformation = function () {
 
 MapItems.TileItems.Crop.prototype.updateImage = function () {
 	this.updateValues();
-	switch (this.data.codename) {
-		case 'corn':
-			if (this.data.harvested_quantity > 0) {
-				this.sprite = SpritePack.Crops.Sprites.CORN_4;
-			} else if (this.maturity > 0.75) {
-				this.sprite = SpritePack.Crops.Sprites.CORN_3;
-			} else if (this.maturity > 0.5) {
-				this.sprite = SpritePack.Crops.Sprites.CORN_2;
-			} else if (this.maturity > 0.25) {
-				this.sprite = SpritePack.Crops.Sprites.CORN_1;
-			} else {
-				this.sprite = SpritePack.Crops.Sprites.CORN_0;
-			}
-			break;
-		case 'tomato':
-			if (this.data.harvested_quantity > 0) {
-				this.sprite = SpritePack.Crops.Sprites.TOMATO_4;
-			} else if (this.maturity > 0.75) {
-				this.sprite = SpritePack.Crops.Sprites.TOMATO_3;
-			} else if (this.maturity > 0.5) {
-				this.sprite = SpritePack.Crops.Sprites.TOMATO_2;
-			} else if (this.maturity > 0.25) {
-				this.sprite = SpritePack.Crops.Sprites.TOMATO_1;
-			} else {
-				this.sprite = SpritePack.Crops.Sprites.TOMATO_0;
-			}
-			break;
-		case 'wheat':
-			if (this.data.harvested_quantity > 0) {
-				this.sprite = SpritePack.Crops.Sprites.WHEAT_4;
-			} else if (this.maturity > 0.75) {
-				this.sprite = SpritePack.Crops.Sprites.WHEAT_3;
-			} else if (this.maturity > 0.5) {
-				this.sprite = SpritePack.Crops.Sprites.WHEAT_2;
-			} else if (this.maturity > 0.25) {
-				this.sprite = SpritePack.Crops.Sprites.WHEAT_1;
-			} else {
-				this.sprite = SpritePack.Crops.Sprites.WHEAT_0;
-			}
-			break;
+	if (this.data.rotten) {
+		this.sprite = SpritePack.Crops.Sprites.ROTTEN;
+	} else {
+		switch (this.data.codename) {
+			case 'corn':
+				if (this.data.harvested_quantity > 0) {
+					this.sprite = SpritePack.Crops.Sprites.CORN_4;
+				} else if (this.maturity > 0.75) {
+					this.sprite = SpritePack.Crops.Sprites.CORN_3;
+				} else if (this.maturity > 0.5) {
+					this.sprite = SpritePack.Crops.Sprites.CORN_2;
+				} else if (this.maturity > 0.25) {
+					this.sprite = SpritePack.Crops.Sprites.CORN_1;
+				} else {
+					this.sprite = SpritePack.Crops.Sprites.CORN_0;
+				}
+				break;
+			case 'tomato':
+				if (this.data.harvested_quantity > 0) {
+					this.sprite = SpritePack.Crops.Sprites.TOMATO_4;
+				} else if (this.maturity > 0.75) {
+					this.sprite = SpritePack.Crops.Sprites.TOMATO_3;
+				} else if (this.maturity > 0.5) {
+					this.sprite = SpritePack.Crops.Sprites.TOMATO_2;
+				} else if (this.maturity > 0.25) {
+					this.sprite = SpritePack.Crops.Sprites.TOMATO_1;
+				} else {
+					this.sprite = SpritePack.Crops.Sprites.TOMATO_0;
+				}
+				break;
+			case 'wheat':
+				if (this.data.harvested_quantity > 0) {
+					this.sprite = SpritePack.Crops.Sprites.WHEAT_4;
+				} else if (this.maturity > 0.75) {
+					this.sprite = SpritePack.Crops.Sprites.WHEAT_3;
+				} else if (this.maturity > 0.5) {
+					this.sprite = SpritePack.Crops.Sprites.WHEAT_2;
+				} else if (this.maturity > 0.25) {
+					this.sprite = SpritePack.Crops.Sprites.WHEAT_1;
+				} else {
+					this.sprite = SpritePack.Crops.Sprites.WHEAT_0;
+				}
+				break;
+		}
 	}
 	this.updateImageCoord();
 }

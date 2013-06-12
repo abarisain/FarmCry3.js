@@ -29,14 +29,12 @@ MapItems.TileItems.Building.prototype.showInformation = function () {
 	this.informations.loadInformations();
 };
 
-MapItems.TileItems.Building.prototype.updateStoredCrop = function (data) {
-	var storedCrop = this.storedCrops[data.id];
-	if (storedCrop == null) {
-		this.storedCrops[data.id] = new MapItems.StoredCrop(data.crop, this.data.codename, this.x, this.y);
-	} else {
-		storedCrop.updateStoredCrop(data);
+MapItems.TileItems.Building.prototype.updateStoredCrop = function (id) {
+	var logicStoredCrop = GameState.logicItems.storedCrops[id];
+	var storedCrop = this.storedCrops[id];
+	if (storedCrop == undefined) {
+		this.storedCrops[id] = new MapItems.StoredCrop(logicStoredCrop, this.data.codename, this.x, this.y);
 	}
-	this.refreshStoredCropCoord();
 };
 
 //this method is not really optimized, but for now it will work

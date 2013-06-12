@@ -19,6 +19,9 @@ networkEngine.subsystems.player = {
 		sellBuilding: function () {
 			networkEngine.call('player', 'sellBuilding', {});
 		},
+		openBuilding: function () {
+			networkEngine.call('player', 'openBuilding', {});
+		},
 		takeCurrentTile: function () {
 			CE.Sound.sounds.wololo.play();
 			networkEngine.call('player', 'takeCurrentTile', {});
@@ -31,6 +34,12 @@ networkEngine.subsystems.player = {
 		},
 		sellStoredCrop: function (id) {
 			networkEngine.call('player', 'sellStoredCrop', {storedCropId: id});
+		},
+		depositStoredCrop: function (id) {
+			networkEngine.call('player', 'depositStoredCrop', {storedCropId: id});
+		},
+		pickupStoredCrop: function (id) {
+			networkEngine.call('player', 'pickupStoredCrop', {storedCropId: id});
 		}
 	},
 	events: {
@@ -59,6 +68,9 @@ networkEngine.subsystems.player = {
 				}
 			}
 			target.invalidate();
+		},
+		buyBuildingDenied: function (data) {
+			CE.Environment.addBuildingGhost(data, Map.player.col, Map.player.line);
 		},
 		/*
 		 this method add, update or remove a building
@@ -99,6 +111,9 @@ networkEngine.subsystems.player = {
 		},
 		inventoryItemRemoved: function (data) {
 			GameState.inventoryItemRemoved(data.id);
+		},
+		buildingOpened: function (data) {
+			CE.hud.events.buildingOpened(Map.mapItems[Map.getMapItemKey(data.col, data.line)]);
 		}
 	}
 };
@@ -161,9 +176,21 @@ networkEngine.subsystems.game = {
 			CE.mapInvalidated = true;
 		},
 		tileStoredCropsUpdated: function (data) {
-			for (var i = 0; i < data.storedCrop.length; i++) {
-				GameState.updateStoredCrop(data.storedCrop[i]);
+			var tile = Map.mapItems[Map.getMapItemKey(data.col, data.line)];
+			var missingKeys = [];
+			//Remove missing stored crops
+			for (var key in tile.storedCrops) {
+				if (data.storedCrops.indexOf(key) == -1)
+					missingKeys.push(key);
 			}
+			missingKeys.forEach(function (key) {
+				delete tile.storedCrops[key];
+			});
+			for (var i = 0; i < data.storedCrops.length; i++) {
+				tile.updateStoredCrop(data.storedCrops[i]);
+			}
+			tile.refreshStoredCropCoord();
+			CE.hud.events.refreshStoredCrop(data.col, data.line);
 		},
 		storedCropUpdated: function (data) {
 			GameState.updateStoredCrop(data.storedCrop);

@@ -19,6 +19,8 @@ CrymeEngine.hud = {
 		button_buy: null,
 		button_close: null,
 		button_delete: null,
+		button_switch: null,
+		button_switch_disabled: null,
 		filter_header: null,
 		filter_owner: null,
 		filter_humidity: null,
@@ -53,7 +55,8 @@ CrymeEngine.hud = {
 		actionBarSmall: null,
 		actionBar: null,
 		filters_enable: null,
-		filter_buttons: []
+		filter_buttons: [],
+		building_content: null
 	},
 	init: function () {
 		this.rootHudElement.resize();
@@ -143,12 +146,7 @@ CrymeEngine.hud = {
 
 		this.panels.actionBarSmall.viewbag.open = new HudElement('open', 'action_open', 56, 48, 0, 0, HudElement.Anchors.CENTER);
 		this.panels.actionBarSmall.viewbag.open.onClick = function () {
-			if (CE.hud.panels.inventory == null) {
-				CE.hud.panels.inventory = HudElements.Book.Premade.Inventory();
-				this.rootHudElement.addChild(CE.hud.panels.inventory);
-			} else {
-				CE.hud.panels.inventory.visible = true;
-			}
+			networkEngine.subsystems.player.actions.openBuilding();
 		}.bind(this);
 		this.panels.actionBarSmall.addChild(this.panels.actionBarSmall.viewbag.open);
 
@@ -253,6 +251,13 @@ CrymeEngine.hud = {
 		});
 	},
 	events: {
+		buildingOpened: function (building) {
+			if (CE.hud.panels.building_content) {
+				CE.hud.panels.building_content.close();
+			}
+			CE.hud.panels.building_content = HudElements.Book.Premade.Building(building);
+			CE.hud.rootHudElement.addChild(CE.hud.panels.building_content);
+		},
 		showFilter: function (name) {
 			CE.hud.rootHudElement.viewbag.filter_header.visible = true;
 			CE.hud.rootHudElement.viewbag.filter_text.setText(name);
@@ -303,11 +308,23 @@ CrymeEngine.hud = {
 			if (CE.hud.panels.inventory) {
 				CE.hud.panels.inventory.rightPage.refresh();
 			}
+			if (CE.hud.panels.building_content) {
+				CE.hud.panels.building_content.refresh();
+			}
+		},
+		refreshStoredCrop: function (col, line) {
+			if (CE.hud.panels.building_content) {
+				if (CE.hud.panels.building_content._building.match(col, line))
+					CE.hud.panels.building_content.refresh();
+			}
 		},
 		cropsPriceUpdated: function () {
 			this.refreshInventory();
 			if (CE.hud.panels.market) {
 				CE.hud.panels.market.refresh();
+			}
+			if (CE.hud.panels.building_content) {
+				CE.hud.panels.building_content.leftPage.refresh();
 			}
 		}
 	},

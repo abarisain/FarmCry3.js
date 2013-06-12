@@ -2,6 +2,11 @@ MapItems.Character = function (targetFarmer) {
 	MapItem.call(this, SpritePack.Characters.Sprites.FARMER, targetFarmer.position.col, targetFarmer.position.line);
 	this.isPlayer = targetFarmer.constructor == LogicItems.PlayableFarmer;
 	this.farmer = targetFarmer;
+	if (this.isPlayer) {
+		this.shortname = null;
+	} else {
+		this.shortname = this.farmer.nickname;//add here to split the string
+	}
 	this.updateCoord();
 	this.updateImageCoord();
 	this.movement = { sprite: SpritePack.Characters.Sprites.ANIM_TOP_LEFT, finalPosition: {x: 0, y: 0}, startPosition: {x: 0, y: 0}};
@@ -79,8 +84,10 @@ MapItems.Character.prototype.draw = function () {
 			this.y = this.movement.startPosition.y + (this.movement.finalPosition.y - this.movement.startPosition.y) * this.transitions.movement.progress;
 			this.updateImageCoord();
 			//je suis obligé d'attendre l'update de coordonnée en cas d'animation
-			CE.canvas.animation.context.fillStyle = "#fff";
-			CE.canvas.animation.context.fillText(this.farmer.nickname, this.x, this.y - 20 - this.sprite.centerY);
+			if (this.shortname) {
+				CE.canvas.animation.context.fillStyle = "#fff";
+				CE.canvas.animation.context.fillText(this.shortname, this.x, this.y - 20 - this.sprite.centerY);
+			}
 			SpritePack.Characters.Sprites.SHADOW.drawOnAnimation(this.x, this.y);
 			if (this.isPlayer) {
 				SpritePack.Characters.Sprites.ANIM_AURA.draw(this.x, this.y);
@@ -88,8 +95,10 @@ MapItems.Character.prototype.draw = function () {
 			this.movement.sprite.draw(this.x, this.y);
 
 		} else {
-			CE.canvas.animation.context.fillStyle = "#fff";
-			CE.canvas.animation.context.fillText(this.farmer.nickname, this.x, this.imageTop - 20);
+			if (this.shortname) {
+				CE.canvas.animation.context.fillStyle = "#fff";
+				CE.canvas.animation.context.fillText(this.shortname, this.x, this.imageTop - 20);
+			}
 			SpritePack.Characters.Sprites.SHADOW.drawOnAnimation(this.x, this.y);
 			if (this.isPlayer) {
 				SpritePack.Characters.Sprites.ANIM_AURA.draw(this.x, this.y);

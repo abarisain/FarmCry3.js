@@ -151,7 +151,7 @@ Tile.prototype = {
 	getSmallStoredCrops: function () {
 		var tmpStoredCrops = [];
 		this.storedCrops.forEach(function (storedCrop) {
-			tmpStoredCrops.storedCrops.push(storedCrop.id);
+			tmpStoredCrops.push(storedCrop.id);
 		});
 		return tmpStoredCrops;
 	},

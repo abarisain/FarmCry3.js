@@ -32,6 +32,14 @@ HudElements.Button.prototype.setText = function (text) {
 	this._text.setText(text);
 }
 
+HudElements.Button.prototype.setTextColor = function (color) {
+	this._text.setColor(color);
+}
+
+HudElements.Button.prototype.setTextStroke = function (enable, color, width) {
+	this._text.setStroke(enable, color, width);
+}
+
 /*
  Set a text function. To remove it set it to null. This function will be called on each draw() call.
  */
@@ -44,6 +52,13 @@ HudElements.Button.Premade = {
 		var tmpBtn = new HudElements.Button(41, 39, verticalMargin, horizontalMargin, null, anchor);
 		tmpBtn.ninepatch.enabled = false;
 		tmpBtn.image = "button_buy";
+		tmpBtn.removeAllChildren();
+		return tmpBtn;
+	},
+	switch: function (verticalMargin, horizontalMargin, anchor) {
+		var tmpBtn = new HudElements.Button(41, 39, verticalMargin, horizontalMargin, null, anchor);
+		tmpBtn.ninepatch.enabled = false;
+		tmpBtn.image = "button_switch";
 		tmpBtn.removeAllChildren();
 		return tmpBtn;
 	},

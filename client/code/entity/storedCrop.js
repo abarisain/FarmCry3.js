@@ -1,28 +1,28 @@
 //Classe pour afficher les objects de stockage (tonneau, caisse...)
-MapItems.StoredCrop = function (data, cropCodename, buildingCodename, x, y) {
+MapItems.StoredCrop = function (logicStoredCrop, buildingCodename, x, y) {
 	MapItem.call(this, null, 0, 0);
-	this.data = data;
+	this.logicStoredCrop = logicStoredCrop;
 	this.x = x;
 	this.y = y;
-	this.cropCodename = cropCodename;
 	this.buildingCodename = buildingCodename;
+	this.updateImage();
 }
 
 MapItems.StoredCrop.prototype = new MapItem();
 MapItems.StoredCrop.prototype.constructor = MapItems.StoredCrop;
 
-MapItems.StoredCrop.prototype.updateStoredCrop = function (data) {
-	this.data = data;
+MapItems.StoredCrop.prototype.updateStoredCrop = function (logicStoredCrop) {
+	this.logicStoredCrop = logicStoredCrop;
 }
 
 MapItems.StoredCrop.prototype.updateCoord = function (index) {
-	this.imageLeft = this.x + this.buildingType.positionAvailable[this.index].x;
-	this.imageTop = this.y + this.buildingType.positionAvailable[this.index].y;
+	var buildingType = MapItems.TileItems.Building.Type[this.buildingCodename];
+	this.imageLeft = this.x + buildingType.positionAvailable[index].x;
+	this.imageTop = this.y + buildingType.positionAvailable[index].y;
 };
 
 MapItems.StoredCrop.prototype.updateImage = function () {
-	this.updateValues();
-	switch (this.cropCodename) {
+	switch (this.logicStoredCrop.crop) {
 		case 'corn':
 			switch (this.buildingCodename) {
 				case 'silo':

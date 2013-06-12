@@ -120,7 +120,7 @@ MapItems.Tile.prototype.updateImage = function () {
 		else if (this.data.humidity < 0.5) {
 			this.sprite = SpritePack.Tiles.Sprites.GRASS_LIGHT_4;
 		}
-		else if (this.data.humidity < 0.57) {
+		else if (this.data.humidity < 0.58) {
 			this.sprite = SpritePack.Tiles.Sprites.GRASS_MEDIUM_0;
 		}
 		else if (this.data.humidity < 0.65) {

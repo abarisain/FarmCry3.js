@@ -17,6 +17,7 @@ function Building(codename, name, size, capacity, price, price_tick, stops_withe
 	this.price = price; //Build price
 	this.price_tick = price_tick; //Maintenance per tick if not empty
 	this.stops_withering = stops_withering;
+	this.selling_price = Math.ceil(this.price / 4);
 	this.size = { // Size on the board
 		x: size_x,
 		y: size_y
@@ -45,7 +46,7 @@ Building.Types = {
 	cold_storage: new Building("cold_storage",
 		"Cold Storage",
 		6,
-		20,//20 barrels
+		16,//16 barrels
 		1400,
 		1,
 		true,

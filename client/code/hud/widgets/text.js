@@ -6,8 +6,11 @@ HudElements.Text = function (text, anchor, color, font) {
 	this.anchor = anchor || this.anchor;
 	this._text = text || null;
 	this._textFunction = null;
-	this._color = color || "#6f440d";
+	this._color = color || this.defaultColor;
 	this._font = font || "bold 13pt stanberry,Calibri,Geneva,Arial";
+	this._stroke = false;
+	this._strokeColor = this.defaultColor;
+	this._strokeWidth = 4;
 	this._enableAutoSizing = true;
 	this.wrap = false; // Automatically wrap text
 	//By default, you cannot click on text
@@ -18,6 +21,10 @@ HudElements.Text = function (text, anchor, color, font) {
 
 HudElements.Text.prototype = new HudElement();
 HudElements.Text.prototype.constructor = HudElements.Text;
+
+HudElements.Text.prototype.defaultColor = "#6f440d";
+HudElements.Text.prototype.defaultStrokeInsideColor = "#f7e59c";
+
 HudElements.Text.prototype.updateWithTextFunction = function () {
 	if (this._textFunction != null) {
 		var newText = this._textFunction();
@@ -44,6 +51,8 @@ HudElements.Text.prototype.draw = function () {
 			var metrics = this.targetCanvas.measureText(testLine);
 			var testWidth = metrics.width;
 			if(testWidth > this.width) {
+				if (this._stroke)
+					this.targetCanvas.strokeText(line, this._x, this._y + yOffset);
 				this.targetCanvas.fillText(line, this._x, this._y + yOffset);
 				line = words[n] + ' ';
 				yOffset += this.height;
@@ -52,8 +61,12 @@ HudElements.Text.prototype.draw = function () {
 				line = testLine;
 			}
 		}
+		if (this._stroke)
+			this.targetCanvas.strokeText(line, this._x, this._y + yOffset);
 		this.targetCanvas.fillText(line, this._x, this._y + yOffset);
 	} else {
+		if (this._stroke)
+			this.targetCanvas.strokeText(this._text, this._x, this._y + this.height, this.width);
 		this.targetCanvas.fillText(this._text, this._x, this._y + this.height, this.width);
 	}
 }
@@ -63,6 +76,9 @@ HudElements.Text.prototype.setupCanvas = function () {
 	//No need to use setFont because we will reapply the font on draw anyway
 	this.targetCanvas.font = this._font;
 	this.targetCanvas.fillStyle = this._color;
+	this.targetCanvas.strokeStyle = this._strokeColor;
+	if (this._stroke)
+		this.targetCanvas.lineWidth = this._strokeWidth;
 }
 
 HudElements.Text.prototype.onAttached = function () {
@@ -112,6 +128,27 @@ HudElements.Text.prototype.setFont = function (font) {
 HudElements.Text.prototype.setColor = function (color) {
 	this._color = color;
 }
+
+/**
+ Stroke settings
+ * @param {boolean} enable
+ * @param [optionalParam] {string} color
+ * @param [optionalParam] {number} width
+ */
+HudElements.Text.prototype.setStroke = function (enable, color, width) {
+	this._stroke = enable;
+	if(color) {
+		this._strokeColor = color;
+	} else {
+		// Default stroke : switch the text color to stroke color and use the default inside stroke color
+		this._strokeColor = this._color;
+		this.setColor(this.defaultStrokeInsideColor);
+	}
+	if(width) {
+		this._strokeWidth = width;
+	}
+}
+
 /*
  Same as setText for the same reasons
  */

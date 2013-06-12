@@ -33,12 +33,14 @@ HudElements.Book = function () {
 	}).bind(this.leftPage));
 	tmpLeftTitle.verticalMargin = 22;
 	tmpLeftTitle.horizontalMargin = 27;
+	tmpLeftTitle.setStroke(true);
 	var tmpRightTitle = new HudElements.Text();
 	tmpRightTitle.setTextFunction((function() {
 		return this.title;
 	}).bind(this.rightPage));
 	tmpRightTitle.verticalMargin = 22;
 	tmpRightTitle.horizontalMargin = 517;
+	tmpRightTitle.setStroke(true);
 	this.addChild(tmpLeftTitle);
 	this.addChild(tmpRightTitle);
 	this.addChild(tmpCloseBtn);
