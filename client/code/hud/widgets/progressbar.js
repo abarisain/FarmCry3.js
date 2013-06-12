@@ -33,6 +33,8 @@ HudElements.ProgressBar = function (width, height, verticalMargin, horizontalMar
 	this._text = new HudElements.Text(text, HudElement.Anchors.CENTER, textcolor, font);
 	// Default button style makes text not exactly centered in it
 	this._text.verticalMargin = -3;
+	this.setTextColor("#fff");
+	this.setTextStroke(true, "rgba(0, 0, 0, 0.5)", 5);
 	this.addChild(this._text);
 }
 

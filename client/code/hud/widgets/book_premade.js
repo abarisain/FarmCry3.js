@@ -73,6 +73,33 @@ HudElements.Book.Premade.Inventory = function () {
 	}).bind(inventory);
 
 	inventory.leftPage.title = "Character";
+	inventory.leftPage.viewbag.nickname = new HudElements.Text("");
+	inventory.leftPage.viewbag.nickname.setFont("bold 18pt stanberry,Calibri,Geneva,Arial");
+	inventory.leftPage.viewbag.nickname.horizontalMargin = 30;
+	inventory.leftPage.viewbag.nickname.verticalMargin = 12;
+	inventory.leftPage.viewbag.nickname.setText(GameState.player.nickname);
+
+	inventory.leftPage.viewbag.healthProgress = new HudElements.ProgressBar(200, 32, 52, 30, HudElement.Anchors.TOP_LEFT);
+	inventory.leftPage.viewbag.healthProgress.setProgressImage("progressbar_red");
+
+	inventory.leftPage.addChild(new HudElement("money_icon", "coin", 20, 23, 110, 30, HudElement.Anchors.TOP_LEFT, false));
+	inventory.leftPage.viewbag.moneyLabel = new HudElements.Text("");
+	inventory.leftPage.viewbag.moneyLabel.horizontalMargin = 60;
+	inventory.leftPage.viewbag.moneyLabel.verticalMargin = 112;
+	inventory.leftPage.viewbag.moneyLabel.setTextFunction(function () {
+		if (GameState.player == null)
+			return 0;
+		return GameState.player.money;
+	});
+	inventory.leftPage.addChild(inventory.leftPage.viewbag.nickname);
+	inventory.leftPage.addChild(inventory.leftPage.viewbag.moneyLabel);
+	inventory.leftPage.addChild(inventory.leftPage.viewbag.healthProgress);
+
+	inventory.leftPage.refresh = (function () {
+		this.viewbag.healthProgress.setProgress(GameState.player.health);
+		this.viewbag.healthProgress.setText("HP : " + GameState.player.health + " / 100");
+	}).bind(inventory.leftPage);
+
 
 	var inventoryItemLayout = HudElements.List.PremadeLayouts.inventoryItem(null);
 	inventoryItemLayout.viewbag.sell.onClick = function (x, y, index, item) {
@@ -94,8 +121,6 @@ HudElements.Book.Premade.Inventory = function () {
 	inventory.rightPage.viewbag.list = inventoryItemList;
 
 	inventory.rightPage.viewbag.inventoryFillMeter = new HudElements.ProgressBar(200, 32, 0, 0, HudElement.Anchors.BOTTOM_CENTER);
-	inventory.rightPage.viewbag.inventoryFillMeter.setTextColor("#fff");
-	inventory.rightPage.viewbag.inventoryFillMeter.setTextStroke(true, "rgba(0, 0, 0, 0.5)", 5);
 
 	inventory.rightPage.addChild(inventory.rightPage.viewbag.list);
 	inventory.rightPage.addChild(inventory.rightPage.viewbag.inventoryFillMeter);
@@ -156,8 +181,6 @@ HudElements.Book.Premade.Building = function (building) {
 	inventory.leftPage.viewbag.listLayout = buildingItemLayout;
 
 	inventory.leftPage.viewbag.buildingFillMeter = new HudElements.ProgressBar(200, 32, 0, 0, HudElement.Anchors.BOTTOM_CENTER);
-	inventory.leftPage.viewbag.buildingFillMeter.setTextColor("#fff");
-	inventory.leftPage.viewbag.buildingFillMeter.setTextStroke(true, "rgba(0, 0, 0, 0.5)", 5);
 
 	inventory.leftPage.viewbag.sellBuilding = HudElements.Button.Premade.buy(4, 5, HudElement.Anchors.BOTTOM_LEFT);
 	inventory.leftPage.viewbag.sellBuilding.onClick = function (x, y, index, item) {
@@ -226,8 +249,6 @@ HudElements.Book.Premade.Building = function (building) {
 	inventory.rightPage.viewbag.listLayout = inventoryItemLayout;
 
 	inventory.rightPage.viewbag.inventoryFillMeter = new HudElements.ProgressBar(200, 32, 0, 0, HudElement.Anchors.BOTTOM_CENTER);
-	inventory.rightPage.viewbag.inventoryFillMeter.setTextColor("#fff");
-	inventory.rightPage.viewbag.inventoryFillMeter.setTextStroke(true, "rgba(0, 0, 0, 0.5)", 5);
 
 	inventory.rightPage.addChild(inventory.rightPage.viewbag.list);
 	inventory.rightPage.addChild(inventory.rightPage.viewbag.inventoryFillMeter);
