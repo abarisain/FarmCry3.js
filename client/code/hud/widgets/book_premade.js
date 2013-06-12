@@ -138,14 +138,16 @@ HudElements.Book.Premade.Building = function (building) {
 		[],
 		buildingItemLayout,
 		function (layout, index, item) {
-			layout.viewbag.icon.image = 'stored_' + item.crop;
+			layout.viewbag.icon.image = 'stored_' + item.logicStoredCrop.crop;
 			layout.viewbag.status.setText(item.healthStatus);
-			layout.viewbag.price.setText(GameState.crops[item.crop].selling_price * item.harvested_quantity);
+			console.debug(item.logicStoredCrop);
+			layout.viewbag.price.setText(GameState.crops[item.logicStoredCrop.crop].selling_price * item.harvested_quantity);
 		}
 	);
 
 	inventory.leftPage.title = "Building";
 	inventory.leftPage.viewbag.list = buildingItemList;
+	inventory.leftPage.viewbag.listLayout = buildingItemLayout;
 
 	inventory.leftPage.viewbag.buildingFillMeter = new HudElements.ProgressBar(200, 32, 0, 0, HudElement.Anchors.BOTTOM_CENTER);
 
@@ -167,10 +169,11 @@ HudElements.Book.Premade.Building = function (building) {
 		for (var key in this._building.storedCrops) {
 			tmpBuildingData.push(this._building.storedCrops[key]);
 		}
+
 		if(GameState.player.inventory.length >= GameState.inventorySize) {
-			this.leftPage.viewbag.listLayout.switch.image = "button_switch_disabled";
+			this.leftPage.viewbag.listLayout.viewbag.switch.image = "button_switch_disabled";
 		} else {
-			this.leftPage.viewbag.listLayout.switch.image = "button_switch";
+			this.leftPage.viewbag.listLayout.viewbag.switch.image = "button_switch";
 		}
 		this.leftPage.viewbag.list.setData(tmpBuildingData);
 		var buildingInfo = GameState.buildings[this._building.data.codename];
@@ -195,6 +198,7 @@ HudElements.Book.Premade.Building = function (building) {
 		[],
 		inventoryItemLayout,
 		function (layout, index, item) {
+			console.debug(item);
 			layout.viewbag.icon.image = 'stored_' + item.crop;
 			layout.viewbag.status.setText(item.healthStatus);
 		}
@@ -214,9 +218,9 @@ HudElements.Book.Premade.Building = function (building) {
 			tmpInventoryData.push(GameState.logicItems.storedCrops[GameState.player.inventory[i]]);
 		}
 		if(this._building.storedCropCount >= GameState.buildings[this._building.data.codename].capacity) {
-			this.rightPage.viewbag.listLayout.switch.image = "button_switch_disabled";
+			this.rightPage.viewbag.listLayout.viewbag.switch.image = "button_switch_disabled";
 		} else {
-			this.rightPage.viewbag.listLayout.switch.image = "button_switch";
+			this.rightPage.viewbag.listLayout.viewbag.switch.image = "button_switch";
 		}
 		this.rightPage.viewbag.list.setData(tmpInventoryData);
 		this.rightPage.viewbag.inventoryFillMeter.setProgress(tmpInventoryData.length);
