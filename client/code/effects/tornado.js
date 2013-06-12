@@ -8,10 +8,9 @@ MapItems.Tornado = function (col, line) {
 	this.transition = new Transition(0, 1, 60, function () {
 	});
 	this.transition.start(Transition.Direction.IN);
-	var tornado = this;//variable moche pour la fonction suivante
-	this.movementTransition = new Transition(0, 1, 1200, function () {
+	this.movementTransition = new Transition(0, 1, 1200, (function () {
 		CE.Environment.removePostEffect(this);
-	}).bind(this);
+	}).bind(this));
 	this.movementTransition.start(Transition.Direction.IN);
 }
 
