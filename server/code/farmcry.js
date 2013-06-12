@@ -28,14 +28,26 @@ NetworkEngine = require('./network/engine');
 EventManager = require('./event_manager');
 tick = require('./tick');
 
+process.argv.forEach(function (val, index, array) {
+	if (val == "--nopasswordcheck") {
+		console.log("Debug - WARNING : Password check disabled");
+		NetworkEngine.debugDisablePasswordCheck = true;
+	}
+	if (val == "--nosave") {
+		console.log("Debug - WARNING : Persistence disabled");
+		PM.enabled = false;
+	}
+});
+
 var start_game = (function() {
+
 	// Show the map in the console, because it looks greaaaaat.
 	// But don't show it if it's too big.
-	if(GameState.board.size.x < 32 && GameState.board.size.y < 32) {
+	/*if(GameState.board.size.x < 32 && GameState.board.size.y < 32) {
 		GameState.board.print();
 	} else {
 		console.log("Board is too big to be displayed");
-	}
+	}*/
 
 	// Setup auto-persistence every 5 minutes
 	GameState.autoPersisterId = setInterval(function() {
