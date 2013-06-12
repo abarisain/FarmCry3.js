@@ -48,7 +48,8 @@ CrymeEngine.hud = {
 		stored_wheat: null,
 		topbar: null,
 		book: null,
-		coin: null
+		coin: null,
+		farmer_full_old: null
 	},
 	panels: {
 		lifebar: null,
