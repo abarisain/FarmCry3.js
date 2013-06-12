@@ -65,6 +65,10 @@ HudElements.ProgressBar.prototype.setTextFunction = function (func) {
 	this._text.setTextFunction(func);
 }
 
+HudElements.ProgressBar.prototype.setTextColor = function (textColor) {
+	this._text.setColor(textColor);
+}
+
 /**
  * @param {string} image
  */

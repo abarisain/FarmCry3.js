@@ -107,6 +107,13 @@ HudElements.Book.Premade.Inventory = function () {
 		this.viewbag.inventoryFillMeter.setProgress(tmpInventoryData.length);
 		this.viewbag.inventoryFillMeter.setMaxProgress(GameState.inventorySize);
 		this.viewbag.inventoryFillMeter.setText(tmpInventoryData.length + " / " + GameState.inventorySize);
+		if(tmpInventoryData.length >= GameState.inventorySize) {
+			this.viewbag.inventoryFillMeter.setProgressImage("progressbar_red");
+			this.viewbag.inventoryFillMeter.setTextColor("#fff");
+		} else {
+			this.viewbag.inventoryFillMeter.setProgressImage("progressbar_green");
+			this.viewbag.inventoryFillMeter.setTextColor(HudElements.Text.prototype.defaultColor);
+		}
 	}).bind(inventory.rightPage);
 
 	inventory.refresh();
@@ -183,6 +190,13 @@ HudElements.Book.Premade.Building = function (building) {
 		this.leftPage.viewbag.buildingFillMeter.setProgress(this._building.storedCropCount);
 		this.leftPage.viewbag.buildingFillMeter.setMaxProgress(buildingInfo.capacity);
 		this.leftPage.viewbag.buildingFillMeter.setText(this._building.storedCropCount + " / " + buildingInfo.capacity);
+		if (this._building.storedCropCount >= buildingInfo.capacity) {
+			this.leftPage.viewbag.buildingFillMeter.setProgressImage("progressbar_red");
+			this.leftPage.viewbag.buildingFillMeter.setTextColor("#fff");
+		} else {
+			this.leftPage.viewbag.buildingFillMeter.setProgressImage("progressbar_green");
+			this.leftPage.viewbag.buildingFillMeter.setTextColor(HudElements.Text.prototype.defaultColor);
+		}
 	}).bind(inventory);
 
 	/*
@@ -218,7 +232,7 @@ HudElements.Book.Premade.Building = function (building) {
 		for (var i = 0; i < GameState.player.inventory.length; i++) {
 			tmpInventoryData.push(GameState.logicItems.storedCrops[GameState.player.inventory[i]]);
 		}
-		if(this._building.storedCropCount >= GameState.buildings[this._building.data.codename].capacity) {
+		if (this._building.storedCropCount >= GameState.buildings[this._building.data.codename].capacity) {
 			this.rightPage.viewbag.listLayout.viewbag.switch.image = "button_switch_disabled";
 		} else {
 			this.rightPage.viewbag.listLayout.viewbag.switch.image = "button_switch";
@@ -227,6 +241,13 @@ HudElements.Book.Premade.Building = function (building) {
 		this.rightPage.viewbag.inventoryFillMeter.setProgress(tmpInventoryData.length);
 		this.rightPage.viewbag.inventoryFillMeter.setMaxProgress(GameState.inventorySize);
 		this.rightPage.viewbag.inventoryFillMeter.setText(tmpInventoryData.length + " / " + GameState.inventorySize);
+		if (tmpInventoryData.length >= GameState.inventorySize) {
+			this.rightPage.viewbag.inventoryFillMeter.setProgressImage("progressbar_red");
+			this.rightPage.viewbag.inventoryFillMeter.setTextColor("#fff");
+		} else {
+			this.rightPage.viewbag.inventoryFillMeter.setProgressImage("progressbar_green");
+			this.rightPage.viewbag.inventoryFillMeter.setTextColor(HudElements.Text.prototype.defaultColor);
+		}
 	}).bind(inventory);
 
 	inventory.refresh();

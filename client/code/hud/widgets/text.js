@@ -6,7 +6,7 @@ HudElements.Text = function (text, anchor, color, font) {
 	this.anchor = anchor || this.anchor;
 	this._text = text || null;
 	this._textFunction = null;
-	this._color = color || "#6f440d";
+	this._color = color || this.defaultColor;
 	this._font = font || "bold 13pt stanberry,Calibri,Geneva,Arial";
 	this._enableAutoSizing = true;
 	this.wrap = false; // Automatically wrap text
@@ -18,6 +18,9 @@ HudElements.Text = function (text, anchor, color, font) {
 
 HudElements.Text.prototype = new HudElement();
 HudElements.Text.prototype.constructor = HudElements.Text;
+
+HudElements.Text.prototype.defaultColor = "#6f440d";
+
 HudElements.Text.prototype.updateWithTextFunction = function () {
 	if (this._textFunction != null) {
 		var newText = this._textFunction();
