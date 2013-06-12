@@ -173,8 +173,8 @@ networkEngine.subsystems.game = {
 			CE.mapInvalidated = true;
 		},
 		tileStoredCropsUpdated: function (data) {
-			for (var i = 0; i < data.storedCrop.length; i++) {
-				GameState.updateStoredCrop(data.storedCrop[i]);
+			for (var i = 0; i < data.storedCrops.length; i++) {
+				GameState.updateStoredCrop(data.storedCrops[i]);
 			}
 		},
 		storedCropUpdated: function (data) {
