@@ -43,7 +43,7 @@ MapItems.TileItems.Crop.prototype.showInformation = function () {
 
 MapItems.TileItems.Crop.prototype.updateImage = function () {
 	this.updateValues();
-	if (this.rotten) {
+	if (this.data.rotten) {
 		this.sprite = SpritePack.Crops.Sprites.ROTTEN;
 	} else {
 		switch (this.data.codename) {
