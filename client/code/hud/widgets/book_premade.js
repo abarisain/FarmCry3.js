@@ -94,6 +94,8 @@ HudElements.Book.Premade.Inventory = function () {
 	inventory.rightPage.viewbag.list = inventoryItemList;
 
 	inventory.rightPage.viewbag.inventoryFillMeter = new HudElements.ProgressBar(200, 32, 0, 0, HudElement.Anchors.BOTTOM_CENTER);
+	inventory.rightPage.viewbag.inventoryFillMeter.setTextColor("#fff");
+	inventory.rightPage.viewbag.inventoryFillMeter.setTextStroke(true, "rgba(0, 0, 0, 0.5)", 5);
 
 	inventory.rightPage.addChild(inventory.rightPage.viewbag.list);
 	inventory.rightPage.addChild(inventory.rightPage.viewbag.inventoryFillMeter);
@@ -109,10 +111,8 @@ HudElements.Book.Premade.Inventory = function () {
 		this.viewbag.inventoryFillMeter.setText(tmpInventoryData.length + " / " + GameState.inventorySize);
 		if(tmpInventoryData.length >= GameState.inventorySize) {
 			this.viewbag.inventoryFillMeter.setProgressImage("progressbar_red");
-			this.viewbag.inventoryFillMeter.setTextColor("#fff");
 		} else {
 			this.viewbag.inventoryFillMeter.setProgressImage("progressbar_green");
-			this.viewbag.inventoryFillMeter.setTextColor(HudElements.Text.prototype.defaultColor);
 		}
 	}).bind(inventory.rightPage);
 
@@ -156,6 +156,8 @@ HudElements.Book.Premade.Building = function (building) {
 	inventory.leftPage.viewbag.listLayout = buildingItemLayout;
 
 	inventory.leftPage.viewbag.buildingFillMeter = new HudElements.ProgressBar(200, 32, 0, 0, HudElement.Anchors.BOTTOM_CENTER);
+	inventory.leftPage.viewbag.buildingFillMeter.setTextColor("#fff");
+	inventory.leftPage.viewbag.buildingFillMeter.setTextStroke(true, "rgba(0, 0, 0, 0.5)", 5);
 
 	inventory.leftPage.viewbag.sellBuilding = HudElements.Button.Premade.buy(4, 5, HudElement.Anchors.BOTTOM_LEFT);
 	inventory.leftPage.viewbag.sellBuilding.onClick = function (x, y, index, item) {
@@ -192,10 +194,8 @@ HudElements.Book.Premade.Building = function (building) {
 		this.leftPage.viewbag.buildingFillMeter.setText(this._building.storedCropCount + " / " + buildingInfo.capacity);
 		if (this._building.storedCropCount >= buildingInfo.capacity) {
 			this.leftPage.viewbag.buildingFillMeter.setProgressImage("progressbar_red");
-			this.leftPage.viewbag.buildingFillMeter.setTextColor("#fff");
 		} else {
 			this.leftPage.viewbag.buildingFillMeter.setProgressImage("progressbar_green");
-			this.leftPage.viewbag.buildingFillMeter.setTextColor(HudElements.Text.prototype.defaultColor);
 		}
 	}).bind(inventory);
 
@@ -226,6 +226,8 @@ HudElements.Book.Premade.Building = function (building) {
 	inventory.rightPage.viewbag.listLayout = inventoryItemLayout;
 
 	inventory.rightPage.viewbag.inventoryFillMeter = new HudElements.ProgressBar(200, 32, 0, 0, HudElement.Anchors.BOTTOM_CENTER);
+	inventory.rightPage.viewbag.inventoryFillMeter.setTextColor("#fff");
+	inventory.rightPage.viewbag.inventoryFillMeter.setTextStroke(true, "rgba(0, 0, 0, 0.5)", 5);
 
 	inventory.rightPage.addChild(inventory.rightPage.viewbag.list);
 	inventory.rightPage.addChild(inventory.rightPage.viewbag.inventoryFillMeter);
@@ -246,10 +248,8 @@ HudElements.Book.Premade.Building = function (building) {
 		this.rightPage.viewbag.inventoryFillMeter.setText(tmpInventoryData.length + " / " + GameState.inventorySize);
 		if (tmpInventoryData.length >= GameState.inventorySize) {
 			this.rightPage.viewbag.inventoryFillMeter.setProgressImage("progressbar_red");
-			this.rightPage.viewbag.inventoryFillMeter.setTextColor("#fff");
 		} else {
 			this.rightPage.viewbag.inventoryFillMeter.setProgressImage("progressbar_green");
-			this.rightPage.viewbag.inventoryFillMeter.setTextColor(HudElements.Text.prototype.defaultColor);
 		}
 	}).bind(inventory);
 
