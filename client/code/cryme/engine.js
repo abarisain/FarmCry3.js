@@ -465,6 +465,12 @@ function CreateMap() {
 	CrymeEngine.camera.centerCameraInit();
 
 	Map.initMap();
+
+	// After the map has been created, we add the stored crops
+	initialData.stored_crops.forEach(function (stored_crop) {
+		GameState.updateStoredCrop(stored_crop, true);
+	});
+
 	CE.Environment.init(initialData);
 
 	CE.transitionMapCreation = new Transition(0, 1, 80, CrymeEngine.onLoadingAnimationFinished)

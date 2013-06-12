@@ -306,7 +306,7 @@ var EventManager = {
 							GameState.board.tiles[tmpY][tmpX].isAliasOf = null;
 						}
 					}
-					this.addMoney(farmer, Math.ceil(targetTile.building.price / 4));
+					this.addMoney(farmer, targetTile.building.selling_price);
 					targetTile.building = null;
 					NetworkEngine.clients.broadcast("player.buildingUpdated", {
 						nickname: farmer.nickname,
@@ -673,6 +673,21 @@ var EventManager = {
 				if (!this.removeStoredCropFromTile(farmer, targetStoredCrop.parent_tile, targetStoredCrop))
 					return false;
 				targetStoredCrop.parent_tile = null;
+			},
+
+			openBuilding: function (farmer) {
+				var targetTile = GameState.board.getAliasableTileForFarmer(farmer);
+				if (!targetTile.isOwnedBy(farmer)) {
+					NetworkEngine.clients.getConnectionForFarmer(farmer).send("game.error", {
+						title: null,
+						message: "You cannot open a tile you don't own."
+					});
+					return false;
+				}
+				NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.buildingOpened", {
+					col: targetTile.position.x,
+					line: targetTile.position.y
+				});
 			}
 		}
 	}
