@@ -53,6 +53,7 @@ MapItems.Tile.prototype.updateOwner = function (data) {
 MapItems.Tile.prototype.showInformation = function () {
 	this.informations.text = null;
 	this.informations.value = 0;
+	this.informations.valueMax = 0;
 	switch (CE.filterType) {
 		case CE.FilterType.OWNER:
 
@@ -74,9 +75,11 @@ MapItems.Tile.prototype.showInformation = function () {
 		case CE.FilterType.HEALTH:
 			this.infoColor.copyColor(ColorHelper.Templates.WHITE);
 			this.informations.value = this.data.humidity * this.data.fertility * 100;
+
 			break;
 		case CE.FilterType.FERTILITY:
 			this.informations.value = this.data.fertility * 100;
+			this.informations.valueMax = this.data.max_fertility * 100;
 			this.infoColor.createColorFactor(ColorHelper.Templates.WHITE, ColorHelper.Templates.BLUE, this.data.humidity);
 			break;
 	}

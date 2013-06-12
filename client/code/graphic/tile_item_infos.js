@@ -9,6 +9,7 @@ MapItems.TileItemInfos = function (x, y) {
 	this.color = null;//de type Color
 	this.gradient = null;
 	this.value = 0;
+	this.valueMax = 0;
 	this.text = null;
 	this.visible = true;
 }
@@ -53,6 +54,33 @@ MapItems.TileItemInfos.prototype = {
 				CE.canvas.information.context.lineTo(this.x + diagramSizeX / 2, this.y - top);
 				CE.canvas.information.context.lineTo(this.x, this.y - top - diagramSizeY / 2);
 				CE.canvas.information.context.fill();
+				if (this.valueMax > 0) {
+					var topMax = this.valueMax;
+					if (Map.transitionInformation.started) {
+						topMax = this.valueMax * Map.transitionInformation.percentage();
+					}
+					CE.canvas.information.context.fillStyle = ColorHelper.Color.YELLOW.left;
+					CE.canvas.information.context.beginPath();
+					CE.canvas.information.context.moveTo(this.x, this.y - top + diagramSizeY / 2);
+					CE.canvas.information.context.lineTo(this.x - diagramSizeX / 2, this.y - top);
+					CE.canvas.information.context.lineTo(this.x - diagramSizeX / 2, this.y - topMax);
+					CE.canvas.information.context.lineTo(this.x, this.y - topMax + diagramSizeY / 2);
+					CE.canvas.information.context.fill();
+					CE.canvas.information.context.fillStyle = ColorHelper.Color.YELLOW.right;
+					CE.canvas.information.context.beginPath();
+					CE.canvas.information.context.moveTo(this.x, this.y - top + diagramSizeY / 2);
+					CE.canvas.information.context.lineTo(this.x + diagramSizeX / 2, this.y - top);
+					CE.canvas.information.context.lineTo(this.x + diagramSizeX / 2, this.y - topMax);
+					CE.canvas.information.context.lineTo(this.x, this.y - topMax + diagramSizeY / 2);
+					CE.canvas.information.context.fill();
+					CE.canvas.information.context.fillStyle = ColorHelper.Color.YELLOW.top;
+					CE.canvas.information.context.beginPath();
+					CE.canvas.information.context.lineTo(this.x - diagramSizeX / 2, this.y - topMax);
+					CE.canvas.information.context.lineTo(this.x, this.y - topMax + diagramSizeY / 2);
+					CE.canvas.information.context.lineTo(this.x + diagramSizeX / 2, this.y - topMax);
+					CE.canvas.information.context.lineTo(this.x, this.y - topMax - diagramSizeY / 2);
+					CE.canvas.information.context.fill();
+				}
 			}
 		}
 	},
