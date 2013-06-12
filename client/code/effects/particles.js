@@ -20,6 +20,7 @@ function ParticlesEmitter(sprite, x, y, growth, amountMax, lifetime, extinctionD
 	this.scale = 1;//taille de reference des elements
 	this.scaleDelta = 0;//delta de taille pour chaque element
 	this.gravity = 0;
+	this.delay = 0;
 	this.rotation = 1 * Math.PI / 180;
 	this.visible = true;
 	this.extinctionDuration = extinctionDuration || 10;//to manage alpha extinction
@@ -65,49 +66,53 @@ ParticlesEmitter.prototype = {
 	},
 	update: function () {
 		if (this.started) {
-			if (this.amount < this.amountMax || this.amountMax == -1) {
-				var newParticleCount = 0;
-				if (this.amountMax == -1) {
-					newParticleCount = this.growth;
-				} else {
-					newParticleCount = Math.min(this.amountMax - this.amount, this.growth);
-				}
-				if (this.growth >= 1) {
-					for (var i = 0; i < newParticleCount; i++) {
-						var particle = new Particle(this.scatteringX, this.scatteringY, this.speed, this.speedDelta,
-							this.scale, this.scaleDelta, this.scaleSpeed, this.rotation, this.angle, this.angleDelta, this.lifetime, this.extinctionDuration);
-						this.particles.push(particle);
-						this.amount++;
+			if (this.delay > 0) {
+				this.delay--;
+			} else {
+				if (this.amount < this.amountMax || this.amountMax == -1) {
+					var newParticleCount = 0;
+					if (this.amountMax == -1) {
+						newParticleCount = this.growth;
+					} else {
+						newParticleCount = Math.min(this.amountMax - this.amount, this.growth);
 					}
-				} else {
-					if (Math.floor(this.amount + this.growth) > Math.floor(this.amount)) {
-						var particle = new Particle(this.scatteringX, this.scatteringY, this.speed, this.speedDelta,
-							this.scale, this.scaleDelta, this.scaleSpeed, this.rotation, this.angle, this.angleDelta, this.lifetime, this.extinctionDuration);
-						this.particles.push(particle);
-					}
-					this.amount += this.growth;
-
-				}
-			}
-			if (this.particles.length == 0 && this.amount >= this.amountMax && this.amountMax != -1) {
-				this.started = false;
-				this.endEvent();
-				return false;
-			}
-			if (this.visible) {
-				for (i = 0; i < this.particles.length; i++) {
-					if (!this.particles[i].update(this.gravity))//if particle is dead
-					{
-						if (this.amountMax == -1) {//for infinite emittor only
-							this.amount--;
+					if (this.growth >= 1) {
+						for (var i = 0; i < newParticleCount; i++) {
+							var particle = new Particle(this.scatteringX, this.scatteringY, this.speed, this.speedDelta,
+								this.scale, this.scaleDelta, this.scaleSpeed, this.rotation, this.angle, this.angleDelta, this.lifetime, this.extinctionDuration);
+							this.particles.push(particle);
+							this.amount++;
 						}
-						this.particles.removeItemAtIndex(i);//enfin on supprime les particules haha
+					} else {
+						if (Math.floor(this.amount + this.growth) > Math.floor(this.amount)) {
+							var particle = new Particle(this.scatteringX, this.scatteringY, this.speed, this.speedDelta,
+								this.scale, this.scaleDelta, this.scaleSpeed, this.rotation, this.angle, this.angleDelta, this.lifetime, this.extinctionDuration);
+							this.particles.push(particle);
+						}
+						this.amount += this.growth;
+
 					}
 				}
+				if (this.particles.length == 0 && this.amount >= this.amountMax && this.amountMax != -1) {
+					this.started = false;
+					this.endEvent();
+					return false;
+				}
+				if (this.visible) {
+					for (i = 0; i < this.particles.length; i++) {
+						if (!this.particles[i].update(this.gravity))//if particle is dead
+						{
+							if (this.amountMax == -1) {//for infinite emittor only
+								this.amount--;
+							}
+							this.particles.removeItemAtIndex(i);//enfin on supprime les particules haha
+						}
+					}
+					return true;
+				} else {
+					return true;
+				}
 			}
-			return true;
-		} else {
-			return true;
 		}
 	},
 	draw: function (maxAlpha) {

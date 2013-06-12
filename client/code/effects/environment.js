@@ -81,6 +81,7 @@ CrymeEngine.Environment = {
 		var particle = new MapItems.Effect(col, line);
 		var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.ROTTEN_SMOKE, particle.x, particle.y - 5, 0.004, -1, 240, 160);
 		effect.start(0, 0, 0, 0, 0.1, 0.2, 0.01);
+		effect.delay = Math.random() * 240;
 		particle.addEffect(effect);
 		this.preEffects.push(particle);
 	},
@@ -91,12 +92,15 @@ CrymeEngine.Environment = {
 		particle.addEffect(effect);
 		var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.ICE, particle.x + 185, particle.y - 140, 0.004, -1, 300, 120);
 		effect.start(0, 0, 0, 0, 0.1, 0, 0.005);
+		effect.delay = Math.random() * 300;
 		particle.addEffect(effect);
 		var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.ICE, particle.x + 85, particle.y + 55, 0.004, -1, 300, 120);
 		effect.start(0, 0, 0, 0, 0.1, 0, 0.005);
+		effect.delay = Math.random() * 300;
 		particle.addEffect(effect);
 		var effect = new ParticlesEmitter(SpritePack.Effects.Sprites.ICE, particle.x + 270, particle.y - 90, 0.004, -1, 300, 120);
 		effect.start(0, 0, 0, 0, 0.1, 0, 0.005);
+		effect.delay = Math.random() * 300;
 		particle.addEffect(effect);
 		this.preEffects.push(particle);
 	},
