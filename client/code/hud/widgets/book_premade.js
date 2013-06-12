@@ -150,15 +150,16 @@ HudElements.Book.Premade.Building = function (building) {
 
 	inventory.leftPage.viewbag.buildingFillMeter = new HudElements.ProgressBar(200, 32, 0, 0, HudElement.Anchors.BOTTOM_CENTER);
 
-	inventory.leftPage.viewbag.sellBuilding = HudElements.Button.Premade.buy(0, 0, HudElement.Anchors.BOTTOM_LEFT);
+	inventory.leftPage.viewbag.sellBuilding = HudElements.Button.Premade.buy(4, 5, HudElement.Anchors.BOTTOM_LEFT);
 	inventory.leftPage.viewbag.sellBuilding.onClick = function (x, y, index, item) {
 		networkEngine.subsystems.player.actions.sellBuilding();
+		CE.hud.panels.building_content.close();
 	};
 
 	inventory.leftPage.viewbag.sellBuildingPrice = new HudElements.Text("");
 	inventory.leftPage.viewbag.sellBuildingPrice.anchor = HudElement.Anchors.BOTTOM_LEFT;
-	inventory.leftPage.viewbag.sellBuildingPrice.verticalMargin = 0;
-	inventory.leftPage.viewbag.sellBuildingPrice.horizontalMargin = 45;
+	inventory.leftPage.viewbag.sellBuildingPrice.verticalMargin = -9;
+	inventory.leftPage.viewbag.sellBuildingPrice.horizontalMargin = 52;
 
 	inventory.leftPage.addChild(inventory.leftPage.viewbag.sellBuilding);
 	inventory.leftPage.addChild(inventory.leftPage.viewbag.sellBuildingPrice);
