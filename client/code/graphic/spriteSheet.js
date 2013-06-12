@@ -85,6 +85,7 @@ function LoadSpritePack() {
 	SpritePack.Crops.Sprites.CORN_2 = new Sprite('corn_2', 116, 88);
 	SpritePack.Crops.Sprites.CORN_3 = new Sprite('corn_3', 114, 96);
 	SpritePack.Crops.Sprites.CORN_4 = new Sprite('corn_4', 114, 101);
+	SpritePack.Crops.Sprites.ROTTEN = new Sprite('rotten', 134, 94);
 
 	SpritePack.Tiles.Sprites.SOIL_0 = new Sprite('soil_0');
 	SpritePack.Tiles.Sprites.SOIL_1 = new Sprite('soil_1');
