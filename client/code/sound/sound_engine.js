@@ -9,7 +9,8 @@ CrymeEngine.Sound = {
 		wololo: new Sound("wololo", "wololo.wav"),
 		ambiant: {
 			rain: new Sound("ambiant/rain", "ambiant/rain.wav", true, true),
-			thunder: new Sound("ambiant/thunder", "ambiant/thunder.wav", true, 0)
+			thunder: new Sound("ambiant/thunder", "ambiant/thunder.wav", true, 0),
+			explosion: new Sound("ambiant/explosion", "ambiant/explosion.wav", true, 0)
 		},
 		action: {
 			buy_building: new Sound("action/buy_building", "action/buy_building.wav"),
@@ -19,6 +20,7 @@ CrymeEngine.Sound = {
 			waters: new Sound("action/waters", "action/waters.wav")
 		},
 		music: {
+			prefight: new Sound("music/prefight", "music/prefight.mp3"),
 			fight: new Sound("music/fight", "music/fight.mp3")
 		}
 	},

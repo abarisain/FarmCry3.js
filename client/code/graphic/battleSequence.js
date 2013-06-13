@@ -112,11 +112,57 @@ Battle.Sequences.MainTimeline = function (playerName, opponentName) {
 		)
 	);
 	this.keyFrames.push(
-		new Battle.KeyFrame(3, 0.1, function (progress) {//drawAction
+		new Battle.KeyFrame(3, 0.1, function (progress) {
 				CE.Battle.launchFight();
 			},
 			null, null)
 	);
+	this.keyFrames.push(
+		new Battle.KeyFrame(6.25, 0.5, function (progress) {//begin
+				Options.Graphic.timeSpeed = 0.4;
+			},
+			null,
+			function (progress) {//end
+				Options.Graphic.timeSpeed = 1;
+			})
+	);
+	this.keyFrames.push(
+		new Battle.KeyFrame(7.75, 0.5, function (progress) {//begin
+				Options.Graphic.timeSpeed = 1.4;
+			},
+			null,
+			function (progress) {//end
+				Options.Graphic.timeSpeed = 1;
+			})
+	);
+	this.keyFrames.push(
+		new Battle.KeyFrame(8.25, 0.5, function (progress) {//begin
+				Options.Graphic.timeSpeed = 0.4;
+			},
+			null,
+			function (progress) {//end
+				Options.Graphic.timeSpeed = 1;
+			})
+	);
+	this.keyFrames.push(
+		new Battle.KeyFrame(11.25, 1.5, function (progress) {//begin
+				Options.Graphic.timeSpeed = 1.5;
+			},
+			null,
+			function (progress) {//end
+				Options.Graphic.timeSpeed = 1;
+			})
+	);
+	//kikoo reverse effect
+	/*this.keyFrames.push(
+	 new Battle.KeyFrame(9.9, 5, function (progress) {//begin
+	 Options.Graphic.timeSpeed = -0.5;
+	 },
+	 null,
+	 function (progress) {//end
+	 Options.Graphic.timeSpeed = 1;
+	 })
+	 );*/
 }
 
 Battle.Sequences.MainTimeline.prototype = new Battle.Sequence();
@@ -269,7 +315,16 @@ Battle.Sequences.Player = function (name, x, y, life, damage) {
 	this.addAnimation(5 + dodgeDelay, 'PLAYER_HIT', 1 - dodgeDelay);
 	this.addDamage(5 + dodgeDelay, 20);
 	this.addAnimation(6, 'PLAYER_DODGE_AK');
-	this.addAnimation(7, 'PLAYER_AK');
+	this.addAnimation(7, 'PLAYER_FORK');
+	this.addAnimation(8, 'PLAYER_FORK');
+	this.addAnimation(9 + dodgeDelay, 'PLAYER_HIT', 1 - dodgeDelay);
+	this.addDamage(9 + dodgeDelay, 30);
+	this.addAnimation(10, 'PLAYER_AK');
+	this.addAnimation(11, 'PLAYER_FORK');
+	this.addAnimation(12 + dodgeDelay, 'PLAYER_HIT', 1 - dodgeDelay);
+	this.addDamage(12 + dodgeDelay, 30);
+	this.addAnimation(13, 'PLAYER_FORK');
+
 	this.initialized = true;
 }
 
@@ -310,20 +365,32 @@ Battle.Sequences.Opponent = function (name, x, y, life, damage) {
 		)
 	);
 	this.keyFrames.push(
-		new Battle.KeyFrame(3.2, 0.4, null, null, null,
+		new Battle.KeyFrame(3.2, 0.5, function () {
+				CE.Sound.sounds.ambiant.explosion.play();
+			}, null, null,
 			function (progress) {//action
 				CE.canvas.animation.context.globalAlpha = progress;
-				SpritePack.Battle.Sprites.SHOCKWAVE.drawOnAnimation(this.finalX, this.finalY - 100);
-				SpritePack.Battle.Sprites.EXPLOSION.drawOnAnimation(this.finalX, this.finalY - 150);
+				SpritePack.Battle.Sprites.SHOCKWAVE.scale = 0.5 + 0.5 * progress;
+				SpritePack.Battle.Sprites.SHOCKWAVE.drawOnAnimation(this.finalX, this.finalY);
+				SpritePack.Battle.Sprites.EXPLOSION.scale = 0.5 + 0.5 * progress;
+				SpritePack.Battle.Sprites.EXPLOSION.drawOnAnimation(this.finalX, this.finalY - 150 * progress);
 			}.bind(this)
 		)
 	);
 	this.addAnimation(3, 'OPPONENT_INTRO');
 	this.addAnimation(4 + dodgeDelay, 'OPPONENT_DODGE_AK', 1 - dodgeDelay);
 	this.addAnimation(5, 'OPPONENT_AK');
-	this.addAnimation(6, 'OPPONENT_AK');
+	this.addAnimation(6, 'OPPONENT_FORK');
 	this.addAnimation(7 + dodgeDelay, 'OPPONENT_HIT', 1 - dodgeDelay);
 	this.addDamage(7 + dodgeDelay, 30);
+	this.addAnimation(8 + dodgeDelay, 'OPPONENT_DODGE', 1 - dodgeDelay);
+	this.addAnimation(9, 'OPPONENT_AK');
+	this.addAnimation(10, 'OPPONENT_AK');
+	this.addAnimation(11 + dodgeDelay, 'OPPONENT_HIT', 1 - dodgeDelay);
+	this.addDamage(11 + dodgeDelay, 10);
+	this.addAnimation(12, 'OPPONENT_FORK');
+	this.addAnimation(13 + dodgeDelay, 'OPPONENT_HIT', 1 - dodgeDelay);
+	this.addDamage(13 + dodgeDelay, 20);
 	this.initialized = true;
 }
 

@@ -11,7 +11,8 @@ CrymeEngine.Battle = {
 	damageOpponentRemaining: 0,
 	FightPhase: {
 		INTRODUCTION: 0,
-		FIGHT: 1
+		FIGHT: 1,
+		END: 2
 	},
 	fightPhase: 0,
 	oldChatVisibility: true,
@@ -32,11 +33,12 @@ CrymeEngine.Battle = {
 			this.sequenceFight = new Battle.Sequences.MainTimeline();
 			CE.Battle.Timeline.sequences.push(this.sequenceFight);
 
-			this.elements = [];
-			for (var i = 0; i < 4; i++) {
-				for (var j = 0; j < 5; j++) {
-					this.elements.push(new Battle.BackgroundParticle(-1500 + j * 600 - 200 * i, -2000 + i * 400 + 300 * j));
-				}
+
+		}
+		this.elements = [];
+		for (var i = 0; i < 4; i++) {
+			for (var j = 0; j < 5; j++) {
+				this.elements.push(new Battle.BackgroundParticle(-1500 + j * 600 - 200 * i, -2000 + i * 400 + 300 * j));
 			}
 		}
 		this.initialized = true;
@@ -44,13 +46,18 @@ CrymeEngine.Battle = {
 	launchBattle: function (data) {//c'est temporaire de passer le sprite de l'arme en paramètre of course
 		this.damagePlayer = data.health_loss_mine;
 		this.damageOpponent = data.health_loss_theirs;
+		Options.Graphic.timeSpeed = 1;
+		CrymeEngine.Sound.sounds.music.prefight.play(0);
 		this.init();
 
 	},
 	launchFight: function () {
+		Options.Graphic.timeSpeed = 1;
 		this.fightPhase = CE.Battle.FightPhase.FIGHT;
 		this.elements = [];
-		CrymeEngine.Sound.sounds.music.fight.play(300);
+		CrymeEngine.Sound.sounds.music.fight.play(1.2);
+		//CE.Sound.sounds.ambiant.thunder.play(0);
+		//CE.Sound.sounds.ambiant.rumble.play(0);
 	},
 	stopBattle: function () {
 		CE.hud.chat.toggleVisibility(this.oldChatVisibility);

@@ -2,8 +2,8 @@
 CE.Battle.Timeline = {
 	sequences: [],
 	currentFrame: 0,
-	duration: 15,//10 sec
-	frameCount: 15 * Options.Graphic.refreshRate,
+	duration: 14,//10 sec
+	frameCount: 14 * Options.Graphic.refreshRate,
 	started: true,
 	/**
 	 *

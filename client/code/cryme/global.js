@@ -37,7 +37,7 @@ Options.Graphic = {
 	advancedEffects: true,
 	refreshRate: 60,
 	refreshRateReference: 60,//default,
-	timeSpeed: 2//for battle only
+	timeSpeed: 1//for battle only
 };
 
 Options.Sound = {
