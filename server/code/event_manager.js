@@ -349,10 +349,12 @@ var EventManager = {
 					this.substractHealth(farmer, healthLossMine);
 					this.substractHealth(targetTile.owner, healthLossTheirs);
 					NetworkEngine.clients.getConnectionForFarmer(farmer).send("player.launchBattle", {
+						opponent: targetTile.owner.nickname,
 						health_loss_mine: healthLossMine,
 						health_loss_theirs: healthLossTheirs
 					});
 					NetworkEngine.clients.getConnectionForFarmer(targetTile.owner).send("player.launchBattle", {
+						opponent: farmer.nickname,
 						health_loss_mine: healthLossTheirs,
 						health_loss_theirs: healthLossMine
 					});
