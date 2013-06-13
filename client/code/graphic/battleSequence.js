@@ -216,6 +216,7 @@ Battle.Sequences.Fighter.prototype.constructor = Battle.Sequences.Fighter;
 Battle.Sequences.Fighter.prototype.resetParent = Battle.Sequences.Fighter.prototype.reset;
 Battle.Sequences.Fighter.prototype.reset = function () {
 	this.resetParent();
+	this.hit_points.reset(0);
 	this.state = Battle.Sequences.Fighter.State.INTRO;
 }
 
