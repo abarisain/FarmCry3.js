@@ -33,6 +33,9 @@ var screenshots = {};
 var saveScreenshotAsPng = function (key) {
 	document.location.href = screenshots[key].replace("image/png", "image/octet-stream");
 }
+var saveScreenshotToClipboard = function (key) {
+	window.clipboardData.setData("Text", screenshots[key].replace("data:image/png;base64", ""));
+}
 
 //Moteur réseau
 var networkEngine;
