@@ -12,6 +12,7 @@ Farmer = require('../models/farmer');
 
 module.exports = {
 	timeout: 300, //5 minutes
+	debugDisablePasswordCheck: false,
 	clients: {
 		list: [],
 		getConnectionForFarmer: function (farmer) {

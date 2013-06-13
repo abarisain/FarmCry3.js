@@ -1,6 +1,7 @@
 FCError = require('../fcerror.js');
 GameState = require('../../models/gamestate');
 EventManager = require('../../event_manager');
+NetworkEngine = require('../engine');
 Farmer = require('../../models/farmer');
 
 var NetworkModule = {
@@ -17,15 +18,13 @@ var NetworkModule = {
 			for (var i = 0; i < farmersCount; i++) {
 				currentFarmer = GameState.farmers[i];
 				if (data.email == currentFarmer.email) {
-					//TODO : CRYPT THIS SHIT
-					//Password check is disabled, too annoying for debugging. I tested it before commenting it.
-					//if(currentFarmer.checkPassword(data.password)) {
-					connection.authenticated = true;
-					connection.farmer = currentFarmer;
-					callback({result: "ok", farmer: currentFarmer.getSmallFarmer()});
-					EventManager.subsystems.player.connected(connection, connection.farmer);
-					return;
-					//}
+					if(currentFarmer.checkPassword(data.password) || NetworkEngine.debugDisablePasswordCheck) {
+						connection.authenticated = true;
+						connection.farmer = currentFarmer;
+						callback({result: "ok", farmer: currentFarmer.getSmallFarmer()});
+						EventManager.subsystems.player.connected(connection, connection.farmer);
+						return;
+					}
 				}
 			}
 			//Login failed if this code is reached

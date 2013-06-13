@@ -73,24 +73,29 @@ HudElements.Book.Premade.Inventory = function () {
 	}).bind(inventory);
 
 	inventory.leftPage.title = "Character";
+	inventory.leftPage.verticalMargin = 40;
+	inventory.leftPage.addChild(new HudElement("farmer_avatar", "farmer_full_old", 164, 179, 0, 0, HudElement.Anchors.TOP_CENTER, false));
+
 	inventory.leftPage.viewbag.nickname = new HudElements.Text("");
+	inventory.leftPage.viewbag.nickname.anchor = HudElement.Anchors.TOP_CENTER;
 	inventory.leftPage.viewbag.nickname.setFont("bold 18pt stanberry,Calibri,Geneva,Arial");
-	inventory.leftPage.viewbag.nickname.horizontalMargin = 30;
-	inventory.leftPage.viewbag.nickname.verticalMargin = 12;
+	inventory.leftPage.viewbag.nickname.horizontalMargin = 0;
+	inventory.leftPage.viewbag.nickname.verticalMargin = 199;
 	inventory.leftPage.viewbag.nickname.setText(GameState.player.nickname);
 
-	inventory.leftPage.viewbag.healthProgress = new HudElements.ProgressBar(200, 32, 52, 30, HudElement.Anchors.TOP_LEFT);
+	inventory.leftPage.viewbag.healthProgress = new HudElements.ProgressBar(200, 42, 242, 0, HudElement.Anchors.TOP_CENTER);
 	inventory.leftPage.viewbag.healthProgress.setProgressImage("progressbar_red");
 
-	inventory.leftPage.addChild(new HudElement("money_icon", "coin", 20, 23, 110, 30, HudElement.Anchors.TOP_LEFT, false));
+	inventory.leftPage.addChild(new HudElement("money_icon", "coin", 20, 23, 313, 140, HudElement.Anchors.TOP_LEFT, false));
 	inventory.leftPage.viewbag.moneyLabel = new HudElements.Text("");
-	inventory.leftPage.viewbag.moneyLabel.horizontalMargin = 60;
-	inventory.leftPage.viewbag.moneyLabel.verticalMargin = 112;
+	inventory.leftPage.viewbag.moneyLabel.horizontalMargin = 170;
+	inventory.leftPage.viewbag.moneyLabel.verticalMargin = 315;
 	inventory.leftPage.viewbag.moneyLabel.setTextFunction(function () {
 		if (GameState.player == null)
 			return 0;
 		return GameState.player.money;
 	});
+
 	inventory.leftPage.addChild(inventory.leftPage.viewbag.nickname);
 	inventory.leftPage.addChild(inventory.leftPage.viewbag.moneyLabel);
 	inventory.leftPage.addChild(inventory.leftPage.viewbag.healthProgress);

@@ -48,7 +48,8 @@ CrymeEngine.hud = {
 		stored_wheat: null,
 		topbar: null,
 		book: null,
-		coin: null
+		coin: null,
+		farmer_full_old: null
 	},
 	panels: {
 		lifebar: null,
@@ -192,12 +193,26 @@ CrymeEngine.hud = {
 		this.rootHudElement.viewbag.filter_text = new HudElements.Text("No filter", HudElement.Anchors.CENTER);
 		this.rootHudElement.viewbag.filter_header.addChild(this.rootHudElement.viewbag.filter_text);
 
+		var makeFilterButtonText = function (filter, parent) {
+			var filterText = new HudElements.Text(filter.name);
+			filterText.verticalMargin = parent.verticalMargin + 5;
+			filterText.horizontalMargin = parent.horizontalMargin - 48;
+			filterText.anchor = HudElement.Anchors.TOP_RIGHT;
+			filterText.visible = false;
+			filterText.setColor("#fff");
+			filterText.setStroke(true, "rgba(0, 0, 0, 0.4)");
+			return filterText;
+		}
+
 		var filter = new HudElement("filterOwner", "filter_owner", 32, 32, 100, -34, HudElement.Anchors.TOP_RIGHT, true);
 		filter.onClick = function () {
 			CE.Event.changeFilterType(CE.FilterType.OWNER);
 		}
 		filter.visible = false;
+		var filterText = makeFilterButtonText(CE.FilterType.OWNER, filter);
+		CE.hud.panels.filter_buttons.push(filterText);
 		CE.hud.panels.filter_buttons.push(filter);
+		this.rootHudElement.addChild(filterText);
 		this.rootHudElement.addChild(filter);
 
 		filter = new HudElement("filterHumidity", "filter_humidity", 32, 32, 140, -34, HudElement.Anchors.TOP_RIGHT, true);
@@ -205,7 +220,10 @@ CrymeEngine.hud = {
 			CE.Event.changeFilterType(CE.FilterType.HUMIDITY);
 		}
 		filter.visible = false;
+		var filterText = makeFilterButtonText(CE.FilterType.HUMIDITY, filter);
+		CE.hud.panels.filter_buttons.push(filterText);
 		CE.hud.panels.filter_buttons.push(filter);
+		this.rootHudElement.addChild(filterText);
 		this.rootHudElement.addChild(filter);
 
 		filter = new HudElement("filterFertility", "filter_fertility", 32, 32, 180, -34, HudElement.Anchors.TOP_RIGHT, true);
@@ -213,7 +231,10 @@ CrymeEngine.hud = {
 			CE.Event.changeFilterType(CE.FilterType.FERTILITY);
 		}
 		filter.visible = false;
+		var filterText = makeFilterButtonText(CE.FilterType.FERTILITY, filter);
+		CE.hud.panels.filter_buttons.push(filterText);
 		CE.hud.panels.filter_buttons.push(filter);
+		this.rootHudElement.addChild(filterText);
 		this.rootHudElement.addChild(filter);
 
 		filter = new HudElement("filterMaturity", "filter_maturity", 32, 32, 220, -34, HudElement.Anchors.TOP_RIGHT, true);
@@ -221,7 +242,10 @@ CrymeEngine.hud = {
 			CE.Event.changeFilterType(CE.FilterType.MATURITY);
 		}
 		filter.visible = false;
+		var filterText = makeFilterButtonText(CE.FilterType.MATURITY, filter);
+		CE.hud.panels.filter_buttons.push(filterText);
 		CE.hud.panels.filter_buttons.push(filter);
+		this.rootHudElement.addChild(filterText);
 		this.rootHudElement.addChild(filter);
 
 		filter = new HudElement("filterHealth", "filter_health", 32, 32, 260, -34, HudElement.Anchors.TOP_RIGHT, true);
@@ -229,7 +253,10 @@ CrymeEngine.hud = {
 			CE.Event.changeFilterType(CE.FilterType.HEALTH);
 		}
 		filter.visible = false;
+		var filterText = makeFilterButtonText(CE.FilterType.HEALTH, filter);
+		CE.hud.panels.filter_buttons.push(filterText);
 		CE.hud.panels.filter_buttons.push(filter);
+		this.rootHudElement.addChild(filterText);
 		this.rootHudElement.addChild(filter);
 
 		filter = new HudElement("filterStorage", "filter_storage", 32, 32, 300, -34, HudElement.Anchors.TOP_RIGHT, true);
@@ -237,7 +264,10 @@ CrymeEngine.hud = {
 			CE.Event.changeFilterType(CE.FilterType.STORAGE_AVAILABLE);
 		}
 		filter.visible = false;
+		var filterText = makeFilterButtonText(CE.FilterType.STORAGE_AVAILABLE, filter);
+		CE.hud.panels.filter_buttons.push(filterText);
 		CE.hud.panels.filter_buttons.push(filter);
+		this.rootHudElement.addChild(filterText);
 		this.rootHudElement.addChild(filter);
 	},
 	loadTextures: function () {

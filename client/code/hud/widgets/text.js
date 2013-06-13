@@ -37,6 +37,8 @@ HudElements.Text.prototype.updateWithTextFunction = function () {
 HudElements.Text.prototype.draw = function () {
 	if(this._text == null && this._textFunction == null)
 		return;
+	if(!this.visible)
+		return;
 	//No need to call base since there is no background image or children
 	this.setupCanvas();
 	//If no text function, this function does nothing.
