@@ -16,24 +16,21 @@ CrymeEngine.Battle = {
 	},
 	fightPhase: 0,
 	oldChatVisibility: true,
-	init: function () {
+	init: function (opponentName) {
 		this.oldChatVisibility = CE.hud.chat.visible;
 		CE.hud.chat.toggleVisibility(false);
 		this.fightPhase = CE.Battle.FightPhase.INTRODUCTION;
 		this.background = SpritePack.Battle.Sprites.BACKGROUND;
 
 		if (CE.Battle.Timeline.start()) {
-
-			this.sequencePlayer = new Battle.Sequences.Player('Guigui', canvasWidth / 2 + 130, canvasHeight / 2 + 100, 100, 50);
+			this.sequencePlayer = new Battle.Sequences.Player(Map.player.farmer.nickname, canvasWidth / 2 + 130, canvasHeight / 2 + 100, 100, 50);
 			CE.Battle.Timeline.sequences.push(this.sequencePlayer);
 
-			this.sequenceOpponent = new Battle.Sequences.Opponent('Kalahim', canvasWidth / 2 - 130, canvasHeight / 2 + 100, 80, 40);
+			this.sequenceOpponent = new Battle.Sequences.Opponent(opponentName, canvasWidth / 2 - 130, canvasHeight / 2 + 100, 80, 40);
 			CE.Battle.Timeline.sequences.push(this.sequenceOpponent);
 
 			this.sequenceFight = new Battle.Sequences.MainTimeline();
 			CE.Battle.Timeline.sequences.push(this.sequenceFight);
-
-
 		}
 		this.elements = [];
 		for (var i = 0; i < 4; i++) {
@@ -48,7 +45,7 @@ CrymeEngine.Battle = {
 		this.damageOpponent = data.health_loss_theirs;
 		Options.Graphic.timeSpeed = 1;
 		CrymeEngine.Sound.sounds.music.prefight.play(0);
-		this.init();
+		this.init(data.opponent);
 
 	},
 	launchFight: function () {

@@ -43,6 +43,12 @@ ParticlesEmitter.prototype = {
 	stop: function () {
 		this.amountMax = -2;//for unlimited particles only
 	},
+	reset: function (amountMax) {
+		this.particles = [];
+		this.amount = 0;
+		this.amountMax = amountMax;
+		this.lifetime = this.lifetimeMax;
+	},
 	init: function (speed, speedDelta, angle, angleDelta, scale, scaleDelta, scaleSpeed) {
 		this.speed = speed;
 		this.speedDelta = speedDelta || 0;
