@@ -48,20 +48,20 @@ var CrymeEngine = {
 	canvas: { //Element type : CrymeCanvas
 		resizeAll: function (width, height) {
 			Object.keys(CrymeEngine.canvas).forEach(function (targetCanvas) {
-				if (targetCanvas != 'resizeAll' && targetCanvas != 'logAsPng') { //Exclude this function
+				if (targetCanvas != 'resizeAll' && targetCanvas != 'screenshot') { //Exclude this function
 					CrymeEngine.canvas[targetCanvas].resize(width, height);
 				}
 			});
 		},
-		logAsPng: function () {
+		screenshot: function () {
 			for (var key in CE.canvas) {
 				var cn = CE.canvas[key];
 				if (cn == CE.canvas.resizeAll || cn == undefined
-					|| cn == CE.canvas.logAsPng) {
+					|| cn == CE.canvas.screenshot) {
 					continue;
 				}
-				;
-				console.log(key + " " + cn.canvas.toDataURL("image/png"));
+				screenshots[key] = cn.canvas.toDataURL("image/png");
+				//console.log(key + " " + cn.canvas.toDataURL("image/png"));
 			}
 		}
 	},

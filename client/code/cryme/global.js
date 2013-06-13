@@ -28,6 +28,12 @@ var currentLoadingCount = 0;
 var loadingComplete = false;
 var initialData = null;
 
+//screenshots
+var screenshots = {};
+var saveScreenshotAsPng = function (key) {
+	document.location.href = screenshots[key].replace("image/png", "image/octet-stream");
+}
+
 //Moteur réseau
 var networkEngine;
 
