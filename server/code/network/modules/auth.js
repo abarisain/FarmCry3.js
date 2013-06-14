@@ -58,9 +58,9 @@ var NetworkModule = {
 			}
 
 			var email = data.email.toLowerCase();
-			var nickname = data.nickname.toLowerCase();
+			var nickname = data.nickname;
 			GameState.farmers.forEach(function (farmer) {
-				if(farmer.nickname.toLowerCase() == nickname)
+				if(farmer.nickname.toLowerCase() == nickname.toLowerCase())
 					failMessage += "\nThis nickname is already used.";
 				if(farmer.email.toLowerCase() == email)
 					failMessage += "\nThis email is already used.";
