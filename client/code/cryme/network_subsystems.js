@@ -86,10 +86,11 @@ networkEngine.subsystems.player = {
 			CE.hud.events.refreshCharacter();
 		},
 		healthUpdated: function (data) {
-			if (GameState.player != null)
+			if (loadingComplete) {
 				GameState.player.health = data.health;
-			CE.hud.panels.lifebar.setProgress(GameState.player.health);
-			CE.hud.events.refreshCharacter();
+				CE.hud.panels.lifebar.setProgress(GameState.player.health);
+				CE.hud.events.refreshCharacter();
+			}
 		},
 		launchBattle: function (data) {
 			CE.Event.launchBattle(data);
