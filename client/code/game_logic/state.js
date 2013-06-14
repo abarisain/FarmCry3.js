@@ -20,7 +20,7 @@ GameState = {
 			return;
 		var playerCount = this.online_players.length;
 		for (var i = playerCount - 1; i >= 0; i--) {
-			if (this.online_players[i].nickname == nickname) {
+			if (this.online_players[i].nickname.toLowerCase() == nickname.toLowerCase()) {
 				this.online_players.removeItemAtIndex(i);
 
 			}

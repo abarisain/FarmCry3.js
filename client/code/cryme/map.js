@@ -66,7 +66,7 @@ var Map = {
 			return;
 		var count = this.players.length;
 		for (var i = count - 1; i >= 0; i--) {
-			if (this.players[i].farmer.nickname == nickname) {
+			if (this.players[i].farmer.nickname.toLowerCase() == nickname.toLowerCase()) {
 				this.players.removeItemAtIndex(i);
 			}
 			break;
