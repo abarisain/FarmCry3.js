@@ -52,7 +52,7 @@ var NetworkModule = {
 				failMessage += "\nBad password format. It must be only letters, numbers and '_', and be between 6 or 16 characters.";
 			}
 
-			var difficultyPattern = /^(easy|hard|medium)$/;
+			var difficultyPattern = /^(easy|hard|normal)$/;
 			if (!difficultyPattern.test(data.difficulty)) {
 				failMessage += "\nBad difficulty.";
 			}
@@ -60,9 +60,9 @@ var NetworkModule = {
 			var email = data.email.toLowerCase();
 			var nickname = data.nickname.toLowerCase();
 			GameState.farmers.forEach(function (farmer) {
-				if(farmer.nickname == nickname)
+				if(farmer.nickname.toLowerCase() == nickname)
 					failMessage += "\nThis nickname is already used.";
-				if(farmer.email == email)
+				if(farmer.email.toLowerCase() == email)
 					failMessage += "\nThis email is already used.";
 			});
 
