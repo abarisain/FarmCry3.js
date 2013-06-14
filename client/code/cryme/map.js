@@ -107,14 +107,7 @@ var Map = {
 	drawBackground: function () {
 		CE.canvas.map.context.fillStyle = "#f9f9f9";
 		CE.canvas.map.context.fillRect(this.rect.x, this.rect.y, this.rect.dx, this.rect.dy);
-		CE.canvas.map.context.drawImage(SpritePack.Background.Sprites.TOP_LEFT.image, this.rect.x, this.rect.y);
-		CE.canvas.map.context.drawImage(SpritePack.Background.Sprites.TOP_RIGHT.image, this.rect.x + this.rect.dx -
-			SpritePack.Background.Sprites.TOP_RIGHT.centerX, this.rect.y);
-		CE.canvas.map.context.drawImage(SpritePack.Background.Sprites.BOTTOM_LEFT.image, this.rect.x, this.rect.y +
-			this.rect.dy - SpritePack.Background.Sprites.BOTTOM_LEFT.centerY);
-		CE.canvas.map.context.drawImage(SpritePack.Background.Sprites.BOTTOM_RIGHT.image, this.rect.x + this.rect.dx -
-			SpritePack.Background.Sprites.BOTTOM_RIGHT.centerX, this.rect.y + this.rect.dy -
-			SpritePack.Background.Sprites.BOTTOM_RIGHT.centerY);
+		//les bordures s'affichent plus de toute façon.
 	},
 	drawMapLoading: function (progress) {
 		for (var i = 0; i < Math.min(this.tiles.length * progress, this.tiles.length); i++) {

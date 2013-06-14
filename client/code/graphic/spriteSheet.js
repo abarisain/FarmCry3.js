@@ -171,11 +171,6 @@ function LoadSpritePack() {
 	SpritePack.Fight.Sprites.OPPONENT_DODGE_AK = new Sprites.Animation('opponent_dodge_ak', 131, 114, 23, 60, 2);
 	SpritePack.Fight.Sprites.OPPONENT_HIT = new Sprites.Animation('opponent_hit', 102, 124, 23, 40, 2);
 
-	SpritePack.Background.Sprites.TOP_LEFT = new Sprite('bkg_top_left', 0, 0, false, ".jpg");
-	SpritePack.Background.Sprites.TOP_RIGHT = new Sprite('bkg_top_right', 1920, 0, false, ".jpg");
-	SpritePack.Background.Sprites.BOTTOM_LEFT = new Sprite('bkg_bottom_left', 0, 1080, false, ".jpg");
-	SpritePack.Background.Sprites.BOTTOM_RIGHT = new Sprite('bkg_bottom_right', 1920, 1080, false, ".jpg");
-
 	for (var key in SpritePack) {
 		SpritePack[key].loadSprites();
 	}
