@@ -32,7 +32,7 @@ var NetworkModule = {
 		},
 
 		register: function (connection, request, data, callback) {
-			var failMessage = null;
+			var failMessage = "";
 
 			if (typeof data.nickname == 'undefined' || typeof data.email == 'undefined'
 				|| typeof data.password == 'undefined' || typeof data.difficulty == 'undefined') {
@@ -49,7 +49,7 @@ var NetworkModule = {
 			}
 			var passwordPattern = /^.{6,64}$/;
 			if (!passwordPattern.test(data.password)) {
-				failMessage += "\nBad password format. It must be only letters, numbers and '_', and be between 4 or 16 characters.";
+				failMessage += "\nBad password format. It must be only letters, numbers and '_', and be between 6 or 16 characters.";
 			}
 
 			var difficultyPattern = /^(easy|hard|medium)$/;
@@ -66,7 +66,7 @@ var NetworkModule = {
 					failMessage += "\nThis email is already used.";
 			});
 
-			if (failMessage == null) {
+			if (failMessage == "") {
 				GameState.farmers.push(new Farmer(nickname, email, data.password, data.difficulty));
 				callback({result: "ok"});
 			} else {

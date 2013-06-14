@@ -26,8 +26,12 @@ module.exports = {
 			var connection;
 			for (var i = 0; i < clientCount; i++) {
 				connection = NetworkEngine.clients.list[i];
-				if (typeof connection == 'undefined') {
-					//This should never happen
+				if (typeof connection == 'undefined' || connection.farmer == null) {
+					//Maybe it's a registering farmer
+					if (this.fakeConnection.farmer == null) {
+						this.fakeConnection.farmer = new Farmer();
+					}
+					return this.fakeConnection;
 				}
 				if (connection.farmer.email == farmer.email) {
 					return connection;
