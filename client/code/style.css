@@ -142,13 +142,13 @@ a:hover {
 }
 
 #register_panel {
-    height: 400px;
+    height: 450px;
     width: 400px;
     position: absolute;
     top: 50%;
     left: 50%;
     margin-left: -200px;
-    margin-top: -185px;
+    margin-top: -205px;
     box-shadow: 0 0 80px #222;
 }
 
@@ -158,6 +158,11 @@ a:hover {
 #register_panel input[type="password"] {
 	margin-left: 10px;
 	width: 320px;
+}
+
+#register_difficulty {
+    margin-left: 10px;
+    width: 330px;
 }
 
 #login_panel input[type="checkbox"],

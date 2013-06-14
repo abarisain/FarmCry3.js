@@ -17,14 +17,22 @@
 
 	<div id="register_panel" class="fc_window">
 		<div class="fc_window_content huge_text">
+            <div class="register_field_text">Nickname :</div>
+            <input id="register_nickname" name="register_nickname" type="text" size="35"/>
+
 			<div class="register_field_text">Email :</div>
 			<input id="register_email" name="register_email" type="text" size="35"/>
 
 			<div class="register_field_text">Password :</div>
 			<input id="register_password" name="register_password" type="password" size="35"/>
 
-			<div class="register_field_text">Server :</div>
-			<input id="register_server" name="register_server" type="text" size="35" value="http://localhost:8088">
+            <div class="register_field_text">Difficulty :</div>
+            <select id="register_difficulty" name="register_difficulty">
+                <option value="easy">Easy</option>
+                <option value="normal" selected>Normal</option>
+                <option value="hard">Hard</option>
+            </select>
+
 			<br/>
 			<br/>
 			<a href="#" id="register_connect_button" class="button green disabled">Create account</a>
