@@ -445,6 +445,8 @@ CrymeEngine.hud.chat = {
 					CE.Sound.mute(true);
 				} else if (msg.beginsWith("/unmute")) {
 					CE.Sound.mute(false);
+				} else if (msg.beginsWith("/tornadotest")) {
+					CE.Environment.addTornado(Map.player.col, Map.player.line);
 				} else if (msg.beginsWith("/raw ")) {
 					try {
 						var splitMsg = msg.split(" ", 2);
