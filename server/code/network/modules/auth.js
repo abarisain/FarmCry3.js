@@ -34,7 +34,8 @@ var NetworkModule = {
 		register: function (connection, request, data, callback) {
 			var failMessage = null;
 
-			if (typeof data.nickname == 'undefined' || typeof data.email == 'undefined' || typeof data.password == 'undefined') {
+			if (typeof data.nickname == 'undefined' || typeof data.email == 'undefined'
+				|| typeof data.password == 'undefined' || typeof data.difficulty == 'undefined') {
 				failMessage += "\nBad input data";
 			}
 
@@ -51,6 +52,11 @@ var NetworkModule = {
 				failMessage += "\nBad password format. It must be only letters, numbers and '_', and be between 4 or 16 characters.";
 			}
 
+			var difficultyPattern = /^(easy|hard|medium)$/;
+			if (!difficultyPattern.test(data.difficulty)) {
+				failMessage += "\nBad difficulty.";
+			}
+
 			var email = data.email.toLowerCase();
 			var nickname = data.nickname.toLowerCase();
 			GameState.farmers.forEach(function (farmer) {
@@ -61,7 +67,7 @@ var NetworkModule = {
 			});
 
 			if (failMessage == null) {
-				GameState.farmers.push(new Farmer(nickname, email, data.password));
+				GameState.farmers.push(new Farmer(nickname, email, data.password, data.difficulty));
 				callback({result: "ok"});
 			} else {
 				// Register failed if this code is reached

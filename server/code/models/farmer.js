@@ -1,11 +1,11 @@
 Crypto = require('crypto');
 
-function Farmer(nickname, email, password) {
+function Farmer(nickname, email, password, difficulty) {
 	this.last_pos = {
 		x: 0,
 		y: 0
 	};
-	this.money = 9000;
+	this.money = 0;
 	this.allied_farmers = [];
 	this.logged_in = false;
 	this.health = 100;
@@ -16,6 +16,7 @@ function Farmer(nickname, email, password) {
 	this.weapons = [ require('./gamestate').settings.weapons.fork ];
 	this.inventory = []; // Instances of storedCrop only for the time being
 	this.admin = false;
+	this.setMoneyForDifficulty(difficulty);
 	if (typeof nickname == 'undefined') {
 		this.nickname = "dummy";
 		this.email = "dummy";
@@ -30,6 +31,17 @@ Farmer.prototype = {
 	},
 	isDead: function () {
 		return this.health == 0;
+	},
+	setMoneyForDifficulty: function (difficulty) {
+		if(difficulty == "hard") {
+			this.money = 2000;
+		} else if(difficulty == "normal") {
+			this.money = 9000;
+		} else if(difficulty == "easy") {
+			this.money = 20000;
+		} else {
+			this.money = 9000;
+		}
 	},
 	getSmallFarmer: function () {
 		var tmpFarmer = this.getMinimalFarmer();
