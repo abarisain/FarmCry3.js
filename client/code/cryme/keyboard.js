@@ -64,8 +64,8 @@ CrymeEngine.keyboard = {
 		CHANGE_GRAPHIC_DEBUG_ALPHA: null
 	},
 	init: function () {
+		CE.keyboard.Shortcuts.CHAT = CrymeEngine.keyboard.Keys.ENTER;
 		if (this.debugShortcuts) {
-			CE.keyboard.Shortcuts.CHAT = CrymeEngine.keyboard.Keys.ENTER;
 			CE.keyboard.Shortcuts.CHANGE_DISPLAY_TYPE = CE.keyboard.Keys.KEY_R;
 			CE.keyboard.Shortcuts.CHANGE_FILTER_TYPE = CE.keyboard.Keys.KEY_T;
 			CE.keyboard.Shortcuts.CROP_BUY_CORN = CE.keyboard.Keys.KEY_Q;
