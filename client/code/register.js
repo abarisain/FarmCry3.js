@@ -1,102 +1,56 @@
-/*
- * Oh oui youpi
- * Dansons la carioca
- * C'est bien, faisez tous comme moi
- * http://www.youtube.com/watch?gl=FR&hl=fr&v=MQqKNU1OHgI
- */
-
-function supports_html5_storage() {
-	try {
-		return 'localStorage' in window && window['localStorage'] !== null;
-	} catch (e) {
-		return false;
-	}
-}
-
-//IE localStorage failure on file:// workaround
-window.localStorageAlias = window.localStorage;
-if (document.all && !window.localStorage) {
-	window.localStorageAlias = {};
-	window.localStorageAlias.removeItem = function () {
-	};
-}
-
 function setProgressbarValue(progressSpan, progress) {
 	progressSpan.style.width = progress * 100 + "%";
 }
 
-var initLogin = function () {
-	loginEmailField = document.querySelector("#login_email");
-	loginPasswordField = document.querySelector("#login_password");
-	loginRememberCheckbox = document.querySelector("#login_remember_me");
-	loginPanel = document.querySelector("#login_panel");
-	loadingPanel = document.querySelector("#loading_panel");
-	loadingProgressSpan = document.querySelector("#loading_progress span");
-	var loginConnectButton = document.querySelector("#login_connect_button");
-	var startLogin = function () {
+var initRegister = function () {
+	var registerButton = document.querySelector("#register_connect_button");
+	var startRegister = function () {
 		window.onkeyup = null;
-		if (supports_html5_storage()) {
-			if (loginRememberCheckbox.checked) {
-				localStorageAlias['email'] = loginEmailField.value;
-			} else {
-				localStorageAlias.removeItem('email');
-			}
-		}
+
+		var loginPanel = document.querySelector("#register_panel");
+		var loadingPanel = document.querySelector("#loading_panel");
 		loginPanel.style.display = "none";
 		loadingPanel.style.visibility = "visible";
-		//Fake a small login delay, remove this later
-		setTimeout(function () {
-			networkEngine.init(document.location,
-				loginEmailField.value, loginPasswordField.value);
-		}, 500);
+
+		var registerData = {
+			nickname: document.querySelector("#register_nickname").value,
+			email: document.querySelector("#register_email").value,
+			password: document.querySelector("#register_password").value,
+			difficulty: document.querySelector("#register_difficulty").value
+		}
+
+		var socket = io.connect((new String(document.location)).replace("register.html", ""));
+
+		socket.on('connect', function () {
+			socket.emit("auth.register", registerData, function (data) {
+				if (typeof data.result != 'undefined') {
+					if (data.result == "ok") {
+						alert("You have been registered ! Welcome :)");
+						socket.disconnect();
+						document.location = (new String(document.location)).replace("register.html", "");
+					} else if (data.result == "fail") {
+						alert("Error while registering. The page will reload (because of a bug that could not be solved for 1.0)."
+						 + "Sorry for the inconvenience of entering your information again.\n" + data.message);
+						socket.disconnect();
+						document.location.reload();
+					}
+				}
+			});
+		});
 		return true;
 	};
 
-	//Check if local storage is supported
-	loginEmailField.focus();
-	if (supports_html5_storage()) {
-		//Load the email from local storage
-		loginRememberCheckbox.style.visibility = "visible";
-		document.querySelector("#login_remember_me_label").style.visibility = "visible";
-		loginRememberCheckbox.checked = true;
-		if (typeof localStorageAlias['email'] != 'undefined') {
-			loginEmailField.value = localStorageAlias['email'];
-			loginPasswordField.focus();
-		}
-	} else {
-		loginRememberCheckbox.style.visibility = "hidden";
-		document.querySelector("#login_remember_me_label").style.visibility = "hidden";
-	}
-
 	window.onkeyup = function (event) {
 		if (event.keyCode == 13) { //Enter
-			startLogin();
+			startRegister();
 		}
 	};
 
-	loginConnectButton.setAttribute("class", loginConnectButton.getAttribute("class").replace("disabled", ""));
+	registerButton.setAttribute("class", registerButton.getAttribute("class").replace("disabled", ""));
 
-	networkEngine.onLoginFailed = function (error) {
-		loginPanel.style.display = "";
-		loadingPanel.style.visibility = "hidden";
-		loginEmailField.focus();
-		alert(error);
-		//Reload the page because of a "bug" : 2nd connection will not work
-		window.location.reload();
-	};
+	registerButton.onclick = startRegister;
+};
 
-	networkEngine.onLoadingStarted = function () {
-		setProgressbarValue(loadingProgressSpan, 0);
-	};
-
-	networkEngine.onLoadingProgress = function (current, total) {
-		setProgressbarValue(loadingProgressSpan, current / total);
-	};
-
-	networkEngine.onLoadingFinished = function () {
-		loadingPanel.style.display = "none";
-		document.querySelector("body").removeChild(document.querySelector("#login"));
-	};
-
-	loginConnectButton.onclick = startLogin;
+window.onload = function () {
+	initRegister();
 };
