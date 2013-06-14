@@ -1,6 +1,7 @@
 CrymeEngine.keyboard = {
 	showKeyMap: false,//pour afficher ou non la keyMap à l'écran
 	debugKeyPresses: false,
+	debugShortcuts: false,
 	keyCount: -1,
 	Keys: {
 		ENTER: { code: 13, name: 'Enter' },
@@ -63,28 +64,30 @@ CrymeEngine.keyboard = {
 		CHANGE_GRAPHIC_DEBUG_ALPHA: null
 	},
 	init: function () {
-		CE.keyboard.Shortcuts.CHAT = CrymeEngine.keyboard.Keys.ENTER;
-		CE.keyboard.Shortcuts.CHANGE_DISPLAY_TYPE = CE.keyboard.Keys.KEY_R;
-		CE.keyboard.Shortcuts.CHANGE_FILTER_TYPE = CE.keyboard.Keys.KEY_T;
-		CE.keyboard.Shortcuts.CROP_BUY_CORN = CE.keyboard.Keys.KEY_Q;
-		CE.keyboard.Shortcuts.CROP_BUY_TOMATO = CE.keyboard.Keys.KEY_S;
-		CE.keyboard.Shortcuts.CROP_BUY_WHEAT = CE.keyboard.Keys.KEY_D;
-		CE.keyboard.Shortcuts.CROP_HARVEST = CE.keyboard.Keys.KEY_F;
-		CE.keyboard.Shortcuts.BUILDING_BUY_SILO = CE.keyboard.Keys.KEY_W;
-		CE.keyboard.Shortcuts.BUILDING_BUY_BARN = CE.keyboard.Keys.KEY_X;
-		CE.keyboard.Shortcuts.BUILDING_BUY_COLD_STORAGE = CE.keyboard.Keys.KEY_C;
-		CE.keyboard.Shortcuts.BUILDING_DESTROY = CE.keyboard.Keys.KEY_V;
-		CE.keyboard.Shortcuts.ATTACK_FORK = CE.keyboard.Keys.KEY_A;
-		CE.keyboard.Shortcuts.ATTACK_FLAMETHROWER = CE.keyboard.Keys.KEY_Z;
-		CE.keyboard.Shortcuts.ATTACK_AK = CE.keyboard.Keys.KEY_E;
-		CE.keyboard.Shortcuts.NATURAL_TORNADO = CE.keyboard.Keys.KEY_J;
-		CE.keyboard.Shortcuts.STOP_BATTLE = CE.keyboard.Keys.KEY_P;
-		CE.keyboard.Shortcuts.SHOW_KEY_MAP = CE.keyboard.Keys.TAB;
-		CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG = CE.keyboard.Keys.KEY_1;
-		CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ITEM = CE.keyboard.Keys.KEY_2;
-		CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_MAP = CE.keyboard.Keys.KEY_3;
-		CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ADVANCED = CE.keyboard.Keys.KEY_4;
-		CE.keyboard.Shortcuts.CHANGE_GRAPHIC_DEBUG_ALPHA = CE.keyboard.Keys.KEY_5;
+		if (this.debugShortcuts) {
+			CE.keyboard.Shortcuts.CHAT = CrymeEngine.keyboard.Keys.ENTER;
+			CE.keyboard.Shortcuts.CHANGE_DISPLAY_TYPE = CE.keyboard.Keys.KEY_R;
+			CE.keyboard.Shortcuts.CHANGE_FILTER_TYPE = CE.keyboard.Keys.KEY_T;
+			CE.keyboard.Shortcuts.CROP_BUY_CORN = CE.keyboard.Keys.KEY_Q;
+			CE.keyboard.Shortcuts.CROP_BUY_TOMATO = CE.keyboard.Keys.KEY_S;
+			CE.keyboard.Shortcuts.CROP_BUY_WHEAT = CE.keyboard.Keys.KEY_D;
+			CE.keyboard.Shortcuts.CROP_HARVEST = CE.keyboard.Keys.KEY_F;
+			CE.keyboard.Shortcuts.BUILDING_BUY_SILO = CE.keyboard.Keys.KEY_W;
+			CE.keyboard.Shortcuts.BUILDING_BUY_BARN = CE.keyboard.Keys.KEY_X;
+			CE.keyboard.Shortcuts.BUILDING_BUY_COLD_STORAGE = CE.keyboard.Keys.KEY_C;
+			CE.keyboard.Shortcuts.BUILDING_DESTROY = CE.keyboard.Keys.KEY_V;
+			CE.keyboard.Shortcuts.ATTACK_FORK = CE.keyboard.Keys.KEY_A;
+			CE.keyboard.Shortcuts.ATTACK_FLAMETHROWER = CE.keyboard.Keys.KEY_Z;
+			CE.keyboard.Shortcuts.ATTACK_AK = CE.keyboard.Keys.KEY_E;
+			CE.keyboard.Shortcuts.NATURAL_TORNADO = CE.keyboard.Keys.KEY_J;
+			CE.keyboard.Shortcuts.STOP_BATTLE = CE.keyboard.Keys.KEY_P;
+			CE.keyboard.Shortcuts.SHOW_KEY_MAP = CE.keyboard.Keys.TAB;
+			CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG = CE.keyboard.Keys.KEY_1;
+			CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ITEM = CE.keyboard.Keys.KEY_2;
+			CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_MAP = CE.keyboard.Keys.KEY_3;
+			CE.keyboard.Shortcuts.SHOW_GRAPHIC_DEBUG_ADVANCED = CE.keyboard.Keys.KEY_4;
+			CE.keyboard.Shortcuts.CHANGE_GRAPHIC_DEBUG_ALPHA = CE.keyboard.Keys.KEY_5;
+		}
 	},
 	keyPressed: function (event) {
 		//Special case, unless we are pressing enter, ignore everything while we're in the chat box
