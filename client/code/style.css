@@ -130,9 +130,8 @@ a:hover {
 	margin-left: -183px; /*Image is 367x107*/
 }
 
-#login_panel,
-#register_panel {
-	height: 400px;
+#login_panel {
+	height: 320px;
 	width: 400px;
 	position: absolute;
 	top: 50%;
@@ -140,6 +139,17 @@ a:hover {
 	margin-left: -200px;
 	margin-top: -185px;
 	box-shadow: 0 0 80px #222;
+}
+
+#register_panel {
+    height: 400px;
+    width: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -200px;
+    margin-top: -185px;
+    box-shadow: 0 0 80px #222;
 }
 
 #login_panel input[type="text"],
