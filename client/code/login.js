@@ -46,7 +46,7 @@ var initLogin = function () {
 		loadingPanel.style.visibility = "visible";
 		//Fake a small login delay, remove this later
 		setTimeout(function () {
-			networkEngine.init(document.querySelector("#login_server").value,
+			networkEngine.init(document.location,
 				loginEmailField.value, loginPasswordField.value);
 		}, 500);
 		return true;
@@ -56,8 +56,6 @@ var initLogin = function () {
 		// Remove animated stripes on iOS (too slow)
 		document.querySelector("#loading_progress").classList.remove("stripes-animated");
 	}
-
-    document.querySelector("#login_server").value = document.location;
 	//Check if local storage is supported
 	loginEmailField.focus();
 	if (supports_html5_storage()) {

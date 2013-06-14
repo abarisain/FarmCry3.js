@@ -130,9 +130,8 @@ a:hover {
 	margin-left: -183px; /*Image is 367x107*/
 }
 
-#login_panel,
-#register_panel {
-	height: 400px;
+#login_panel {
+	height: 375px;
 	width: 400px;
 	position: absolute;
 	top: 50%;
@@ -142,12 +141,28 @@ a:hover {
 	box-shadow: 0 0 80px #222;
 }
 
+#register_panel {
+    height: 450px;
+    width: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -200px;
+    margin-top: -205px;
+    box-shadow: 0 0 80px #222;
+}
+
 #login_panel input[type="text"],
 #register_panel input[type="text"],
 #login_panel input[type="password"],
 #register_panel input[type="password"] {
 	margin-left: 10px;
 	width: 320px;
+}
+
+#register_difficulty {
+    margin-left: 10px;
+    width: 330px;
 }
 
 #login_panel input[type="checkbox"],

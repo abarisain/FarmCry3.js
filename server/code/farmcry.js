@@ -87,16 +87,7 @@ var generate_new_initialdata = (function() {
 	GameState.board.grow(8, 8);
 
 	// Create the users
-	var tmpFarmer = new Farmer("Arkanta", "dreamteam69@gmail.com", "prout");
-	tmpFarmer.admin = true;
-	GameState.farmers.push(tmpFarmer);
-	tmpFarmer = new Farmer("Yaurthek", "yaurthek@gmail.com", "nightcore");
-	tmpFarmer.admin = true;
-	GameState.farmers.push(tmpFarmer);
-	tmpFarmer = new Farmer("iPoi", "rouxguigui@gmail.com", "3D");
-	tmpFarmer.admin = true;
-	GameState.farmers.push(tmpFarmer);
-	tmpFarmer = new Farmer("Kalahim", "kalahim69@gmail.com", "dieu");
+	var tmpFarmer = new Farmer("Administrator", "admin@farmcry.com", "password");
 	tmpFarmer.admin = true;
 	GameState.farmers.push(tmpFarmer);
 

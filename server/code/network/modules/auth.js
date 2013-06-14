@@ -32,9 +32,10 @@ var NetworkModule = {
 		},
 
 		register: function (connection, request, data, callback) {
-			var failMessage = null;
+			var failMessage = "";
 
-			if (typeof data.nickname == 'undefined' || typeof data.email == 'undefined' || typeof data.password == 'undefined') {
+			if (typeof data.nickname == 'undefined' || typeof data.email == 'undefined'
+				|| typeof data.password == 'undefined' || typeof data.difficulty == 'undefined') {
 				failMessage += "\nBad input data";
 			}
 
@@ -48,20 +49,25 @@ var NetworkModule = {
 			}
 			var passwordPattern = /^.{6,64}$/;
 			if (!passwordPattern.test(data.password)) {
-				failMessage += "\nBad password format. It must be only letters, numbers and '_', and be between 4 or 16 characters.";
+				failMessage += "\nBad password format. It must be only letters, numbers and '_', and be between 6 or 16 characters.";
+			}
+
+			var difficultyPattern = /^(easy|hard|normal)$/;
+			if (!difficultyPattern.test(data.difficulty)) {
+				failMessage += "\nBad difficulty.";
 			}
 
 			var email = data.email.toLowerCase();
-			var nickname = data.nickname.toLowerCase();
+			var nickname = data.nickname;
 			GameState.farmers.forEach(function (farmer) {
-				if(farmer.nickname == nickname)
+				if(farmer.nickname.toLowerCase() == nickname.toLowerCase())
 					failMessage += "\nThis nickname is already used.";
-				if(farmer.email == email)
+				if(farmer.email.toLowerCase() == email)
 					failMessage += "\nThis email is already used.";
 			});
 
-			if (failMessage == null) {
-				GameState.farmers.push(new Farmer(nickname, email, data.password));
+			if (failMessage == "") {
+				GameState.farmers.push(new Farmer(nickname, email, data.password, data.difficulty));
 				callback({result: "ok"});
 			} else {
 				// Register failed if this code is reached

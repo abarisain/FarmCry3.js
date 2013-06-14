@@ -33,7 +33,7 @@ NetworkConnection.prototype = {
 			require_auth = true;
 		}
 		if (require_auth && !this.authenticated) {
-			console.log("Not sending message to unauthenticated user");
+			//console.log("Not sending message to unauthenticated user");
 			return;
 		}
 
