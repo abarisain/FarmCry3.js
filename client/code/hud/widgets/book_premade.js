@@ -25,7 +25,7 @@ HudElements.Book.Premade.Market = function () {
 			layout.viewbag.icon.image = "market_" + item.codename;
 			layout.viewbag.capacity.setText(item.capacity);
 			layout.viewbag.withering.setText(item.stops_withering ? "Yes" : "No");
-			layout.viewbag.maintenance.setText(item.price_tick == 0 ? "None" : (item.price_tick + " per second"));
+			layout.viewbag.maintenance.setText(item.price_tick == 0 ? "None" : (item.price_tick + " per " + GameState.ticksToSeconds(24) + " seconds"));
 			layout.viewbag.price.setText(item.price);
 		}
 	);
@@ -47,9 +47,9 @@ HudElements.Book.Premade.Market = function () {
 		function (layout, index, item) {
 			layout.viewbag.icon.image = "market_" + item.codename;
 			// I know that ticks aren't seconds, but we can't use that ...
-			layout.viewbag.maturation.setText(item.maturation_time + " s");
+			layout.viewbag.maturation.setText(GameState.ticksToSeconds(item.maturation_time) + " s");
 			layout.viewbag.production.setText(item.productivity);
-			layout.viewbag.storability.setText(item.storability + " s");
+			layout.viewbag.storability.setText(Math.ceil(GameState.ticksToSeconds(item.storability) / 60) + " min");
 			layout.viewbag.price.setText(item.seed_price);
 		}
 	);

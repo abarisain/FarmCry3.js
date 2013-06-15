@@ -130,6 +130,7 @@ networkEngine.subsystems.game = {
 			GameState.buildings = data.buildings;
 			GameState.crops = data.crops;
 			GameState.weapons = data.weapons;
+			GameState.tickRate = data.tick_rate;
 			Map.init(data);
 			CrymeEngine.init();
 			currentLoadingCount++;

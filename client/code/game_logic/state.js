@@ -9,6 +9,10 @@ GameState = {
 	buildings: {},//reference from server
 	weapons: {},//reference from server
 	inventorySize: 5,
+	tickRate: 0,
+	ticksToSeconds: function (ticks) {
+		return Math.round(ticks * (this.tickRate / 1000));
+	},
 	addPlayer: function (player) {
 		this.removePlayer(player.nickname);
 		this.online_players.push(player);
