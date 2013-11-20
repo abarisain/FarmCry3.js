@@ -35,7 +35,7 @@ CrymeEngine.Sound = {
 			console.log('SoundEngine - AudioContext not supported, disabling');
 			return;
 		}
-		this.mainOutput = this.context.createGainNode();
+		this.mainOutput = this.context.createGain();
 		this.mainOutput.gain.value = 1;
 		this.mainOutput.connect(this.context.destination);
 	},

@@ -20,7 +20,7 @@ Sound.prototype.initWithBuffer = function (buffer) {
 		console.log("SoundEngine - Error : Cannot initWithBuffer : Object already has a buffer.");
 	}
 	this.buffer = buffer;
-	this.nodes.volume = CE.Sound.context.createGainNode();
+	this.nodes.volume = CE.Sound.context.createGain();
 	this.nodes.volume.connect(CE.Sound.mainOutput);
 	this.setVolume();
 }
