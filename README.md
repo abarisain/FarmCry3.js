@@ -1,7 +1,11 @@
 FarmCry3.js
 ===========
 
-Blablalbalb albalb slqdlsld ?
+Our (@rouxguigui and @abarisain) 4th year dev project.  
+
+You need a working node-fibers and redis installation for this to work.
+
+Simply launch by going in server/code and run `node farmcry.js`
 
 
-Je frappe le permier qui bousille l'indentation. On va tous regler nos IDE pareil.
+
