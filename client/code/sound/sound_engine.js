@@ -29,13 +29,15 @@ CrymeEngine.Sound = {
 			this.context = new AudioContext();
 		} else if (typeof webkitAudioContext !== "undefined") {
 			this.context = new webkitAudioContext();
+			//to keep only one function as it was renamed in recent Chrome release
+			this.context.createGrain = this.context.createGainNode;
 		} else {
 			this.unsupportedBrowser = true;
 			this.enabled = false;
 			console.log('SoundEngine - AudioContext not supported, disabling');
 			return;
 		}
-		this.mainOutput = this.context.createGainNode();
+		this.mainOutput = this.context.createGain();
 		this.mainOutput.gain.value = 1;
 		this.mainOutput.connect(this.context.destination);
 	},
